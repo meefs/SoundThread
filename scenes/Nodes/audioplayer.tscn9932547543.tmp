@@ -1,0 +1,62 @@
+[gd_scene load_steps=3 format=3 uid="uid://csapiqka522fh"]
+
+[ext_resource type="PackedScene" uid="uid://btu0bvjb0cc6j" path="res://addons/audio_preview/AudioStreamPreview.tscn" id="1_ojaay"]
+[ext_resource type="Script" uid="uid://clmtlg8via3qn" path="res://scenes/Nodes/audioplayer.gd" id="1_yprak"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yprak")
+
+[node name="Panel" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 96.0
+
+[node name="AudioStreamPreview" parent="." instance=ExtResource("1_ojaay")]
+visible = false
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 96.0
+
+[node name="FileDialog" type="FileDialog" parent="."]
+
+[node name="LoadButton" type="Button" parent="."]
+layout_mode = 0
+offset_top = 104.0
+offset_right = 128.0
+offset_bottom = 147.0
+text = "Load File"
+
+[node name="PlayButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 104.0
+offset_right = 264.0
+offset_bottom = 147.0
+text = "Play"
+
+[node name="StopButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 104.0
+offset_right = 400.0
+offset_bottom = 147.0
+text = "Stop"
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="WaveformPreview" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 96.0
+expand_mode = 2
+
+[connection signal="button_down" from="LoadButton" to="." method="_on_load_button_button_down"]
+[connection signal="button_down" from="PlayButton" to="." method="_on_play_button_button_down"]
+[connection signal="button_down" from="StopButton" to="." method="_on_stop_button_button_down"]

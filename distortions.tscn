@@ -1,0 +1,364 @@
+[gd_scene load_steps=4 format=3 uid="uid://4d5fettap7nl"]
+
+[ext_resource type="Script" uid="uid://ce3ytxnt3y8dj" path="res://clip_clip_2.gd" id="1_68an2"]
+[ext_resource type="PackedScene" uid="uid://dya5kxx132fgp" path="res://scenes/Nodes/valueslider.tscn" id="2_jl6jh"]
+
+[sub_resource type="GDScript" id="GDScript_wcwmc"]
+script/source = "extends Label
+
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta: float) -> void:
+	pass
+"
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="clip_clip_2" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 6.0
+offset_right = 295.0
+offset_bottom = 228.0
+title = "Clip"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+script = ExtResource("1_68an2")
+
+[node name="Level" type="Label" parent="clip_clip_2"]
+layout_mode = 2
+text = "Maximum"
+
+[node name="LevelSlider" type="HSlider" parent="clip_clip_2"]
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+
+[node name="Label" type="Label" parent="clip_clip_2"]
+layout_mode = 2
+text = "0.00"
+horizontal_alignment = 2
+script = SubResource("GDScript_wcwmc")
+
+[node name="Control" type="Control" parent="clip_clip_2"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="clip_clip_2" instance=ExtResource("2_jl6jh")]
+layout_mode = 2
+
+[node name="Fractal" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 698.0
+offset_right = 300.0
+offset_bottom = 920.0
+title = "Fractal"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+slot/5/left_enabled = false
+slot/5/left_type = 0
+slot/5/left_color = Color(1, 1, 1, 1)
+slot/5/left_icon = null
+slot/5/right_enabled = false
+slot/5/right_type = 0
+slot/5/right_color = Color(1, 1, 1, 1)
+slot/5/right_icon = null
+slot/5/draw_stylebox = true
+slot/6/left_enabled = false
+slot/6/left_type = 0
+slot/6/left_color = Color(1, 1, 1, 1)
+slot/6/left_icon = null
+slot/6/right_enabled = false
+slot/6/right_type = 0
+slot/6/right_color = Color(1, 1, 1, 1)
+slot/6/right_icon = null
+slot/6/draw_stylebox = true
+
+[node name="Label" type="Label" parent="Fractal"]
+layout_mode = 2
+text = "Multiplier"
+
+[node name="HSlider" type="HSlider" parent="Fractal"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Fractal"]
+layout_mode = 2
+text = "Threshold"
+
+[node name="HSlider2" type="HSlider" parent="Fractal"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Fractal"]
+layout_mode = 2
+text = "Gain"
+
+[node name="HSlider3" type="HSlider" parent="Fractal"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="Fractal"]
+layout_mode = 2
+
+[node name="distort_average" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 469.0
+offset_right = 298.0
+offset_bottom = 691.0
+title = "Interpolate"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+slot/5/left_enabled = false
+slot/5/left_type = 0
+slot/5/left_color = Color(1, 1, 1, 1)
+slot/5/left_icon = null
+slot/5/right_enabled = false
+slot/5/right_type = 0
+slot/5/right_color = Color(1, 1, 1, 1)
+slot/5/right_icon = null
+slot/5/draw_stylebox = true
+slot/6/left_enabled = false
+slot/6/left_type = 0
+slot/6/left_color = Color(1, 1, 1, 1)
+slot/6/left_icon = null
+slot/6/right_enabled = false
+slot/6/right_type = 0
+slot/6/right_color = Color(1, 1, 1, 1)
+slot/6/right_icon = null
+slot/6/draw_stylebox = true
+
+[node name="Label" type="Label" parent="distort_average"]
+layout_mode = 2
+text = "Mulitplier"
+
+[node name="HSlider" type="HSlider" parent="distort_average"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="distort_average"]
+layout_mode = 2
+text = "Maximum"
+
+[node name="HSlider2" type="HSlider" parent="distort_average"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="distort_average"]
+layout_mode = 2
+text = "Minimum"
+
+[node name="HSlider3" type="HSlider" parent="distort_average"]
+layout_mode = 2
+
+[node name="Control" type="Control" parent="distort_average"]
+layout_mode = 2
+
+[node name="Repeat" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 235.0
+offset_right = 296.0
+offset_bottom = 457.0
+title = "Repeat"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+
+[node name="Label" type="Label" parent="Repeat"]
+layout_mode = 2
+text = "Cycle Count"
+
+[node name="CycleCount" type="HSlider" parent="Repeat"]
+layout_mode = 2
+
+[node name="Label2" type="Label" parent="Repeat"]
+layout_mode = 2
+text = "Gain"
+
+[node name="Gain" type="HSlider" parent="Repeat"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="Repeat"]
+layout_mode = 2
+text = "Minimum"
+
+[connection signal="value_changed" from="clip_clip_2/LevelSlider" to="clip_clip_2" method="_on_h_slider_2_value_changed"]

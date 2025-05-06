@@ -1,0 +1,98 @@
+[gd_scene load_steps=2 format=3 uid="uid://csapiqka522fh"]
+
+[ext_resource type="Script" uid="uid://clmtlg8via3qn" path="res://scenes/Nodes/audioplayer.gd" id="1_yprak"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -752.0
+offset_bottom = -496.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_yprak")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 96.0
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 5.0
+offset_right = 232.0
+offset_bottom = 28.0
+text = "Drop files here or load below"
+
+[node name="FileDialog" type="FileDialog" parent="."]
+use_native_dialog = true
+
+[node name="LoadButton" type="Button" parent="."]
+layout_mode = 0
+offset_top = 104.0
+offset_right = 128.0
+offset_bottom = 147.0
+text = "Load File"
+
+[node name="PlayButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 136.0
+offset_top = 104.0
+offset_right = 264.0
+offset_bottom = 147.0
+text = "Play"
+
+[node name="StopButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 272.0
+offset_top = 104.0
+offset_right = 400.0
+offset_bottom = 147.0
+text = "Stop"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="WavError" type="Window" parent="."]
+title = "Wrong File Type"
+initial_position = 2
+size = Vector2i(350, 100)
+transient = true
+exclusive = true
+unresizable = true
+borderless = true
+always_on_top = true
+popup_window = true
+
+[node name="Label" type="Label" parent="WavError"]
+offset_right = 349.0
+offset_bottom = 58.0
+text = "Wrong file type
+Only mono WAV files are supported"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="CloseButton" type="Button" parent="WavError"]
+offset_left = 143.0
+offset_top = 62.0
+offset_right = 207.0
+offset_bottom = 93.0
+text = "Ok"
+
+[node name="WaveformPreview" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 96.0
+expand_mode = 2
+
+[node name="Playhead" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 0, 96)
+width = 2.0
+default_color = Color(1, 1, 1, 0.541176)
+
+[connection signal="button_down" from="LoadButton" to="." method="_on_load_button_button_down"]
+[connection signal="button_down" from="PlayButton" to="." method="_on_play_button_button_down"]
+[connection signal="button_down" from="StopButton" to="." method="_on_stop_button_button_down"]
+[connection signal="button_down" from="WavError/CloseButton" to="." method="_on_close_button_button_down"]

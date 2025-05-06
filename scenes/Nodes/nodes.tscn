@@ -1,0 +1,782 @@
+[gd_scene load_steps=5 format=3 uid="uid://duy5epq25pj8u"]
+
+[ext_resource type="Script" uid="uid://ce3ytxnt3y8dj" path="res://clip_clip_2.gd" id="1_evio6"]
+[ext_resource type="PackedScene" uid="uid://csapiqka522fh" path="res://scenes/Nodes/audioplayer.tscn" id="2_b6nw4"]
+[ext_resource type="PackedScene" uid="uid://dya5kxx132fgp" path="res://scenes/Nodes/valueslider.tscn" id="3_b6nw4"]
+[ext_resource type="Script" uid="uid://dxxohuvlw5e3n" path="res://scenes/Nodes/focus_accu_sliders.gd" id="4_uv17x"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="inputfile" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 21.0
+offset_top = 6.0
+offset_right = 457.0
+offset_bottom = 228.0
+title = "Input File"
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+script = ExtResource("1_evio6")
+
+[node name="Control" type="Control" parent="inputfile"]
+layout_mode = 2
+
+[node name="Control2" parent="inputfile" instance=ExtResource("2_b6nw4")]
+layout_mode = 2
+
+[node name="distort_average" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 244.0
+offset_right = 328.0
+offset_bottom = 364.0
+tooltip_text = "Performs a mathematical averaging of the data"
+title = "Distort: Average"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="distort_average"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="distort_average" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Number of cycles over which to average"
+
+[node name="Label" parent="distort_average/VBoxContainer" index="0"]
+text = "Cycle Count"
+
+[node name="HSlider" parent="distort_average/VBoxContainer/HSplitContainer" index="0"]
+min_value = 1.0
+value = 5.0
+
+[node name="clip_clip_2" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 384.0
+offset_right = 332.0
+offset_bottom = 504.0
+tooltip_text = "Clips half-waveforms at a given fraction of the original"
+title = "Distort: Clip Fraction"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="clip_clip_2"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="clip_clip_2" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Fraction of original signal at which to clip, 1 is no change"
+
+[node name="Label" parent="clip_clip_2/VBoxContainer" index="0"]
+text = "Fraction"
+
+[node name="HSlider" parent="clip_clip_2/VBoxContainer/HSplitContainer" index="0"]
+max_value = 1.0
+step = 0.01
+value = 0.7
+
+[node name="distort_reform_6" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 519.0
+offset_right = 332.0
+offset_bottom = 639.0
+tooltip_text = "Replaces each 'wavecycle' with square pulses several samples long"
+title = "Distort: Click"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="distort_reform_6"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="distort_reform_6"]
+layout_mode = 2
+text = "No adjustable parameters"
+
+[node name="distort_divide" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 29.0
+offset_top = 657.0
+offset_right = 335.0
+offset_bottom = 777.0
+tooltip_text = "Divides wavecycle frequency without altering duration"
+title = "Distort: Divide"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="distort_divide"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="distort_divide" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+
+[node name="Label" parent="distort_divide/VBoxContainer" index="0"]
+text = "Divider"
+
+[node name="HSlider" parent="distort_divide/VBoxContainer/HSplitContainer" index="0"]
+min_value = 2.0
+max_value = 16.0
+value = 2.0
+
+[node name="distort_fractal" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 797.0
+offset_right = 336.0
+offset_bottom = 956.0
+tooltip_text = "Superimposes miniature copies 'wavecycles onto themselves"
+title = "Distort: Fractal"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+
+[node name="Control" type="Control" parent="distort_fractal"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="distort_fractal" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Division of scale of source wave"
+
+[node name="Label" parent="distort_fractal/VBoxContainer" index="0"]
+text = "Scaling"
+
+[node name="HSlider" parent="distort_fractal/VBoxContainer/HSplitContainer" index="0"]
+min_value = 2.0
+max_value = 20000.0
+value = 2.0
+exp_edit = true
+
+[node name="VBoxContainer2" parent="distort_fractal" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "loudness of scaled component relative to source (1.0)"
+
+[node name="Label" parent="distort_fractal/VBoxContainer2" index="0"]
+text = "Loudness"
+
+[node name="HSlider" parent="distort_fractal/VBoxContainer2/HSplitContainer" index="0"]
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="distort_multiply" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 32.0
+offset_top = 978.0
+offset_right = 338.0
+offset_bottom = 1098.0
+tooltip_text = "Multiplies wavecycle frequency without altering duration"
+title = "Distort: Multiply"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="distort_multiply"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="distort_multiply" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+
+[node name="Label" parent="distort_multiply/VBoxContainer" index="0"]
+text = "Multiplier"
+
+[node name="HSlider" parent="distort_multiply/VBoxContainer/HSplitContainer" index="0"]
+min_value = 2.0
+max_value = 16.0
+value = 2.0
+
+[node name="distort_interpolate" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 35.0
+offset_top = 1110.0
+offset_right = 341.0
+offset_bottom = 1230.0
+tooltip_text = "Time-stretches file by repeating wavecycles and interpolating between them"
+title = "Distort: Interpolate"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="distort_interpolate"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="distort_interpolate" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+
+[node name="Label" parent="distort_interpolate/VBoxContainer" index="0"]
+text = "Multiplier"
+
+[node name="HSlider" parent="distort_interpolate/VBoxContainer/HSplitContainer" index="0"]
+min_value = 2.0
+max_value = 64.0
+value = 2.0
+
+[node name="distort_reform_2" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 39.0
+offset_top = 1246.0
+offset_right = 345.0
+offset_bottom = 1366.0
+tooltip_text = "Replaces each 'wavecycle' with a square wave"
+title = "Distort: Square"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="distort_reform_2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="distort_reform_2"]
+layout_mode = 2
+text = "No adjustable parameters"
+
+[node name="distort_reform_4" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 1382.0
+offset_right = 346.0
+offset_bottom = 1502.0
+tooltip_text = "Replaces each 'wavecycle' with a triangle wave"
+title = "Distort: Triangle"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="distort_reform_4"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="distort_reform_4"]
+layout_mode = 2
+text = "No adjustable parameters"
+
+[node name="distort_replace" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 44.0
+offset_top = 1525.0
+offset_right = 350.0
+offset_bottom = 1645.0
+tooltip_text = "The strongest wavecycle in a Cycle Count group replaces the others"
+title = "Distort: Replace"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="distort_replace"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="distort_replace" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The number of wavecycles in each group"
+
+[node name="Label" parent="distort_replace/VBoxContainer" index="0"]
+text = "Cycle Count"
+
+[node name="HSlider" parent="distort_replace/VBoxContainer/HSplitContainer" index="0"]
+min_value = 2.0
+max_value = 64.0
+value = 2.0
+
+[node name="pvoc_anal_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1334.0
+offset_top = 46.0
+offset_right = 1640.0
+offset_bottom = 166.0
+tooltip_text = "Converts audio to the frequency domain"
+title = "PVOC: Analyse"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="pvoc_anal_1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="pvoc_anal_1"]
+layout_mode = 2
+text = "No adjustable parameters"
+
+[node name="pvoc_synth" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1338.0
+offset_top = 191.0
+offset_right = 1644.0
+offset_bottom = 311.0
+tooltip_text = "Resynthesises frequency domain analysis back into audio"
+title = "PVOC: Resynthesise"
+slot/0/left_enabled = true
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="pvoc_synth"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="pvoc_synth"]
+layout_mode = 2
+text = "No adjustable parameters"
+
+[node name="focus_accu" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1340.0
+offset_top = 351.0
+offset_right = 1646.0
+offset_bottom = 510.0
+tooltip_text = "Sustain (accumulate) each spectral band, until louder data appears in that band"
+title = "PVOC: Accumulate"
+slot/0/left_enabled = true
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+script = ExtResource("4_uv17x")
+
+[node name="Control" type="Control" parent="focus_accu"]
+layout_mode = 2
+
+[node name="VBoxContainer3" type="VBoxContainer" parent="focus_accu"]
+custom_minimum_size = Vector2(270, 0)
+layout_mode = 2
+tooltip_text = "Sustained channel data decays by a factor of decay each second"
+
+[node name="Label" type="Label" parent="focus_accu/VBoxContainer3"]
+layout_mode = 2
+text = "Decay"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="focus_accu/VBoxContainer3"]
+layout_mode = 2
+split_offset = 210
+dragging_enabled = false
+
+[node name="-d" type="HSlider" parent="focus_accu/VBoxContainer3/HSplitContainer"]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 2
+min_value = 0.001
+max_value = 1.0
+step = 0.001
+value = 0.5
+
+[node name="ValueLabel" type="Label" parent="focus_accu/VBoxContainer3/HSplitContainer"]
+layout_mode = 2
+text = "0.00"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="VBoxContainer4" type="VBoxContainer" parent="focus_accu"]
+custom_minimum_size = Vector2(270, 0)
+layout_mode = 2
+tooltip_text = "Sustained channel data glissandos at glis octaves per second"
+
+[node name="Label" type="Label" parent="focus_accu/VBoxContainer4"]
+layout_mode = 2
+text = "Glissandos"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="focus_accu/VBoxContainer4"]
+layout_mode = 2
+split_offset = 210
+dragging_enabled = false
+
+[node name="-g" type="HSlider" parent="focus_accu/VBoxContainer4/HSplitContainer"]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 2
+min_value = -5.0
+max_value = 10.0
+step = 0.01
+value = -0.5
+
+[node name="ValueLabel" type="Label" parent="focus_accu/VBoxContainer4/HSplitContainer"]
+layout_mode = 2
+text = "0.00"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="blur_blur" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1345.0
+offset_top = 540.0
+offset_right = 1651.0
+offset_bottom = 660.0
+tooltip_text = "Time-averages the spectrum bluring detail in the time dimension"
+title = "PVOC: Blur"
+slot/0/left_enabled = true
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="blur_blur"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="blur_blur" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Number of windows over which to average the spectrum"
+
+[node name="Label" parent="blur_blur/VBoxContainer" index="0"]
+text = "Bluring"
+
+[node name="HSlider" parent="blur_blur/VBoxContainer/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 1024.0
+value = 64.0
+
+[node name="blur_chorus_5" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1345.0
+offset_top = 683.0
+offset_right = 1651.0
+offset_bottom = 842.0
+tooltip_text = "Chorusing effect created by randomising the amplitude and frequency values of the partials"
+title = "PVOC: Chorus"
+slot/0/left_enabled = true
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+
+[node name="Control" type="Control" parent="blur_chorus_5"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="blur_chorus_5" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Maximum random scatter of partial amplitudes"
+
+[node name="Label" parent="blur_chorus_5/VBoxContainer" index="0"]
+text = "Amplitude Randomise"
+
+[node name="HSlider" parent="blur_chorus_5/VBoxContainer/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 1028.0
+value = 30.0
+exp_edit = true
+
+[node name="VBoxContainer2" parent="blur_chorus_5" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Maximum random scatter of partial frequencies"
+
+[node name="Label" parent="blur_chorus_5/VBoxContainer2" index="0"]
+text = "Frequency Randomise"
+
+[node name="HSlider" parent="blur_chorus_5/VBoxContainer2/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 4.0
+step = 0.01
+value = 2.0
+
+[node name="strange_invert_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1351.0
+offset_top = 870.0
+offset_right = 1657.0
+offset_bottom = 990.0
+tooltip_text = "Transfers the energy from the highest frequency bands to the lowest ones and vice versa"
+title = "PVOC: Invert"
+slot/0/left_enabled = true
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+
+[node name="Control" type="Control" parent="strange_invert_1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="strange_invert_1"]
+layout_mode = 2
+text = "No adjustable parameters"
+
+[connection signal="value_changed" from="focus_accu/VBoxContainer3/HSplitContainer/-d" to="focus_accu" method="_on_d_value_changed"]
+[connection signal="value_changed" from="focus_accu/VBoxContainer4/HSplitContainer/-g" to="focus_accu" method="_on_g_value_changed"]
+
+[editable path="distort_average/VBoxContainer"]
+[editable path="clip_clip_2/VBoxContainer"]
+[editable path="distort_divide/VBoxContainer"]
+[editable path="distort_fractal/VBoxContainer"]
+[editable path="distort_fractal/VBoxContainer2"]
+[editable path="distort_multiply/VBoxContainer"]
+[editable path="distort_interpolate/VBoxContainer"]
+[editable path="distort_replace/VBoxContainer"]
+[editable path="blur_blur/VBoxContainer"]
+[editable path="blur_chorus_5/VBoxContainer"]
+[editable path="blur_chorus_5/VBoxContainer2"]

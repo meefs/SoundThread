@@ -1,0 +1,13 @@
+res://scenes/Nodes/audioplayer.tscn
+res://scenes/Nodes/audioplayer.gd
+res://scenes/main/control.tscn
+res://distortions.tscn
+res://scenes/menu/menu.tscn
+res://scenes/Nodes/valueslider.tscn
+res://scenes/Nodes/waveform_preview.gd
+res://scenes/main/control.gd
+res://scenes/Nodes/nodes.tscn
+res://Global.gd
+res://config_handler.gd
+res://clip_clip_2.gd
+res://scenes/Nodes/focus_accu_sliders.gd

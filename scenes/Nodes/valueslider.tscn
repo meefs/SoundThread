@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://dya5kxx132fgp"]
+
+[ext_resource type="Script" uid="uid://bco7hof3wqck4" path="res://scenes/Nodes/valueslider.gd" id="1_4kxw6"]
+
+[node name="VBoxContainer" type="VBoxContainer"]
+custom_minimum_size = Vector2(270, 0)
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_4kxw6")
+
+[node name="Label" type="Label" parent="."]
+layout_mode = 2
+text = "Value Name"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="."]
+layout_mode = 2
+split_offset = 210
+dragging_enabled = false
+
+[node name="HSlider" type="HSlider" parent="HSplitContainer"]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 2
+value = 10.0
+
+[node name="ValueLabel" type="Label" parent="HSplitContainer"]
+layout_mode = 2
+text = "0.00"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[connection signal="value_changed" from="HSplitContainer/HSlider" to="." method="_on_h_slider_value_changed"]
