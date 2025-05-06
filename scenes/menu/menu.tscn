@@ -905,28 +905,6 @@ text = "+"
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer6" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(565, 0)
-layout_mode = 2
-split_offset = 505
-dragging_enabled = false
-
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer6"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[b]Thin[/b]
-Keep only a set number of the loudest bands"
-fit_content = true
-scroll_active = false
-
-[node name="hilite_trace_1" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer6" groups=["make_node_buttons"]]
-layout_mode = 2
-text = "+"
-
-[node name="MarginContainer8" type="MarginContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_bottom = 3
-
 [node name="HSplitContainer10" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
@@ -946,6 +924,28 @@ layout_mode = 2
 text = "+"
 
 [node name="MarginContainer6" type="MarginContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 3
+
+[node name="HSplitContainer6" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(565, 0)
+layout_mode = 2
+split_offset = 505
+dragging_enabled = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer6"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Trace[/b]
+Keep only a set number of the loudest bands"
+fit_content = true
+scroll_active = false
+
+[node name="hilite_trace_1" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer6" groups=["make_node_buttons"]]
+layout_mode = 2
+text = "+"
+
+[node name="MarginContainer8" type="MarginContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 

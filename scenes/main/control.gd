@@ -178,11 +178,12 @@ func generate_batch_file_ordered_with_multiple_sliders():
 		if output_slot_type == 1:
 			extension = ".ana"
 
-		var node_name_spaced: String = node_name.replace("_", " ")
+		var command_name: String = str(node.get_meta("command")) if node.has_meta("command") else node_name
+		command_name = command_name.replace("_", " ")
 		var outfile_numbered: String = Global.outfile.get_basename() + "_%d%s" % [i, extension]
 
 		# Build the batch line
-		var line: String = cdpprogs_location + "/" + node_name_spaced + " \"" + current_infile + "\" \"" + outfile_numbered + "\" "
+		var line: String = cdpprogs_location + "/" + command_name + " \"" + current_infile + "\" \"" + outfile_numbered + "\" "
 
 		for entry in slider_data:
 			var slider_name = entry[0]

@@ -72,6 +72,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "distort_average"
 
 [node name="Control" type="Control" parent="distort_average"]
 layout_mode = 2
@@ -113,6 +114,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "clip_clip_2"
 
 [node name="Control" type="Control" parent="clip_clip_2"]
 layout_mode = 2
@@ -155,6 +157,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "distort_reform_6"
 
 [node name="Control" type="Control" parent="distort_reform_6"]
 layout_mode = 2
@@ -189,6 +192,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "distort_divide"
 
 [node name="Control" type="Control" parent="distort_divide"]
 layout_mode = 2
@@ -239,6 +243,7 @@ slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
+metadata/command = "distort_fractal"
 
 [node name="Control" type="Control" parent="distort_fractal"]
 layout_mode = 2
@@ -295,6 +300,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "distort_multiply"
 
 [node name="Control" type="Control" parent="distort_multiply"]
 layout_mode = 2
@@ -336,6 +342,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "distort_interpolate"
 
 [node name="Control" type="Control" parent="distort_interpolate"]
 layout_mode = 2
@@ -377,6 +384,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "distort_reform_2"
 
 [node name="Control" type="Control" parent="distort_reform_2"]
 layout_mode = 2
@@ -411,6 +419,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "distort_reform_4"
 
 [node name="Control" type="Control" parent="distort_reform_4"]
 layout_mode = 2
@@ -445,6 +454,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "distort_replace"
 
 [node name="Control" type="Control" parent="distort_replace"]
 layout_mode = 2
@@ -487,6 +497,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "pvoc_anal_1"
 
 [node name="Control" type="Control" parent="pvoc_anal_1"]
 layout_mode = 2
@@ -521,6 +532,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "pvoc_synth"
 
 [node name="Control" type="Control" parent="pvoc_synth"]
 layout_mode = 2
@@ -565,6 +577,7 @@ slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
 script = ExtResource("4_uv17x")
+metadata/command = "focus_accu"
 
 [node name="Control" type="Control" parent="focus_accu"]
 layout_mode = 2
@@ -651,6 +664,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "blur_blur"
 
 [node name="Control" type="Control" parent="blur_blur"]
 layout_mode = 2
@@ -702,6 +716,7 @@ slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
+metadata/command = "blur_chorus_5"
 
 [node name="Control" type="Control" parent="blur_chorus_5"]
 layout_mode = 2
@@ -758,6 +773,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "strange_invert_1"
 
 [node name="Control" type="Control" parent="strange_invert_1"]
 layout_mode = 2
@@ -765,6 +781,268 @@ layout_mode = 2
 [node name="Label" type="Label" parent="strange_invert_1"]
 layout_mode = 2
 text = "No adjustable parameters"
+
+[node name="spectstr_stretch" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1352.0
+offset_top = 1009.0
+offset_right = 1658.0
+offset_bottom = 1129.0
+tooltip_text = "Stretches or shrinks the sound over time, without changing frequency"
+title = "PVOC: Stretch"
+slot/0/left_enabled = true
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+metadata/command = "spectstr_stretch"
+
+[node name="Control" type="Control" parent="spectstr_stretch"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="spectstr_stretch" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Amount to multiply the original length of the file by"
+
+[node name="Label" parent="spectstr_stretch/VBoxContainer" index="0"]
+text = "Stretch Multiplier"
+
+[node name="HSlider" parent="spectstr_stretch/VBoxContainer/HSplitContainer" index="0"]
+min_value = 0.001
+max_value = 10000.0
+step = 0.01
+value = 10.001
+exp_edit = true
+
+[node name="VBoxContainer2" parent="spectstr_stretch" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+
+[node name="Label" parent="spectstr_stretch/VBoxContainer2" index="0"]
+text = "D-Ratio"
+
+[node name="HSlider" parent="spectstr_stretch/VBoxContainer2/HSplitContainer" index="0"]
+max_value = 1.0
+step = 0.01
+value = 0.0
+
+[node name="VBoxContainer3" parent="spectstr_stretch" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+
+[node name="Label" parent="spectstr_stretch/VBoxContainer3" index="0"]
+text = "D-Random"
+
+[node name="HSlider" parent="spectstr_stretch/VBoxContainer3/HSplitContainer" index="0"]
+max_value = 1.0
+step = 0.01
+value = 0.0
+
+[node name="hilite_trace_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1352.0
+offset_top = 1240.0
+offset_right = 1658.0
+offset_bottom = 1347.0
+tooltip_text = "Looks for the loudest frequencies and keeps only those"
+title = "PVOC: Trace"
+slot/0/left_enabled = true
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+metadata/command = "hilite_trace_1"
+
+[node name="Control" type="Control" parent="hilite_trace_1"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="hilite_trace_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The number of frequency bands to keep"
+
+[node name="Label" parent="hilite_trace_1/VBoxContainer" index="0"]
+text = "Amount Kept"
+
+[node name="HSlider" parent="hilite_trace_1/VBoxContainer/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 513.0
+value = 16.0
+exp_edit = true
+
+[node name="blur_scatter" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1356.0
+offset_top = 1372.0
+offset_right = 1662.0
+offset_bottom = 1479.0
+tooltip_text = "Discards a random selection of frequency bands"
+title = "PVOC: Thin Randomly"
+slot/0/left_enabled = true
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+metadata/command = "blur_scatter"
+
+[node name="Control" type="Control" parent="blur_scatter"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="blur_scatter" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The number of frequency bands to keep"
+
+[node name="Label" parent="blur_scatter/VBoxContainer" index="0"]
+text = "Amount Kept"
+
+[node name="HSlider" parent="blur_scatter/VBoxContainer/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 513.0
+value = 16.0
+exp_edit = true
+
+[node name="strange_waver_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1356.0
+offset_top = 1505.0
+offset_right = 1662.0
+offset_bottom = 1716.0
+tooltip_text = "Oscillate between harmonic and inharmonic state"
+title = "PVOC: Waver"
+slot/0/left_enabled = true
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+metadata/command = "strange_waver_1"
+
+[node name="Control" type="Control" parent="strange_waver_1"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="strange_waver_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The frequency of oscillation relative to the length of the input file"
+
+[node name="Label" parent="strange_waver_1/VBoxContainer" index="0"]
+text = "Vibrato Frequency"
+
+[node name="HSlider" parent="strange_waver_1/VBoxContainer/HSplitContainer" index="0"]
+min_value = 0.01
+max_value = 150.0
+step = 0.01
+value = 1.0
+
+[node name="VBoxContainer2" parent="strange_waver_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The maximum frequency stretch"
+
+[node name="Label" parent="strange_waver_1/VBoxContainer2" index="0"]
+text = "Stretch"
+
+[node name="HSlider" parent="strange_waver_1/VBoxContainer2/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 4.0
+step = 0.01
+value = 1.0
+
+[node name="VBoxContainer3" parent="strange_waver_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The frequency above which spectral stretching happens"
+
+[node name="Label" parent="strange_waver_1/VBoxContainer3" index="0"]
+text = "Base Frequency"
+
+[node name="HSlider" parent="strange_waver_1/VBoxContainer3/HSplitContainer" index="0"]
+min_value = 5.0
+max_value = 20000.0
+step = 0.1
+value = 5.0
+exp_edit = true
 
 [connection signal="value_changed" from="focus_accu/VBoxContainer3/HSplitContainer/-d" to="focus_accu" method="_on_d_value_changed"]
 [connection signal="value_changed" from="focus_accu/VBoxContainer4/HSplitContainer/-g" to="focus_accu" method="_on_g_value_changed"]
@@ -780,3 +1058,11 @@ text = "No adjustable parameters"
 [editable path="blur_blur/VBoxContainer"]
 [editable path="blur_chorus_5/VBoxContainer"]
 [editable path="blur_chorus_5/VBoxContainer2"]
+[editable path="spectstr_stretch/VBoxContainer"]
+[editable path="spectstr_stretch/VBoxContainer2"]
+[editable path="spectstr_stretch/VBoxContainer3"]
+[editable path="hilite_trace_1/VBoxContainer"]
+[editable path="blur_scatter/VBoxContainer"]
+[editable path="strange_waver_1/VBoxContainer"]
+[editable path="strange_waver_1/VBoxContainer2"]
+[editable path="strange_waver_1/VBoxContainer3"]
