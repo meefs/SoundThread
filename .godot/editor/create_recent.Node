@@ -1,5 +1,9 @@
-FileDialog
+Window
+Popup
+RichTextLabel
 Label
+CheckButton
+FileDialog
 VBoxContainer
 ScrollContainer
 Panel
@@ -9,6 +13,3 @@ AnimationPlayer
 Line2D
 TextureRect
 Button
-Window
-Popup
-AudioStreamPlayer

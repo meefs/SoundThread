@@ -44,13 +44,13 @@ func _on_load_button_button_down() -> void:
 
 func _on_file_selected(path: String):
 	audio_player.stream = AudioStreamWAV.load_from_file(path)
-	if audio_player.stream.stereo == true:
-		audio_player.stream = null
-		$WavError.show()
-	else:
-		voice_preview_generator.generate_preview(audio_player.stream)
-		Global.infile = path
-		print(Global.infile)
+	Global.infile_stereo = audio_player.stream.stereo
+	#if audio_player.stream.stereo == true:
+		##audio_player.stream = null
+		##$WavError.show()
+	voice_preview_generator.generate_preview(audio_player.stream)
+	Global.infile = path
+	print(Global.infile)
 
 func _on_play_button_button_down() -> void:
 	if audio_player.stream:
