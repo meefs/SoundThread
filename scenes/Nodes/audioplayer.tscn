@@ -12,6 +12,7 @@ offset_bottom = -496.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_yprak")
+metadata/loadenable = false
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
@@ -19,6 +20,7 @@ offset_right = 400.0
 offset_bottom = 96.0
 
 [node name="Label" type="Label" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 8.0
 offset_top = 5.0
@@ -27,6 +29,7 @@ offset_bottom = 28.0
 text = "Drop files here or load below"
 
 [node name="FileDialog" type="FileDialog" parent="."]
+title = "Select input file"
 use_native_dialog = true
 
 [node name="LoadButton" type="Button" parent="."]
@@ -35,6 +38,13 @@ offset_top = 104.0
 offset_right = 128.0
 offset_bottom = 147.0
 text = "Load File"
+
+[node name="RecycleButton" type="Button" parent="."]
+layout_mode = 0
+offset_top = 104.0
+offset_right = 128.0
+offset_bottom = 147.0
+text = "Recycle File"
 
 [node name="PlayButton" type="Button" parent="."]
 layout_mode = 0
@@ -58,7 +68,7 @@ text = "Stop"
 title = "Wrong File Type"
 initial_position = 2
 size = Vector2i(350, 100)
-transient = true
+visible = false
 exclusive = true
 unresizable = true
 borderless = true
@@ -69,7 +79,7 @@ popup_window = true
 offset_right = 349.0
 offset_bottom = 58.0
 text = "Wrong file type
-Only mono WAV files are supported"
+Only WAV files are supported"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 2
@@ -93,6 +103,7 @@ width = 2.0
 default_color = Color(1, 1, 1, 0.541176)
 
 [connection signal="button_down" from="LoadButton" to="." method="_on_load_button_button_down"]
+[connection signal="button_down" from="RecycleButton" to="." method="_on_recycle_button_button_down"]
 [connection signal="button_down" from="PlayButton" to="." method="_on_play_button_button_down"]
 [connection signal="button_down" from="StopButton" to="." method="_on_stop_button_button_down"]
 [connection signal="button_down" from="WavError/CloseButton" to="." method="_on_close_button_button_down"]

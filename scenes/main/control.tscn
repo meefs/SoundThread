@@ -21,18 +21,6 @@ anchor_bottom = 1.0
 right_disconnects = true
 script = ExtResource("2_3ioqo")
 
-[node name="GenerateBatchFile" type="Button" parent="."]
-layout_mode = 1
-anchors_preset = 2
-anchor_top = 1.0
-anchor_bottom = 1.0
-offset_left = 12.0
-offset_top = -45.0
-offset_right = 172.0
-offset_bottom = -14.0
-grow_vertical = 0
-text = "Generate Batch File"
-
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a Directory"
 ok_button_text = "Select Current Folder"
@@ -49,7 +37,6 @@ title = "Wrong File Type"
 initial_position = 2
 size = Vector2i(350, 200)
 visible = false
-transient = true
 exclusive = true
 unresizable = true
 borderless = true
@@ -77,6 +64,36 @@ offset_right = 206.0
 offset_bottom = 185.0
 text = "Ok"
 
+[node name="NoInputPopup" type="Window" parent="."]
+auto_translate_mode = 1
+title = "No Input Selected"
+initial_position = 2
+size = Vector2i(350, 150)
+visible = false
+exclusive = true
+unresizable = true
+borderless = true
+always_on_top = true
+popup_window = true
+
+[node name="Label" type="Label" parent="NoInputPopup"]
+offset_top = 5.0
+offset_right = 349.0
+offset_bottom = 98.0
+text = "No input file selected
+Please load a sound file into Input File node
+Supported file type: .wav, mono or stereo"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="OkButton2" type="Button" parent="NoInputPopup"]
+offset_left = 142.0
+offset_top = 103.0
+offset_right = 206.0
+offset_bottom = 134.0
+text = "Ok"
+
 [node name="CdpLocationDialog" type="FileDialog" parent="."]
 title = "Open a Directory"
 ok_button_text = "Select Current Folder"
@@ -84,43 +101,43 @@ file_mode = 2
 access = 2
 use_native_dialog = true
 
-[node name="Label" type="Label" parent="."]
-layout_mode = 0
-offset_left = 231.0
-offset_top = 604.0
-offset_right = 423.0
-offset_bottom = 627.0
-text = "Delete intermediate files"
-
-[node name="DeleteIntermediateFilesToggle" type="CheckButton" parent="."]
-layout_mode = 0
-offset_left = 184.0
-offset_top = 606.0
-offset_right = 228.0
-offset_bottom = 630.0
-
 [node name="Console" type="Window" parent="."]
+title = "Generating Output"
 initial_position = 5
 size = Vector2i(600, 400)
 visible = false
+unresizable = true
 always_on_top = true
+
+[node name="Panel" type="Panel" parent="Console"]
+offset_left = 10.0
+offset_top = 12.0
+offset_right = 590.0
+offset_bottom = 340.0
 
 [node name="ConsoleOutput" type="RichTextLabel" parent="Console"]
 offset_left = 10.0
-offset_top = 10.0
+offset_top = 12.0
 offset_right = 590.0
-offset_bottom = 390.0
+offset_bottom = 340.0
 bbcode_enabled = true
+
+[node name="ConsoleOpenFolder" type="Button" parent="Console"]
+offset_left = 172.0
+offset_top = 350.0
+offset_right = 428.0
+offset_bottom = 389.0
+text = "Open Output Folder"
 
 [connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="delete_nodes_request" from="GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
 [connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
 [connection signal="node_deselected" from="GraphEdit" to="." method="_on_graph_edit_node_deselected"]
 [connection signal="node_selected" from="GraphEdit" to="." method="_on_graph_edit_node_selected"]
-[connection signal="button_down" from="GenerateBatchFile" to="." method="_on_generate_batch_file_button_down"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="button_down" from="NoLocationPopup/OkButton" to="." method="_on_ok_button_button_down"]
+[connection signal="button_down" from="NoInputPopup/OkButton2" to="." method="_on_ok_button_2_button_down"]
 [connection signal="canceled" from="CdpLocationDialog" to="." method="_on_cdp_location_dialog_canceled"]
 [connection signal="dir_selected" from="CdpLocationDialog" to="." method="_on_cdp_location_dialog_dir_selected"]
-[connection signal="toggled" from="DeleteIntermediateFilesToggle" to="." method="_on_delete_intermediate_files_toggle_toggled"]
 [connection signal="close_requested" from="Console" to="." method="_on_console_close_requested"]
+[connection signal="button_down" from="Console/ConsoleOpenFolder" to="." method="_on_console_open_folder_button_down"]

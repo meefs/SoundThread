@@ -21,15 +21,15 @@ offset_right = 300.0
 offset_bottom = 226.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 1
+current_tab = 0
 
 [node name="Time Domain" type="TabContainer" parent="select_effect"]
-visible = false
 layout_mode = 2
-current_tab = 0
+current_tab = 1
 metadata/_tab_index = 0
 
 [node name="Distort" type="VBoxContainer" parent="select_effect/Time Domain"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -264,7 +264,6 @@ layout_mode = 2
 text = "+"
 
 [node name="Extend" type="VBoxContainer" parent="select_effect/Time Domain"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -702,6 +701,7 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
 [node name="Frequency Domain" type="TabContainer" parent="select_effect"]
+visible = false
 layout_mode = 2
 current_tab = 1
 metadata/_tab_index = 1

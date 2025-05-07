@@ -1,6 +1,5 @@
-[gd_scene load_steps=5 format=3 uid="uid://duy5epq25pj8u"]
+[gd_scene load_steps=4 format=3 uid="uid://duy5epq25pj8u"]
 
-[ext_resource type="Script" uid="uid://ce3ytxnt3y8dj" path="res://clip_clip_2.gd" id="1_evio6"]
 [ext_resource type="PackedScene" uid="uid://csapiqka522fh" path="res://scenes/Nodes/audioplayer.tscn" id="2_b6nw4"]
 [ext_resource type="PackedScene" uid="uid://dya5kxx132fgp" path="res://scenes/Nodes/valueslider.tscn" id="3_b6nw4"]
 [ext_resource type="Script" uid="uid://dxxohuvlw5e3n" path="res://scenes/Nodes/focus_accu_sliders.gd" id="4_uv17x"]
@@ -38,12 +37,86 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
-script = ExtResource("1_evio6")
 
 [node name="Control" type="Control" parent="inputfile"]
 layout_mode = 2
 
-[node name="Control2" parent="inputfile" instance=ExtResource("2_b6nw4")]
+[node name="AudioPlayer" parent="inputfile" instance=ExtResource("2_b6nw4")]
+layout_mode = 2
+metadata/loadenable = true
+
+[node name="outputfile" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 523.0
+offset_top = 6.0
+offset_right = 959.0
+offset_bottom = 336.0
+title = "Output File"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+
+[node name="Control" type="Control" parent="outputfile"]
+layout_mode = 2
+
+[node name="RunProcess" type="Button" parent="outputfile"]
+custom_minimum_size = Vector2(0, 43)
+layout_mode = 2
+text = "Run Process"
+
+[node name="DeleteIntermediateFilesToggle" type="CheckButton" parent="outputfile"]
+custom_minimum_size = Vector2(0, 43)
+layout_mode = 2
+text = "Delete Intermediate files"
+expand_icon = true
+
+[node name="Label" type="Label" parent="outputfile"]
+layout_mode = 2
+text = "Rendered Output File:"
+
+[node name="AudioPlayer" parent="outputfile" instance=ExtResource("2_b6nw4")]
 layout_mode = 2
 
 [node name="distort_average" type="GraphNode" parent="."]
@@ -471,12 +544,557 @@ min_value = 2.0
 max_value = 64.0
 value = 2.0
 
+[node name="extend_drunk_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 469.0
+offset_top = 412.0
+offset_right = 775.0
+offset_bottom = 532.0
+tooltip_text = "Splice segments of source file end-to-end; the start times of the segments in the source file are chosen by a 'drunken-walk'"
+title = "Extend: Drunk"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+slot/5/left_enabled = false
+slot/5/left_type = 0
+slot/5/left_color = Color(1, 1, 1, 1)
+slot/5/left_icon = null
+slot/5/right_enabled = false
+slot/5/right_type = 0
+slot/5/right_color = Color(1, 1, 1, 1)
+slot/5/right_icon = null
+slot/5/draw_stylebox = true
+metadata/command = "extend_drunk_1"
+
+[node name="Control" type="Control" parent="extend_drunk_1"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="extend_drunk_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Total minimum duration of output soundfile (seconds)"
+
+[node name="Label" parent="extend_drunk_1/VBoxContainer" index="0"]
+text = "Minimum Output Duration (s)"
+
+[node name="HSlider" parent="extend_drunk_1/VBoxContainer/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 1000.0
+value = 30.0
+exp_edit = true
+
+[node name="VBoxContainer2" parent="extend_drunk_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Time in infile at which the drunken walk occurs"
+
+[node name="Label" parent="extend_drunk_1/VBoxContainer2" index="0"]
+text = "Location"
+
+[node name="HSlider" parent="extend_drunk_1/VBoxContainer2/HSplitContainer" index="0"]
+max_value = 6.0
+step = 0.01
+value = 0.0
+
+[node name="VBoxContainer3" parent="extend_drunk_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Half-width of the region from within which the sound segments are read"
+
+[node name="Label" parent="extend_drunk_1/VBoxContainer3" index="0"]
+text = "Ambitus"
+
+[node name="HSlider" parent="extend_drunk_1/VBoxContainer3/HSplitContainer" index="0"]
+max_value = 6.0
+step = 0.01
+value = 1.0
+
+[node name="VBoxContainer4" parent="extend_drunk_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Maximum length of (random) step between segment reads"
+
+[node name="Label" parent="extend_drunk_1/VBoxContainer4" index="0"]
+text = "Maximum Step"
+
+[node name="HSlider" parent="extend_drunk_1/VBoxContainer4/HSplitContainer" index="0"]
+max_value = 6.0
+step = 0.01
+value = 0.02
+
+[node name="VBoxContainer5" parent="extend_drunk_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Time between segment reads"
+
+[node name="Label" parent="extend_drunk_1/VBoxContainer5" index="0"]
+text = "Clock"
+
+[node name="HSlider" parent="extend_drunk_1/VBoxContainer5/HSplitContainer" index="0"]
+min_value = 0.05
+max_value = 6.0
+step = 0.1
+value = 0.05
+
+[node name="extend_loop_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 471.0
+offset_top = 758.0
+offset_right = 777.0
+offset_bottom = 972.0
+tooltip_text = "Loop (repeat [advancing] segments) inside soundfile"
+title = "Extend: Loop"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+metadata/command = "extend_loop_1"
+
+[node name="Control" type="Control" parent="extend_loop_1"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="extend_loop_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Start time (in seconds) in file for looping to begin"
+
+[node name="Label" parent="extend_loop_1/VBoxContainer" index="0"]
+text = "Start"
+
+[node name="HSlider" parent="extend_loop_1/VBoxContainer/HSplitContainer" index="0"]
+max_value = 30.0
+step = 0.01
+value = 0.0
+
+[node name="VBoxContainer2" parent="extend_loop_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Length of looped segment (in milliseconds)"
+
+[node name="Label" parent="extend_loop_1/VBoxContainer2" index="0"]
+text = "Loop Length"
+
+[node name="HSlider" parent="extend_loop_1/VBoxContainer2/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 30000.0
+value = 200.0
+exp_edit = true
+
+[node name="VBoxContainer3" parent="extend_loop_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Advance in infile from the start of one loop to the next (in milliseconds)"
+
+[node name="Label" parent="extend_loop_1/VBoxContainer3" index="0"]
+text = "Step"
+
+[node name="HSlider" parent="extend_loop_1/VBoxContainer3/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 6000.0
+value = 100.0
+
+[node name="extend_scramble_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 473.0
+offset_top = 998.0
+offset_right = 779.0
+offset_bottom = 1212.0
+tooltip_text = "Scramble soundfile and write to any given length"
+title = "Extend: Scramble"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+metadata/command = "extend_scramble_1"
+
+[node name="Control" type="Control" parent="extend_scramble_1"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="extend_scramble_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Minimum chunksize to cut"
+
+[node name="Label" parent="extend_scramble_1/VBoxContainer" index="0"]
+text = "Minimum Chunk Length"
+
+[node name="HSlider" parent="extend_scramble_1/VBoxContainer/HSplitContainer" index="0"]
+min_value = 0.05
+max_value = 30.0
+step = 0.01
+value = 0.05
+
+[node name="VBoxContainer2" parent="extend_scramble_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Maximum chunksize to cut must be greater than minimum"
+
+[node name="Label" parent="extend_scramble_1/VBoxContainer2" index="0"]
+text = "Maximum Chunk Length"
+
+[node name="HSlider" parent="extend_scramble_1/VBoxContainer2/HSplitContainer" index="0"]
+min_value = 0.06
+max_value = 30.0
+step = 0.01
+value = 1.5
+exp_edit = true
+
+[node name="VBoxContainer3" parent="extend_scramble_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Duration of outfile required must be greater than minimum chunk size"
+
+[node name="Label" parent="extend_scramble_1/VBoxContainer3" index="0"]
+text = "Output Duration"
+
+[node name="HSlider" parent="extend_scramble_1/VBoxContainer3/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 1000.0
+value = 60.0
+exp_edit = true
+
+[node name="shrink_shrink_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 475.0
+offset_top = 1236.0
+offset_right = 781.0
+offset_bottom = 1551.0
+tooltip_text = "Repeat a sound, shortening it on each repetition"
+title = "Extend: Shrink"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+slot/5/left_enabled = false
+slot/5/left_type = 0
+slot/5/left_color = Color(1, 1, 1, 1)
+slot/5/left_icon = null
+slot/5/right_enabled = false
+slot/5/right_type = 0
+slot/5/right_color = Color(1, 1, 1, 1)
+slot/5/right_icon = null
+slot/5/draw_stylebox = true
+metadata/command = "shrink_shrink_1"
+
+[node name="Control" type="Control" parent="shrink_shrink_1"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="shrink_shrink_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Shortening factor of sound from one repeat to the next. Shrinkage stops once events become too short for splices."
+
+[node name="Label" parent="shrink_shrink_1/VBoxContainer" index="0"]
+text = "Shrinkage"
+
+[node name="HSlider" parent="shrink_shrink_1/VBoxContainer/HSplitContainer" index="0"]
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 0.25
+
+[node name="VBoxContainer2" parent="shrink_shrink_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Initial timestep in seconds between output events"
+
+[node name="Label" parent="shrink_shrink_1/VBoxContainer2" index="0"]
+text = "Gap"
+
+[node name="HSlider" parent="shrink_shrink_1/VBoxContainer2/HSplitContainer" index="0"]
+min_value = 12.0
+max_value = 60.0
+step = 0.01
+value = 12.0
+
+[node name="VBoxContainer3" parent="shrink_shrink_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Shortening of gaps between output events"
+
+[node name="Label" parent="shrink_shrink_1/VBoxContainer3" index="0"]
+text = "Contract"
+
+[node name="HSlider" parent="shrink_shrink_1/VBoxContainer3/HSplitContainer" index="0"]
+min_value = 0.1
+max_value = 1.0
+step = 0.01
+value = 0.8
+
+[node name="VBoxContainer4" parent="shrink_shrink_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The (minimum) duration of the output"
+
+[node name="Label" parent="shrink_shrink_1/VBoxContainer4" index="0"]
+text = "Output Duration"
+
+[node name="HSlider" parent="shrink_shrink_1/VBoxContainer4/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 1000.0
+value = 30.0
+exp_edit = true
+
+[node name="VBoxContainer5" parent="shrink_shrink_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Splice length in milliseconds"
+
+[node name="Label" parent="shrink_shrink_1/VBoxContainer5" index="0"]
+text = "Splice Length"
+
+[node name="HSlider" parent="shrink_shrink_1/VBoxContainer5/HSplitContainer" index="0"]
+min_value = 0.05
+max_value = 1000.0
+step = 0.1
+value = 14.95
+exp_edit = true
+
+[node name="extend_zigzag_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 479.0
+offset_top = 1575.0
+offset_right = 785.0
+offset_bottom = 1789.0
+tooltip_text = "Read soundfile backwards and forwards"
+title = "Extend: Zigzag"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+metadata/command = "extend_zigzag_1"
+
+[node name="Control" type="Control" parent="extend_zigzag_1"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="extend_zigzag_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Point where zigzag begins"
+
+[node name="Label" parent="extend_zigzag_1/VBoxContainer" index="0"]
+text = "Start Point"
+
+[node name="HSlider" parent="extend_zigzag_1/VBoxContainer/HSplitContainer" index="0"]
+max_value = 1000.0
+step = 0.01
+value = 0.0
+
+[node name="VBoxContainer2" parent="extend_zigzag_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Point where zigzag ends"
+
+[node name="Label" parent="extend_zigzag_1/VBoxContainer2" index="0"]
+text = "End Point"
+
+[node name="HSlider" parent="extend_zigzag_1/VBoxContainer2/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 1000.0
+step = 0.01
+
+[node name="VBoxContainer3" parent="extend_zigzag_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Duration of soundfile output"
+
+[node name="Label" parent="extend_zigzag_1/VBoxContainer3" index="0"]
+text = "Output Duration"
+
+[node name="HSlider" parent="extend_zigzag_1/VBoxContainer3/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 1000.0
+value = 60.0
+exp_edit = true
+
+[node name="VBoxContainer4" parent="extend_zigzag_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Minimum time between zigzags"
+
+[node name="Label" parent="extend_zigzag_1/VBoxContainer4" index="0"]
+text = "Minimum Zigzag Time"
+
+[node name="HSlider" parent="extend_zigzag_1/VBoxContainer4/HSplitContainer" index="0"]
+min_value = 0.05
+max_value = 1.0
+step = 0.01
+value = 0.05
+
 [node name="pvoc_anal_1" type="GraphNode" parent="."]
 layout_mode = 0
-offset_left = 1334.0
-offset_top = 46.0
-offset_right = 1640.0
-offset_bottom = 166.0
+offset_left = 2213.0
+offset_top = 33.0
+offset_right = 2519.0
+offset_bottom = 153.0
 tooltip_text = "Converts audio to the frequency domain"
 title = "PVOC: Analyse"
 slot/0/left_enabled = true
@@ -508,10 +1126,10 @@ text = "No adjustable parameters"
 
 [node name="pvoc_synth" type="GraphNode" parent="."]
 layout_mode = 0
-offset_left = 1338.0
-offset_top = 191.0
-offset_right = 1644.0
-offset_bottom = 311.0
+offset_left = 2217.0
+offset_top = 178.0
+offset_right = 2523.0
+offset_bottom = 298.0
 tooltip_text = "Resynthesises frequency domain analysis back into audio"
 title = "PVOC: Resynthesise"
 slot/0/left_enabled = true
@@ -543,10 +1161,10 @@ text = "No adjustable parameters"
 
 [node name="focus_accu" type="GraphNode" parent="."]
 layout_mode = 0
-offset_left = 1340.0
-offset_top = 351.0
-offset_right = 1646.0
-offset_bottom = 510.0
+offset_left = 2219.0
+offset_top = 338.0
+offset_right = 2525.0
+offset_bottom = 497.0
 tooltip_text = "Sustain (accumulate) each spectral band, until louder data appears in that band"
 title = "PVOC: Accumulate"
 slot/0/left_enabled = true
@@ -640,10 +1258,10 @@ vertical_alignment = 1
 
 [node name="blur_blur" type="GraphNode" parent="."]
 layout_mode = 0
-offset_left = 1345.0
-offset_top = 540.0
-offset_right = 1651.0
-offset_bottom = 660.0
+offset_left = 2224.0
+offset_top = 527.0
+offset_right = 2530.0
+offset_bottom = 647.0
 tooltip_text = "Time-averages the spectrum bluring detail in the time dimension"
 title = "PVOC: Blur"
 slot/0/left_enabled = true
@@ -683,10 +1301,10 @@ value = 64.0
 
 [node name="blur_chorus_5" type="GraphNode" parent="."]
 layout_mode = 0
-offset_left = 1345.0
-offset_top = 683.0
-offset_right = 1651.0
-offset_bottom = 842.0
+offset_left = 2224.0
+offset_top = 670.0
+offset_right = 2530.0
+offset_bottom = 829.0
 tooltip_text = "Chorusing effect created by randomising the amplitude and frequency values of the partials"
 title = "PVOC: Chorus"
 slot/0/left_enabled = true
@@ -749,10 +1367,10 @@ value = 2.0
 
 [node name="strange_invert_1" type="GraphNode" parent="."]
 layout_mode = 0
-offset_left = 1351.0
-offset_top = 870.0
-offset_right = 1657.0
-offset_bottom = 990.0
+offset_left = 2230.0
+offset_top = 857.0
+offset_right = 2536.0
+offset_bottom = 977.0
 tooltip_text = "Transfers the energy from the highest frequency bands to the lowest ones and vice versa"
 title = "PVOC: Invert"
 slot/0/left_enabled = true
@@ -784,10 +1402,10 @@ text = "No adjustable parameters"
 
 [node name="spectstr_stretch" type="GraphNode" parent="."]
 layout_mode = 0
-offset_left = 1352.0
-offset_top = 1009.0
-offset_right = 1658.0
-offset_bottom = 1129.0
+offset_left = 2231.0
+offset_top = 996.0
+offset_right = 2537.0
+offset_bottom = 1207.0
 tooltip_text = "Stretches or shrinks the sound over time, without changing frequency"
 title = "PVOC: Stretch"
 slot/0/left_enabled = true
@@ -869,10 +1487,10 @@ value = 0.0
 
 [node name="hilite_trace_1" type="GraphNode" parent="."]
 layout_mode = 0
-offset_left = 1352.0
-offset_top = 1240.0
-offset_right = 1658.0
-offset_bottom = 1347.0
+offset_left = 2231.0
+offset_top = 1227.0
+offset_right = 2537.0
+offset_bottom = 1334.0
 tooltip_text = "Looks for the loudest frequencies and keeps only those"
 title = "PVOC: Trace"
 slot/0/left_enabled = true
@@ -913,10 +1531,10 @@ exp_edit = true
 
 [node name="blur_scatter" type="GraphNode" parent="."]
 layout_mode = 0
-offset_left = 1356.0
-offset_top = 1372.0
-offset_right = 1662.0
-offset_bottom = 1479.0
+offset_left = 2235.0
+offset_top = 1359.0
+offset_right = 2541.0
+offset_bottom = 1466.0
 tooltip_text = "Discards a random selection of frequency bands"
 title = "PVOC: Thin Randomly"
 slot/0/left_enabled = true
@@ -957,10 +1575,10 @@ exp_edit = true
 
 [node name="strange_waver_1" type="GraphNode" parent="."]
 layout_mode = 0
-offset_left = 1356.0
-offset_top = 1505.0
-offset_right = 1662.0
-offset_bottom = 1716.0
+offset_left = 2235.0
+offset_top = 1492.0
+offset_right = 2541.0
+offset_bottom = 1703.0
 tooltip_text = "Oscillate between harmonic and inharmonic state"
 title = "PVOC: Waver"
 slot/0/left_enabled = true
@@ -1055,6 +1673,26 @@ exp_edit = true
 [editable path="distort_multiply/VBoxContainer"]
 [editable path="distort_interpolate/VBoxContainer"]
 [editable path="distort_replace/VBoxContainer"]
+[editable path="extend_drunk_1/VBoxContainer"]
+[editable path="extend_drunk_1/VBoxContainer2"]
+[editable path="extend_drunk_1/VBoxContainer3"]
+[editable path="extend_drunk_1/VBoxContainer4"]
+[editable path="extend_drunk_1/VBoxContainer5"]
+[editable path="extend_loop_1/VBoxContainer"]
+[editable path="extend_loop_1/VBoxContainer2"]
+[editable path="extend_loop_1/VBoxContainer3"]
+[editable path="extend_scramble_1/VBoxContainer"]
+[editable path="extend_scramble_1/VBoxContainer2"]
+[editable path="extend_scramble_1/VBoxContainer3"]
+[editable path="shrink_shrink_1/VBoxContainer"]
+[editable path="shrink_shrink_1/VBoxContainer2"]
+[editable path="shrink_shrink_1/VBoxContainer3"]
+[editable path="shrink_shrink_1/VBoxContainer4"]
+[editable path="shrink_shrink_1/VBoxContainer5"]
+[editable path="extend_zigzag_1/VBoxContainer"]
+[editable path="extend_zigzag_1/VBoxContainer2"]
+[editable path="extend_zigzag_1/VBoxContainer3"]
+[editable path="extend_zigzag_1/VBoxContainer4"]
 [editable path="blur_blur/VBoxContainer"]
 [editable path="blur_chorus_5/VBoxContainer"]
 [editable path="blur_chorus_5/VBoxContainer2"]
