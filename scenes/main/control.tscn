@@ -94,6 +94,36 @@ offset_right = 206.0
 offset_bottom = 134.0
 text = "Ok"
 
+[node name="MultipleConnectionsPopup" type="Window" parent="."]
+auto_translate_mode = 1
+title = "No Input Selected"
+initial_position = 2
+size = Vector2i(350, 170)
+visible = false
+exclusive = true
+unresizable = true
+borderless = true
+always_on_top = true
+popup_window = true
+
+[node name="Label" type="Label" parent="MultipleConnectionsPopup"]
+offset_left = -1.0
+offset_top = 13.0
+offset_right = 348.0
+offset_bottom = 114.0
+text = "PVOC Nodes can only have one input.
+To mix sounds created in the frequency domain convert them to the time domain using PVOC: Resynthesise first."
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="OkButton3" type="Button" parent="MultipleConnectionsPopup"]
+offset_left = 140.0
+offset_top = 130.0
+offset_right = 204.0
+offset_bottom = 161.0
+text = "Ok"
+
 [node name="CdpLocationDialog" type="FileDialog" parent="."]
 title = "Open a Directory"
 ok_button_text = "Select Current Folder"
@@ -137,6 +167,7 @@ text = "Open Output Folder"
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="button_down" from="NoLocationPopup/OkButton" to="." method="_on_ok_button_button_down"]
 [connection signal="button_down" from="NoInputPopup/OkButton2" to="." method="_on_ok_button_2_button_down"]
+[connection signal="button_down" from="MultipleConnectionsPopup/OkButton3" to="." method="_on_ok_button_3_button_down"]
 [connection signal="canceled" from="CdpLocationDialog" to="." method="_on_cdp_location_dialog_canceled"]
 [connection signal="dir_selected" from="CdpLocationDialog" to="." method="_on_cdp_location_dialog_dir_selected"]
 [connection signal="close_requested" from="Console" to="." method="_on_console_close_requested"]

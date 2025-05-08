@@ -1,6 +1,7 @@
+Button
+CodeEdit
 Label
 CheckButton
-Button
 HBoxContainer
 Panel
 Window
@@ -11,4 +12,3 @@ VBoxContainer
 ScrollContainer
 Control
 GraphNode
-AnimationPlayer

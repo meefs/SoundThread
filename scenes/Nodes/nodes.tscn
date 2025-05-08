@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://duy5epq25pj8u"]
+[gd_scene load_steps=5 format=3 uid="uid://duy5epq25pj8u"]
 
 [ext_resource type="PackedScene" uid="uid://csapiqka522fh" path="res://scenes/Nodes/audioplayer.tscn" id="2_b6nw4"]
 [ext_resource type="PackedScene" uid="uid://dya5kxx132fgp" path="res://scenes/Nodes/valueslider.tscn" id="3_b6nw4"]
+[ext_resource type="Script" uid="uid://dyf0qutxeqio3" path="res://scenes/Nodes/scatter_value.gd" id="3_uv17x"]
 [ext_resource type="Script" uid="uid://dxxohuvlw5e3n" path="res://scenes/Nodes/focus_accu_sliders.gd" id="4_uv17x"]
 
 [node name="Control" type="Control"]
@@ -1089,6 +1090,155 @@ max_value = 1.0
 step = 0.01
 value = 0.05
 
+[node name="filter_bank_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 855.0
+offset_top = 414.0
+offset_right = 1161.0
+offset_bottom = 729.0
+tooltip_text = "Bank of filters tuned to the harmonic series of the Low Frequency"
+title = "Filter Bank: Harmonic Series"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+slot/5/left_enabled = false
+slot/5/left_type = 0
+slot/5/left_color = Color(1, 1, 1, 1)
+slot/5/left_icon = null
+slot/5/right_enabled = false
+slot/5/right_type = 0
+slot/5/right_color = Color(1, 1, 1, 1)
+slot/5/right_icon = null
+slot/5/draw_stylebox = true
+metadata/command = "filter_bank_1"
+
+[node name="Control" type="Control" parent="filter_bank_1"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="filter_bank_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Filter Q factor - how narrow the filer is"
+
+[node name="Label" parent="filter_bank_1/VBoxContainer" index="0"]
+text = "Q"
+
+[node name="HSlider" parent="filter_bank_1/VBoxContainer/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 10000.0
+step = 0.01
+value = 400.0
+
+[node name="VBoxContainer2" parent="filter_bank_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Makeup gain after filtering"
+
+[node name="Label" parent="filter_bank_1/VBoxContainer2" index="0"]
+text = "Makeup Gain"
+
+[node name="HSlider" parent="filter_bank_1/VBoxContainer2/HSplitContainer" index="0"]
+min_value = 0.02
+max_value = 60.0
+step = 0.01
+value = 1.5
+exp_edit = true
+
+[node name="VBoxContainer3" parent="filter_bank_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Lowest frequency of filter, all filters will be tuned based on this frequency"
+
+[node name="Label" parent="filter_bank_1/VBoxContainer3" index="0"]
+text = "Lowest Band"
+
+[node name="HSlider" parent="filter_bank_1/VBoxContainer3/HSplitContainer" index="0"]
+min_value = 20.0
+max_value = 12000.0
+step = 0.01
+value = 55.0
+exp_edit = true
+
+[node name="VBoxContainer4" parent="filter_bank_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The highest frequency filter, must be higer than low filer"
+
+[node name="Label" parent="filter_bank_1/VBoxContainer4" index="0"]
+text = "Highest Band"
+
+[node name="HSlider" parent="filter_bank_1/VBoxContainer4/HSplitContainer" index="0"]
+min_value = 20.0
+max_value = 12000.0
+step = 0.01
+value = 12000.0
+exp_edit = true
+
+[node name="VBoxContainer5" type="VBoxContainer" parent="filter_bank_1"]
+custom_minimum_size = Vector2(270, 0)
+layout_mode = 2
+tooltip_text = "Amound of random spread applied to filer frequencies"
+script = ExtResource("3_uv17x")
+
+[node name="Label" type="Label" parent="filter_bank_1/VBoxContainer5"]
+layout_mode = 2
+text = "Scatter"
+
+[node name="HSplitContainer" type="HSplitContainer" parent="filter_bank_1/VBoxContainer5"]
+layout_mode = 2
+split_offset = 210
+dragging_enabled = false
+
+[node name="-s" type="HSlider" parent="filter_bank_1/VBoxContainer5/HSplitContainer"]
+custom_minimum_size = Vector2(0, 23)
+layout_mode = 2
+max_value = 1.0
+step = 0.01
+
+[node name="ValueLabel" type="Label" parent="filter_bank_1/VBoxContainer5/HSplitContainer"]
+layout_mode = 2
+text = "0.00"
+horizontal_alignment = 2
+vertical_alignment = 1
+
 [node name="pvoc_anal_1" type="GraphNode" parent="."]
 layout_mode = 0
 offset_left = 2213.0
@@ -1662,6 +1812,31 @@ step = 0.1
 value = 5.0
 exp_edit = true
 
+[node name="notes" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1042.0
+offset_top = 32.0
+offset_right = 1348.0
+offset_bottom = 237.0
+tooltip_text = "Oscillate between harmonic and inharmonic state"
+title = "Notes"
+slot/0/left_enabled = false
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+metadata/command = "strange_waver_1"
+
+[node name="CodeEdit" type="CodeEdit" parent="notes"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+wrap_mode = 1
+
+[connection signal="value_changed" from="filter_bank_1/VBoxContainer5/HSplitContainer/-s" to="filter_bank_1/VBoxContainer5" method="_on_s_value_changed"]
 [connection signal="value_changed" from="focus_accu/VBoxContainer3/HSplitContainer/-d" to="focus_accu" method="_on_d_value_changed"]
 [connection signal="value_changed" from="focus_accu/VBoxContainer4/HSplitContainer/-g" to="focus_accu" method="_on_g_value_changed"]
 
@@ -1693,6 +1868,10 @@ exp_edit = true
 [editable path="extend_zigzag_1/VBoxContainer2"]
 [editable path="extend_zigzag_1/VBoxContainer3"]
 [editable path="extend_zigzag_1/VBoxContainer4"]
+[editable path="filter_bank_1/VBoxContainer"]
+[editable path="filter_bank_1/VBoxContainer2"]
+[editable path="filter_bank_1/VBoxContainer3"]
+[editable path="filter_bank_1/VBoxContainer4"]
 [editable path="blur_blur/VBoxContainer"]
 [editable path="blur_chorus_5/VBoxContainer"]
 [editable path="blur_chorus_5/VBoxContainer2"]

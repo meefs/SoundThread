@@ -1,9 +1,6 @@
 res://scenes/main/control.tscn
-res://scenes/main/control.gd
-res://distortions.tscn
 res://scenes/Nodes/valueslider.tscn
 res://scenes/Nodes/nodes.tscn
 res://scenes/menu/menu.tscn
 res://scenes/Nodes/audioplayer.tscn
-res://scenes/Nodes/audioplayer.gd
-res://scenes/main/graph_edit.gd
+res://scenes/main/control.gd

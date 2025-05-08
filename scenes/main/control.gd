@@ -8,6 +8,8 @@ var cdpprogs_location
 var delete_intermediate_outputs
 @onready var console_output: RichTextLabel = $Console/ConsoleOutput
 var final_output_dir
+var copied_nodes_data = []
+var copied_connections = []
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -16,6 +18,7 @@ func _ready() -> void:
 	$NoLocationPopup.hide()
 	$Console.hide()
 	$NoInputPopup.hide()
+	$MultipleConnectionsPopup.hide()
 	
 	#Goes through all nodes in scene and checks for buttons in the make_node_buttons group
 	#Associates all buttons with the _on_button_pressed fuction and passes the button as an argument
@@ -83,7 +86,7 @@ func showmenu():
 			$mainmenu.hide()
 			mainmenu_visible = false
 
-
+# creates nodes from menu
 func _on_button_pressed(button: Button):
 	#close menu
 	$mainmenu.hide()
@@ -96,10 +99,146 @@ func _on_button_pressed(button: Button):
 	effect.position_offset = effect_position
 
 
+#Handles copying and pasting nodes
+func _input(event):
+	if event.is_action_pressed("copy_node"):
+		copy_selected_nodes()
+		get_viewport().set_input_as_handled()
+
+	elif event.is_action_pressed("paste_node"):
+		paste_copied_nodes()
+		get_viewport().set_input_as_handled()
+		
+func copy_selected_nodes():
+	copied_nodes_data.clear()
+	copied_connections.clear()
+
+	var graph_edit = get_node("GraphEdit")
+
+	# Store selected nodes and their slider values
+	for node in graph_edit.get_children():
+		# Check if the node is selected and not an 'inputfile' or 'outputfile'
+		if node is GraphNode and selected_nodes.get(node, false):
+			if node.name == "inputfile" or node.name == "outputfile":
+				continue  # Skip these nodes
+
+			var node_data = {
+				"name": node.name,
+				"type": node.get_class(),
+				"offset": node.position_offset,
+				"slider_values": {}
+			}
+
+			for child in node.get_children():
+				if child is HSlider or child is VSlider:
+					node_data["slider_values"][child.name] = child.value
+
+			copied_nodes_data.append(node_data)
+
+	# Store connections between selected nodes
+	for conn in graph_edit.get_connection_list():
+		# Assuming 'from_node' and 'to_node' are StringName values
+		var from_ref = graph_edit.get_node_or_null(NodePath(conn["from_node"]))
+		var to_ref = graph_edit.get_node_or_null(NodePath(conn["to_node"]))
+
+		var is_from_selected = from_ref != null and selected_nodes.get(from_ref, false)
+		var is_to_selected = to_ref != null and selected_nodes.get(to_ref, false)
+
+		# Skip if any of the connected nodes are 'inputfile' or 'outputfile'
+		if (from_ref != null and (from_ref.name == "inputfile" or from_ref.name == "outputfile")) or (to_ref != null and (to_ref.name == "inputfile" or to_ref.name == "outputfile")):
+			continue
+
+		if is_from_selected and is_to_selected:
+			# Store connection as dictionary
+			var conn_data = {
+				"from_node": conn["from_node"],
+				"from_port": conn["from_port"],
+				"to_node": conn["to_node"],
+				"to_port": conn["to_port"]
+			}
+			copied_connections.append(conn_data)
+
+func paste_copied_nodes():
+	if copied_nodes_data.is_empty():
+		return
+
+	var graph_edit = get_node("GraphEdit")
+	var name_map = {}
+	var pasted_nodes = []
+
+	# Step 1: Find topmost and bottommost Y of copied nodes
+	var min_y = INF
+	var max_y = -INF
+	for node_data in copied_nodes_data:
+		var y = node_data["offset"].y
+		min_y = min(min_y, y)
+		max_y = max(max_y, y)
+
+	# Step 2: Decide where to paste the group
+	var base_y_offset = max_y + 350  # Pasting below the lowest node
+
+	# Step 3: Paste nodes, preserving vertical layout
+	for node_data in copied_nodes_data:
+		var original_node = graph_edit.get_node_or_null(NodePath(node_data["name"]))
+		if not original_node:
+			continue
+
+		var new_node = original_node.duplicate()
+		new_node.name = node_data["name"] + "_copy_" + str(randi() % 10000)
+
+		var relative_y = node_data["offset"].y - min_y
+		new_node.position_offset = Vector2(
+			node_data["offset"].x,
+			base_y_offset + relative_y
+		)
+
+		# Restore sliders
+		for child in new_node.get_children():
+			if child.name in node_data["slider_values"]:
+				child.value = node_data["slider_values"][child.name]
+
+		graph_edit.add_child(new_node, true)
+		name_map[node_data["name"]] = new_node.name
+		pasted_nodes.append(new_node)
+
+
+	# Step 4: Reconnect new nodes
+	for conn_data in copied_connections:
+		var new_from = name_map.get(conn_data["from_node"], null)
+		var new_to = name_map.get(conn_data["to_node"], null)
+
+		if new_from and new_to:
+			graph_edit.connect_node(new_from, conn_data["from_port"], new_to, conn_data["to_port"])
+
+	# Step 5: Select pasted nodes
+	for pasted_node in pasted_nodes:
+		graph_edit.set_selected(pasted_node)
+		selected_nodes[pasted_node] = true
+
 #logic for connecting, disconnecting and deleteing nodes and connections in GraphEdit
 #mostly taken from https://gdscript.com/solutions/godot-graphnode-and-graphedit-tutorial/
 func _on_graph_edit_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
-	get_node("GraphEdit").connect_node(from_node, from_port, to_node, to_port)
+	#get_node("GraphEdit").connect_node(from_node, from_port, to_node, to_port)
+	var graph_edit = get_node("GraphEdit")
+	var to_graph_node = graph_edit.get_node(NodePath(to_node))
+
+	# Get the type of the input port using GraphNode's built-in method
+	var port_type = to_graph_node.get_input_port_type(to_port)
+
+	# If port type is 1 and already has a connection, reject the request
+	if port_type == 1:
+		var connections = graph_edit.get_connection_list()
+		var existing_connections = 0
+
+		for conn in connections:
+			if conn.to_node == to_node and conn.to_port == to_port:
+				existing_connections += 1
+				if existing_connections >= 1:
+					$MultipleConnectionsPopup.show()
+					return
+
+	# If no conflict, allow the connection
+	graph_edit.connect_node(from_node, from_port, to_node, to_port)
 
 func _on_graph_edit_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
 	get_node("GraphEdit").disconnect_node(from_node, from_port, to_node, to_port)
@@ -523,3 +662,7 @@ func _on_console_open_folder_button_down() -> void:
 
 func _on_ok_button_2_button_down() -> void:
 	$NoInputPopup.hide()
+
+
+func _on_ok_button_3_button_down() -> void:
+	$MultipleConnectionsPopup.hide()
