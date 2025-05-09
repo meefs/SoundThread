@@ -35,6 +35,7 @@ func _ready() -> void:
 		if child is Button:
 			child.pressed.connect(_on_button_pressed.bind(child))
 	
+	DisplayServer.screen_get_size().x
 	#Generate input and output nodes
 	var effect: GraphNode = Nodes.get_node(NodePath("inputfile")).duplicate()
 	get_node("GraphEdit").add_child(effect, true)
@@ -42,7 +43,7 @@ func _ready() -> void:
 	
 	effect = Nodes.get_node(NodePath("outputfile")).duplicate()
 	get_node("GraphEdit").add_child(effect, true)
-	effect.position_offset = Vector2(1400,80)
+	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) ,80)
 	
 	check_cdp_location_set()
 	check_user_preferences()
@@ -803,7 +804,8 @@ func save_graph_edit(path: String):
 			}
 
 			for child in node.find_children("*", "Slider", true, false):
-				node_data["slider_values"][child.name] = child.value
+				var relative_path = node.get_path_to(child)
+				node_data["slider_values"][str(relative_path)] = child.value
 				
 			for child in node.find_children("*", "CodeEdit", true, false):
 				node_data["notes"][child.name] = child.text
@@ -867,10 +869,11 @@ func load_graph_edit(path: String):
 		graph_edit.add_child(new_node)
 
 		# Restore sliders
-		for slider_name in node_data["slider_values"]:
-			var slider = new_node.find_child(slider_name, true, false)
+		for slider_path_str in node_data["slider_values"]:
+			var slider = new_node.get_node_or_null(slider_path_str)
 			if slider and (slider is HSlider or slider is VSlider):
-				slider.value = node_data["slider_values"][slider_name]
+				slider.value = node_data["slider_values"][slider_path_str]
+
 				
 		# Restore notes
 		for codeedit_name in node_data["notes"]:
