@@ -10,6 +10,7 @@ var delete_intermediate_outputs
 var final_output_dir
 var copied_nodes_data = []
 var copied_connections = []
+var undo_redo := UndoRedo.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -74,6 +75,23 @@ func _on_cdp_location_dialog_canceled() -> void:
 func _process(delta: float) -> void:
 	showmenu()
 	
+
+func _input(event):
+	if event.is_action_pressed("copy_node"):
+		copy_selected_nodes()
+		get_viewport().set_input_as_handled()
+
+	elif event.is_action_pressed("paste_node"):
+		paste_copied_nodes()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("undo"):
+		undo_redo.undo()
+	elif event.is_action_pressed("redo"):
+		undo_redo.redo()
+
+
+#logic for making, connecting, disconnecting, copy pasting and deleteing nodes and connections in GraphEdit
+#mostly taken from https://gdscript.com/solutions/godot-graphnode-and-graphedit-tutorial/
 func showmenu():
 	#check for mouse input and if menu is already open and then open or close the menu
 	#stores mouse position at time of right click to later place a node in that location
@@ -99,16 +117,91 @@ func _on_button_pressed(button: Button):
 	effect.position_offset = effect_position
 
 
-#Handles copying and pasting nodes
-func _input(event):
-	if event.is_action_pressed("copy_node"):
-		copy_selected_nodes()
-		get_viewport().set_input_as_handled()
+	# Remove node with UndoRedo
+	undo_redo.create_action("Add Node")
+	undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
+	undo_redo.add_undo_method(Callable(effect, "queue_free"))
+	undo_redo.commit_action()
 
-	elif event.is_action_pressed("paste_node"):
-		paste_copied_nodes()
-		get_viewport().set_input_as_handled()
-		
+func _on_graph_edit_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
+	#get_node("GraphEdit").connect_node(from_node, from_port, to_node, to_port)
+	var graph_edit = get_node("GraphEdit")
+	var to_graph_node = graph_edit.get_node(NodePath(to_node))
+
+	# Get the type of the input port using GraphNode's built-in method
+	var port_type = to_graph_node.get_input_port_type(to_port)
+
+	# If port type is 1 and already has a connection, reject the request
+	if port_type == 1:
+		var connections = graph_edit.get_connection_list()
+		var existing_connections = 0
+
+		for conn in connections:
+			if conn.to_node == to_node and conn.to_port == to_port:
+				existing_connections += 1
+				if existing_connections >= 1:
+					$MultipleConnectionsPopup.show()
+					return
+
+	# If no conflict, allow the connection
+	graph_edit.connect_node(from_node, from_port, to_node, to_port)
+
+func _on_graph_edit_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
+	get_node("GraphEdit").disconnect_node(from_node, from_port, to_node, to_port)
+
+func _on_graph_edit_node_selected(node: Node) -> void:
+	selected_nodes[node] = true
+
+func _on_graph_edit_node_deselected(node: Node) -> void:
+	selected_nodes[node] = false
+
+func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
+	var graph_edit = get_node("GraphEdit")
+	undo_redo.create_action("Delete Nodes (Undo only)")
+
+	for node in selected_nodes.keys():
+		if selected_nodes[node]:
+			if node.name in ["inputfile", "outputfile"]:
+				print("can't delete input or output")
+			else:
+				# Store duplicate and state for undo
+				var node_data = node.duplicate()
+				var position = node.position_offset
+
+				# Store all connections for undo
+				var conns = []
+				for con in graph_edit.get_connection_list():
+					if con["to_node"] == node.name or con["from_node"] == node.name:
+						conns.append(con)
+
+				# Delete
+				remove_connections_to_node(node)
+				node.queue_free()
+
+				# Register undo restore
+				undo_redo.add_undo_method(Callable(graph_edit, "add_child").bind(node_data, true))
+				undo_redo.add_undo_method(Callable(node_data, "set_position_offset").bind(position))
+				for con in conns:
+					undo_redo.add_undo_method(Callable(graph_edit, "connect_node").bind(
+						con["from_node"], con["from_port"],
+						con["to_node"], con["to_port"]
+					))
+				undo_redo.add_undo_method(Callable(self, "set_node_selected").bind(node_data, true))
+
+	# Clear selection
+	selected_nodes = {}
+
+	undo_redo.commit_action()
+
+func set_node_selected(node: Node, selected: bool) -> void:
+	selected_nodes[node] = selected
+#
+func remove_connections_to_node(node):
+	for con in get_node("GraphEdit").get_connection_list():
+		if con["to_node"] == node.name or con["from_node"] == node.name:
+			get_node("GraphEdit").disconnect_node(con["from_node"], con["from_port"], con["to_node"], con["to_port"])
+			
+#copy and paste nodes with vertical offset on paste
 func copy_selected_nodes():
 	copied_nodes_data.clear()
 	copied_connections.clear()
@@ -215,57 +308,13 @@ func paste_copied_nodes():
 		graph_edit.set_selected(pasted_node)
 		selected_nodes[pasted_node] = true
 
-#logic for connecting, disconnecting and deleteing nodes and connections in GraphEdit
-#mostly taken from https://gdscript.com/solutions/godot-graphnode-and-graphedit-tutorial/
-func _on_graph_edit_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
-	#get_node("GraphEdit").connect_node(from_node, from_port, to_node, to_port)
-	var graph_edit = get_node("GraphEdit")
-	var to_graph_node = graph_edit.get_node(NodePath(to_node))
-
-	# Get the type of the input port using GraphNode's built-in method
-	var port_type = to_graph_node.get_input_port_type(to_port)
-
-	# If port type is 1 and already has a connection, reject the request
-	if port_type == 1:
-		var connections = graph_edit.get_connection_list()
-		var existing_connections = 0
-
-		for conn in connections:
-			if conn.to_node == to_node and conn.to_port == to_port:
-				existing_connections += 1
-				if existing_connections >= 1:
-					$MultipleConnectionsPopup.show()
-					return
-
-	# If no conflict, allow the connection
-	graph_edit.connect_node(from_node, from_port, to_node, to_port)
-
-func _on_graph_edit_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
-	get_node("GraphEdit").disconnect_node(from_node, from_port, to_node, to_port)
-
-func _on_graph_edit_node_selected(node: Node) -> void:
-	selected_nodes[node] = true
-
-func _on_graph_edit_node_deselected(node: Node) -> void:
-	selected_nodes[node] = false
-
-func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
-	for node in selected_nodes.keys():
-		if selected_nodes[node]:
-			if  node.name == "inputfile":
-				print("can't delete input")
-			elif  node.name == "outputfile":
-				print("can't delete output")
-			else:
-				remove_connections_to_node(node)
-				node.queue_free()
-	selected_nodes = {}
-
-func remove_connections_to_node(node):
-	for con in get_node("GraphEdit").get_connection_list():
-		if con["to_node"] == node.name or con["from_node"] == node.name:
-			get_node("GraphEdit").disconnect_node(con["from_node"], con["from_port"], con["to_node"], con["to_port"])
-			
+	# Remove node with UndoRedo
+	undo_redo.create_action("Paste Nodes")
+	for pasted_node in pasted_nodes:
+		undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(pasted_node))
+		undo_redo.add_undo_method(Callable(pasted_node, "queue_free"))
+		undo_redo.add_undo_method(Callable(self, "remove_connections_to_node").bind(pasted_node))
+	undo_redo.commit_action()
 
 #Here be dragons
 #Scans through all nodes and generates a batch file based on their order
