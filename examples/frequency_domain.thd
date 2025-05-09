@@ -133,14 +133,14 @@
 				"y": 77.7777786254883
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1365/@MarginContainer@1405/Tree/@Popup@1391/@VBoxContainer@1392/@HSlider@1400": 0.0
+				"AudioPlayer/FileDialog/@VBoxContainer@1113/@MarginContainer@1153/Tree/@Popup@1139/@VBoxContainer@1140/@HSlider@1148": 0.0
 			}
 		},
 		{
 			"command": "notes",
 			"name": "notes",
 			"notes": {
-				"CodeEdit": "The \"Frequency Domain\" processes allow you to perform unique transformations to a sound"
+				"CodeEdit": "The \"Frequency Domain\" processes allow you to perform unique transformations to a sound. Load a file into Input File to test it out."
 			},
 			"offset": {
 				"x": 64.6666793823242,
@@ -217,7 +217,7 @@
 				"y": 78.8888854980469
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1513/@MarginContainer@1553/Tree/@Popup@1539/@VBoxContainer@1540/@HSlider@1548": 0.0
+				"AudioPlayer/FileDialog/@VBoxContainer@1261/@MarginContainer@1301/Tree/@Popup@1287/@VBoxContainer@1288/@HSlider@1296": 0.0
 			}
 		},
 		{

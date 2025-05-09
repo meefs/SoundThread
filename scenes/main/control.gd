@@ -4,13 +4,20 @@ var mainmenu_visible : bool = false #used to test if mainmenu is open
 var effect_position = Vector2(40,40) #tracks mouse position for node placement offset
 @onready var graph_edit = $GraphEdit
 var selected_nodes = {} #used to track which nodes in the GraphEdit are selected
-var cdpprogs_location
-var delete_intermediate_outputs
+var cdpprogs_location #stores the cdp programs location from user prefs for easy access
+var delete_intermediate_outputs # tracks state of delete intermediate outputs toggle
 @onready var console_output: RichTextLabel = $Console/ConsoleOutput
 var final_output_dir
-var copied_nodes_data = []
-var copied_connections = []
-var undo_redo := UndoRedo.new()
+var copied_nodes_data = [] #stores node data on ctrl+c
+var copied_connections = [] #stores all connections on ctrl+c
+var undo_redo := UndoRedo.new() 
+var output_audio_player #tracks the node that is the current output player for linking
+var input_audio_player #tracks node that is the current input player for linking
+var outfile = "no file" #tracks dir of output file from cdp process
+var currentfile = "none" #tracks dir of currently loaded file for saving
+var changesmade = false #tracks if user has made changes to the currently loaded save file
+var savestate # tracks what the user is trying to do when savechangespopup is called
+var helpfile #tracks which help file the user was trying to load when savechangespopup is called
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -35,8 +42,23 @@ func _ready() -> void:
 		if child is Button:
 			child.pressed.connect(_on_button_pressed.bind(child))
 	
-	DisplayServer.screen_get_size().x
-	#Generate input and output nodes
+	check_cdp_location_set()
+	check_user_preferences()
+	new_patch()
+	
+	#link output file to input file to enable audio output file loopback
+	#$GraphEdit/outputfile/AudioPlayer.recycle_outfile_trigger.connect($GraphEdit/inputfile/AudioPlayer.recycle_outfile)
+	
+	
+func new_patch():
+	#clear old patch
+	graph_edit.clear_connections()
+
+	for node in graph_edit.get_children():
+		if node is GraphNode:
+			node.queue_free()
+	
+		#Generate input and output nodes
 	var effect: GraphNode = Nodes.get_node(NodePath("inputfile")).duplicate()
 	get_node("GraphEdit").add_child(effect, true)
 	effect.position_offset = Vector2(20,80)
@@ -44,21 +66,28 @@ func _ready() -> void:
 	effect = Nodes.get_node(NodePath("outputfile")).duplicate()
 	get_node("GraphEdit").add_child(effect, true)
 	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) ,80)
+	_register_node_movement() #link nodes for tracking position changes for changes tracking
 	
-	check_cdp_location_set()
-	check_user_preferences()
-	
-	
-	#link output file to input file to enable audio output file loopback
-	$GraphEdit/outputfile/AudioPlayer.recycle_outfile_trigger.connect($GraphEdit/inputfile/AudioPlayer.recycle_outfile)
-	
-	#link run process button to the batch generation script
-	$GraphEdit/outputfile/RunProcess.button_down.connect(_run_process)
-	
-	#link and set delete intermediat files toggle from outputfile
-	$GraphEdit/outputfile/DeleteIntermediateFilesToggle.toggled.connect(_toggle_delete)
-	$GraphEdit/outputfile/DeleteIntermediateFilesToggle.button_pressed = true
-	
+	link_output()
+
+func link_output():
+	#links various buttons and function in the input nodes - this is called after they are created so that it still works on new and loading files
+	for control in get_tree().get_nodes_in_group("outputnode"): #check all items in outputnode group
+		if control is CheckButton: #link delete intermediate files toggle to script
+			control.toggled.connect(_toggle_delete)
+			control.button_pressed = true
+		elif control.get_meta("outputfunction") == "runprocess": #link runprocess button
+			control.button_down.connect(_run_process)
+		elif control.get_meta("outputfunction") == "recycle": #link recycle button
+			control.button_down.connect(_recycle_outfile)
+		elif control.get_meta("outputfunction") == "audioplayer": #link output audio player
+			output_audio_player = control
+
+	for control in get_tree().get_nodes_in_group("inputnode"):
+		if control.get_meta("inputfunction") == "audioplayer": #link input for recycle function
+			print("input player found")
+			input_audio_player = control
+
 func check_user_preferences():
 	var interface_settings = ConfigHandler.load_interface_settings()
 	$MenuBar/SettingsButton.set_item_checked(1, interface_settings.disable_pvoc_warning)
@@ -132,12 +161,17 @@ func _on_button_pressed(button: Button):
 	var effect: GraphNode = Nodes.get_node(NodePath(button.name)).duplicate()
 	get_node("GraphEdit").add_child(effect, true)
 	effect.position_offset = effect_position
+	_register_inputs_in_node(effect) #link sliders for changes tracking
+	_register_node_movement() #link nodes for tracking position changes for changes tracking
+
+	changesmade = true
 
 
 	# Remove node with UndoRedo
 	undo_redo.create_action("Add Node")
 	undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
 	undo_redo.add_undo_method(Callable(effect, "queue_free"))
+	undo_redo.add_undo_method(Callable(self, "_track_changes"))
 	undo_redo.commit_action()
 
 func _on_graph_edit_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
@@ -164,9 +198,11 @@ func _on_graph_edit_connection_request(from_node: StringName, from_port: int, to
 
 	# If no conflict, allow the connection
 	graph_edit.connect_node(from_node, from_port, to_node, to_port)
+	changesmade = true
 
 func _on_graph_edit_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
 	get_node("GraphEdit").disconnect_node(from_node, from_port, to_node, to_port)
+	changesmade = true
 
 func _on_graph_edit_node_selected(node: Node) -> void:
 	selected_nodes[node] = true
@@ -196,6 +232,7 @@ func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
 				# Delete
 				remove_connections_to_node(node)
 				node.queue_free()
+				changesmade = true
 
 				# Register undo restore
 				undo_redo.add_undo_method(Callable(graph_edit, "add_child").bind(node_data, true))
@@ -206,6 +243,9 @@ func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
 						con["to_node"], con["to_port"]
 					))
 				undo_redo.add_undo_method(Callable(self, "set_node_selected").bind(node_data, true))
+				undo_redo.add_undo_method(Callable(self, "_track_changes"))
+				undo_redo.add_undo_method(Callable(self, "_register_inputs_in_node").bind(node_data)) #link sliders for changes tracking
+				undo_redo.add_undo_method(Callable(self, "_register_node_movement")) # link nodes for changes tracking
 
 	# Clear selection
 	selected_nodes = {}
@@ -219,6 +259,7 @@ func remove_connections_to_node(node):
 	for con in get_node("GraphEdit").get_connection_list():
 		if con["to_node"] == node.name or con["from_node"] == node.name:
 			get_node("GraphEdit").disconnect_node(con["from_node"], con["from_port"], con["to_node"], con["to_port"])
+			changesmade = true
 			
 #copy and paste nodes with vertical offset on paste
 func copy_selected_nodes():
@@ -302,6 +343,7 @@ func paste_copied_nodes():
 			node_data["offset"].x,
 			base_y_offset + relative_y
 		)
+		
 
 		# Restore sliders
 		for child in new_node.get_children():
@@ -309,6 +351,8 @@ func paste_copied_nodes():
 				child.value = node_data["slider_values"][child.name]
 
 		graph_edit.add_child(new_node, true)
+		_register_inputs_in_node(new_node) #link sliders for changes tracking
+		_register_node_movement() # link nodes for changes tracking
 		name_map[node_data["name"]] = new_node.name
 		pasted_nodes.append(new_node)
 
@@ -325,17 +369,58 @@ func paste_copied_nodes():
 	for pasted_node in pasted_nodes:
 		graph_edit.set_selected(pasted_node)
 		selected_nodes[pasted_node] = true
-
+	
+	changesmade = true
+	
 	# Remove node with UndoRedo
 	undo_redo.create_action("Paste Nodes")
 	for pasted_node in pasted_nodes:
 		undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(pasted_node))
 		undo_redo.add_undo_method(Callable(pasted_node, "queue_free"))
 		undo_redo.add_undo_method(Callable(self, "remove_connections_to_node").bind(pasted_node))
+		undo_redo.add_undo_method(Callable(self, "_track_changes"))
 	undo_redo.commit_action()
+	
 
+#functions for tracking changes for save state detection
+func _register_inputs_in_node(node: Node):
+	#tracks input to nodes sliders and codeedit to track if patch is saved
+	# Track Sliders
+	for slider in node.find_children("*", "HSlider", true, false):
+		# Create a Callable to the correct method
+		var callable = Callable(self, "_on_any_slider_changed")
+		# Check if it's already connected, and connect if not
+		if not slider.is_connected("value_changed", callable):
+			slider.connect("value_changed", callable)
+		
+	# Track CodeEdits (if necessary)
+	for editor in node.find_children("*", "CodeEdit", true, false):
+		var callable = Callable(self, "_on_any_input_changed")
+		if not editor.is_connected("text_changed", callable):
+			editor.connect("text_changed", callable)
+			
+func _register_node_movement():
+	for graphnode in graph_edit.get_children():
+		if graphnode is GraphNode:
+			var callable = Callable(self, "_on_graphnode_moved")
+			if not graphnode.is_connected("position_offset_changed", callable):
+				graphnode.connect("position_offset_changed", callable)
+
+func _on_graphnode_moved():
+	changesmade = true
+	
+func _on_any_slider_changed(value: float) -> void:
+	changesmade = true
+	
+func _on_any_input_changed():
+	changesmade = true
+
+func _track_changes():
+	changesmade = true
+	
 ######## Here be dragons #########
 ##################################
+####### Don't let them out #######
 
 #Scans through all nodes and generates a batch file based on their order
 
@@ -457,8 +542,11 @@ func generate_batch_file_with_branches():
 				var command_name = str(node.get_meta("command")) if node.has_meta("command") else node_name
 				command_name = command_name.replace("_", " ")
 				var line = "%s/%s \"%s\" \"%s\" " % [cdpprogs_location, command_name, current_infile, output_file]
+				#checks if slider has a flag meta value and appends the flag before the parameter
 				for entry in slider_data:
-					line += ("%s%.2f " % [entry[0], entry[1]]) if entry[0].begins_with("-") else ("%.2f " % entry[1])
+					var flag = entry[0]
+					var value = entry[1]
+					line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
 				batch_lines.append(line.strip_edges())
 				output_files[node_name] = output_file
 				if delete_intermediate_outputs:
@@ -538,8 +626,11 @@ func generate_batch_file_with_branches():
 			var command_name = str(node.get_meta("command")) if node.has_meta("command") else node_name
 			command_name = command_name.replace("_", " ")
 			var line = "%s/%s \"%s\" \"%s\" " % [cdpprogs_location, command_name, current_infile, output_file]
+			#checks if slider has a flag meta value and appends the flag before the parameter
 			for entry in slider_data:
-				line += ("%s%.2f " % [entry[0], entry[1]]) if entry[0].begins_with("-") else ("%.2f " % entry[1])
+				var flag = entry[0]
+				var value = entry[1]
+				line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
 			batch_lines.append(line.strip_edges())
 			output_files[node_name] = output_file
 			if delete_intermediate_outputs:
@@ -588,13 +679,12 @@ func generate_batch_file_with_branches():
 	await get_tree().process_frame
 	run_batch_file()
 
-
-# Ordered slider collection
 func _get_slider_values_ordered(node: Node) -> Array:
 	var results := []
 	for child in node.get_children():
 		if child is Range:
-			results.append([child.name, child.value])
+			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
+			results.append([flag, child.value])
 		elif child.get_child_count() > 0:
 			var nested := _get_slider_values_ordered(child)
 			results.append_array(nested)
@@ -714,7 +804,8 @@ func run_batch_file():
 		console_output.scroll_to_line(console_output.get_line_count() - 1)
 		console_output.append_text(output_str + "/n")
 		if final_output_dir.ends_with(".wav"):
-			$GraphEdit/outputfile/AudioPlayer.play_outfile(final_output_dir)
+			output_audio_player.play_outfile(final_output_dir)
+			outfile = final_output_dir
 		var interface_settings = ConfigHandler.load_interface_settings()
 		if interface_settings.auto_close_console == true:
 			$Console.hide()
@@ -728,6 +819,7 @@ func run_batch_file():
 
 func _toggle_delete(toggled_on: bool):
 	delete_intermediate_outputs = toggled_on
+	print(toggled_on)
 
 func _on_console_close_requested() -> void:
 	$Console.hide()
@@ -778,9 +870,27 @@ func _on_settings_button_index_pressed(index: int) -> void:
 func _on_file_button_index_pressed(index: int) -> void:
 	match index:
 		0:
-			$SaveDialog.popup_centered()
+			if changesmade == true:
+				savestate = "newfile"
+				$SaveChangesPopup.show()
+			else:
+				new_patch()
+				currentfile = "none" #reset current file to none for save tracking
 		1:
-			$LoadDialog.popup_centered()
+			if currentfile == "none":
+				savestate = "saveas"
+				$SaveDialog.popup_centered()
+			else:
+				save_graph_edit(currentfile)
+		2:
+			savestate = "saveas"
+			$SaveDialog.popup_centered()
+		3:
+			if changesmade == true:
+				savestate = "load"
+				$SaveChangesPopup.show()
+			else:
+				$LoadDialog.popup_centered()
 
 
 func save_graph_edit(path: String):
@@ -887,18 +997,27 @@ func load_graph_edit(path: String):
 			conn["from_node"], conn["from_port"],
 			conn["to_node"], conn["to_port"]
 		)
-
+	link_output()
 	print("Graph loaded.")
 
 
 func _on_save_dialog_file_selected(path: String) -> void:
-	save_graph_edit(path)
-
+	save_graph_edit(path) #save file
+	#check what the user was trying to do before save and do that action
+	if savestate == "newfile":
+		new_patch()
+		currentfile = "none" #reset current file to none for save tracking
+	elif savestate == "load":
+		$LoadDialog.popup_centered()
+	elif savestate == "helpfile":
+		currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+		load_graph_edit(helpfile)
+	savestate = "none" #reset save state, not really needed but feels good
 
 
 func _on_load_dialog_file_selected(path: String) -> void:
+	currentfile = path #tracking path here only means "save" only saves patches the user has loaded rather than overwriting help files
 	load_graph_edit(path)
-
 
 func _on_help_button_index_pressed(index: int) -> void:
 	match index:
@@ -907,8 +1026,54 @@ func _on_help_button_index_pressed(index: int) -> void:
 		1:
 			pass
 		2:
-			load_graph_edit("res://examples/frequency_domain.thd")
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/frequency_domain.thd"
+				$SaveChangesPopup.show()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				load_graph_edit("res://examples/frequency_domain.thd")
 		3:
 			pass
 		4:
 			OS.shell_open("https://www.composersdesktop.com/docs/html/cdphome.htm")
+
+func _recycle_outfile():
+	if outfile != "no file":
+		input_audio_player.recycle_outfile(outfile)
+
+
+
+func _on_save_changes_button_down() -> void:
+	$SaveChangesPopup.hide()
+	if currentfile == "none":
+		$SaveDialog.show()
+	else:
+		save_graph_edit(currentfile)
+		if savestate == "newfile":
+			new_patch()
+			currentfile = "none" #reset current file to none for save tracking
+			savestate = "none"
+		elif savestate == "load":
+			savestate == "none"
+			$LoadDialog.popup_centered()
+		elif savestate == "helpfile":
+			savestate = "none"
+			currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+			load_graph_edit(helpfile)
+
+
+func _on_dont_save_changes_button_down() -> void:
+	$SaveChangesPopup.hide()
+	if savestate == "newfile":
+		new_patch()
+		currentfile = "none" #reset current file to none for save tracking
+		savestate = "none"
+	elif savestate == "load":
+		savestate == "none"
+		$LoadDialog.popup_centered()
+	elif savestate == "helpfile":
+		savestate = "none"
+		currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+		load_graph_edit(helpfile)
+	

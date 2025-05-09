@@ -4,7 +4,7 @@ extends Control
 @onready var file_dialog = $FileDialog
 @onready var waveform_display = $WaveformPreview
 var outfile_path = "not_loaded"
-signal recycle_outfile_trigger
+#signal recycle_outfile_trigger
 
 #Used for waveform preview
 var voice_preview_generator : Node = null
@@ -105,7 +105,7 @@ func _process(delta: float) -> void:
 		
 		
 
-func _on_recycle_button_button_down() -> void:
-	if outfile_path != "not_loaded":
-		recycle_outfile_trigger.emit(outfile_path)
+#func _on_recycle_button_button_down() -> void:
+	#if outfile_path != "not_loaded":
+		#recycle_outfile_trigger.emit(outfile_path)
 	

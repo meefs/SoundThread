@@ -39,12 +39,13 @@ offset_right = 128.0
 offset_bottom = 147.0
 text = "Load File"
 
-[node name="RecycleButton" type="Button" parent="."]
+[node name="RecycleButton" type="Button" parent="." groups=["outputnode"]]
 layout_mode = 0
 offset_top = 104.0
 offset_right = 128.0
 offset_bottom = 147.0
 text = "Recycle File"
+metadata/outputfunction = "recycle"
 
 [node name="PlayButton" type="Button" parent="."]
 layout_mode = 0

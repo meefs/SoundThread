@@ -180,11 +180,15 @@ flat = true
 
 [node name="FileButton" type="PopupMenu" parent="MenuBar"]
 title = "File"
-item_count = 2
-item_0/text = "Save Process Chain"
-item_0/id = 0
-item_1/text = "Load Process Chain"
-item_1/id = 1
+item_count = 4
+item_0/text = "New Thread"
+item_0/id = 2
+item_1/text = "Save Thread"
+item_1/id = 3
+item_2/text = "Save Thread As"
+item_2/id = 0
+item_3/text = "Load Thread"
+item_3/id = 1
 
 [node name="SettingsButton" type="PopupMenu" parent="MenuBar"]
 title = "Settings"
@@ -222,6 +226,42 @@ use_native_dialog = true
 auto_translate_mode = 1
 use_native_dialog = true
 
+[node name="SaveChangesPopup" type="Window" parent="."]
+auto_translate_mode = 1
+title = "No Input Selected"
+initial_position = 2
+size = Vector2i(350, 100)
+visible = false
+exclusive = true
+unresizable = true
+borderless = true
+always_on_top = true
+popup_window = true
+
+[node name="Label" type="Label" parent="SaveChangesPopup"]
+offset_left = -1.0
+offset_top = 18.0
+offset_right = 348.0
+offset_bottom = 49.0
+text = "Save changes to this thread?"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="SaveChanges" type="Button" parent="SaveChangesPopup"]
+offset_left = 55.0
+offset_top = 58.0
+offset_right = 167.0
+offset_bottom = 89.0
+text = "Save"
+
+[node name="DontSaveChanges" type="Button" parent="SaveChangesPopup"]
+offset_left = 183.0
+offset_top = 58.0
+offset_right = 295.0
+offset_bottom = 89.0
+text = "Don't Save"
+
 [connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="delete_nodes_request" from="GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
 [connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
@@ -240,3 +280,5 @@ use_native_dialog = true
 [connection signal="index_pressed" from="MenuBar/HelpButton" to="." method="_on_help_button_index_pressed"]
 [connection signal="file_selected" from="SaveDialog" to="." method="_on_save_dialog_file_selected"]
 [connection signal="file_selected" from="LoadDialog" to="." method="_on_load_dialog_file_selected"]
+[connection signal="button_down" from="SaveChangesPopup/SaveChanges" to="." method="_on_save_changes_button_down"]
+[connection signal="button_down" from="SaveChangesPopup/DontSaveChanges" to="." method="_on_dont_save_changes_button_down"]

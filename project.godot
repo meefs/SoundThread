@@ -32,6 +32,11 @@ window/size/mode=2
 window/subwindows/embed_subwindows=false
 window/stretch/aspect="ignore"
 
+[global_group]
+
+outputnode="Controls from the output node"
+inputnode="input file controls"
+
 [input]
 
 open_menu={

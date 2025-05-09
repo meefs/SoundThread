@@ -1,9 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://duy5epq25pj8u"]
+[gd_scene load_steps=3 format=3 uid="uid://duy5epq25pj8u"]
 
 [ext_resource type="PackedScene" uid="uid://csapiqka522fh" path="res://scenes/Nodes/audioplayer.tscn" id="2_b6nw4"]
 [ext_resource type="PackedScene" uid="uid://dya5kxx132fgp" path="res://scenes/Nodes/valueslider.tscn" id="3_b6nw4"]
-[ext_resource type="Script" uid="uid://dyf0qutxeqio3" path="res://scenes/Nodes/scatter_value.gd" id="3_uv17x"]
-[ext_resource type="Script" uid="uid://dxxohuvlw5e3n" path="res://scenes/Nodes/focus_accu_sliders.gd" id="4_uv17x"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -43,9 +41,10 @@ metadata/command = "inputfile"
 [node name="Control" type="Control" parent="inputfile"]
 layout_mode = 2
 
-[node name="AudioPlayer" parent="inputfile" instance=ExtResource("2_b6nw4")]
+[node name="AudioPlayer" parent="inputfile" groups=["inputnode"] instance=ExtResource("2_b6nw4")]
 layout_mode = 2
 metadata/loadenable = true
+metadata/inputfunction = "audioplayer"
 
 [node name="outputfile" type="GraphNode" parent="."]
 layout_mode = 0
@@ -104,12 +103,13 @@ metadata/command = "outputfile"
 [node name="Control" type="Control" parent="outputfile"]
 layout_mode = 2
 
-[node name="RunProcess" type="Button" parent="outputfile"]
+[node name="RunProcess" type="Button" parent="outputfile" groups=["outputnode"]]
 custom_minimum_size = Vector2(0, 43)
 layout_mode = 2
 text = "Run Process"
+metadata/outputfunction = "runprocess"
 
-[node name="DeleteIntermediateFilesToggle" type="CheckButton" parent="outputfile"]
+[node name="DeleteIntermediateFilesToggle" type="CheckButton" parent="outputfile" groups=["outputnode"]]
 custom_minimum_size = Vector2(0, 43)
 layout_mode = 2
 text = "Delete Intermediate files"
@@ -119,8 +119,9 @@ expand_icon = true
 layout_mode = 2
 text = "Rendered Output File:"
 
-[node name="AudioPlayer" parent="outputfile" instance=ExtResource("2_b6nw4")]
+[node name="AudioPlayer" parent="outputfile" groups=["outputnode"] instance=ExtResource("2_b6nw4")]
 layout_mode = 2
+metadata/outputfunction = "audioplayer"
 
 [node name="distort_average" type="GraphNode" parent="."]
 layout_mode = 0
@@ -1202,7 +1203,7 @@ exp_edit = true
 
 [node name="VBoxContainer4" parent="filter_bank_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
-tooltip_text = "The highest frequency filter, must be higer than low filer"
+tooltip_text = "The highest frequency filter, must be higer than low filter"
 
 [node name="Label" parent="filter_bank_1/VBoxContainer4" index="0"]
 text = "Highest Band"
@@ -1214,32 +1215,18 @@ step = 0.01
 value = 12000.0
 exp_edit = true
 
-[node name="VBoxContainer5" type="VBoxContainer" parent="filter_bank_1"]
-custom_minimum_size = Vector2(270, 0)
+[node name="VBoxContainer6" parent="filter_bank_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
-tooltip_text = "Amound of random spread applied to filer frequencies"
-script = ExtResource("3_uv17x")
+tooltip_text = "Amound of random spread applied to filter frequencies"
 
-[node name="Label" type="Label" parent="filter_bank_1/VBoxContainer5"]
-layout_mode = 2
+[node name="Label" parent="filter_bank_1/VBoxContainer6" index="0"]
 text = "Scatter"
 
-[node name="HSplitContainer" type="HSplitContainer" parent="filter_bank_1/VBoxContainer5"]
-layout_mode = 2
-split_offset = 210
-dragging_enabled = false
-
-[node name="-s" type="HSlider" parent="filter_bank_1/VBoxContainer5/HSplitContainer"]
-custom_minimum_size = Vector2(0, 23)
-layout_mode = 2
+[node name="HSlider" parent="filter_bank_1/VBoxContainer6/HSplitContainer" index="0"]
 max_value = 1.0
 step = 0.01
-
-[node name="ValueLabel" type="Label" parent="filter_bank_1/VBoxContainer5/HSplitContainer"]
-layout_mode = 2
-text = "0.00"
-horizontal_alignment = 2
-vertical_alignment = 1
+value = 0.0
+metadata/flag = "-s"
 
 [node name="pvoc_anal_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -1346,74 +1333,45 @@ slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
-script = ExtResource("4_uv17x")
 metadata/command = "focus_accu"
 
 [node name="Control" type="Control" parent="focus_accu"]
 layout_mode = 2
 
-[node name="VBoxContainer3" type="VBoxContainer" parent="focus_accu"]
-custom_minimum_size = Vector2(270, 0)
+[node name="VBoxContainer2" parent="focus_accu" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
-tooltip_text = "Sustained channel data decays by a factor of decay each second"
+tooltip_text = "Gain factor for accumulated sound"
 
-[node name="Label" type="Label" parent="focus_accu/VBoxContainer3"]
-layout_mode = 2
+[node name="Label" parent="focus_accu/VBoxContainer2" index="0"]
 text = "Decay"
 
-[node name="HSplitContainer" type="HSplitContainer" parent="focus_accu/VBoxContainer3"]
-layout_mode = 2
-split_offset = 210
-dragging_enabled = false
-
-[node name="-d" type="HSlider" parent="focus_accu/VBoxContainer3/HSplitContainer"]
-custom_minimum_size = Vector2(0, 23)
-layout_mode = 2
+[node name="HSlider" parent="focus_accu/VBoxContainer2/HSplitContainer" index="0"]
 min_value = 0.001
 max_value = 1.0
 step = 0.001
 value = 0.5
+metadata/flag = "-d"
 
-[node name="ValueLabel" type="Label" parent="focus_accu/VBoxContainer3/HSplitContainer"]
-layout_mode = 2
-text = "0.00"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="VBoxContainer4" type="VBoxContainer" parent="focus_accu"]
-custom_minimum_size = Vector2(270, 0)
+[node name="VBoxContainer" parent="focus_accu" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Sustained channel data glissandos at glis octaves per second"
 
-[node name="Label" type="Label" parent="focus_accu/VBoxContainer4"]
-layout_mode = 2
+[node name="Label" parent="focus_accu/VBoxContainer" index="0"]
 text = "Glissandos"
 
-[node name="HSplitContainer" type="HSplitContainer" parent="focus_accu/VBoxContainer4"]
-layout_mode = 2
-split_offset = 210
-dragging_enabled = false
-
-[node name="-g" type="HSlider" parent="focus_accu/VBoxContainer4/HSplitContainer"]
-custom_minimum_size = Vector2(0, 23)
-layout_mode = 2
+[node name="HSlider" parent="focus_accu/VBoxContainer/HSplitContainer" index="0"]
 min_value = -5.0
 max_value = 10.0
-step = 0.01
+step = 0.1
 value = -0.5
-
-[node name="ValueLabel" type="Label" parent="focus_accu/VBoxContainer4/HSplitContainer"]
-layout_mode = 2
-text = "0.00"
-horizontal_alignment = 2
-vertical_alignment = 1
+metadata/flag = "-g"
 
 [node name="blur_blur" type="GraphNode" parent="."]
 layout_mode = 0
-offset_left = 2224.0
-offset_top = 527.0
-offset_right = 2530.0
-offset_bottom = 647.0
+offset_left = 2227.0
+offset_top = 514.0
+offset_right = 2533.0
+offset_bottom = 634.0
 tooltip_text = "Time-averages the spectrum bluring detail in the time dimension"
 title = "PVOC: Blur"
 slot/0/left_enabled = true
@@ -1837,10 +1795,6 @@ custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 wrap_mode = 1
 
-[connection signal="value_changed" from="filter_bank_1/VBoxContainer5/HSplitContainer/-s" to="filter_bank_1/VBoxContainer5" method="_on_s_value_changed"]
-[connection signal="value_changed" from="focus_accu/VBoxContainer3/HSplitContainer/-d" to="focus_accu" method="_on_d_value_changed"]
-[connection signal="value_changed" from="focus_accu/VBoxContainer4/HSplitContainer/-g" to="focus_accu" method="_on_g_value_changed"]
-
 [editable path="distort_average/VBoxContainer"]
 [editable path="clip_clip_2/VBoxContainer"]
 [editable path="distort_divide/VBoxContainer"]
@@ -1873,6 +1827,9 @@ wrap_mode = 1
 [editable path="filter_bank_1/VBoxContainer2"]
 [editable path="filter_bank_1/VBoxContainer3"]
 [editable path="filter_bank_1/VBoxContainer4"]
+[editable path="filter_bank_1/VBoxContainer6"]
+[editable path="focus_accu/VBoxContainer2"]
+[editable path="focus_accu/VBoxContainer"]
 [editable path="blur_blur/VBoxContainer"]
 [editable path="blur_chorus_5/VBoxContainer"]
 [editable path="blur_chorus_5/VBoxContainer2"]
