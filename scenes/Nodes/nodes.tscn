@@ -1099,7 +1099,7 @@ offset_left = 855.0
 offset_top = 414.0
 offset_right = 1161.0
 offset_bottom = 729.0
-tooltip_text = "Bank of filters tuned to the harmonic series of the Low Frequency"
+tooltip_text = "Bank of bandpass filters tuned to the harmonic series of the Low Frequency"
 title = "Filter Bank: Harmonic Series"
 slot/0/left_enabled = true
 slot/0/left_type = 0
@@ -1189,7 +1189,7 @@ exp_edit = true
 
 [node name="VBoxContainer3" parent="filter_bank_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
-tooltip_text = "Lowest frequency of filter, all filters will be tuned based on this frequency"
+tooltip_text = "Lowest frequency filter, all filters will be tuned based on this frequency"
 
 [node name="Label" parent="filter_bank_1/VBoxContainer3" index="0"]
 text = "Lowest Band"
@@ -1223,6 +1223,452 @@ tooltip_text = "Amound of random spread applied to filter frequencies"
 text = "Scatter"
 
 [node name="HSlider" parent="filter_bank_1/VBoxContainer6/HSplitContainer" index="0"]
+max_value = 1.0
+step = 0.01
+value = 0.0
+metadata/flag = "-s"
+
+[node name="filter_bank_2" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 857.0
+offset_top = 755.0
+offset_right = 1163.0
+offset_bottom = 1070.0
+tooltip_text = "Bank of bandpass filters tuned to odd harmonics of the harmonic series of the Low Frequency"
+title = "Filter Bank: Odd Harmonics"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+slot/5/left_enabled = false
+slot/5/left_type = 0
+slot/5/left_color = Color(1, 1, 1, 1)
+slot/5/left_icon = null
+slot/5/right_enabled = false
+slot/5/right_type = 0
+slot/5/right_color = Color(1, 1, 1, 1)
+slot/5/right_icon = null
+slot/5/draw_stylebox = true
+metadata/command = "filter_bank_2"
+
+[node name="Control" type="Control" parent="filter_bank_2"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="filter_bank_2" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Filter Q factor - how narrow the filer is"
+
+[node name="Label" parent="filter_bank_2/VBoxContainer" index="0"]
+text = "Q"
+
+[node name="HSlider" parent="filter_bank_2/VBoxContainer/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 10000.0
+step = 0.01
+value = 400.0
+
+[node name="VBoxContainer2" parent="filter_bank_2" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Makeup gain after filtering"
+
+[node name="Label" parent="filter_bank_2/VBoxContainer2" index="0"]
+text = "Makeup Gain"
+
+[node name="HSlider" parent="filter_bank_2/VBoxContainer2/HSplitContainer" index="0"]
+min_value = 0.02
+max_value = 60.0
+step = 0.01
+value = 1.5
+exp_edit = true
+
+[node name="VBoxContainer3" parent="filter_bank_2" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Lowest frequency filter, all filters will be tuned based on this frequency"
+
+[node name="Label" parent="filter_bank_2/VBoxContainer3" index="0"]
+text = "Lowest Band"
+
+[node name="HSlider" parent="filter_bank_2/VBoxContainer3/HSplitContainer" index="0"]
+min_value = 20.0
+max_value = 12000.0
+step = 0.01
+value = 55.0
+exp_edit = true
+
+[node name="VBoxContainer4" parent="filter_bank_2" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The highest frequency filter, must be higer than low filter"
+
+[node name="Label" parent="filter_bank_2/VBoxContainer4" index="0"]
+text = "Highest Band"
+
+[node name="HSlider" parent="filter_bank_2/VBoxContainer4/HSplitContainer" index="0"]
+min_value = 20.0
+max_value = 12000.0
+step = 0.01
+value = 12000.0
+exp_edit = true
+
+[node name="VBoxContainer6" parent="filter_bank_2" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Amound of random spread applied to filter frequencies"
+
+[node name="Label" parent="filter_bank_2/VBoxContainer6" index="0"]
+text = "Scatter"
+
+[node name="HSlider" parent="filter_bank_2/VBoxContainer6/HSplitContainer" index="0"]
+max_value = 1.0
+step = 0.01
+value = 0.0
+metadata/flag = "-s"
+
+[node name="filter_bank_5" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 860.0
+offset_top = 1088.0
+offset_right = 1166.0
+offset_bottom = 1403.0
+tooltip_text = "Bank of linearly spread bandpass filters "
+title = "Filter Bank: Linear"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+slot/5/left_enabled = false
+slot/5/left_type = 0
+slot/5/left_color = Color(1, 1, 1, 1)
+slot/5/left_icon = null
+slot/5/right_enabled = false
+slot/5/right_type = 0
+slot/5/right_color = Color(1, 1, 1, 1)
+slot/5/right_icon = null
+slot/5/draw_stylebox = true
+slot/6/left_enabled = false
+slot/6/left_type = 0
+slot/6/left_color = Color(1, 1, 1, 1)
+slot/6/left_icon = null
+slot/6/right_enabled = false
+slot/6/right_type = 0
+slot/6/right_color = Color(1, 1, 1, 1)
+slot/6/right_icon = null
+slot/6/draw_stylebox = true
+metadata/command = "filter_bank_5"
+
+[node name="Control" type="Control" parent="filter_bank_5"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="filter_bank_5" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Filter Q factor - how narrow the filer is"
+
+[node name="Label" parent="filter_bank_5/VBoxContainer" index="0"]
+text = "Q"
+
+[node name="HSlider" parent="filter_bank_5/VBoxContainer/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 10000.0
+step = 0.01
+value = 400.0
+
+[node name="VBoxContainer2" parent="filter_bank_5" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Makeup gain after filtering"
+
+[node name="Label" parent="filter_bank_5/VBoxContainer2" index="0"]
+text = "Makeup Gain"
+
+[node name="HSlider" parent="filter_bank_5/VBoxContainer2/HSplitContainer" index="0"]
+min_value = 0.02
+max_value = 60.0
+step = 0.01
+value = 1.5
+exp_edit = true
+
+[node name="VBoxContainer3" parent="filter_bank_5" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Lowest frequency filter,"
+
+[node name="Label" parent="filter_bank_5/VBoxContainer3" index="0"]
+text = "Lowest Band"
+
+[node name="HSlider" parent="filter_bank_5/VBoxContainer3/HSplitContainer" index="0"]
+min_value = 20.0
+max_value = 12000.0
+step = 0.01
+value = 55.0
+exp_edit = true
+
+[node name="VBoxContainer4" parent="filter_bank_5" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The highest frequency filter, must be higer than low filter"
+
+[node name="Label" parent="filter_bank_5/VBoxContainer4" index="0"]
+text = "Highest Band"
+
+[node name="HSlider" parent="filter_bank_5/VBoxContainer4/HSplitContainer" index="0"]
+min_value = 20.0
+max_value = 12000.0
+step = 0.01
+value = 12000.0
+exp_edit = true
+
+[node name="VBoxContainer5" parent="filter_bank_5" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The number of filters in the filter bank"
+
+[node name="Label" parent="filter_bank_5/VBoxContainer5" index="0"]
+text = "Number of Filters"
+
+[node name="HSlider" parent="filter_bank_5/VBoxContainer5/HSplitContainer" index="0"]
+min_value = 1.0
+value = 8.0
+
+[node name="VBoxContainer6" parent="filter_bank_5" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Amound of random spread applied to filter frequencies"
+
+[node name="Label" parent="filter_bank_5/VBoxContainer6" index="0"]
+text = "Scatter"
+
+[node name="HSlider" parent="filter_bank_5/VBoxContainer6/HSplitContainer" index="0"]
+max_value = 1.0
+step = 0.01
+value = 0.0
+metadata/flag = "-s"
+
+[node name="filter_bank_6" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 865.0
+offset_top = 1486.0
+offset_right = 1171.0
+offset_bottom = 1853.0
+tooltip_text = "Bank of bandpass filters spread apart in semitones"
+title = "Filter Bank: Pitched Intervals"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+slot/5/left_enabled = false
+slot/5/left_type = 0
+slot/5/left_color = Color(1, 1, 1, 1)
+slot/5/left_icon = null
+slot/5/right_enabled = false
+slot/5/right_type = 0
+slot/5/right_color = Color(1, 1, 1, 1)
+slot/5/right_icon = null
+slot/5/draw_stylebox = true
+slot/6/left_enabled = false
+slot/6/left_type = 0
+slot/6/left_color = Color(1, 1, 1, 1)
+slot/6/left_icon = null
+slot/6/right_enabled = false
+slot/6/right_type = 0
+slot/6/right_color = Color(1, 1, 1, 1)
+slot/6/right_icon = null
+slot/6/draw_stylebox = true
+metadata/command = "filter_bank_6"
+
+[node name="Control" type="Control" parent="filter_bank_6"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="filter_bank_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Filter Q factor - how narrow the filer is"
+
+[node name="Label" parent="filter_bank_6/VBoxContainer" index="0"]
+text = "Q"
+
+[node name="HSlider" parent="filter_bank_6/VBoxContainer/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 10000.0
+step = 0.01
+value = 400.0
+
+[node name="VBoxContainer2" parent="filter_bank_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Makeup gain after filtering"
+
+[node name="Label" parent="filter_bank_6/VBoxContainer2" index="0"]
+text = "Makeup Gain"
+
+[node name="HSlider" parent="filter_bank_6/VBoxContainer2/HSplitContainer" index="0"]
+min_value = 0.02
+max_value = 60.0
+step = 0.01
+value = 1.5
+exp_edit = true
+
+[node name="VBoxContainer3" parent="filter_bank_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Lowest frequency filter,"
+
+[node name="Label" parent="filter_bank_6/VBoxContainer3" index="0"]
+text = "Lowest Band"
+
+[node name="HSlider" parent="filter_bank_6/VBoxContainer3/HSplitContainer" index="0"]
+min_value = 20.0
+max_value = 12000.0
+step = 0.01
+value = 55.0
+exp_edit = true
+
+[node name="VBoxContainer4" parent="filter_bank_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The highest frequency filter, must be higer than low filter"
+
+[node name="Label" parent="filter_bank_6/VBoxContainer4" index="0"]
+text = "Highest Band"
+
+[node name="HSlider" parent="filter_bank_6/VBoxContainer4/HSplitContainer" index="0"]
+min_value = 20.0
+max_value = 12000.0
+step = 0.01
+value = 12000.0
+exp_edit = true
+
+[node name="VBoxContainer5" parent="filter_bank_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The musical interval between each filter"
+
+[node name="Label" parent="filter_bank_6/VBoxContainer5" index="0"]
+text = "Semitones"
+
+[node name="HSlider" parent="filter_bank_6/VBoxContainer5/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 24.0
+value = 7.0
+
+[node name="VBoxContainer6" parent="filter_bank_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Amound of random spread applied to filter frequencies"
+
+[node name="Label" parent="filter_bank_6/VBoxContainer6" index="0"]
+text = "Scatter"
+
+[node name="HSlider" parent="filter_bank_6/VBoxContainer6/HSplitContainer" index="0"]
 max_value = 1.0
 step = 0.01
 value = 0.0
@@ -1828,6 +2274,23 @@ wrap_mode = 1
 [editable path="filter_bank_1/VBoxContainer3"]
 [editable path="filter_bank_1/VBoxContainer4"]
 [editable path="filter_bank_1/VBoxContainer6"]
+[editable path="filter_bank_2/VBoxContainer"]
+[editable path="filter_bank_2/VBoxContainer2"]
+[editable path="filter_bank_2/VBoxContainer3"]
+[editable path="filter_bank_2/VBoxContainer4"]
+[editable path="filter_bank_2/VBoxContainer6"]
+[editable path="filter_bank_5/VBoxContainer"]
+[editable path="filter_bank_5/VBoxContainer2"]
+[editable path="filter_bank_5/VBoxContainer3"]
+[editable path="filter_bank_5/VBoxContainer4"]
+[editable path="filter_bank_5/VBoxContainer5"]
+[editable path="filter_bank_5/VBoxContainer6"]
+[editable path="filter_bank_6/VBoxContainer"]
+[editable path="filter_bank_6/VBoxContainer2"]
+[editable path="filter_bank_6/VBoxContainer3"]
+[editable path="filter_bank_6/VBoxContainer4"]
+[editable path="filter_bank_6/VBoxContainer5"]
+[editable path="filter_bank_6/VBoxContainer6"]
 [editable path="focus_accu/VBoxContainer2"]
 [editable path="focus_accu/VBoxContainer"]
 [editable path="blur_blur/VBoxContainer"]
