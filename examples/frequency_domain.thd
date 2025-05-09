@@ -1,0 +1,236 @@
+{
+	"connections": [
+		{
+			"from_node": "inputfile",
+			"from_port": 0,
+			"to_node": "pvoc_anal_1",
+			"to_port": 0
+		},
+		{
+			"from_node": "spectstr_stretch",
+			"from_port": 0,
+			"to_node": "blur_blur",
+			"to_port": 0
+		},
+		{
+			"from_node": "pvoc_anal_1",
+			"from_port": 0,
+			"to_node": "spectstr_stretch",
+			"to_port": 0
+		},
+		{
+			"from_node": "pvoc_synth",
+			"from_port": 0,
+			"to_node": "outputfile",
+			"to_port": 0
+		},
+		{
+			"from_node": "blur_blur",
+			"from_port": 0,
+			"to_node": "pvoc_synth2",
+			"to_port": 0
+		},
+		{
+			"from_node": "pvoc_synth2",
+			"from_port": 0,
+			"to_node": "outputfile",
+			"to_port": 0
+		},
+		{
+			"from_node": "spectstr_stretch",
+			"from_port": 0,
+			"to_node": "blur_scatter",
+			"to_port": 0
+		},
+		{
+			"from_node": "blur_scatter",
+			"from_port": 0,
+			"to_node": "pvoc_synth",
+			"to_port": 0
+		}
+	],
+	"nodes": [
+		{
+			"command": "spectstr_stretch",
+			"name": "spectstr_stretch",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 815.333312988281,
+				"y": 78.7777404785156
+			},
+			"slider_values": {
+				"HSlider": 0.0
+			}
+		},
+		{
+			"command": "blur_blur",
+			"name": "blur_blur",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1150.88891601563,
+				"y": 232.999954223633
+			},
+			"slider_values": {
+				"HSlider": 369.0
+			}
+		},
+		{
+			"command": "pvoc_synth",
+			"name": "pvoc_synth",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1477.66662597656,
+				"y": 79.2222137451172
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "pvoc_synth",
+			"name": "pvoc_synth2",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1478.77783203125,
+				"y": 232.666625976563
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "pvoc_anal_1",
+			"name": "pvoc_anal_1",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 484.0,
+				"y": 78.3333358764648
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "outputfile",
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1832.22229003906,
+				"y": 77.7777786254883
+			},
+			"slider_values": {
+				"@HSlider@1026": 0.0
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "The \"Frequency Domain\" processes allow you to perform unique transformations to a sound"
+			},
+			"offset": {
+				"x": 64.6666793823242,
+				"y": 453.555572509766
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes2",
+			"notes": {
+				"CodeEdit": "These processes work by manipulating FFT analysis files of the audio and as such your audio must first be analysed using PVOC: Analyse"
+			},
+			"offset": {
+				"x": 483.444427490234,
+				"y": 454.333343505859
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes3",
+			"notes": {
+				"CodeEdit": "This enables processing that is difficult/impossible to do in the time domain. E.g. PVOC: Stretch allows extreme time stretching without changing pitch"
+			},
+			"offset": {
+				"x": 815.666687011719,
+				"y": 452.222229003906
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes4",
+			"notes": {
+				"CodeEdit": "Frequency Domain PVOC signals can be split but they cannot be mixed directly, if you want to mix the signals you will need to convert them back..."
+			},
+			"offset": {
+				"x": 1151.33337402344,
+				"y": 449.888885498047
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes5",
+			"notes": {
+				"CodeEdit": "...using PVOC: Resynthesise. This  process will take the analysis files that PVOC uses and turn it back into audio."
+			},
+			"offset": {
+				"x": 1481.55554199219,
+				"y": 449.666656494141
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "inputfile",
+			"name": "inputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 18.8888874053955,
+				"y": 78.8888854980469
+			},
+			"slider_values": {
+				"@HSlider@918": 0.0
+			}
+		},
+		{
+			"command": "blur_scatter",
+			"name": "blur_scatter",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1149.55541992188,
+				"y": 79.8888244628906
+			},
+			"slider_values": {
+				"HSlider": 16.0
+			}
+		}
+	]
+}

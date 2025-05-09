@@ -4,4 +4,4 @@ extends GraphEdit
 func _ready() -> void:
 	snapping_enabled = false
 	show_grid = false
-	zoom = 0.55
+	zoom = 0.9

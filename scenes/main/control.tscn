@@ -18,6 +18,7 @@ layout_mode = 1
 anchors_preset = -1
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = 32.0
 right_disconnects = true
 script = ExtResource("2_3ioqo")
 
@@ -30,6 +31,7 @@ use_native_dialog = true
 
 [node name="mainmenu" parent="." instance=ExtResource("3_dtf4o")]
 layout_mode = 1
+offset_top = 32.0
 
 [node name="NoLocationPopup" type="Window" parent="."]
 auto_translate_mode = 1
@@ -135,7 +137,6 @@ use_native_dialog = true
 title = "Generating Output"
 initial_position = 5
 size = Vector2i(600, 400)
-visible = false
 unresizable = true
 always_on_top = true
 
@@ -159,6 +160,68 @@ offset_right = 428.0
 offset_bottom = 389.0
 text = "Open Output Folder"
 
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 32.0
+grow_horizontal = 2
+color = Color(0.054902, 0.0745098, 0.0745098, 1)
+
+[node name="MenuBar" type="MenuBar" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 8.0
+offset_right = -8.0
+offset_bottom = 31.0
+grow_horizontal = 2
+flat = true
+
+[node name="FileButton" type="PopupMenu" parent="MenuBar"]
+title = "File"
+item_count = 2
+item_0/text = "Save Process Chain"
+item_0/id = 0
+item_1/text = "Load Process Chain"
+item_1/id = 1
+
+[node name="SettingsButton" type="PopupMenu" parent="MenuBar"]
+title = "Settings"
+item_count = 3
+item_0/text = "Change CDP Folder Location"
+item_0/id = 0
+item_1/text = "Disable PVOC Multi Input Warning"
+item_1/checkable = 1
+item_1/id = 1
+item_2/text = "Auto Close Console"
+item_2/checkable = 1
+item_2/id = 2
+
+[node name="HelpButton" type="PopupMenu" parent="MenuBar"]
+auto_translate_mode = 1
+title = "Help"
+item_count = 5
+item_0/text = "Demos"
+item_0/id = 0
+item_0/separator = true
+item_1/text = "Combining Nodes"
+item_1/id = 2
+item_2/text = "Frequency Domain"
+item_2/id = 2
+item_3/text = "Other Help"
+item_3/id = 3
+item_3/separator = true
+item_4/text = "CDP Documentation"
+item_4/id = 4
+
+[node name="SaveDialog" type="FileDialog" parent="."]
+use_native_dialog = true
+
+[node name="LoadDialog" type="FileDialog" parent="."]
+auto_translate_mode = 1
+use_native_dialog = true
+
 [connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="delete_nodes_request" from="GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
 [connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
@@ -172,3 +235,8 @@ text = "Open Output Folder"
 [connection signal="dir_selected" from="CdpLocationDialog" to="." method="_on_cdp_location_dialog_dir_selected"]
 [connection signal="close_requested" from="Console" to="." method="_on_console_close_requested"]
 [connection signal="button_down" from="Console/ConsoleOpenFolder" to="." method="_on_console_open_folder_button_down"]
+[connection signal="index_pressed" from="MenuBar/FileButton" to="." method="_on_file_button_index_pressed"]
+[connection signal="index_pressed" from="MenuBar/SettingsButton" to="." method="_on_settings_button_index_pressed"]
+[connection signal="index_pressed" from="MenuBar/HelpButton" to="." method="_on_help_button_index_pressed"]
+[connection signal="file_selected" from="SaveDialog" to="." method="_on_save_dialog_file_selected"]
+[connection signal="file_selected" from="LoadDialog" to="." method="_on_load_dialog_file_selected"]

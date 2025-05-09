@@ -4,3 +4,5 @@ res://scenes/Nodes/nodes.tscn
 res://scenes/menu/menu.tscn
 res://scenes/Nodes/audioplayer.tscn
 res://scenes/main/control.gd
+res://scenes/main/graph_edit.gd
+res://config_handler.gd

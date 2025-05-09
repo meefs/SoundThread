@@ -21,6 +21,14 @@ func _ready() -> void:
 	$NoInputPopup.hide()
 	$MultipleConnectionsPopup.hide()
 	
+	$SaveDialog.access = FileDialog.ACCESS_FILESYSTEM
+	$SaveDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	$SaveDialog.filters = ["*.thd"]
+	
+	$LoadDialog.access = FileDialog.ACCESS_FILESYSTEM
+	$LoadDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	$LoadDialog.filters = ["*.thd"]
+	
 	#Goes through all nodes in scene and checks for buttons in the make_node_buttons group
 	#Associates all buttons with the _on_button_pressed fuction and passes the button as an argument
 	for child in get_tree().get_nodes_in_group("make_node_buttons"):
@@ -30,13 +38,15 @@ func _ready() -> void:
 	#Generate input and output nodes
 	var effect: GraphNode = Nodes.get_node(NodePath("inputfile")).duplicate()
 	get_node("GraphEdit").add_child(effect, true)
-	effect.position_offset = Vector2(-500,-150)
+	effect.position_offset = Vector2(20,80)
 	
 	effect = Nodes.get_node(NodePath("outputfile")).duplicate()
 	get_node("GraphEdit").add_child(effect, true)
-	effect.position_offset = Vector2(1000,-150)
+	effect.position_offset = Vector2(1400,80)
 	
 	check_cdp_location_set()
+	check_user_preferences()
+	
 	
 	#link output file to input file to enable audio output file loopback
 	$GraphEdit/outputfile/AudioPlayer.recycle_outfile_trigger.connect($GraphEdit/inputfile/AudioPlayer.recycle_outfile)
@@ -47,6 +57,12 @@ func _ready() -> void:
 	#link and set delete intermediat files toggle from outputfile
 	$GraphEdit/outputfile/DeleteIntermediateFilesToggle.toggled.connect(_toggle_delete)
 	$GraphEdit/outputfile/DeleteIntermediateFilesToggle.button_pressed = true
+	
+func check_user_preferences():
+	var interface_settings = ConfigHandler.load_interface_settings()
+	$MenuBar/SettingsButton.set_item_checked(1, interface_settings.disable_pvoc_warning)
+	$MenuBar/SettingsButton.set_item_checked(2, interface_settings.auto_close_console)
+
 	
 func check_cdp_location_set():
 	#checks if the location has been set and prompts user to set it
@@ -140,7 +156,9 @@ func _on_graph_edit_connection_request(from_node: StringName, from_port: int, to
 			if conn.to_node == to_node and conn.to_port == to_port:
 				existing_connections += 1
 				if existing_connections >= 1:
-					$MultipleConnectionsPopup.show()
+					var interface_settings = ConfigHandler.load_interface_settings()
+					if interface_settings.disable_pvoc_warning == false:
+						$MultipleConnectionsPopup.show()
 					return
 
 	# If no conflict, allow the connection
@@ -230,7 +248,6 @@ func copy_selected_nodes():
 
 	# Store connections between selected nodes
 	for conn in graph_edit.get_connection_list():
-		# Assuming 'from_node' and 'to_node' are StringName values
 		var from_ref = graph_edit.get_node_or_null(NodePath(conn["from_node"]))
 		var to_ref = graph_edit.get_node_or_null(NodePath(conn["to_node"]))
 
@@ -316,7 +333,9 @@ func paste_copied_nodes():
 		undo_redo.add_undo_method(Callable(self, "remove_connections_to_node").bind(pasted_node))
 	undo_redo.commit_action()
 
-#Here be dragons
+######## Here be dragons #########
+##################################
+
 #Scans through all nodes and generates a batch file based on their order
 
 func _run_process() -> void:
@@ -328,7 +347,9 @@ func _run_process() -> void:
 func _on_file_dialog_dir_selected(dir: String) -> void:
 	console_output.clear()
 	$Console.show()
+	await get_tree().process_frame
 	log_console("Generating processing queue", true)
+	await get_tree().process_frame
 
 	#get the current time in hh-mm-ss format as default : causes file name issues
 	var time_dict = Time.get_time_dict_from_system()
@@ -339,6 +360,7 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	var time_str = hour + "-" + minute + "-" + second
 	Global.outfile = dir + "/outfile_" + Time.get_date_string_from_system() + "_" + time_str
 	log_console("Output directory and file name(s):" + Global.outfile, true)
+	await get_tree().process_frame
 	
 	generate_batch_file_with_branches()
 	
@@ -348,7 +370,10 @@ func generate_batch_file_with_branches():
 	var reverse_graph = {}
 	var indegree = {}
 	var all_nodes = {}
-
+	
+	log_console("Generating batch file.", true)
+	await get_tree().process_frame
+	
 	# Step 1: Collect nodes
 	for child in graph_edit.get_children():
 		if child is GraphNode:
@@ -391,6 +416,9 @@ func generate_batch_file_with_branches():
 	var stereo_outputs = {}
 
 	if Global.infile_stereo:
+		log_console("Input file is stereo, note this may cause left/right decorrelation with some processes.", true)
+		await get_tree().process_frame
+		
 		# Step 4.1: Split stereo to c1/c2
 		batch_lines.append("%s/housekeep chans 2 \"%s\"" % [cdpprogs_location, Global.infile])
 
@@ -544,7 +572,7 @@ func generate_batch_file_with_branches():
 			intermediate_files.erase(single_output)
 
 		# Step 5: Cleanup commands
-		log_console("Adding cleanup commands for intermediate files", true)
+		log_console("Adding cleanup commands for intermediate files.", true)
 		for file_path in intermediate_files:
 			batch_lines.append("del \"%s\"" % file_path.replace("/", "\\"))
 
@@ -554,7 +582,9 @@ func generate_batch_file_with_branches():
 		file.store_line(line)
 	file.close()
 
-	log_console("Batch script with merging written.", true)
+	log_console("Batch file complete.", true)
+	log_console("Processing audio, please wait.", true)
+	await get_tree().process_frame
 	run_batch_file()
 
 
@@ -684,12 +714,16 @@ func run_batch_file():
 		console_output.append_text(output_str + "/n")
 		if final_output_dir.ends_with(".wav"):
 			$GraphEdit/outputfile/AudioPlayer.play_outfile(final_output_dir)
+		var interface_settings = ConfigHandler.load_interface_settings()
+		if interface_settings.auto_close_console == true:
+			$Console.hide()
 	else:
 		console_output.append_text("[color=red][b]Processes failed with exit code: %d[/b][/color]\n" % exit_code + "\n \n")
 		console_output.append_text("[b]Error:[/b]\n" )
 		console_output.scroll_to_line(console_output.get_line_count() - 1)
 		console_output.append_text(error_str + "/n")
 
+######## Realtively free from dragons from here
 
 func _toggle_delete(toggled_on: bool):
 	delete_intermediate_outputs = toggled_on
@@ -715,3 +749,163 @@ func _on_ok_button_2_button_down() -> void:
 
 func _on_ok_button_3_button_down() -> void:
 	$MultipleConnectionsPopup.hide()
+
+
+
+func _on_settings_button_index_pressed(index: int) -> void:
+	var interface_settings = ConfigHandler.load_interface_settings()
+	
+	match index:
+		0:
+			$CdpLocationDialog.show()
+		1:
+			if interface_settings.disable_pvoc_warning == false:
+				$MenuBar/SettingsButton.set_item_checked(index, true)
+				ConfigHandler.save_interface_settings("disable_pvoc_warning", true)
+			else:
+				$MenuBar/SettingsButton.set_item_checked(index, false)
+				ConfigHandler.save_interface_settings("disable_pvoc_warning", false)
+		2:
+			if interface_settings.auto_close_console == false:
+				$MenuBar/SettingsButton.set_item_checked(index, true)
+				ConfigHandler.save_interface_settings("auto_close_console", true)
+			else:
+				$MenuBar/SettingsButton.set_item_checked(index, false)
+				ConfigHandler.save_interface_settings("auto_close_console", false)
+
+
+func _on_file_button_index_pressed(index: int) -> void:
+	match index:
+		0:
+			$SaveDialog.popup_centered()
+		1:
+			$LoadDialog.popup_centered()
+
+
+func save_graph_edit(path: String):
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	if file == null:
+		print("Failed to open file for saving")
+		return
+
+	var node_data_list = []
+	var connection_data_list = []
+
+	for node in graph_edit.get_children():
+		if node is GraphNode:
+			var offset = node.position_offset
+			var node_data = {
+				"name": node.name,
+				"command": node.get_meta("command"),
+				"offset": { "x": offset.x, "y": offset.y },
+				"slider_values": {},
+				"notes":{}
+			}
+
+			for child in node.find_children("*", "Slider", true, false):
+				node_data["slider_values"][child.name] = child.value
+				
+			for child in node.find_children("*", "CodeEdit", true, false):
+				node_data["notes"][child.name] = child.text
+
+			node_data_list.append(node_data)
+
+	for conn in graph_edit.get_connection_list():
+		connection_data_list.append({
+			"from_node": conn["from_node"],
+			"from_port": conn["from_port"],
+			"to_node": conn["to_node"],
+			"to_port": conn["to_port"]
+		})
+
+	var graph_data = {
+		"nodes": node_data_list,
+		"connections": connection_data_list
+	}
+
+	var json = JSON.new()
+	var json_string = json.stringify(graph_data, "\t")
+	file.store_string(json_string)
+	file.close()
+	print("Graph saved.")
+
+
+func load_graph_edit(path: String):
+	var file = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		print("Failed to open file for loading")
+		return
+
+	var json_text = file.get_as_text()
+	file.close()
+
+	var json = JSON.new()
+	if json.parse(json_text) != OK:
+		print("Error parsing JSON")
+		return
+
+	var graph_data = json.get_data()
+	graph_edit.clear_connections()
+
+	for node in graph_edit.get_children():
+		if node is GraphNode:
+			node.queue_free()
+
+	await get_tree().process_frame  # Ensure nodes are cleared
+
+	for node_data in graph_data["nodes"]:
+		var command_name = node_data.get("command", "")
+		var template = Nodes.get_node_or_null(command_name)
+		if not template:
+			print("Template not found for command:", command_name)
+			continue
+
+		var new_node: GraphNode = template.duplicate()
+		new_node.name = node_data["name"]
+		new_node.position_offset = Vector2(node_data["offset"]["x"], node_data["offset"]["y"])
+		new_node.set_meta("command", command_name)
+		graph_edit.add_child(new_node)
+
+		# Restore sliders
+		for slider_name in node_data["slider_values"]:
+			var slider = new_node.find_child(slider_name, true, false)
+			if slider and (slider is HSlider or slider is VSlider):
+				slider.value = node_data["slider_values"][slider_name]
+				
+		# Restore notes
+		for codeedit_name in node_data["notes"]:
+			var codeedit = new_node.find_child(codeedit_name, true, false)
+			if codeedit and (codeedit is CodeEdit):
+				codeedit.text = node_data["notes"][codeedit_name]
+			
+	# Restore connections
+	for conn in graph_data["connections"]:
+		graph_edit.connect_node(
+			conn["from_node"], conn["from_port"],
+			conn["to_node"], conn["to_port"]
+		)
+
+	print("Graph loaded.")
+
+
+func _on_save_dialog_file_selected(path: String) -> void:
+	save_graph_edit(path)
+
+
+
+func _on_load_dialog_file_selected(path: String) -> void:
+	load_graph_edit(path)
+
+
+func _on_help_button_index_pressed(index: int) -> void:
+	match index:
+		0:
+			pass
+		1:
+			pass
+		2:
+			load_graph_edit("res://examples/frequency_domain.thd")
+		3:
+			pass
+		4:
+			OS.shell_open("https://www.composersdesktop.com/docs/html/cdphome.htm")

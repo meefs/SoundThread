@@ -38,6 +38,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+metadata/command = "inputfile"
 
 [node name="Control" type="Control" parent="inputfile"]
 layout_mode = 2
@@ -98,6 +99,7 @@ slot/4/right_type = 0
 slot/4/right_color = Color(1, 1, 1, 1)
 slot/4/right_icon = null
 slot/4/draw_stylebox = true
+metadata/command = "outputfile"
 
 [node name="Control" type="Control" parent="outputfile"]
 layout_mode = 2
@@ -1818,7 +1820,6 @@ offset_left = 1042.0
 offset_top = 32.0
 offset_right = 1348.0
 offset_bottom = 237.0
-tooltip_text = "Oscillate between harmonic and inharmonic state"
 title = "Notes"
 slot/0/left_enabled = false
 slot/0/left_type = 1
@@ -1829,7 +1830,7 @@ slot/0/right_type = 1
 slot/0/right_color = Color(0, 0, 0, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
-metadata/command = "strange_waver_1"
+metadata/command = "notes"
 
 [node name="CodeEdit" type="CodeEdit" parent="notes"]
 custom_minimum_size = Vector2(0, 150)
