@@ -5,11 +5,11 @@
 			"command": "notes",
 			"name": "notes_copy_5112",
 			"notes": {
-				"CodeEdit": "The little white squares on the sides of these nodes are inputs (left) and outputs (right). \n\nYou can connect nodes together by clicking and dragging from one to another.\n\nYou can detach a node by clicking on the input."
+				"CodeEdit": "The little white squares on the sides of these nodes are inputs (left) and outputs (right). \n\nYou can connect nodes together by clicking and dragging from one to another.\n\nYou can detach a node by clicking on the input (left)."
 			},
 			"offset": {
-				"x": 169.333160400391,
-				"y": 514.777709960938
+				"x": 521.555419921875,
+				"y": 596.999938964844
 			},
 			"slider_values": {
 
@@ -19,11 +19,11 @@
 			"command": "notes",
 			"name": "notes2",
 			"notes": {
-				"CodeEdit": "Each node is a function from the Composers Desktop Project.\n\nYou can hover your mouse over the name of a node to find out a bit more about it.\nYou can also hover over sliders to get more information about them."
+				"CodeEdit": "Each node is a function from the Composers Desktop Project.\n\nYou can hover your mouse over the name of a node to find out a bit more about it.\nYou can also hover over sliders to get more information about them.\n\nConnect \"Input File\" to \"Distort: Average\" and \"Distort:Average\" to \"Output File\"."
 			},
 			"offset": {
-				"x": 604.555480957031,
-				"y": 519.444458007813
+				"x": 956.777709960938,
+				"y": 601.666687011719
 			},
 			"slider_values": {
 
@@ -33,28 +33,14 @@
 			"command": "notes",
 			"name": "notes3",
 			"notes": {
-				"CodeEdit": "Connect \"Input File\" to \"Distort: Average\" and \"Distort:Average\" to \"Output File\".\n\nClick \"Run Process\" and it will prompt you for a location to save the audio files that CDP Generates and then it will run the process.\n\nIf it runs successfully you can close the console and press play on \"Output File\""
+				"CodeEdit": "Click \"Run Thread\" and it will prompt you for a location to save the audio files that CDP Generates and then it will run the process.\n\nIf it runs successfully you can close the console and press play on \"Output File\".\n"
 			},
 			"offset": {
-				"x": 1078.66662597656,
-				"y": 517.888793945313
+				"x": 1430.88879394531,
+				"y": 600.111022949219
 			},
 			"slider_values": {
 
-			}
-		},
-		{
-			"command": "inputfile",
-			"name": "inputfile",
-			"notes": {
-
-			},
-			"offset": {
-				"x": -293.555603027344,
-				"y": 45.8888778686523
-			},
-			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1268/@MarginContainer@1308/Tree/@Popup@1294/@VBoxContainer@1295/@HSlider@1303": 0.0
 			}
 		},
 		{
@@ -64,8 +50,8 @@
 				"CodeEdit": "Welcome to SoundThread!\n\nTo get started, load a sound file into \"Input File\"\n\nIt supports a mono or stereo .wav file."
 			},
 			"offset": {
-				"x": -304.444519042969,
-				"y": 515.333251953125
+				"x": 47.7777099609375,
+				"y": 597.555480957031
 			},
 			"slider_values": {
 
@@ -78,11 +64,11 @@
 
 			},
 			"offset": {
-				"x": 1063.88879394531,
-				"y": -46.1111259460449
+				"x": 1416.11096191406,
+				"y": 36.1110992431641
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1160/@MarginContainer@1200/Tree/@Popup@1186/@VBoxContainer@1187/@HSlider@1195": 0.0
+				"AudioPlayer/FileDialog/@VBoxContainer@2192/@MarginContainer@2232/Tree/@Popup@2218/@VBoxContainer@2219/@HSlider@2227": 0.0
 			}
 		},
 		{
@@ -92,11 +78,25 @@
 
 			},
 			"offset": {
-				"x": 406.222137451172,
-				"y": 103.666656494141
+				"x": 758.444396972656,
+				"y": 185.888885498047
 			},
 			"slider_values": {
 				"VBoxContainer/HSplitContainer/HSlider": 18.0
+			}
+		},
+		{
+			"command": "inputfile",
+			"name": "inputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 58.6666221618652,
+				"y": 128.111099243164
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@2303/@MarginContainer@2343/Tree/@Popup@2329/@VBoxContainer@2330/@HSlider@2338": 0.0
 			}
 		}
 	]

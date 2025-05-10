@@ -73,8 +73,10 @@ func new_patch():
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
 	
 	changesmade = false #so it stops trying to save unchanged empty files
-	
+	get_window().title = "SoundThread"
 	link_output()
+	
+	
 
 func link_output():
 	#links various buttons and function in the input nodes - this is called after they are created so that it still works on new and loading files
@@ -121,6 +123,10 @@ func check_cdp_location_set():
 func _on_ok_button_button_down() -> void:
 	#after user has read dialog on where to find cdp progs this loads the file browser
 	$NoLocationPopup.hide()
+	if OS.get_name() == "Windows":
+		$CdpLocationDialog.current_dir = "C:/"
+	else:
+		$CdpLocationDialog.current_dir = "~/"
 	$CdpLocationDialog.show()
 
 func _on_cdp_location_dialog_dir_selected(dir: String) -> void:
@@ -1169,7 +1175,8 @@ func _on_settings_button_index_pressed(index: int) -> void:
 			else:
 				$MenuBar/SettingsButton.set_item_checked(index, false)
 				ConfigHandler.save_interface_settings("auto_close_console", false)
-
+		3:
+			$Console.show()
 
 func _on_file_button_index_pressed(index: int) -> void:
 	match index:
@@ -1244,6 +1251,8 @@ func save_graph_edit(path: String):
 	file.store_string(json_string)
 	file.close()
 	print("Graph saved.")
+	changesmade = false
+	get_window().title = "SoundThread - " + path.get_file().trim_suffix(".thd")
 
 
 func load_graph_edit(path: String):
@@ -1305,6 +1314,7 @@ func load_graph_edit(path: String):
 		)
 	link_output()
 	print("Graph loaded.")
+	get_window().title = "SoundThread - " + path.get_file().trim_suffix(".thd")
 
 
 func _on_save_dialog_file_selected(path: String) -> void:
@@ -1334,8 +1344,30 @@ func _on_help_button_index_pressed(index: int) -> void:
 		0:
 			pass
 		1:
-			pass
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/getting_started.thd"
+				$SaveChangesPopup.show()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				load_graph_edit("res://examples/getting_started.thd")
 		2:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/navigating.thd"
+				$SaveChangesPopup.show()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				load_graph_edit("res://examples/navigating.thd")
+		3:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/building_a_thread.thd"
+				$SaveChangesPopup.show()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				load_graph_edit("res://examples/building_a_thread.thd")
+		4:
 			if changesmade == true:
 				savestate = "helpfile"
 				helpfile = "res://examples/frequency_domain.thd"
@@ -1343,9 +1375,17 @@ func _on_help_button_index_pressed(index: int) -> void:
 			else:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				load_graph_edit("res://examples/frequency_domain.thd")
-		3:
+		5:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/quirks.thd"
+				$SaveChangesPopup.show()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				load_graph_edit("res://examples/quirks.thd")
+		6:
 			pass
-		4:
+		7:
 			OS.shell_open("https://www.composersdesktop.com/docs/html/cdphome.htm")
 
 func _recycle_outfile():
@@ -1401,3 +1441,10 @@ func _notification(what):
 func _open_output_folder():
 	if lastoutputfolder != "none":
 		OS.shell_open(lastoutputfolder)
+		
+		
+
+
+func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
+	print(str(meta))
+	OS.shell_open(str(meta))

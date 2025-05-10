@@ -1,0 +1,158 @@
+{
+	"connections": [
+		{
+			"from_node": "inputfile",
+			"from_port": 0,
+			"to_node": "modify_brassage_5",
+			"to_port": 0
+		},
+		{
+			"from_node": "modify_brassage_5",
+			"from_port": 0,
+			"to_node": "distort_interpolate",
+			"to_port": 0
+		},
+		{
+			"from_node": "modify_brassage_5",
+			"from_port": 0,
+			"to_node": "modify_speed_2",
+			"to_port": 0
+		},
+		{
+			"from_node": "distort_interpolate",
+			"from_port": 0,
+			"to_node": "filter_bank_1",
+			"to_port": 0
+		},
+		{
+			"from_node": "modify_speed_2",
+			"from_port": 0,
+			"to_node": "filter_bank_1",
+			"to_port": 0
+		},
+		{
+			"from_node": "filter_bank_1",
+			"from_port": 0,
+			"to_node": "outputfile",
+			"to_port": 0
+		}
+	],
+	"nodes": [
+		{
+			"command": "inputfile",
+			"name": "inputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": -85.5555572509766,
+				"y": 74.4444427490234
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1161/@MarginContainer@1201/Tree/@Popup@1187/@VBoxContainer@1188/@HSlider@1196": 0.0
+			}
+		},
+		{
+			"command": "modify_brassage_5",
+			"name": "modify_brassage_5",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 374.888854980469,
+				"y": 75.0
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": 0.4
+			}
+		},
+		{
+			"command": "modify_speed_2",
+			"name": "modify_speed_2",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 721.111145019531,
+				"y": 214.33332824707
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": -12.0
+			}
+		},
+		{
+			"command": "distort_interpolate",
+			"name": "distort_interpolate",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 721.666687011719,
+				"y": 74.8888854980469
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": 2.0
+			}
+		},
+		{
+			"command": "outputfile",
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1440.0,
+				"y": 76.6666717529297
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1278/@MarginContainer@1318/Tree/@Popup@1304/@VBoxContainer@1305/@HSlider@1313": 0.0
+			}
+		},
+		{
+			"command": "filter_bank_1",
+			"name": "filter_bank_1",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1080.66662597656,
+				"y": 75.2222061157227
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": 500.0,
+				"VBoxContainer2/HSplitContainer/HSlider": 1.0,
+				"VBoxContainer3/HSplitContainer/HSlider": 110.0,
+				"VBoxContainer4/HSplitContainer/HSlider": 1760.0,
+				"VBoxContainer6/HSplitContainer/HSlider": 0.2
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "Multiple nodes can be combined to create a thread.\n\nThey will be run in the order that they are connected in your thread.\n\nNote: all nodes must have a route to and from \"Input File\" and \"Output File\" to run. Anything not connected will be ignored."
+			},
+			"offset": {
+				"x": 447.777801513672,
+				"y": 494.777770996094
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes2",
+			"notes": {
+				"CodeEdit": "The signal can be split out of nodes to run processes in parallel.\n\nYou can also connect multiple outputs from \"Time Domain\" nodes to the input of another to mix their outputs together.\n\nNote: \"Frequency Domain\" processes can be split but not mixed directly, see the Frequency Domain Demo for more. "
+			},
+			"offset": {
+				"x": 895.222229003906,
+				"y": 493.889007568359
+			},
+			"slider_values": {
+
+			}
+		}
+	]
+}

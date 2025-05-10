@@ -133,7 +133,7 @@
 				"y": 78.8888854980469
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1325/@MarginContainer@1365/Tree/@Popup@1351/@VBoxContainer@1352/@HSlider@1360": 0.0
+				"AudioPlayer/FileDialog/@VBoxContainer@2175/@MarginContainer@2215/Tree/@Popup@2201/@VBoxContainer@2202/@HSlider@2210": 0.0
 			}
 		},
 		{
@@ -175,7 +175,7 @@
 				"y": 77.7777786254883
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1177/@MarginContainer@1217/Tree/@Popup@1203/@VBoxContainer@1204/@HSlider@1212": 0.0
+				"AudioPlayer/FileDialog/@VBoxContainer@2294/@MarginContainer@2334/Tree/@Popup@2320/@VBoxContainer@2321/@HSlider@2329": 0.0
 			}
 		},
 		{
@@ -210,7 +210,7 @@
 			"command": "notes",
 			"name": "notes5",
 			"notes": {
-				"CodeEdit": "You can use both Time Domain and Frequency Domain processes in the same Thread. You just need to convert between the two using \"PVOC: Anlalyse\" and \"PVOC: Resynthesise\"."
+				"CodeEdit": "You can use both Time Domain and Frequency Domain processes in the same Thread. You just need to convert between the two using \"PVOC: Anlalyse\" and \"PVOC: Resynthesise\".\n\nTime domain inputs and outputs are white and Frequency Domain inputs and outputs are black."
 			},
 			"offset": {
 				"x": 1407.61108398438,

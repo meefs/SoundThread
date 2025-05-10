@@ -1,0 +1,118 @@
+{
+	"connections": [
+		{
+			"from_node": "inputfile2",
+			"from_port": 0,
+			"to_node": "extend_scramble_1",
+			"to_port": 0
+		},
+		{
+			"from_node": "extend_scramble_1",
+			"from_port": 0,
+			"to_node": "outputfile2",
+			"to_port": 0
+		}
+	],
+	"nodes": [
+		{
+			"command": "notes",
+			"name": "notes2",
+			"notes": {
+				"CodeEdit": "Perhaps the biggest quirk is how SoundThread handles stereo files.\n\nMany processes in CDP are mono only, to get arround this, SoundThread splits all stereo files into dual mono and processes them indpendently and reinterleaves the files at the end.\n\nThis works great for most mono only processes but causes potential issues with processes that were designed to work with stereo files. This is particularly an issue with processes that use randomness and chance. When running a stereo file through \"Extend: Scramble\" the random chunks it cuts out will be different in left and right creating a decorrolation of the stereo image. This doesn't sound bad but is not its intended application. \n\nFixing this behaviour is on the list for the next release of SoundThread."
+			},
+			"offset": {
+				"x": 475.222106933594,
+				"y": 524.333374023438
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "extend_scramble_1",
+			"name": "extend_scramble_1",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 525.555480957031,
+				"y": 26.7777614593506
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": 0.05,
+				"VBoxContainer2/HSplitContainer/HSlider": 1.5,
+				"VBoxContainer3/HSplitContainer/HSlider": 60.0
+			}
+		},
+		{
+			"command": "outputfile",
+			"name": "outputfile2",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 904.66650390625,
+				"y": 27.444429397583
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1774/@MarginContainer@1814/Tree/@Popup@1800/@VBoxContainer@1801/@HSlider@1809": 0.0
+			}
+		},
+		{
+			"command": "inputfile",
+			"name": "inputfile2",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 26.1111125946045,
+				"y": 27.444429397583
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1666/@MarginContainer@1706/Tree/@Popup@1692/@VBoxContainer@1693/@HSlider@1701": 0.0
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "SoundThread is currently in Alpha and as such it has a lot of quirks and a lot of features from CDP are not yet implemented.\n\nIf you find a bug or something that seems weird please raise an issue on github:\nhttps://github.com/j-p-higgins/SoundThread/issues"
+			},
+			"offset": {
+				"x": 16.0000019073486,
+				"y": 523.666748046875
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes3",
+			"notes": {
+				"CodeEdit": "Another quirk is how SoundThread handles audio playback inside the application. \n\nSoundThread is built using Godot and Godot doesn not natively support bit-depths higher than 16 bit. As such \"Input File\" and \"Output File\" truncate to 16-bit before playback.\n\nHowever, all processing and your actual output files are done at the native resolution of your file."
+			},
+			"offset": {
+				"x": 923.333129882813,
+				"y": 524.888793945313
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes4",
+			"notes": {
+				"CodeEdit": "Finally, because of the way CDP reports errors the console in SoundThread may sometimes incorrectly tell you a process was successful when something failed.\n\nIf the output in \"Output File\" didn't change, something went wrong and you can check the console logs to find what CDP isn't happy about. (Usually you have set a length longer than your input sound)"
+			},
+			"offset": {
+				"x": 1368.0,
+				"y": 526.333312988281
+			},
+			"slider_values": {
+
+			}
+		}
+	]
+}

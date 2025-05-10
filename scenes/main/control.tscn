@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://bcs87y7ptx3ke"]
+[gd_scene load_steps=5 format=3 uid="uid://bcs87y7ptx3ke"]
 
 [ext_resource type="Script" uid="uid://bdlfvuljckmu1" path="res://scenes/main/control.gd" id="1_2f0aq"]
 [ext_resource type="Script" uid="uid://l2yejnjysupr" path="res://scenes/main/graph_edit.gd" id="2_3ioqo"]
 [ext_resource type="PackedScene" uid="uid://b0wdj8v6o0wq0" path="res://scenes/menu/menu.tscn" id="3_dtf4o"]
+[ext_resource type="Texture2D" uid="uid://cdwux1smquvpi" path="res://theme/images/logo.png" id="4_3ioqo"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -38,33 +39,46 @@ offset_top = 35.0
 auto_translate_mode = 1
 title = "Wrong File Type"
 initial_position = 2
-size = Vector2i(380, 175)
-visible = false
-exclusive = true
+size = Vector2i(450, 500)
 unresizable = true
 borderless = true
 always_on_top = true
 popup_window = true
 
-[node name="Label" type="Label" parent="NoLocationPopup"]
-offset_left = 14.0
+[node name="TextureRect" type="TextureRect" parent="NoLocationPopup"]
+offset_left = -6.0
 offset_top = 16.0
-offset_right = 363.0
-offset_bottom = 123.0
-text = "Please select the location of your _cdprogs folder. This can be changed later in settings.
+offset_right = 378.0
+offset_bottom = 64.0
+texture = ExtResource("4_3ioqo")
+expand_mode = 2
+stretch_mode = 4
 
-Windows Default: C:\\CDPR8\\_cdp\\_cdprogs
-Mac Default: ~/cdp/_cdprogs"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 2
+[node name="RichTextLabel" type="RichTextLabel" parent="NoLocationPopup"]
+offset_left = 16.0
+offset_top = 73.0
+offset_right = 435.0
+offset_bottom = 457.0
+bbcode_enabled = true
+text = "Welcome to SoundThread! 
+
+SoundThread is an interface for the Composers Desktop Project (CDP) audio processing tools. As such it requires you to have CDP installed to work correctly. If you don't already have CDP installed you can [url=\"https://www.unstablesound.net/cdp.html\"]download it here.[/url]
+
+When you close this window you will be prompted for the location of your _cdprogs folder. The default location for this folder is:
+Windows: C:/cdpr8/_cdp/_cdprogs
+Mac: ~/cdpr8/_cdp/_cdprogs
+
+SoundThread will remember this but you can always change it later in Settings.
+
+If this is your first time using SoundThread you can find some getting started tutorials in the Help tab in the top menu."
+scroll_active = false
 
 [node name="OkButton" type="Button" parent="NoLocationPopup"]
-offset_left = -2.0
-offset_top = 144.0
-offset_right = 382.0
-offset_bottom = 175.0
-text = "Ok"
+offset_left = -7.0
+offset_top = 469.0
+offset_right = 457.0
+offset_bottom = 500.0
+text = "Click to locate _cdprogs"
 
 [node name="NoInputPopup" type="Window" parent="."]
 auto_translate_mode = 1
@@ -197,7 +211,7 @@ item_3/id = 1
 
 [node name="SettingsButton" type="PopupMenu" parent="MenuBar"]
 title = "Settings"
-item_count = 3
+item_count = 4
 item_0/text = "Change CDP Folder Location"
 item_0/id = 0
 item_1/text = "Disable PVOC Multi Input Warning"
@@ -206,23 +220,31 @@ item_1/id = 1
 item_2/text = "Auto Close Console"
 item_2/checkable = 1
 item_2/id = 2
+item_3/text = "Open the Console"
+item_3/id = 3
 
 [node name="HelpButton" type="PopupMenu" parent="MenuBar"]
 auto_translate_mode = 1
 title = "Help"
-item_count = 5
-item_0/text = "Demos"
+item_count = 8
+item_0/text = "Tutorials"
 item_0/id = 0
 item_0/separator = true
 item_1/text = "Getting Started"
-item_1/id = 2
-item_2/text = "Frequency Domain"
+item_1/id = 1
+item_2/text = "Navigating SoundThread"
 item_2/id = 2
-item_3/text = "Other Help"
+item_3/text = "Building a Thread"
 item_3/id = 3
-item_3/separator = true
-item_4/text = "CDP Documentation"
+item_4/text = "Frequency Domain"
 item_4/id = 4
+item_5/text = "SoundThread Quirks"
+item_5/id = 5
+item_6/text = "Other Help"
+item_6/id = 6
+item_6/separator = true
+item_7/text = "CDP Documentation"
+item_7/id = 7
 
 [node name="SaveDialog" type="FileDialog" parent="."]
 use_native_dialog = true
@@ -273,6 +295,7 @@ text = "Don't Save"
 [connection signal="node_deselected" from="GraphEdit" to="." method="_on_graph_edit_node_deselected"]
 [connection signal="node_selected" from="GraphEdit" to="." method="_on_graph_edit_node_selected"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
+[connection signal="meta_clicked" from="NoLocationPopup/RichTextLabel" to="." method="_on_rich_text_label_meta_clicked"]
 [connection signal="button_down" from="NoLocationPopup/OkButton" to="." method="_on_ok_button_button_down"]
 [connection signal="button_down" from="NoInputPopup/OkButton2" to="." method="_on_ok_button_2_button_down"]
 [connection signal="button_down" from="MultipleConnectionsPopup/OkButton3" to="." method="_on_ok_button_3_button_down"]
