@@ -123,90 +123,6 @@
 			}
 		},
 		{
-			"command": "outputfile",
-			"name": "outputfile",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 1832.22229003906,
-				"y": 77.7777786254883
-			},
-			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1113/@MarginContainer@1153/Tree/@Popup@1139/@VBoxContainer@1140/@HSlider@1148": 0.0
-			}
-		},
-		{
-			"command": "notes",
-			"name": "notes",
-			"notes": {
-				"CodeEdit": "The \"Frequency Domain\" processes allow you to perform unique transformations to a sound. Load a file into Input File to test it out."
-			},
-			"offset": {
-				"x": 64.6666793823242,
-				"y": 453.555572509766
-			},
-			"slider_values": {
-
-			}
-		},
-		{
-			"command": "notes",
-			"name": "notes2",
-			"notes": {
-				"CodeEdit": "These processes work by manipulating FFT analysis files of the audio and as such your audio must first be analysed using PVOC: Analyse"
-			},
-			"offset": {
-				"x": 483.444427490234,
-				"y": 454.333343505859
-			},
-			"slider_values": {
-
-			}
-		},
-		{
-			"command": "notes",
-			"name": "notes3",
-			"notes": {
-				"CodeEdit": "This enables processing that is difficult/impossible to do in the time domain. E.g. PVOC: Stretch allows extreme time stretching without changing pitch"
-			},
-			"offset": {
-				"x": 815.666687011719,
-				"y": 452.222229003906
-			},
-			"slider_values": {
-
-			}
-		},
-		{
-			"command": "notes",
-			"name": "notes4",
-			"notes": {
-				"CodeEdit": "Frequency Domain PVOC signals can be split but they cannot be mixed directly, if you want to mix the signals you will need to convert them back..."
-			},
-			"offset": {
-				"x": 1151.33337402344,
-				"y": 449.888885498047
-			},
-			"slider_values": {
-
-			}
-		},
-		{
-			"command": "notes",
-			"name": "notes5",
-			"notes": {
-				"CodeEdit": "...using PVOC: Resynthesise. This  process will take the analysis files that PVOC uses and turn it back into audio."
-			},
-			"offset": {
-				"x": 1481.55554199219,
-				"y": 449.666656494141
-			},
-			"slider_values": {
-
-			}
-		},
-		{
 			"command": "inputfile",
 			"name": "inputfile",
 			"notes": {
@@ -217,7 +133,7 @@
 				"y": 78.8888854980469
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1261/@MarginContainer@1301/Tree/@Popup@1287/@VBoxContainer@1288/@HSlider@1296": 0.0
+				"AudioPlayer/FileDialog/@VBoxContainer@1325/@MarginContainer@1365/Tree/@Popup@1351/@VBoxContainer@1352/@HSlider@1360": 0.0
 			}
 		},
 		{
@@ -232,6 +148,76 @@
 			},
 			"slider_values": {
 				"VBoxContainer/HSplitContainer/HSlider": 16.0
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "The \"Frequency Domain\" processes allow you to perform unique transformations to a sound. Load a file into \"Input File\" to test it out.\n\nThese processes work by manipulating FFT analysis files of the audio and as such your audio must first be analysed using \"PVOC: Analyse\"."
+			},
+			"offset": {
+				"x": 27.6944522857666,
+				"y": 446.1611328125
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "outputfile",
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1863.27893066406,
+				"y": 77.7777786254883
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1177/@MarginContainer@1217/Tree/@Popup@1203/@VBoxContainer@1204/@HSlider@1212": 0.0
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes3",
+			"notes": {
+				"CodeEdit": "This enables processing that is difficult/impossible to do in the time domain. E.g. PVOC: Stretch allows extreme time stretching without changing pitch."
+			},
+			"offset": {
+				"x": 497.705474853516,
+				"y": 446.306701660156
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes4",
+			"notes": {
+				"CodeEdit": "Frequency Domain PVOC signals can be split but they cannot be mixed directly, if you want to mix the signals you will need to convert them back using \"PVOC: Resynthesise\".\n\nThis process will take the analysis files that PVOC uses and turn it back into audio."
+			},
+			"offset": {
+				"x": 951.683349609375,
+				"y": 443.973327636719
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes5",
+			"notes": {
+				"CodeEdit": "You can use both Time Domain and Frequency Domain processes in the same Thread. You just need to convert between the two using \"PVOC: Anlalyse\" and \"PVOC: Resynthesise\"."
+			},
+			"offset": {
+				"x": 1407.61108398438,
+				"y": 442.272155761719
+			},
+			"slider_values": {
+
 			}
 		}
 	]
