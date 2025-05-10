@@ -21,11 +21,12 @@ offset_right = 300.0
 offset_bottom = 226.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 0
+current_tab = 1
 
 [node name="Time Domain" type="TabContainer" parent="select_effect"]
+visible = false
 layout_mode = 2
-current_tab = 2
+current_tab = 4
 metadata/_tab_index = 0
 
 [node name="Distort" type="VBoxContainer" parent="select_effect/Time Domain"]
@@ -389,6 +390,7 @@ layout_mode = 2
 text = "+"
 
 [node name="Filter" type="VBoxContainer" parent="select_effect/Time Domain"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
@@ -533,6 +535,28 @@ horizontal_scroll_mode = 0
 [node name="VBoxContainer" type="VBoxContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer"]
 layout_mode = 2
 
+[node name="HSplitContainer4" type="HSplitContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(565, 0)
+layout_mode = 2
+split_offset = 505
+dragging_enabled = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Granulate[/b]
+Add a grainy texture to the sound"
+fit_content = true
+scroll_active = false
+
+[node name="modify_brassage_5" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
+layout_mode = 2
+text = "+"
+
+[node name="MarginContainer4" type="MarginContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 3
+
 [node name="HSplitContainer" type="HSplitContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 505
@@ -541,16 +565,38 @@ dragging_enabled = false
 [node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer"]
 layout_mode = 2
 bbcode_enabled = true
-text = "[b]Brassage[/b]
-Granular reconstitution of a sound"
+text = "[b]Pitchshift[/b]
+Pitch shift grains to change pitch independent of time"
 fit_content = true
 scroll_active = false
 
-[node name="modify_brassage_7" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer" groups=["make_node_buttons"]]
+[node name="modify_brassage_1" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
 [node name="MarginContainer" type="MarginContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 3
+
+[node name="HSplitContainer3" type="HSplitContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(565, 0)
+layout_mode = 2
+split_offset = 505
+dragging_enabled = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Scramble[/b]
+Random reordering of grains within a set time frame"
+fit_content = true
+scroll_active = false
+
+[node name="modify_brassage_4" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
+layout_mode = 2
+text = "+"
+
+[node name="MarginContainer3" type="MarginContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
@@ -563,39 +609,20 @@ dragging_enabled = false
 [node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2"]
 layout_mode = 2
 bbcode_enabled = true
-text = "[b]Newtex[/b]
-Creates a texture from grains extracted from the sound"
+text = "[b]Timestrech[/b]
+Repeat grains to stretch time without changing pitch"
 fit_content = true
 scroll_active = false
 
-[node name="newtex_newtex_2" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2" groups=["make_node_buttons"]]
+[node name="modify_brassage_2" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer8" type="MarginContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer9" type="HSplitContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(565, 0)
-layout_mode = 2
-split_offset = 505
-dragging_enabled = false
-
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[b]Newtex Drunk[/b]
-Applies a drunk walk to the Newtex process"
-fit_content = true
-scroll_active = false
-
-[node name="newtex_newtex_3" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
-layout_mode = 2
-text = "+"
-
 [node name="Misc" type="VBoxContainer" parent="select_effect/Time Domain"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 
@@ -645,12 +672,12 @@ dragging_enabled = false
 [node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3"]
 layout_mode = 2
 bbcode_enabled = true
-text = "[b]Normalise[/b]
-Set peak gain of sound to a fixed level"
+text = "[b]Gain[/b]
+Adjust the level of a signal"
 fit_content = true
 scroll_active = false
 
-[node name="modify_loudness_3" type="Button" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
+[node name="modify_loudness_1" type="Button" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
@@ -724,7 +751,6 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
 [node name="Frequency Domain" type="TabContainer" parent="select_effect"]
-visible = false
 layout_mode = 2
 current_tab = 1
 metadata/_tab_index = 1
@@ -893,12 +919,34 @@ dragging_enabled = false
 [node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer4"]
 layout_mode = 2
 bbcode_enabled = true
+text = "[b]Gain[/b]
+Adjust the gain of a frequency domain signal"
+fit_content = true
+scroll_active = false
+
+[node name="spec_gain" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
+layout_mode = 2
+text = "+"
+
+[node name="MarginContainer9" type="MarginContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 3
+
+[node name="HSplitContainer11" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(565, 0)
+layout_mode = 2
+split_offset = 505
+dragging_enabled = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer11"]
+layout_mode = 2
+bbcode_enabled = true
 text = "[b]Invert[/b]
 Flip the spectral envelope of a sound"
 fit_content = true
 scroll_active = false
 
-[node name="strange_invert_1" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
+[node name="strange_invert_1" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer11" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 

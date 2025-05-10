@@ -14,20 +14,26 @@ text = "Value Name"
 
 [node name="HSplitContainer" type="HSplitContainer" parent="."]
 layout_mode = 2
-split_offset = 210
+split_offset = 230
 dragging_enabled = false
 
 [node name="HSlider" type="HSlider" parent="HSplitContainer"]
 custom_minimum_size = Vector2(0, 23)
 layout_mode = 2
+size_flags_vertical = 1
 value = 10.0
 
-[node name="ValueLabel" type="Label" parent="HSplitContainer"]
+[node name="LineEdit" type="LineEdit" parent="HSplitContainer"]
 layout_mode = 2
-text = "0.00"
-horizontal_alignment = 2
-vertical_alignment = 1
-clip_text = true
-text_overrun_behavior = 1
+text = "0.0"
+alignment = 2
+max_length = 5
+flat = true
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_bottom = 3
 
 [connection signal="value_changed" from="HSplitContainer/HSlider" to="." method="_on_h_slider_value_changed"]
+[connection signal="focus_exited" from="HSplitContainer/LineEdit" to="." method="_on_line_edit_focus_exited"]
+[connection signal="text_submitted" from="HSplitContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]

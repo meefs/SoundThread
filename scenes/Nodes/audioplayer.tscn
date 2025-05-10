@@ -3,12 +3,13 @@
 [ext_resource type="Script" uid="uid://clmtlg8via3qn" path="res://scenes/Nodes/audioplayer.gd" id="1_yprak"]
 
 [node name="Control" type="Control"]
+custom_minimum_size = Vector2(400, 0)
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -752.0
-offset_bottom = -496.0
+offset_right = -880.0
+offset_bottom = -568.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_yprak")
@@ -44,6 +45,7 @@ layout_mode = 0
 offset_top = 104.0
 offset_right = 128.0
 offset_bottom = 147.0
+tooltip_text = "Copies your output file back to your input for further processing."
 text = "Recycle File"
 metadata/outputfunction = "recycle"
 
