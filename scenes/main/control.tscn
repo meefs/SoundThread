@@ -35,14 +35,15 @@ visible = false
 layout_mode = 1
 offset_top = 35.0
 
-[node name="NoLocationPopup" type="Window" parent="."]
+[node name="NoLocationPopup" type="Window" parent="." groups=["popup_windows"]]
 auto_translate_mode = 1
 title = "Wrong File Type"
 initial_position = 2
 size = Vector2i(450, 500)
+transient = true
+exclusive = true
 unresizable = true
 borderless = true
-always_on_top = true
 popup_window = true
 
 [node name="TextureRect" type="TextureRect" parent="NoLocationPopup"]
@@ -80,16 +81,16 @@ offset_right = 457.0
 offset_bottom = 500.0
 text = "Click to locate _cdprogs"
 
-[node name="NoInputPopup" type="Window" parent="."]
+[node name="NoInputPopup" type="Window" parent="." groups=["popup_windows"]]
 auto_translate_mode = 1
 title = "No Input Selected"
 initial_position = 2
 size = Vector2i(380, 140)
 visible = false
+transient = true
 exclusive = true
 unresizable = true
 borderless = true
-always_on_top = true
 popup_window = true
 
 [node name="Label" type="Label" parent="NoInputPopup"]
@@ -112,16 +113,16 @@ offset_right = 390.0
 offset_bottom = 141.0
 text = "Ok"
 
-[node name="MultipleConnectionsPopup" type="Window" parent="."]
+[node name="MultipleConnectionsPopup" type="Window" parent="." groups=["popup_windows"]]
 auto_translate_mode = 1
 title = "No Input Selected"
 initial_position = 2
 size = Vector2i(380, 160)
 visible = false
+transient = true
 exclusive = true
 unresizable = true
 borderless = true
-always_on_top = true
 popup_window = true
 
 [node name="Label" type="Label" parent="MultipleConnectionsPopup"]
@@ -150,7 +151,7 @@ file_mode = 2
 access = 2
 use_native_dialog = true
 
-[node name="Console" type="Window" parent="."]
+[node name="Console" type="Window" parent="." groups=["popup_windows"]]
 title = "Generating Output"
 initial_position = 5
 size = Vector2i(600, 400)
@@ -246,6 +247,11 @@ item_6/separator = true
 item_7/text = "CDP Documentation"
 item_7/id = 7
 
+[node name="About" type="PopupMenu" parent="MenuBar"]
+item_count = 1
+item_0/id = 0
+item_0/disabled = true
+
 [node name="SaveDialog" type="FileDialog" parent="."]
 use_native_dialog = true
 
@@ -253,16 +259,16 @@ use_native_dialog = true
 auto_translate_mode = 1
 use_native_dialog = true
 
-[node name="SaveChangesPopup" type="Window" parent="."]
+[node name="SaveChangesPopup" type="Window" parent="." groups=["popup_windows"]]
 auto_translate_mode = 1
 title = "No Input Selected"
 initial_position = 2
 size = Vector2i(350, 100)
 visible = false
+transient = true
 exclusive = true
 unresizable = true
 borderless = true
-always_on_top = true
 popup_window = true
 
 [node name="Label" type="Label" parent="SaveChangesPopup"]

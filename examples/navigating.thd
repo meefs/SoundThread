@@ -12,7 +12,7 @@
 				"y": 316.363647460938
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1520/@MarginContainer@1560/Tree/@Popup@1546/@VBoxContainer@1547/@HSlider@1555": 0.0
+				"AudioPlayer/FileDialog/@VBoxContainer@1166/@MarginContainer@1206/Tree/@Popup@1192/@VBoxContainer@1193/@HSlider@1201": 0.0
 			}
 		},
 		{
@@ -33,7 +33,7 @@
 			"command": "notes",
 			"name": "notes",
 			"notes": {
-				"CodeEdit": "Right click anywhere in SoundThread to bring up the main menu.\n\nThis menu lists all the available processes in SoundThread. Click the + next to a process to add it to your Thread.\n\nNodes can be dragged around to rearrange and you can copy and paste nodes with ctrl/cmd+c and ctrl/cmd+v.\n\n"
+				"CodeEdit": "Right click anywhere in SoundThread to bring up the main menu.\n\nThis menu lists the available processes in SoundThread. Click the + next to a process to add it to your Thread.\n\nNodes can be dragged around to rearrange and you can copy and paste nodes with ctrl/cmd+c and ctrl/cmd+v."
 			},
 			"offset": {
 				"x": 479.373718261719,
@@ -47,7 +47,7 @@
 			"command": "notes",
 			"name": "notes2",
 			"notes": {
-				"CodeEdit": "Click and drag on the background to select multiple nodes at once.\n\nPressing Delete on your keyboard will remove any selected nodes. Note: \"Input File\" and \"Output File\" can't be deleted.\n\nSoundThread allows you to undo most major changes with ctrl/cmd+z. Please note this not yet fully implemented."
+				"CodeEdit": "Click and drag on the background to select multiple nodes at once.\n\nPressing Backspace/Delete will remove selected nodes. Note: \"Input File\" and \"Output File\" can't be deleted.\n\nSoundThread allows you to undo most major changes with ctrl/cmd+z. Please note this not yet fully implemented."
 			},
 			"offset": {
 				"x": 934.262573242188,
@@ -68,7 +68,7 @@
 				"y": 100.202033996582
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1412/@MarginContainer@1452/Tree/@Popup@1438/@VBoxContainer@1439/@HSlider@1447": 0.0
+				"AudioPlayer/FileDialog/@VBoxContainer@1298/@MarginContainer@1338/Tree/@Popup@1324/@VBoxContainer@1325/@HSlider@1333": 0.0
 			}
 		}
 	]

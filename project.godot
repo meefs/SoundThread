@@ -12,6 +12,7 @@ config_version=5
 
 config/name="SoundThread"
 config/description="Node based interface for the Composers Desktop Project"
+config/version="0.1.1-alpha"
 run/main_scene="uid://bcs87y7ptx3ke"
 config/features=PackedStringArray("4.4", "Forward Plus")
 boot_splash/bg_color=Color(0.160784, 0.25098, 0.247059, 1)

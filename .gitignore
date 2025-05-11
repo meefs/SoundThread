@@ -1,5 +1,6 @@
+# Godot 4+ specific ignores
 .godot/
-.tmp_audio/
-/export_presets.cfg
-/splash.xcf
+/android/
+/.tmp_audio
+splash.xcf
 /theme/images/icon.xcf

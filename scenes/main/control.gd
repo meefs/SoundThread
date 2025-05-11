@@ -50,8 +50,22 @@ func _ready() -> void:
 	new_patch()
 	get_tree().set_auto_accept_quit(false)
 	
-	#link output file to input file to enable audio output file loopback
-	#$GraphEdit/outputfile/AudioPlayer.recycle_outfile_trigger.connect($GraphEdit/inputfile/AudioPlayer.recycle_outfile)
+	#Check export config for version number and set about menu to current version
+	#Assumes version of mac + linux builds is the same as windows
+	#Requires manual update for alpha and beta builds but once the -beta is removed will be fully automatic so long as version is updated on export
+	var export_config = ConfigFile.new()
+	export_config.load("res://export_presets.cfg")
+	$MenuBar/About.set_item_text(0, "SoundThread v" + export_config.get_value("preset.0.options", "application/product_version", "version unknown") + "-alpha") 
+	
+	#checks if display is hidpi and scales ui accordingly
+	if DisplayServer.screen_get_dpi(0) >= 144:
+		get_window().content_scale_factor = 2.0
+		#goes through popup_windows group and scales all popups and resizes them
+		for window in get_tree().get_nodes_in_group("popup_windows"):
+			window.size = window.size * 2
+			window.content_scale_factor = 2
+	
+	
 	
 	
 func new_patch():
@@ -73,6 +87,7 @@ func new_patch():
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
 	
 	changesmade = false #so it stops trying to save unchanged empty files
+	Global.infile = "no_file" #resets input to stop processes running with old files
 	get_window().title = "SoundThread"
 	link_output()
 	
@@ -234,6 +249,12 @@ func _on_graph_edit_node_selected(node: Node) -> void:
 
 func _on_graph_edit_node_deselected(node: Node) -> void:
 	selected_nodes[node] = false
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey and event.pressed and not event.echo:
+		if event.keycode == KEY_BACKSPACE:
+			_on_graph_edit_delete_nodes_request(PackedStringArray(selected_nodes.keys().filter(func(k): return selected_nodes[k])))
+			pass
 
 func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
 	var graph_edit = get_node("GraphEdit")
@@ -473,7 +494,7 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	var minute = str(time_dict.minute).pad_zeros(2)
 	var second = str(time_dict.second).pad_zeros(2)
 	var time_str = hour + "-" + minute + "-" + second
-	Global.outfile = dir + "/" + outfilename.text + "_" + Time.get_date_string_from_system() + "_" + time_str
+	Global.outfile = dir + "/" + outfilename.text.get_basename() + "_" + Time.get_date_string_from_system() + "_" + time_str
 	log_console("Output directory and file name(s):" + Global.outfile, true)
 	await get_tree().process_frame
 	
@@ -1075,18 +1096,24 @@ func run_batch_file():
 		error_str += item + "\n"
 
 	if exit_code == 0:
-		console_output.append_text("[color=green]Processes ran successfully[/color]\n\n")
-		console_output.append_text("[b]Output:[/b]\n")
-		console_output.scroll_to_line(console_output.get_line_count() - 1)
-		console_output.append_text(output_str + "\n")
-		
-		if final_output_dir.ends_with(".wav"):
-			output_audio_player.play_outfile(final_output_dir)
-			outfile = final_output_dir
-		
-		var interface_settings = ConfigHandler.load_interface_settings()
-		if interface_settings.auto_close_console:
-			$Console.hide()
+		if output_str.contains("ERROR:"): #checks if CDP reported an error but passed exit code 0 anyway
+			console_output.append_text("[color=red][b]Processes failed[/b][/color]\n\n")
+			console_output.append_text("[b]Error:[/b]\n")
+			console_output.scroll_to_line(console_output.get_line_count() - 1)
+			console_output.append_text(output_str + "\n")
+		else:
+			console_output.append_text("[color=green]Processes ran successfully[/color]\n\n")
+			console_output.append_text("[b]Output:[/b]\n")
+			console_output.scroll_to_line(console_output.get_line_count() - 1)
+			console_output.append_text(output_str + "\n")
+			
+			if final_output_dir.ends_with(".wav"):
+				output_audio_player.play_outfile(final_output_dir)
+				outfile = final_output_dir
+			
+			var interface_settings = ConfigHandler.load_interface_settings() #checks if close console is enabled and closes console on a success
+			if interface_settings.auto_close_console:
+				$Console.hide()
 	else:
 		console_output.append_text("[color=red][b]Processes failed with exit code: %d[/b][/color]\n\n" % exit_code)
 		console_output.append_text("[b]Error:[/b]\n")
