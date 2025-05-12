@@ -38,6 +38,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "inputfile"
+metadata/utility = true
 
 [node name="Control" type="Control" parent="inputfile"]
 layout_mode = 2
@@ -173,6 +174,7 @@ slot/12/right_color = Color(1, 1, 1, 1)
 slot/12/right_icon = null
 slot/12/draw_stylebox = true
 metadata/command = "outputfile"
+metadata/utility = true
 
 [node name="Control" type="Control" parent="outputfile"]
 layout_mode = 2
@@ -267,6 +269,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "distort_average"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="distort_average"]
 layout_mode = 2
@@ -925,6 +928,7 @@ slot/3/right_color = Color(1, 1, 1, 1)
 slot/3/right_icon = null
 slot/3/draw_stylebox = true
 metadata/command = "extend_scramble_1"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="extend_scramble_1"]
 layout_mode = 2
@@ -2326,6 +2330,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "pvoc_anal_1"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="pvoc_anal_1"]
 layout_mode = 2
@@ -2361,6 +2366,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "pvoc_synth"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="pvoc_synth"]
 layout_mode = 2
@@ -2464,6 +2470,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "blur_blur"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="blur_blur"]
 layout_mode = 2
@@ -2906,12 +2913,15 @@ slot/0/right_color = Color(0, 0, 0, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
 metadata/command = "notes"
+metadata/utility = true
 
 [node name="CodeEdit" type="CodeEdit" parent="notes"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 size_flags_vertical = 3
 wrap_mode = 1
+
+[connection signal="text_submitted" from="outputfile/FileNameField" to="outputfile" method="_on_file_name_field_text_submitted"]
 
 [editable path="distort_average/VBoxContainer"]
 [editable path="clip_clip_2/VBoxContainer"]
