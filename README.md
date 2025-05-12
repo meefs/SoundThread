@@ -20,8 +20,8 @@ Additionally you will need to download CDP for SoundThread to interface with, th
 ## What works?
 SoundThread is currently in Alpha and as such there are some bugs, missing features and limitations. However, it is mostly very stable and has enough implemented already to be a powerful sound design tool.
 ### Currently implemented features:
-- Node based patching system with support for patching parallel processes
-- A selection of popular CDP time domain and frequency domain processes/:
+- Node based patching system with support for patching parallel processes and mixing outputs
+- A selection of popular CDP time domain and frequency domain processes:
   - [Distort](https://www.composersdesktop.com/docs/html/ccdpndex.htm#DISTORT) - Average, Clip, Click (Reform), Divide, Fractal, Interpolate, Multiply, Power Factor (Quirk), Replace, Square (Reform), and Triangle (Reform)
   - [Extend](https://www.composersdesktop.com/docs/html/ccdpndex.htm#EXTEND) -  Drunk, Loop, Scramble, Shrink, and Zigzag
   - [Filter](https://www.composersdesktop.com/docs/html/ccdpndex.htm#FILTER) - Filter Bank Harmonic Series, Filter Bank Odd, Filter Bank Linear Spacing, and Filter Bank Pitched Intervals
@@ -29,7 +29,7 @@ SoundThread is currently in Alpha and as such there are some bugs, missing featu
   - Misc - Accelerate/Decelerate, Gain, Reverse, Stack, and Varispeed
   - [PVOC](https://www.composersdesktop.com/docs/html/cspecndx.htm) - Analaysis/Resynthesis, Accumulate, Blur, Chorus, Gain, Invert, Stretch, Scatter, Trace (hilite), and Waver
 - Mac and Windows builds
-- Accepts stereo or mono input files and splits and merges files as needed to run the full processing Thread
+- Accepts stereo or mono input files (splits and merges files as needed to run the full processing Thread)
 - Threads can be saved and loaded for reuse
 - Small suite of built in getting started tutorials
 - Help tooltips throughout
