@@ -312,6 +312,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "clip_clip_2"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="clip_clip_2"]
 layout_mode = 2
@@ -355,6 +356,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "distort_reform_6"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="distort_reform_6"]
 layout_mode = 2
@@ -390,6 +392,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "distort_divide"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="distort_divide"]
 layout_mode = 2
@@ -441,6 +444,7 @@ slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
 metadata/command = "distort_fractal"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="distort_fractal"]
 layout_mode = 2
@@ -498,6 +502,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "distort_multiply"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="distort_multiply"]
 layout_mode = 2
@@ -540,6 +545,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "distort_interpolate"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="distort_interpolate"]
 layout_mode = 2
@@ -582,6 +588,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "distort_reform_2"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="distort_reform_2"]
 layout_mode = 2
@@ -617,6 +624,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "distort_reform_4"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="distort_reform_4"]
 layout_mode = 2
@@ -652,6 +660,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "distort_replace"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="distort_replace"]
 layout_mode = 2
@@ -731,6 +740,7 @@ slot/5/right_color = Color(1, 1, 1, 1)
 slot/5/right_icon = null
 slot/5/draw_stylebox = true
 metadata/command = "extend_drunk_1"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="extend_drunk_1"]
 layout_mode = 2
@@ -842,6 +852,7 @@ slot/3/right_color = Color(1, 1, 1, 1)
 slot/3/right_icon = null
 slot/3/draw_stylebox = true
 metadata/command = "extend_loop_1"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="extend_loop_1"]
 layout_mode = 2
@@ -1036,6 +1047,7 @@ slot/5/right_color = Color(1, 1, 1, 1)
 slot/5/right_icon = null
 slot/5/draw_stylebox = true
 metadata/command = "shrink_shrink_1"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="shrink_shrink_1"]
 layout_mode = 2
@@ -1160,6 +1172,7 @@ slot/4/right_color = Color(1, 1, 1, 1)
 slot/4/right_icon = null
 slot/4/draw_stylebox = true
 metadata/command = "extend_zigzag_1"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="extend_zigzag_1"]
 layout_mode = 2
@@ -1277,6 +1290,7 @@ slot/5/right_color = Color(1, 1, 1, 1)
 slot/5/right_icon = null
 slot/5/draw_stylebox = true
 metadata/command = "filter_bank_1"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="filter_bank_1"]
 layout_mode = 2
@@ -1412,6 +1426,7 @@ slot/5/right_color = Color(1, 1, 1, 1)
 slot/5/right_icon = null
 slot/5/draw_stylebox = true
 metadata/command = "filter_bank_2"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="filter_bank_2"]
 layout_mode = 2
@@ -1556,6 +1571,7 @@ slot/6/right_color = Color(1, 1, 1, 1)
 slot/6/right_icon = null
 slot/6/draw_stylebox = true
 metadata/command = "filter_bank_5"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="filter_bank_5"]
 layout_mode = 2
@@ -1711,6 +1727,7 @@ slot/6/right_color = Color(1, 1, 1, 1)
 slot/6/right_icon = null
 slot/6/draw_stylebox = true
 metadata/command = "filter_bank_6"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="filter_bank_6"]
 layout_mode = 2
@@ -1822,6 +1839,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "modify_brassage_1"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="modify_brassage_1"]
 layout_mode = 2
@@ -1866,6 +1884,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "modify_brassage_2"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="modify_brassage_2"]
 layout_mode = 2
@@ -1920,6 +1939,7 @@ slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
 metadata/command = "modify_brassage_4"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="modify_brassage_4"]
 layout_mode = 2
@@ -1978,6 +1998,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "modify_brassage_5"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="modify_brassage_5"]
 layout_mode = 2
@@ -2032,6 +2053,7 @@ slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
 metadata/command = "modify_speed_5"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="modify_speed_5"]
 layout_mode = 2
@@ -2090,6 +2112,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "modify_loudness_1"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="modify_loudness_1"]
 layout_mode = 2
@@ -2180,6 +2203,7 @@ slot/6/right_color = Color(1, 1, 1, 1)
 slot/6/right_icon = null
 slot/6/draw_stylebox = true
 metadata/command = "modify_stack"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="modify_stack"]
 layout_mode = 2
@@ -2286,6 +2310,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "modify_speed_2"
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="modify_speed_2"]
 layout_mode = 2
@@ -2411,6 +2436,7 @@ slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
 metadata/command = "focus_accu"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="focus_accu"]
 layout_mode = 2
@@ -2523,6 +2549,7 @@ slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
 metadata/command = "blur_chorus_5"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="blur_chorus_5"]
 layout_mode = 2
@@ -2580,6 +2607,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "strange_invert_1"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="strange_invert_1"]
 layout_mode = 2
@@ -2633,6 +2661,7 @@ slot/3/right_color = Color(1, 1, 1, 1)
 slot/3/right_icon = null
 slot/3/draw_stylebox = true
 metadata/command = "spectstr_stretch"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="spectstr_stretch"]
 layout_mode = 2
@@ -2700,6 +2729,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "hilite_trace_1"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="hilite_trace_1"]
 layout_mode = 2
@@ -2744,6 +2774,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "blur_scatter"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="blur_scatter"]
 layout_mode = 2
@@ -2788,6 +2819,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "spec_gain"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="spec_gain"]
 layout_mode = 2
@@ -2851,6 +2883,7 @@ slot/3/right_color = Color(1, 1, 1, 1)
 slot/3/right_icon = null
 slot/3/draw_stylebox = true
 metadata/command = "strange_waver_1"
+metadata/stereo_input = false
 
 [node name="Control" type="Control" parent="strange_waver_1"]
 layout_mode = 2
