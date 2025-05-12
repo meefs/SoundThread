@@ -27,6 +27,9 @@ var process_successful #tracks if the last run process was successful
 func _ready() -> void:
 	Nodes.hide()
 	$mainmenu.hide()
+	$"mainmenu/select_effect/Time Domain".show()
+	$"mainmenu/select_effect/Time Domain/Distort".show()
+	$"mainmenu/select_effect/Frequency Domain/Convert".show()
 	$NoLocationPopup.hide()
 	$Console.hide()
 	$NoInputPopup.hide()
@@ -611,9 +614,9 @@ func run_thread_with_branches():
 		elif input_files.size() == 1:
 			current_infile = input_files[0]
 
-		# If no input, use the original input file
-		else:
-			current_infile = Global.infile
+		## If no input, use the original input file
+		#else:
+			#current_infile = Global.infile
 
 		# Build the command for the current node's audio processing
 		var slider_data = _get_slider_values_ordered(node)
@@ -645,11 +648,11 @@ func run_thread_with_branches():
 					#audio file is stereo and needs to be split for pvoc processing
 					var pvoc_stereo_files = []
 					##Split stereo to c1/c2
-					run_command(cdpprogs_location + "/housekeep chans 2 " + "\"%s\"" % Global.infile)
+					run_command(cdpprogs_location + "/housekeep chans 2 " + "\"%s\"" % current_infile)
 			
 					# Process left and right seperately
 					for channel in ["c1", "c2"]:
-						var dual_mono_file = Global.infile.get_basename() + "_%s.wav" % channel
+						var dual_mono_file = current_infile.get_basename() + "_%s.wav" % channel
 						
 						var makeprocess = make_process(node, process_count, dual_mono_file, slider_data)
 						# run the command
@@ -712,7 +715,7 @@ func run_thread_with_branches():
 
 					process_count += 1
 					
-
+					
 				#interleave left and right
 				var output_file = Global.outfile.get_basename() + str(process_count) + "_interleaved.wav"
 				run_command(cdpprogs_location + "/submix interleave" + " \"%s\"" % pvoc_stereo_files[0] + " \"%s\"" % pvoc_stereo_files[1] + " \"%s\"" % output_file)
@@ -740,12 +743,12 @@ func run_thread_with_branches():
 
 					else: #audio file is stereo and process is mono, split stereo, process and recombine
 						##Split stereo to c1/c2
-						run_command(cdpprogs_location + "/housekeep chans 2 " + "\"%s\"" % Global.infile)
+						run_command(cdpprogs_location + "/housekeep chans 2 " + "\"%s\"" % current_infile)
 				
 						# Process left and right seperately
 						var dual_mono_output = []
 						for channel in ["c1", "c2"]:
-							var dual_mono_file = Global.infile.get_basename() + "_%s.wav" % channel
+							var dual_mono_file = current_infile.get_basename() + "_%s.wav" % channel
 							
 							var makeprocess = make_process(node, process_count, dual_mono_file, slider_data)
 							# run the command

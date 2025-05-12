@@ -21,16 +21,14 @@ offset_right = 300.0
 offset_bottom = 226.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 1
+current_tab = 0
 
 [node name="Time Domain" type="TabContainer" parent="select_effect"]
-visible = false
 layout_mode = 2
-current_tab = 4
+current_tab = 0
 metadata/_tab_index = 0
 
 [node name="Distort" type="VBoxContainer" parent="select_effect/Time Domain"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -158,6 +156,28 @@ text = "+"
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
+[node name="HSplitContainer6" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(565, 0)
+layout_mode = 2
+split_offset = 505
+dragging_enabled = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer6"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Interpolate[/b]
+Time-stretch by repeating and interpolating wavecycles"
+fit_content = true
+scroll_active = false
+
+[node name="distort_interpolate" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer6" groups=["make_node_buttons"]]
+layout_mode = 2
+text = "+"
+
+[node name="MarginContainer6" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 3
+
 [node name="HSplitContainer5" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
@@ -180,25 +200,47 @@ text = "+"
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer6" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer11" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer6"]
+[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer11"]
 layout_mode = 2
 bbcode_enabled = true
-text = "[b]Interpolate[/b]
-Time-stretch by repeating and interpolating between wavecycles"
+text = "[b]Power Factor[/b]
+Distortion by raising sample values to a power"
 fit_content = true
 scroll_active = false
 
-[node name="distort_interpolate" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer6" groups=["make_node_buttons"]]
+[node name="quirk_quirk_1" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer11" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer6" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer10" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 3
+
+[node name="HSplitContainer10" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(565, 0)
+layout_mode = 2
+split_offset = 505
+dragging_enabled = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer10"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Replace[/b]
+The strongest wavecycle in a group replaces the others"
+fit_content = true
+scroll_active = false
+
+[node name="distort_replace" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer10" groups=["make_node_buttons"]]
+layout_mode = 2
+text = "+"
+
+[node name="MarginContainer9" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
@@ -239,28 +281,6 @@ fit_content = true
 scroll_active = false
 
 [node name="distort_reform_4" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer8" groups=["make_node_buttons"]]
-layout_mode = 2
-text = "+"
-
-[node name="MarginContainer9" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/margin_bottom = 3
-
-[node name="HSplitContainer10" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(565, 0)
-layout_mode = 2
-split_offset = 505
-dragging_enabled = false
-
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer10"]
-layout_mode = 2
-bbcode_enabled = true
-text = "[b]Replace[/b]
-The strongest wavecycle in a group replaces the others"
-fit_content = true
-scroll_active = false
-
-[node name="distort_replace" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer10" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
@@ -623,6 +643,7 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
 [node name="Misc" type="VBoxContainer" parent="select_effect/Time Domain"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 
@@ -751,12 +772,12 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
 [node name="Frequency Domain" type="TabContainer" parent="select_effect"]
+visible = false
 layout_mode = 2
-current_tab = 1
+current_tab = 0
 metadata/_tab_index = 1
 
 [node name="Convert" type="VBoxContainer" parent="select_effect/Frequency Domain"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -826,6 +847,7 @@ layout_mode = 2
 text = "+"
 
 [node name="Process" type="VBoxContainer" parent="select_effect/Frequency Domain"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 

@@ -312,7 +312,7 @@ slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
 metadata/command = "clip_clip_2"
-metadata/stereo_input = false
+metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="clip_clip_2"]
 layout_mode = 2
@@ -676,6 +676,51 @@ text = "Cycle Count"
 min_value = 2.0
 max_value = 64.0
 value = 2.0
+
+[node name="quirk_quirk_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 47.0
+offset_top = 1673.0
+offset_right = 353.0
+offset_bottom = 1779.0
+tooltip_text = "Distortion by raising sample values to a power"
+title = "Distort: Power Factor"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 0.564706)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 0.564706)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+metadata/command = "quirk_quirk_1"
+metadata/stereo_input = false
+
+[node name="Control" type="Control" parent="quirk_quirk_1"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="quirk_quirk_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Power to raise all samples by <1 exaggerates signal contour; >1 smooths signal contour"
+
+[node name="Label" parent="quirk_quirk_1/VBoxContainer" index="0"]
+text = "Power Factor"
+
+[node name="HSlider" parent="quirk_quirk_1/VBoxContainer/HSplitContainer" index="0"]
+min_value = 0.01
+step = 0.01
+value = 0.7
+exp_edit = true
 
 [node name="extend_drunk_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2964,6 +3009,7 @@ wrap_mode = 1
 [editable path="distort_multiply/VBoxContainer"]
 [editable path="distort_interpolate/VBoxContainer"]
 [editable path="distort_replace/VBoxContainer"]
+[editable path="quirk_quirk_1/VBoxContainer"]
 [editable path="extend_drunk_1/VBoxContainer"]
 [editable path="extend_drunk_1/VBoxContainer2"]
 [editable path="extend_drunk_1/VBoxContainer3"]
