@@ -633,6 +633,42 @@ layout_mode = 2
 layout_mode = 2
 text = "No adjustable parameters"
 
+[node name="modify_radical_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1698.0
+offset_top = 1444.0
+offset_right = 2004.0
+offset_bottom = 1524.0
+tooltip_text = "Reverses a soundfile to play backwards"
+title = "Modify: Reverse"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 0.564706)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 0.564706)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+metadata/command = "modify_radical_1"
+metadata/stereo_input = true
+
+[node name="Control" type="Control" parent="modify_radical_1"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="modify_radical_1"]
+layout_mode = 2
+text = "No adjustable parameters"
+
 [node name="distort_replace" type="GraphNode" parent="."]
 layout_mode = 0
 offset_left = 44.0

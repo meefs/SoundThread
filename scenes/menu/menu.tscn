@@ -25,10 +25,11 @@ current_tab = 0
 
 [node name="Time Domain" type="TabContainer" parent="select_effect"]
 layout_mode = 2
-current_tab = 0
+current_tab = 4
 metadata/_tab_index = 0
 
 [node name="Distort" type="VBoxContainer" parent="select_effect/Time Domain"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -643,7 +644,6 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
 [node name="Misc" type="VBoxContainer" parent="select_effect/Time Domain"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 
@@ -721,6 +721,28 @@ fit_content = true
 scroll_active = false
 
 [node name="notes" type="Button" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
+layout_mode = 2
+text = "+"
+
+[node name="MarginContainer5" type="MarginContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 3
+
+[node name="HSplitContainer5" type="HSplitContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(565, 0)
+layout_mode = 2
+split_offset = 505
+dragging_enabled = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer5"]
+layout_mode = 2
+bbcode_enabled = true
+text = "[b]Reverse[/b]
+Reverses a soundfile to play backwards"
+fit_content = true
+scroll_active = false
+
+[node name="modify_radical_1" type="Button" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer5" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
