@@ -18,7 +18,7 @@ The latest builds for Mac and Windows as well as previous versions can be found 
 Additionally you will need to download CDP for SoundThread to interface with, this can be [downloaded here](https://www.unstablesound.net/cdp.html).
 
 ## What works?
-SoundThread is currently in Alpha and as such there are some bugs, missing features and limitations. However, it is mostly very stable and has enough implemented to be a powerful sound design tool already.
+SoundThread is currently in Alpha and as such there are some bugs, missing features and limitations. However, it is mostly very stable and has enough implemented already to be a powerful sound design tool.
 ### Currently implemented features:
 - Node based patching system with support for patching parallel processes
 - A selection of popular CDP time domain and frequency domain processes/:
