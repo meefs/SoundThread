@@ -465,11 +465,7 @@ func _on_any_input_changed():
 func _track_changes():
 	changesmade = true
 	
-######## Here be dragons #########
-##################################
-####### Don't let them out #######
 
-#Scans through all nodes and generates a batch file based on their order
 
 func _run_process() -> void:
 	if Global.infile == "no_file":
@@ -479,6 +475,7 @@ func _run_process() -> void:
 			_on_file_dialog_dir_selected(lastoutputfolder)
 		else:
 			$FileDialog.show()
+			
 
 func _on_file_dialog_dir_selected(dir: String) -> void:
 	lastoutputfolder = dir
@@ -499,9 +496,9 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	log_console("Output directory and file name(s):" + Global.outfile, true)
 	await get_tree().process_frame
 	
-	run_thread_file_with_branches()
+	run_thread_with_branches()
 	
-func run_thread_file_with_branches():
+func run_thread_with_branches():
 	# Detect platform: Determine if the OS is Windows
 	var is_windows := OS.get_name() == "Windows"
 	
@@ -519,9 +516,20 @@ func run_thread_file_with_branches():
 	var indegree = {}       # used for topological sort
 	var all_nodes = {}      # map of node name -> GraphNode reference
 
-	log_console("Generating batch file.", true)
+	log_console("Mapping thread.", true)
 	await get_tree().process_frame  # Let UI update
 
+	#Step 0: check thread is valid
+	var is_valid = path_exists_through_all_nodes()
+	if is_valid == false:
+		log_console("[color=#9c2828][b]Error: Valid Thread not found[/b][/color]", true)
+		log_console("Threads must contain at least one processing node and a valid path from the Inputfile to the Outputfile.", true)
+		await get_tree().process_frame  # Let UI update
+		return
+	else:
+		log_console("[color=#638382][b]Valid Thread found[/b][/color]", true)
+		await get_tree().process_frame  # Let UI update
+		
 	# Step 1: Gather nodes from the GraphEdit
 	for child in graph_edit.get_children():
 		if child is GraphNode:
@@ -559,7 +567,8 @@ func run_thread_file_with_branches():
 
 	# If not all nodes were processed, there's a cycle
 	if sorted.size() != graph.size():
-		log_console("Cycle detected or disconnected nodes", true)
+		log_console("[color=#9c2828][b]Error: Thread not valid[/b][/color]", true)
+		log_console("Threads cannot contain loops.", true)
 		return
 
 	# Step 4: Start processing audio
@@ -842,266 +851,6 @@ func run_thread_file_with_branches():
 		$Console.hide()
 
 
-	## Determine final script path (.bat or .sh)
-	#var script_path = "user://ordered_script%s" % script_ext
-#
-	## Open file for writing
-	#var file = FileAccess.open(script_path, FileAccess.WRITE)
-#
-	## Write each batch command line
-	#for line in batch_lines:
-		#file.store_line(line)
-	#file.close()
-#
-	## Trigger batch file execution and log messages
-	#log_console("Batch file complete.", true)
-	#log_console("Processing audio, please wait.", true)
-	#await get_tree().process_frame
-	#run_batch_file()
-
-
-#func generate_batch_file_with_branches():
-	##mac windows compatibility
-	#var is_windows := OS.get_name() == "Windows"
-	#var script_ext = ".bat" if is_windows else ".sh"
-	#var delete_cmd = "del" if is_windows else "rm"
-	#var path_sep := "/"  # Use forward slash for compatibility
-	#
-	#var connections = graph_edit.get_connection_list()
-	#var graph = {}
-	#var reverse_graph = {}
-	#var indegree = {}
-	#var all_nodes = {}
-	#
-	#log_console("Generating batch file.", true)
-	#await get_tree().process_frame
-	#
-	## Step 1: Collect nodes
-	#for child in graph_edit.get_children():
-		#if child is GraphNode:
-			#var name = str(child.name)
-			#all_nodes[name] = child
-			#if name != "inputfile" and name != "outputfile":
-				#graph[name] = []
-				#reverse_graph[name] = []
-				#indegree[name] = 0
-#
-	## Step 2: Build the graph
-	#for conn in connections:
-		#var from = str(conn["from_node"])
-		#var to = str(conn["to_node"])
-		#if graph.has(from) and graph.has(to):
-			#graph[from].append(to)
-			#reverse_graph[to].append(from)
-			#indegree[to] += 1
-#
-	## Step 3: Topological sort
-	#var sorted = []
-	#var queue = []
-	#for node in graph.keys():
-		#if indegree[node] == 0:
-			#queue.append(node)
-	#while not queue.is_empty():
-		#var current = queue.pop_front()
-		#sorted.append(current)
-		#for neighbor in graph[current]:
-			#indegree[neighbor] -= 1
-			#if indegree[neighbor] == 0:
-				#queue.append(neighbor)
-	#if sorted.size() != graph.size():
-		#log_console("Cycle detected or disconnected nodes", true)
-		#return
-#
-	## Step 4: Batch file generation
-	#var batch_lines = []
-	#var intermediate_files = []
-	#var stereo_outputs = {}
-#
-	#if Global.infile_stereo:
-		#log_console("Input file is stereo, note this may cause left/right decorrelation with some processes.", true)
-		#await get_tree().process_frame
-		#
-		## Step 4.1: Split stereo to c1/c2
-		#batch_lines.append("%s/housekeep chans 2 \"%s\"" % [cdpprogs_location, Global.infile])
-#
-		## Process for each channel
-		#for channel in ["c1", "c2"]:
-			#var current_infile = Global.infile.get_basename() + "_%s.wav" % channel
-			#var output_files = {}
-			#var process_count = 0
-#
-			#for node_name in sorted:
-				#var node = all_nodes[node_name]
-				#var inputs = reverse_graph[node_name]
-				#var input_files = []
-				#for input_node in inputs:
-					#if output_files.has(input_node):
-						#input_files.append(output_files[input_node])
-#
-				#if input_files.size() > 1:
-					#var merge_output = "%s_%s_merge_%d.wav" % [Global.outfile.get_basename(), channel, process_count]
-					#var quoted_inputs = []
-					#for f in input_files:
-						#quoted_inputs.append("\"%s\"" % f)
-					#var merge_cmd = cdpprogs_location + "/submix mergemany " + " ".join(quoted_inputs) + " \"%s\"" % merge_output
-					#batch_lines.append(merge_cmd)
-					#intermediate_files.append(merge_output)
-					#current_infile = merge_output
-				#elif input_files.size() == 1:
-					#current_infile = input_files[0]
-				#else:
-					#current_infile = Global.infile.get_basename() + "_%s.wav" % channel
-#
-				#var slider_data = _get_slider_values_ordered(node)
-				#var extension = ".wav" if node.get_slot_type_right(0) == 0 else ".ana"
-				#var output_file = "%s_%s_%d%s" % [Global.outfile.get_basename(), channel, process_count, extension]
-				#var command_name = str(node.get_meta("command")) if node.has_meta("command") else node_name
-				#command_name = command_name.replace("_", " ")
-				#var line = "%s/%s \"%s\" \"%s\" " % [cdpprogs_location, command_name, current_infile, output_file]
-				##checks if slider has a flag meta value and appends the flag before the parameter
-				#for entry in slider_data:
-					#var flag = entry[0]
-					#var value = entry[1]
-					#line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
-				#batch_lines.append(line.strip_edges())
-				#output_files[node_name] = output_file
-				#if delete_intermediate_outputs:
-					#intermediate_files.append(output_file)
-				#process_count += 1
-#
-			## Handle output node
-			#var output_inputs = []
-			#for conn in connections:
-				#if conn["to_node"] == "outputfile":
-					#output_inputs.append(str(conn["from_node"]))
-			#var final_output = ""
-			#if output_inputs.size() > 1:
-				#var quoted_inputs = []
-				#for fnode in output_inputs:
-					#if output_files.has(fnode):
-						#quoted_inputs.append("\"%s\"" % output_files[fnode])
-						##intermediate_files.append(output_files[fnode])
-				#final_output = "%s_%s_final.wav" % [Global.outfile.get_basename(), channel]
-				#batch_lines.append("%s/submix mergemany %s \"%s\"" % [cdpprogs_location, " ".join(quoted_inputs), final_output])
-			#elif output_inputs.size() == 1:
-				#final_output = output_files[output_inputs[0]]
-				#intermediate_files.erase(final_output)
-			#stereo_outputs[channel] = final_output
-#
-		## Interleave final
-		#if stereo_outputs.has("c1") and stereo_outputs.has("c2"):
-			#if stereo_outputs["c1"].ends_with(".wav") and stereo_outputs["c2"].ends_with(".wav"):
-				#var final_stereo = Global.outfile.get_basename() + "_stereo.wav"
-				#batch_lines.append("%s/submix interleave \"%s\" \"%s\" \"%s\"" % [cdpprogs_location, stereo_outputs["c1"], stereo_outputs["c2"], final_stereo])
-				#final_output_dir = final_stereo
-				#if delete_intermediate_outputs:
-					#intermediate_files.append(stereo_outputs["c1"])
-					#intermediate_files.append(stereo_outputs["c2"])
-				#
-		##add delete command for not needed files
-		##always delete mono split as they are in a weird location
-		#intermediate_files.append(Global.infile.get_basename() + "_c1.wav")
-		#intermediate_files.append(Global.infile.get_basename() + "_c2.wav")
-		#
-		#for file_path in intermediate_files:
-			#var fixed_path = file_path
-			#if is_windows:
-				#fixed_path = fixed_path.replace("/", "\\")
-			#batch_lines.append("%s \"%s\"" % [delete_cmd, fixed_path])
-			#
-	#else:
-		## Use mono logic as before
-			## Step 4: Process chain
-		#var output_files = {}  # node -> output file
-		#var process_count = 0
-		#var current_infile = Global.infile
-#
-		#for node_name in sorted:
-			#var node = all_nodes[node_name]
-			#var inputs = reverse_graph[node_name]
-			#var input_files = []
-			#for input_node in inputs:
-				#input_files.append(output_files[input_node])
-#
-			## If multiple inputs, merge with submix mergemany
-			#if input_files.size() > 1:
-				#var merge_output = "%s_merge_%d.wav" % [Global.outfile.get_basename(), process_count]
-				#var quoted_inputs := []
-				#for f in input_files:
-					#quoted_inputs.append("\"%s\"" % f)
-				#var merge_cmd = cdpprogs_location + "/submix mergemany " + " ".join(quoted_inputs) + " \"%s\"" % merge_output
-				#batch_lines.append(merge_cmd)
-				#intermediate_files.append(merge_output)
-				#current_infile = merge_output
-			#elif input_files.size() == 1:
-				#current_infile = input_files[0]
-			#else:
-				#current_infile = Global.infile
-#
-			## Build node command
-			#var slider_data = _get_slider_values_ordered(node)
-			#var extension = ".wav" if node.get_slot_type_right(0) == 0 else ".ana"
-			#var output_file = "%s_%d%s" % [Global.outfile.get_basename(), process_count, extension]
-			#var command_name = str(node.get_meta("command")) if node.has_meta("command") else node_name
-			#command_name = command_name.replace("_", " ")
-			#var line = "%s/%s \"%s\" \"%s\" " % [cdpprogs_location, command_name, current_infile, output_file]
-			##checks if slider has a flag meta value and appends the flag before the parameter
-			#for entry in slider_data:
-				#var flag = entry[0]
-				#var value = entry[1]
-				#line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
-			#batch_lines.append(line.strip_edges())
-			#output_files[node_name] = output_file
-			#if delete_intermediate_outputs:
-				#intermediate_files.append(output_file)
-			#process_count += 1
-#
-		## Step 4.5: Handle nodes connected to outputfile
-		#var output_inputs := []
-		#for conn in connections:
-			#if conn["to_node"] == "outputfile":
-				#output_inputs.append(str(conn["from_node"]))
-#
-		#var final_outputs := []
-		#for node_name in output_inputs:
-			#if output_files.has(node_name):
-				#final_outputs.append(output_files[node_name])
-#
-		#if final_outputs.size() > 1:
-			#var quoted_inputs := []
-			#for f in final_outputs:
-				#quoted_inputs.append("\"%s\"" % f)
-				#intermediate_files.append(f)
-			#var merge_cmd = cdpprogs_location + "/submix mergemany " + " ".join(quoted_inputs) + " \"%s\"" % Global.outfile + ".wav"
-			#final_output_dir = Global.outfile + ".wav"
-			#batch_lines.append(merge_cmd)
-			#for f in final_outputs:
-				#intermediate_files.erase(f)
-		#elif final_outputs.size() == 1:
-			#var single_output = final_outputs[0]
-			#final_output_dir = single_output
-			#intermediate_files.erase(single_output)
-#
-		## Step 5: Cleanup commands
-		#log_console("Adding cleanup commands for intermediate files.", true)
-		#for file_path in intermediate_files:
-			#var fixed_path = file_path
-			#if is_windows:
-				#fixed_path = fixed_path.replace("/", "\\")
-			#batch_lines.append("%s \"%s\"" % [delete_cmd, fixed_path])
-#
-	## Step 6: Write batch file
-	#var script_path = "user://ordered_script%s" % script_ext
-	#var file = FileAccess.open(script_path, FileAccess.WRITE)
-	#for line in batch_lines:
-		#file.store_line(line)
-	#file.close()
-#
-	#log_console("Batch file complete.", true)
-	#log_console("Processing audio, please wait.", true)
-	#await get_tree().process_frame
-	#run_batch_file()
-
 func is_stereo(file: String) -> bool:
 	var output = run_command(cdpprogs_location + "/sfprops -c " + "\"%s\"" % file)
 	output = int(output[0].strip_edges()) #convert output from cmd to clean int
@@ -1380,39 +1129,49 @@ func run_batch_file():
 		console_output.scroll_to_line(console_output.get_line_count() - 1)
 		console_output.append_text(error_str + "\n")
 	
-#func run_batch_file():
-	#var bat_path = ProjectSettings.globalize_path("user://ordered_script.bat")
-	#var output : Array = []
-	#var error : Array = []
-#
-	#var exit_code = OS.execute("cmd.exe", ["/c", bat_path], output, true, true)
-#
-	#var output_str = ""
-	#for item in output:
-		#output_str += item + "\n"
-#
-	#var error_str = ""
-	#for item in error:
-		#error_str += item + "\n"
-#
-	#if exit_code == 0:
-		#console_output.append_text("[color=green]Processes ran successfully[/color]\n \n")
-		#console_output.append_text("[b]Output:[/b]\n")
-		#console_output.scroll_to_line(console_output.get_line_count() - 1)
-		#console_output.append_text(output_str + "/n")
-		#if final_output_dir.ends_with(".wav"):
-			#output_audio_player.play_outfile(final_output_dir)
-			#outfile = final_output_dir
-		#var interface_settings = ConfigHandler.load_interface_settings()
-		#if interface_settings.auto_close_console == true:
-			#$Console.hide()
-	#else:
-		#console_output.append_text("[color=red][b]Processes failed with exit code: %d[/b][/color]\n" % exit_code + "\n \n")
-		#console_output.append_text("[b]Error:[/b]\n" )
-		#console_output.scroll_to_line(console_output.get_line_count() - 1)
-		#console_output.append_text(error_str + "/n")
+func path_exists_through_all_nodes() -> bool:
+	var all_nodes = {}
+	var graph = {}
 
-######## Realtively free from dragons from here
+	# Gather all relevant nodes
+	for child in graph_edit.get_children():
+		if child is GraphNode:
+			var name = str(child.name)
+			all_nodes[name] = child
+			if name in ["inputfile", "outputfile"] or not child.has_meta("utility"):
+				graph[name] = []
+
+	# Add edges to graph from the connection list
+	var connection_list = graph_edit.get_connection_list()
+	for conn in connection_list:
+		var from = str(conn["from_node"])
+		var to = str(conn["to_node"])
+		if graph.has(from):
+			graph[from].append(to)
+
+	# BFS traversal to check path and depth
+	var visited = {}
+	var queue = [ { "node": "inputfile", "depth": 0 } ]
+	var has_intermediate = false
+
+	while queue.size() > 0:
+		var current = queue.pop_front()
+		var current_node = current["node"]
+		var depth = current["depth"]
+
+		if current_node in visited:
+			continue
+		visited[current_node] = true
+
+		if current_node == "outputfile" and depth >= 2:
+			has_intermediate = true
+
+		if graph.has(current_node):
+			for neighbor in graph[current_node]:
+				queue.append({ "node": neighbor, "depth": depth + 1 })
+
+	return has_intermediate
+
 
 func _toggle_delete(toggled_on: bool):
 	delete_intermediate_outputs = toggled_on
@@ -1729,8 +1488,6 @@ func _open_output_folder():
 	if lastoutputfolder != "none":
 		OS.shell_open(lastoutputfolder)
 		
-		
-
 
 func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
 	print(str(meta))
