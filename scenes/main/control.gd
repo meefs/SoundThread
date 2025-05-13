@@ -156,7 +156,8 @@ func _on_cdp_location_dialog_canceled() -> void:
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	showmenu()
+	#showmenu()
+	pass
 	
 
 func _input(event):
@@ -180,24 +181,24 @@ func _input(event):
 
 #logic for making, connecting, disconnecting, copy pasting and deleteing nodes and connections in GraphEdit
 #mostly taken from https://gdscript.com/solutions/godot-graphnode-and-graphedit-tutorial/
-func showmenu():
-	#check for mouse input and if menu is already open and then open or close the menu
-	#stores mouse position at time of right click to later place a node in that location
-	if Input.is_action_just_pressed("open_menu"):
-		if mainmenu_visible == false:
-			effect_position = graph_edit.get_local_mouse_position()
-			#$mainmenu.position.x = min(effect_position.x, get_viewport().get_visible_rect().size.x - $mainmenu.size.x)
-			#$mainmenu.position.y = min(effect_position.y, get_viewport().get_visible_rect().size.y - $mainmenu.size.y)
-			$mainmenu.position.x = clamp(get_viewport().get_mouse_position().x, $mainmenu/select_effect.size.x / 2, get_viewport().get_visible_rect().size.x - ($mainmenu/select_effect.size.x / 2))
-			$mainmenu.position.y = clamp(get_viewport().get_mouse_position().y, ($mainmenu/select_effect.size.y / 2) + $ColorRect.size.y, get_viewport().get_visible_rect().size.y - ($mainmenu/select_effect.size.y / 2))
-			print($GraphEdit.scroll_offset)
-			#print(DisplayServer.window_get_size()) #actual window size
-			#print(get_viewport().get_visible_rect().size) # window size asjusted for retina scaling
-			$mainmenu.show()
-			mainmenu_visible = true
-		else:
-			$mainmenu.hide()
-			mainmenu_visible = false
+#func showmenu():
+	##check for mouse input and if menu is already open and then open or close the menu
+	##stores mouse position at time of right click to later place a node in that location
+	#if Input.is_action_just_pressed("open_menu"):
+		#if mainmenu_visible == false:
+			#effect_position = graph_edit.get_local_mouse_position()
+			##$mainmenu.position.x = min(effect_position.x, get_viewport().get_visible_rect().size.x - $mainmenu.size.x)
+			##$mainmenu.position.y = min(effect_position.y, get_viewport().get_visible_rect().size.y - $mainmenu.size.y)
+			#$mainmenu.position.x = clamp(get_viewport().get_mouse_position().x, $mainmenu/select_effect.size.x / 2, get_viewport().get_visible_rect().size.x - ($mainmenu/select_effect.size.x / 2))
+			#$mainmenu.position.y = clamp(get_viewport().get_mouse_position().y, ($mainmenu/select_effect.size.y / 2) + $ColorRect.size.y, get_viewport().get_visible_rect().size.y - ($mainmenu/select_effect.size.y / 2))
+			#print($GraphEdit.scroll_offset)
+			##print(DisplayServer.window_get_size()) #actual window size
+			##print(get_viewport().get_visible_rect().size) # window size asjusted for retina scaling
+			#$mainmenu.show()
+			#mainmenu_visible = true
+		#else:
+			#$mainmenu.hide()
+			#mainmenu_visible = false
 
 # creates nodes from menu
 func _on_button_pressed(button: Button):
@@ -1385,3 +1386,20 @@ func _open_output_folder():
 func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
 	print(str(meta))
 	OS.shell_open(str(meta))
+
+
+func _on_graph_edit_popup_request(at_position: Vector2) -> void:
+	if mainmenu_visible == false:
+		effect_position = graph_edit.get_local_mouse_position()
+		#$mainmenu.position.x = min(effect_position.x, get_viewport().get_visible_rect().size.x - $mainmenu.size.x)
+		#$mainmenu.position.y = min(effect_position.y, get_viewport().get_visible_rect().size.y - $mainmenu.size.y)
+		$mainmenu.position.x = clamp(get_viewport().get_mouse_position().x, $mainmenu/select_effect.size.x / 2, get_viewport().get_visible_rect().size.x - ($mainmenu/select_effect.size.x / 2))
+		$mainmenu.position.y = clamp(get_viewport().get_mouse_position().y, ($mainmenu/select_effect.size.y / 2) + $ColorRect.size.y, get_viewport().get_visible_rect().size.y - ($mainmenu/select_effect.size.y / 2))
+		print($GraphEdit.scroll_offset)
+		#print(DisplayServer.window_get_size()) #actual window size
+		#print(get_viewport().get_visible_rect().size) # window size asjusted for retina scaling
+		$mainmenu.show()
+		mainmenu_visible = true
+	else:
+		$mainmenu.hide()
+		mainmenu_visible = false

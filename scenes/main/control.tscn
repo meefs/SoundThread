@@ -309,6 +309,7 @@ text = "Don't Save"
 [connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
 [connection signal="node_deselected" from="GraphEdit" to="." method="_on_graph_edit_node_deselected"]
 [connection signal="node_selected" from="GraphEdit" to="." method="_on_graph_edit_node_selected"]
+[connection signal="popup_request" from="GraphEdit" to="." method="_on_graph_edit_popup_request"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="meta_clicked" from="NoLocationPopup/RichTextLabel" to="." method="_on_rich_text_label_meta_clicked"]
 [connection signal="button_down" from="NoLocationPopup/OkButton" to="." method="_on_ok_button_button_down"]

@@ -36,3 +36,18 @@ func _on_line_edit_focus_exited() -> void:
 			$HSplitContainer/HSlider.set_value_no_signal(new_val)
 	else:
 		$HSplitContainer/LineEdit.text = str($HSplitContainer/HSlider.value)
+		
+
+
+
+		
+
+
+#func _on_h_slider_gui_input(event: InputEvent) -> void:
+	#if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and $HSplitContainer/HSlider.has_meta("brk"):
+		#var local_pos = to_local(get_global_mouse_position())
+		## Show popup at global mouse position
+		#$HSplitContainer/HSlider/PopupMenu.popup()
+		#$HSplitContainer/HSlider/PopupMenu.set_position(get_viewport().get_mouse_position())
+		## Prevent default context menu or input propagation if needed
+		#accept_event()
