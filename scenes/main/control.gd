@@ -937,102 +937,18 @@ func _get_slider_values_ordered(node: Node) -> Array:
 	for child in node.get_children():
 		if child is Range:
 			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
-			results.append([flag, child.value])
+			var time
+			if child.has_meta("time"):
+				time = child.get_meta("time")
+			else:
+				time = false
+			results.append([flag, child.value, time])
 		elif child.get_child_count() > 0:
 			var nested := _get_slider_values_ordered(child)
 			results.append_array(nested)
 	return results
 
-#func build_graph_from_connections(graph_edit: GraphEdit) -> Dictionary:
-	#var connections = graph_edit.get_connection_list()
-	#var graph := {}
-	#var reverse_graph := {}
-	#var all_nodes := {}
-#
-	## Collect all GraphNode names
-	#for child in graph_edit.get_children():
-		#if child is GraphNode:
-			#var name = str(child.name)
-			#all_nodes[name] = true
-			#graph[name] = []
-			#reverse_graph[name] = []
-#
-	## Build forward and reverse graphs
-	#for conn in connections:
-		#var from = str(conn["from_node"])
-		#var to = str(conn["to_node"])
-		#if graph.has(from) and graph.has(to):
-			#graph[from].append(to)
-			#reverse_graph[to].append(from)
-#
-	## Perform BFS from "inputfile"
-	#var reachable := {}
-	#var queue := ["inputfile"]
-	#while not queue.is_empty():
-		#var current = queue.pop_front()
-		#if reachable.has(current):
-			#continue
-		#reachable[current] = true
-		#for neighbor in graph.get(current, []):
-			#queue.append(neighbor)
-#
-	## Reverse BFS from "outputfile"
-	#var required := {}
-	#queue = ["outputfile"]
-	#while not queue.is_empty():
-		#var current = queue.pop_front()
-		#if required.has(current):
-			#continue
-		#required[current] = true
-		#for parent in reverse_graph.get(current, []):
-			#queue.append(parent)
-#
-	## Keep only nodes that are reachable both ways
-	#var used_nodes := []
-	#for node in reachable.keys():
-		#if required.has(node):
-			#used_nodes.append(node)
-#
-	#var pruned_graph := {}
-	#for node in used_nodes:
-		#var filtered_neighbors := []
-		#for neighbor in graph.get(node, []):
-			#if used_nodes.has(neighbor):
-				#filtered_neighbors.append(neighbor)
-		#pruned_graph[node] = filtered_neighbors
-#
-	#return {
-		#"graph": pruned_graph,
-		#"nodes": used_nodes
-	#}
 
-#func topological_sort(graph: Dictionary, nodes: Array) -> Array:
-	#var indegree := {}
-	#for node in nodes:
-		#indegree[node] = 0
-	#for node in nodes:
-		#for neighbor in graph[node]:
-			#indegree[neighbor] += 1
-#
-	#var queue := []
-	#for node in nodes:
-		#if indegree[node] == 0:
-			#queue.append(node)
-#
-	#var sorted := []
-	#while not queue.is_empty():
-		#var current = queue.pop_front()
-		#sorted.append(current)
-		#for neighbor in graph[current]:
-			#indegree[neighbor] -= 1
-			#if indegree[neighbor] == 0:
-				#queue.append(neighbor)
-#
-	#if sorted.size() != nodes.size():
-		#push_error("Cycle detected or disconnected graph.")
-		#return []
-	#
-	#return sorted
 
 func make_process(node: Node, process_count: int, current_infile: String, slider_data: Array) -> Array:
 	# Determine output extension: .wav or .ana based on the node's slot type
@@ -1052,6 +968,11 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 	for entry in slider_data:
 		var flag = entry[0]
 		var value = entry[1]
+		var time = entry[2] #checks if slider is a time percentage slider
+		if time == true:
+			var infile_length = run_command(cdpprogs_location + "/sfprops -d " + "\"%s\"" % current_infile)
+			infile_length = float(infile_length[0].strip_edges())
+			value = infile_length * (value / 100) #calculate percentage time of the input file
 		line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
 	
 	return [line.strip_edges(), output_file]
@@ -1099,53 +1020,7 @@ func run_command(command: String) -> Array:
 	
 	return output
 
-#func run_batch_file():
-	#var is_windows = OS.get_name() == "Windows"
-	#var script_ext = ".bat" if is_windows else ".sh"
-	#var script_name = "ordered_script" + script_ext
-	#var script_path = ProjectSettings.globalize_path("user://%s" % script_name)
-#
-	#var output: Array = []
-	#var error: Array = []
-#
-	#var exit_code := 0
-	#if is_windows:
-		#exit_code = OS.execute("cmd.exe", ["/c", script_path], output, true, true)
-	#else:
-		#exit_code = OS.execute("sh", [script_path], output, true, true)
-#
-	#var output_str := ""
-	#for item in output:
-		#output_str += item + "\n"
-#
-	#var error_str := ""
-	#for item in error:
-		#error_str += item + "\n"
-#
-	#if exit_code == 0:
-		#if output_str.contains("ERROR:"): #checks if CDP reported an error but passed exit code 0 anyway
-			#console_output.append_text("[color=red][b]Processes failed[/b][/color]\n\n")
-			#console_output.append_text("[b]Error:[/b]\n")
-			#console_output.scroll_to_line(console_output.get_line_count() - 1)
-			#console_output.append_text(output_str + "\n")
-		#else:
-			#console_output.append_text("[color=green]Processes ran successfully[/color]\n\n")
-			#console_output.append_text("[b]Output:[/b]\n")
-			#console_output.scroll_to_line(console_output.get_line_count() - 1)
-			#console_output.append_text(output_str + "\n")
-			#
-			#if final_output_dir.ends_with(".wav"):
-				#output_audio_player.play_outfile(final_output_dir)
-				#outfile = final_output_dir
-			#
-			#var interface_settings = ConfigHandler.load_interface_settings() #checks if close console is enabled and closes console on a success
-			#if interface_settings.auto_close_console:
-				#$Console.hide()
-	#else:
-		#console_output.append_text("[color=red][b]Processes failed with exit code: %d[/b][/color]\n\n" % exit_code)
-		#console_output.append_text("[b]Error:[/b]\n")
-		#console_output.scroll_to_line(console_output.get_line_count() - 1)
-		#console_output.append_text(error_str + "\n")
+
 	
 func path_exists_through_all_nodes() -> bool:
 	var all_nodes = {}
