@@ -36,14 +36,14 @@ use_native_dialog = true
 [node name="LoadButton" type="Button" parent="."]
 layout_mode = 0
 offset_top = 104.0
-offset_right = 128.0
+offset_right = 196.0
 offset_bottom = 147.0
 text = "Load File"
 
 [node name="RecycleButton" type="Button" parent="." groups=["outputnode"]]
 layout_mode = 0
 offset_top = 104.0
-offset_right = 128.0
+offset_right = 196.0
 offset_bottom = 147.0
 tooltip_text = "Copies your output file back to your input for further processing."
 text = "Recycle File"
@@ -51,19 +51,11 @@ metadata/outputfunction = "recycle"
 
 [node name="PlayButton" type="Button" parent="."]
 layout_mode = 0
-offset_left = 136.0
-offset_top = 104.0
-offset_right = 264.0
-offset_bottom = 147.0
-text = "Play"
-
-[node name="StopButton" type="Button" parent="."]
-layout_mode = 0
-offset_left = 272.0
+offset_left = 204.0
 offset_top = 104.0
 offset_right = 400.0
 offset_bottom = 147.0
-text = "Stop"
+text = "Play"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
@@ -105,8 +97,24 @@ points = PackedVector2Array(0, 0, 0, 96)
 width = 2.0
 default_color = Color(1, 1, 1, 0.541176)
 
+[node name="LoopRegion" type="ColorRect" parent="."]
+layout_mode = 0
+offset_bottom = 96.0
+focus_mode = 1
+color = Color(1, 1, 1, 0.0941176)
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 96.0
+flat = true
+
+[node name="Timer" type="Timer" parent="."]
+
 [connection signal="button_down" from="LoadButton" to="." method="_on_load_button_button_down"]
 [connection signal="button_down" from="RecycleButton" to="." method="_on_recycle_button_button_down"]
 [connection signal="button_down" from="PlayButton" to="." method="_on_play_button_button_down"]
-[connection signal="button_down" from="StopButton" to="." method="_on_stop_button_button_down"]
 [connection signal="button_down" from="WavError/CloseButton" to="." method="_on_close_button_button_down"]
+[connection signal="button_down" from="Button" to="." method="_on_button_button_down"]
+[connection signal="button_up" from="Button" to="." method="_on_button_button_up"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

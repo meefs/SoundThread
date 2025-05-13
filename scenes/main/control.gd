@@ -70,8 +70,6 @@ func _ready() -> void:
 			window.content_scale_factor = 2
 	
 	
-	
-	
 func new_patch():
 	#clear old patch
 	graph_edit.clear_connections()
@@ -187,7 +185,14 @@ func showmenu():
 	#stores mouse position at time of right click to later place a node in that location
 	if Input.is_action_just_pressed("open_menu"):
 		if mainmenu_visible == false:
-			effect_position = get_viewport().get_mouse_position()
+			effect_position = graph_edit.get_local_mouse_position()
+			#$mainmenu.position.x = min(effect_position.x, get_viewport().get_visible_rect().size.x - $mainmenu.size.x)
+			#$mainmenu.position.y = min(effect_position.y, get_viewport().get_visible_rect().size.y - $mainmenu.size.y)
+			$mainmenu.position.x = clamp(get_viewport().get_mouse_position().x, $mainmenu/select_effect.size.x / 2, get_viewport().get_visible_rect().size.x - ($mainmenu/select_effect.size.x / 2))
+			$mainmenu.position.y = clamp(get_viewport().get_mouse_position().y, ($mainmenu/select_effect.size.y / 2) + $ColorRect.size.y, get_viewport().get_visible_rect().size.y - ($mainmenu/select_effect.size.y / 2))
+			print($GraphEdit.scroll_offset)
+			#print(DisplayServer.window_get_size()) #actual window size
+			#print(get_viewport().get_visible_rect().size) # window size asjusted for retina scaling
 			$mainmenu.show()
 			mainmenu_visible = true
 		else:
@@ -204,7 +209,7 @@ func _on_button_pressed(button: Button):
 	#and position it close to the origin right click to open the menu
 	var effect: GraphNode = Nodes.get_node(NodePath(button.name)).duplicate()
 	get_node("GraphEdit").add_child(effect, true)
-	effect.position_offset = effect_position
+	effect.set_position_offset((effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 	_register_inputs_in_node(effect) #link sliders for changes tracking
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
 
@@ -583,7 +588,17 @@ func run_thread_with_branches():
 	var process_count = 0
 
 	# Start with the original input file
-	var current_infile = Global.infile
+	var starting_infile = Global.infile
+	
+	#If trim is enabled trim input audio
+	if Global.trim_infile == true:
+		run_command(cdpprogs_location + "/sfedit cut 1" + " \"%s\"" % starting_infile + " \"%s_trimmed.wav\"" % Global.outfile + " " + str(Global.infile_start) + " " + str(Global.infile_stop))
+		starting_infile = Global.outfile + "_trimmed.wav"
+		# Mark trimmed file for cleanup if needed
+		if delete_intermediate_outputs:
+			intermediate_files.append(Global.outfile + "_trimmed.wav")
+			
+	var current_infile = starting_infile
 
 	# Iterate over the processing nodes in topological order
 	for node_name in sorted:
@@ -615,8 +630,8 @@ func run_thread_with_branches():
 			current_infile = input_files[0]
 
 		## If no input, use the original input file
-		#else:
-			#current_infile = Global.infile
+		else:
+			current_infile = starting_infile
 
 		# Build the command for the current node's audio processing
 		var slider_data = _get_slider_values_ordered(node)
@@ -1084,53 +1099,53 @@ func run_command(command: String) -> Array:
 	
 	return output
 
-func run_batch_file():
-	var is_windows = OS.get_name() == "Windows"
-	var script_ext = ".bat" if is_windows else ".sh"
-	var script_name = "ordered_script" + script_ext
-	var script_path = ProjectSettings.globalize_path("user://%s" % script_name)
-
-	var output: Array = []
-	var error: Array = []
-
-	var exit_code := 0
-	if is_windows:
-		exit_code = OS.execute("cmd.exe", ["/c", script_path], output, true, true)
-	else:
-		exit_code = OS.execute("sh", [script_path], output, true, true)
-
-	var output_str := ""
-	for item in output:
-		output_str += item + "\n"
-
-	var error_str := ""
-	for item in error:
-		error_str += item + "\n"
-
-	if exit_code == 0:
-		if output_str.contains("ERROR:"): #checks if CDP reported an error but passed exit code 0 anyway
-			console_output.append_text("[color=red][b]Processes failed[/b][/color]\n\n")
-			console_output.append_text("[b]Error:[/b]\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-			console_output.append_text(output_str + "\n")
-		else:
-			console_output.append_text("[color=green]Processes ran successfully[/color]\n\n")
-			console_output.append_text("[b]Output:[/b]\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-			console_output.append_text(output_str + "\n")
-			
-			if final_output_dir.ends_with(".wav"):
-				output_audio_player.play_outfile(final_output_dir)
-				outfile = final_output_dir
-			
-			var interface_settings = ConfigHandler.load_interface_settings() #checks if close console is enabled and closes console on a success
-			if interface_settings.auto_close_console:
-				$Console.hide()
-	else:
-		console_output.append_text("[color=red][b]Processes failed with exit code: %d[/b][/color]\n\n" % exit_code)
-		console_output.append_text("[b]Error:[/b]\n")
-		console_output.scroll_to_line(console_output.get_line_count() - 1)
-		console_output.append_text(error_str + "\n")
+#func run_batch_file():
+	#var is_windows = OS.get_name() == "Windows"
+	#var script_ext = ".bat" if is_windows else ".sh"
+	#var script_name = "ordered_script" + script_ext
+	#var script_path = ProjectSettings.globalize_path("user://%s" % script_name)
+#
+	#var output: Array = []
+	#var error: Array = []
+#
+	#var exit_code := 0
+	#if is_windows:
+		#exit_code = OS.execute("cmd.exe", ["/c", script_path], output, true, true)
+	#else:
+		#exit_code = OS.execute("sh", [script_path], output, true, true)
+#
+	#var output_str := ""
+	#for item in output:
+		#output_str += item + "\n"
+#
+	#var error_str := ""
+	#for item in error:
+		#error_str += item + "\n"
+#
+	#if exit_code == 0:
+		#if output_str.contains("ERROR:"): #checks if CDP reported an error but passed exit code 0 anyway
+			#console_output.append_text("[color=red][b]Processes failed[/b][/color]\n\n")
+			#console_output.append_text("[b]Error:[/b]\n")
+			#console_output.scroll_to_line(console_output.get_line_count() - 1)
+			#console_output.append_text(output_str + "\n")
+		#else:
+			#console_output.append_text("[color=green]Processes ran successfully[/color]\n\n")
+			#console_output.append_text("[b]Output:[/b]\n")
+			#console_output.scroll_to_line(console_output.get_line_count() - 1)
+			#console_output.append_text(output_str + "\n")
+			#
+			#if final_output_dir.ends_with(".wav"):
+				#output_audio_player.play_outfile(final_output_dir)
+				#outfile = final_output_dir
+			#
+			#var interface_settings = ConfigHandler.load_interface_settings() #checks if close console is enabled and closes console on a success
+			#if interface_settings.auto_close_console:
+				#$Console.hide()
+	#else:
+		#console_output.append_text("[color=red][b]Processes failed with exit code: %d[/b][/color]\n\n" % exit_code)
+		#console_output.append_text("[b]Error:[/b]\n")
+		#console_output.scroll_to_line(console_output.get_line_count() - 1)
+		#console_output.append_text(error_str + "\n")
 	
 func path_exists_through_all_nodes() -> bool:
 	var all_nodes = {}

@@ -5,6 +5,8 @@ extends Control
 @onready var waveform_display = $WaveformPreview
 var outfile_path = "not_loaded"
 #signal recycle_outfile_trigger
+var rect_focus = false
+var mouse_pos_x
 
 #Used for waveform preview
 var voice_preview_generator : Node = null
@@ -17,6 +19,7 @@ func _ready():
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	file_dialog.filters = ["*.wav ; WAV audio files"]
 	file_dialog.connect("file_selected", Callable(self, "_on_file_selected"))
+	audio_player.connect("finished", Callable(self, "_on_audio_finished"))
 	
 	if get_meta("loadenable") == true:
 		$RecycleButton.hide()
@@ -60,6 +63,8 @@ func _on_file_selected(path: String):
 	voice_preview_generator.generate_preview(audio_player.stream)
 	Global.infile = path
 	print("Infile set: " + Global.infile)
+	$LoopRegion.size.x = 0
+	$Playhead.position.x = 0
 	
 func play_outfile(path: String):
 	outfile_path = path
@@ -76,18 +81,46 @@ func recycle_outfile(path: String):
 	voice_preview_generator.generate_preview(audio_player.stream)
 	Global.infile = path
 	print("Infile set: " + Global.infile)
+	$LoopRegion.size.x = 0
+	$Playhead.position.x = 0
 
 
 func _on_play_button_button_down() -> void:
-	if audio_player.stream:
-		audio_player.play()
-		$Playhead.position.x = 0
+	var playhead_position
+	#check if trim markers are set and set playhead position to correct location
+	if $LoopRegion.size.x == 0:
+		playhead_position = 0
+	else:
+		playhead_position = $LoopRegion.position.x
 	
-func _on_stop_button_button_down() -> void:
-	if audio_player.playing:
-		audio_player.stop()
-		$Playhead.position.x = 0
-		
+	$Playhead.position.x = playhead_position
+	
+	#check if audio is playing, to decide if this is a play or stop button
+	if audio_player.stream:
+		if audio_player.playing:
+			audio_player.stop()
+			$Timer.stop()
+			$PlayButton.text = "Play"
+		else:
+			$PlayButton.text = "Stop"
+			if $LoopRegion.size.x == 0: #loop position is not set, play from start of file
+				audio_player.play()
+			else:
+				var length = $AudioStreamPlayer.stream.get_length()
+				var pixel_to_time = length / 399
+				audio_player.play(pixel_to_time * $LoopRegion.position.x)
+				if $LoopRegion.position.x + $LoopRegion.size.x < 399:
+					$Timer.start(pixel_to_time * $LoopRegion.size.x)
+				
+
+#timer for ending playback at end of loop
+func _on_timer_timeout() -> void:
+	_on_play_button_button_down() #"press" stop button
+
+func _on_audio_finished():
+	$PlayButton.text = "Play"
+
+
 # This function will be called when the waveform texture is ready
 func _on_texture_ready(image_texture: ImageTexture):
 	# Set the generated texture to the TextureRect (waveform display node)
@@ -102,10 +135,43 @@ func _process(delta: float) -> void:
 		$Playhead.position.x += speed * delta
 		if $Playhead.position.x >= 399:
 			$Playhead.position.x = 0
-		
-		
+	
+	if audio_player.playing == false and rect_focus == true:
+		if get_local_mouse_position().x > mouse_pos_x:
+			$LoopRegion.size.x = clamp(get_local_mouse_position().x - mouse_pos_x, 0, $Panel.size.x - (mouse_pos_x - $Panel.position.x))
+		else:
+			$LoopRegion.size.x = clamp(mouse_pos_x - get_local_mouse_position().x, 0, (mouse_pos_x - $Panel.position.x))
+			$LoopRegion.position.x = clamp(get_local_mouse_position().x, $Panel.position.x, $Panel.position.x + $Panel.size.x)
 
 #func _on_recycle_button_button_down() -> void:
 	#if outfile_path != "not_loaded":
 		#recycle_outfile_trigger.emit(outfile_path)
 	
+
+
+
+	
+
+func _on_button_button_down() -> void:
+	print("focus entered")
+	mouse_pos_x = get_local_mouse_position().x
+	$LoopRegion.position.x = mouse_pos_x
+	rect_focus = true
+
+
+func _on_button_button_up() -> void:
+	rect_focus = false
+	if get_meta("loadenable") == true:
+		print("got meta")
+		if $LoopRegion.size.x > 0:
+			Global.trim_infile = true
+			var length = $AudioStreamPlayer.stream.get_length()
+			var pixel_to_time = length / 399
+			Global.infile_start = pixel_to_time * $LoopRegion.position.x
+			Global.infile_stop = Global.infile_start + (pixel_to_time * $LoopRegion.size.x)
+			print(Global.trim_infile)
+			print(Global.infile_start)
+			print(Global.infile_stop)
+		else:
+			Global.trim_infile = false
+			print(Global.trim_infile)

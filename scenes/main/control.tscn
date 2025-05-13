@@ -31,8 +31,16 @@ access = 2
 use_native_dialog = true
 
 [node name="mainmenu" parent="." instance=ExtResource("3_dtf4o")]
-layout_mode = 1
-offset_top = 35.0
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 600.0
+offset_top = 456.0
+offset_right = 600.0
+offset_bottom = 456.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="NoLocationPopup" type="Window" parent="." groups=["popup_windows"]]
 auto_translate_mode = 1
