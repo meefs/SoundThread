@@ -286,6 +286,12 @@ min_value = 1.0
 value = 5.0
 metadata/brk = true
 
+[node name="SaveAutomation" parent="distort_average/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="distort_average/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="clip_clip_2" type="GraphNode" parent="."]
 layout_mode = 0
 offset_left = 26.0
@@ -329,6 +335,12 @@ text = "Fraction"
 max_value = 1.0
 step = 0.01
 value = 0.7
+
+[node name="SaveAutomation" parent="clip_clip_2/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="clip_clip_2/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="distort_reform_6" type="GraphNode" parent="."]
 layout_mode = 0
@@ -409,6 +421,12 @@ min_value = 2.0
 max_value = 16.0
 value = 2.0
 
+[node name="SaveAutomation" parent="distort_divide/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="distort_divide/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="distort_fractal" type="GraphNode" parent="."]
 layout_mode = 0
 offset_left = 30.0
@@ -463,6 +481,12 @@ max_value = 20000.0
 value = 2.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="distort_fractal/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="distort_fractal/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="distort_fractal" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "loudness of scaled component relative to source (1.0)"
@@ -475,6 +499,12 @@ min_value = 0.01
 max_value = 1.0
 step = 0.01
 value = 1.0
+
+[node name="SaveAutomation" parent="distort_fractal/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="distort_fractal/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="distort_multiply" type="GraphNode" parent="."]
 layout_mode = 0
@@ -519,6 +549,12 @@ min_value = 2.0
 max_value = 16.0
 value = 2.0
 
+[node name="SaveAutomation" parent="distort_multiply/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="distort_multiply/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="distort_interpolate" type="GraphNode" parent="."]
 layout_mode = 0
 offset_left = 35.0
@@ -561,6 +597,12 @@ text = "Multiplier"
 min_value = 2.0
 max_value = 64.0
 value = 2.0
+
+[node name="SaveAutomation" parent="distort_interpolate/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="distort_interpolate/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="distort_reform_2" type="GraphNode" parent="."]
 layout_mode = 0
@@ -714,6 +756,12 @@ min_value = 2.0
 max_value = 64.0
 value = 2.0
 
+[node name="SaveAutomation" parent="distort_replace/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="distort_replace/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="quirk_quirk_1" type="GraphNode" parent="."]
 layout_mode = 0
 offset_left = 47.0
@@ -758,6 +806,12 @@ min_value = 0.01
 step = 0.01
 value = 0.7
 exp_edit = true
+
+[node name="SaveAutomation" parent="quirk_quirk_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="quirk_quirk_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="extend_drunk_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -840,6 +894,12 @@ max_value = 1000.0
 value = 30.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="extend_drunk_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_drunk_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="extend_drunk_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Time in infile at which the drunken walk occurs"
@@ -851,6 +911,12 @@ text = "Location"
 step = 0.01
 value = 0.0
 metadata/time = true
+
+[node name="SaveAutomation" parent="extend_drunk_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_drunk_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer3" parent="extend_drunk_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -864,6 +930,12 @@ max_value = 6.0
 step = 0.01
 value = 1.0
 
+[node name="SaveAutomation" parent="extend_drunk_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_drunk_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer4" parent="extend_drunk_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Maximum length of (random) step between segment reads"
@@ -875,6 +947,12 @@ text = "Maximum Step"
 max_value = 6.0
 step = 0.01
 value = 0.02
+
+[node name="SaveAutomation" parent="extend_drunk_1/VBoxContainer4/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_drunk_1/VBoxContainer4/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer5" parent="extend_drunk_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -888,6 +966,12 @@ min_value = 0.05
 max_value = 6.0
 step = 0.1
 value = 0.05
+
+[node name="SaveAutomation" parent="extend_drunk_1/VBoxContainer5/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_drunk_1/VBoxContainer5/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="extend_loop_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -951,6 +1035,12 @@ step = 0.01
 value = 0.0
 metadata/time = true
 
+[node name="SaveAutomation" parent="extend_loop_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_loop_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="extend_loop_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Length of looped segment (in milliseconds)"
@@ -964,6 +1054,12 @@ max_value = 30000.0
 value = 200.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="extend_loop_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_loop_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer3" parent="extend_loop_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Advance in infile from the start of one loop to the next (in milliseconds)"
@@ -975,6 +1071,12 @@ text = "Step"
 min_value = 1.0
 max_value = 6000.0
 value = 100.0
+
+[node name="SaveAutomation" parent="extend_loop_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_loop_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="extend_scramble_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -1039,6 +1141,12 @@ step = 0.01
 value = 2.0
 metadata/time = true
 
+[node name="SaveAutomation" parent="extend_scramble_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_scramble_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="extend_scramble_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Maximum chunksize to cut (as a percentage of the file length)"
@@ -1052,6 +1160,12 @@ step = 0.01
 value = 3.0
 metadata/time = true
 
+[node name="SaveAutomation" parent="extend_scramble_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_scramble_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer3" parent="extend_scramble_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Duration of outfile required must be greater than minimum chunk size"
@@ -1064,6 +1178,12 @@ min_value = 1.0
 max_value = 1000.0
 value = 60.0
 exp_edit = true
+
+[node name="SaveAutomation" parent="extend_scramble_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_scramble_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="shrink_shrink_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -1146,6 +1266,12 @@ max_value = 1.0
 step = 0.01
 value = 0.25
 
+[node name="SaveAutomation" parent="shrink_shrink_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="shrink_shrink_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="shrink_shrink_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Initial timestep in seconds between output events"
@@ -1158,6 +1284,12 @@ min_value = 12.0
 max_value = 60.0
 step = 0.01
 value = 12.0
+
+[node name="SaveAutomation" parent="shrink_shrink_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="shrink_shrink_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer3" parent="shrink_shrink_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1172,6 +1304,12 @@ max_value = 1.0
 step = 0.01
 value = 0.8
 
+[node name="SaveAutomation" parent="shrink_shrink_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="shrink_shrink_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer4" parent="shrink_shrink_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "The (minimum) duration of the output"
@@ -1184,6 +1322,12 @@ min_value = 1.0
 max_value = 1000.0
 value = 30.0
 exp_edit = true
+
+[node name="SaveAutomation" parent="shrink_shrink_1/VBoxContainer4/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="shrink_shrink_1/VBoxContainer4/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer5" parent="shrink_shrink_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1198,6 +1342,12 @@ max_value = 1000.0
 step = 0.1
 value = 14.95
 exp_edit = true
+
+[node name="SaveAutomation" parent="shrink_shrink_1/VBoxContainer5/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="shrink_shrink_1/VBoxContainer5/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="extend_zigzag_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -1270,6 +1420,12 @@ step = 0.01
 value = 0.0
 metadata/time = true
 
+[node name="SaveAutomation" parent="extend_zigzag_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_zigzag_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="extend_zigzag_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Point where zigzag ends"
@@ -1281,6 +1437,12 @@ text = "End Point"
 min_value = 1.0
 step = 0.01
 metadata/time = true
+
+[node name="SaveAutomation" parent="extend_zigzag_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_zigzag_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer3" parent="extend_zigzag_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1295,6 +1457,12 @@ max_value = 1000.0
 value = 60.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="extend_zigzag_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_zigzag_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer4" parent="extend_zigzag_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Minimum time between zigzags"
@@ -1307,6 +1475,12 @@ min_value = 0.05
 max_value = 1.0
 step = 0.01
 value = 0.05
+
+[node name="SaveAutomation" parent="extend_zigzag_1/VBoxContainer4/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="extend_zigzag_1/VBoxContainer4/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="filter_bank_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -1389,6 +1563,12 @@ max_value = 10000.0
 step = 0.01
 value = 400.0
 
+[node name="SaveAutomation" parent="filter_bank_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="filter_bank_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Makeup gain after filtering"
@@ -1402,6 +1582,12 @@ max_value = 60.0
 step = 0.01
 value = 1.5
 exp_edit = true
+
+[node name="SaveAutomation" parent="filter_bank_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer3" parent="filter_bank_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1417,6 +1603,12 @@ step = 0.01
 value = 55.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="filter_bank_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer4" parent="filter_bank_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "The highest frequency filter, must be higer than low filter"
@@ -1431,6 +1623,12 @@ step = 0.01
 value = 12000.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="filter_bank_1/VBoxContainer4/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_1/VBoxContainer4/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer6" parent="filter_bank_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Amound of random spread applied to filter frequencies"
@@ -1443,6 +1641,12 @@ max_value = 1.0
 step = 0.01
 value = 0.0
 metadata/flag = "-s"
+
+[node name="SaveAutomation" parent="filter_bank_1/VBoxContainer6/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_1/VBoxContainer6/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="filter_bank_2" type="GraphNode" parent="."]
 layout_mode = 0
@@ -1525,6 +1729,12 @@ max_value = 10000.0
 step = 0.01
 value = 400.0
 
+[node name="SaveAutomation" parent="filter_bank_2/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_2/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="filter_bank_2" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Makeup gain after filtering"
@@ -1538,6 +1748,12 @@ max_value = 60.0
 step = 0.01
 value = 1.5
 exp_edit = true
+
+[node name="SaveAutomation" parent="filter_bank_2/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_2/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer3" parent="filter_bank_2" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1553,6 +1769,12 @@ step = 0.01
 value = 55.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="filter_bank_2/VBoxContainer3/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_2/VBoxContainer3/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer4" parent="filter_bank_2" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "The highest frequency filter, must be higer than low filter"
@@ -1567,6 +1789,12 @@ step = 0.01
 value = 12000.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="filter_bank_2/VBoxContainer4/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_2/VBoxContainer4/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer6" parent="filter_bank_2" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Amound of random spread applied to filter frequencies"
@@ -1579,6 +1807,12 @@ max_value = 1.0
 step = 0.01
 value = 0.0
 metadata/flag = "-s"
+
+[node name="SaveAutomation" parent="filter_bank_2/VBoxContainer6/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_2/VBoxContainer6/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="filter_bank_5" type="GraphNode" parent="."]
 layout_mode = 0
@@ -1670,6 +1904,12 @@ max_value = 10000.0
 step = 0.01
 value = 400.0
 
+[node name="SaveAutomation" parent="filter_bank_5/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_5/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="filter_bank_5" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Makeup gain after filtering"
@@ -1683,6 +1923,12 @@ max_value = 60.0
 step = 0.01
 value = 1.5
 exp_edit = true
+
+[node name="SaveAutomation" parent="filter_bank_5/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_5/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer3" parent="filter_bank_5" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1698,6 +1944,12 @@ step = 0.01
 value = 55.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="filter_bank_5/VBoxContainer3/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_5/VBoxContainer3/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer4" parent="filter_bank_5" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "The highest frequency filter, must be higer than low filter"
@@ -1712,6 +1964,12 @@ step = 0.01
 value = 12000.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="filter_bank_5/VBoxContainer4/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_5/VBoxContainer4/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer5" parent="filter_bank_5" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "The number of filters in the filter bank"
@@ -1722,6 +1980,12 @@ text = "Number of Filters"
 [node name="HSlider" parent="filter_bank_5/VBoxContainer5/HSplitContainer" index="0"]
 min_value = 1.0
 value = 8.0
+
+[node name="SaveAutomation" parent="filter_bank_5/VBoxContainer5/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_5/VBoxContainer5/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer6" parent="filter_bank_5" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1735,6 +1999,12 @@ max_value = 1.0
 step = 0.01
 value = 0.0
 metadata/flag = "-s"
+
+[node name="SaveAutomation" parent="filter_bank_5/VBoxContainer6/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_5/VBoxContainer6/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="filter_bank_6" type="GraphNode" parent="."]
 layout_mode = 0
@@ -1826,6 +2096,12 @@ max_value = 10000.0
 step = 0.01
 value = 400.0
 
+[node name="SaveAutomation" parent="filter_bank_6/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_6/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="filter_bank_6" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Makeup gain after filtering"
@@ -1839,6 +2115,12 @@ max_value = 60.0
 step = 0.01
 value = 1.5
 exp_edit = true
+
+[node name="SaveAutomation" parent="filter_bank_6/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_6/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer3" parent="filter_bank_6" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1854,6 +2136,12 @@ step = 0.01
 value = 55.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="filter_bank_6/VBoxContainer3/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_6/VBoxContainer3/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer4" parent="filter_bank_6" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "The highest frequency filter, must be higer than low filter"
@@ -1868,6 +2156,12 @@ step = 0.01
 value = 12000.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="filter_bank_6/VBoxContainer4/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_6/VBoxContainer4/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer5" parent="filter_bank_6" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "The musical interval between each filter"
@@ -1879,6 +2173,12 @@ text = "Semitones"
 min_value = 1.0
 max_value = 24.0
 value = 7.0
+
+[node name="SaveAutomation" parent="filter_bank_6/VBoxContainer5/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_6/VBoxContainer5/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer6" parent="filter_bank_6" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1892,6 +2192,12 @@ max_value = 1.0
 step = 0.01
 value = 0.0
 metadata/flag = "-s"
+
+[node name="SaveAutomation" parent="filter_bank_6/VBoxContainer6/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="filter_bank_6/VBoxContainer6/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="modify_brassage_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -1938,6 +2244,12 @@ max_value = 24.0
 step = 0.01
 value = -12.0
 
+[node name="SaveAutomation" parent="modify_brassage_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_brassage_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="modify_brassage_2" type="GraphNode" parent="."]
 layout_mode = 0
 offset_left = 1240.0
@@ -1983,6 +2295,12 @@ max_value = 10.0
 step = 0.01
 value = 0.251
 exp_edit = true
+
+[node name="SaveAutomation" parent="modify_brassage_2/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_brassage_2/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="modify_brassage_4" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2038,6 +2356,12 @@ max_value = 500.0
 step = 0.01
 exp_edit = true
 
+[node name="SaveAutomation" parent="modify_brassage_4/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_brassage_4/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="modify_brassage_4" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Range of search for next grain"
@@ -2051,6 +2375,12 @@ max_value = 10000.0
 step = 0.01
 value = 2500.0
 metadata/flag = "-r"
+
+[node name="SaveAutomation" parent="modify_brassage_4/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_brassage_4/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="modify_brassage_5" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2097,6 +2427,12 @@ min_value = 0.01
 max_value = 2.0
 step = 0.01
 value = 0.6
+
+[node name="SaveAutomation" parent="modify_brassage_5/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_brassage_5/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="modify_speed_5" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2153,6 +2489,12 @@ step = 0.01
 value = 0.25
 exp_edit = true
 
+[node name="SaveAutomation" parent="modify_speed_5/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_speed_5/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="modify_speed_5" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "The time in the file to reach that speed"
@@ -2165,6 +2507,12 @@ min_value = 1.0
 step = 0.01
 value = 10.01
 metadata/time = true
+
+[node name="SaveAutomation" parent="modify_speed_5/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_speed_5/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="modify_loudness_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2211,6 +2559,12 @@ max_value = 10.0
 step = 0.001
 value = 1.0
 exp_edit = true
+
+[node name="SaveAutomation" parent="modify_loudness_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_loudness_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="modify_stack" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2302,6 +2656,12 @@ max_value = 24.0
 step = 0.01
 value = -12.0
 
+[node name="SaveAutomation" parent="modify_stack/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_stack/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="modify_stack" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "The number of copies stacked together"
@@ -2313,6 +2673,12 @@ text = "Layers"
 min_value = 2.0
 max_value = 20.0
 value = 6.0
+
+[node name="SaveAutomation" parent="modify_stack/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_stack/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer3" parent="modify_stack" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -2327,6 +2693,12 @@ max_value = 1.0
 step = 0.01
 value = 0.8
 
+[node name="SaveAutomation" parent="modify_stack/VBoxContainer3/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_stack/VBoxContainer3/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer4" parent="modify_stack" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Adjusts the time at which the attack of each sound occurs"
@@ -2338,6 +2710,12 @@ text = "Attack Offset"
 step = 0.01
 value = 0.0
 metadata/time = true
+
+[node name="SaveAutomation" parent="modify_stack/VBoxContainer4/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_stack/VBoxContainer4/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer5" parent="modify_stack" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -2351,6 +2729,12 @@ max_value = 1.0
 step = 0.01
 value = 1.0
 
+[node name="SaveAutomation" parent="modify_stack/VBoxContainer5/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_stack/VBoxContainer5/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer6" parent="modify_stack" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Amount of file to render"
@@ -2363,6 +2747,12 @@ min_value = 0.1
 max_value = 1.0
 step = 0.01
 value = 1.0
+
+[node name="SaveAutomation" parent="modify_stack/VBoxContainer6/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_stack/VBoxContainer6/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="modify_speed_2" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2408,6 +2798,13 @@ min_value = -24.0
 max_value = 24.0
 step = 0.01
 value = -12.0
+metadata/brk = true
+
+[node name="SaveAutomation" parent="modify_speed_2/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="modify_speed_2/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="pvoc_anal_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2536,6 +2933,12 @@ step = 0.001
 value = 0.5
 metadata/flag = "-d"
 
+[node name="SaveAutomation" parent="focus_accu/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="focus_accu/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer" parent="focus_accu" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Sustained channel data glissandos at glis octaves per second"
@@ -2549,6 +2952,12 @@ max_value = 10.0
 step = 0.1
 value = -0.5
 metadata/flag = "-g"
+
+[node name="SaveAutomation" parent="focus_accu/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="focus_accu/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="blur_blur" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2593,6 +3002,12 @@ text = "Bluring"
 min_value = 1.0
 max_value = 1024.0
 value = 64.0
+
+[node name="SaveAutomation" parent="blur_blur/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="blur_blur/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="blur_chorus_5" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2648,6 +3063,12 @@ max_value = 1028.0
 value = 30.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="blur_chorus_5/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="blur_chorus_5/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="blur_chorus_5" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "Maximum random scatter of partial frequencies"
@@ -2660,6 +3081,12 @@ min_value = 1.0
 max_value = 4.0
 step = 0.01
 value = 2.0
+
+[node name="SaveAutomation" parent="blur_chorus_5/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="blur_chorus_5/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="strange_invert_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2761,6 +3188,12 @@ step = 0.01
 value = 10.001
 exp_edit = true
 
+[node name="SaveAutomation" parent="spectstr_stretch/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="spectstr_stretch/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="spectstr_stretch" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 
@@ -2772,6 +3205,12 @@ max_value = 1.0
 step = 0.01
 value = 0.0
 
+[node name="SaveAutomation" parent="spectstr_stretch/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="spectstr_stretch/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer3" parent="spectstr_stretch" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 
@@ -2782,6 +3221,12 @@ text = "D-Random"
 max_value = 1.0
 step = 0.01
 value = 0.0
+
+[node name="SaveAutomation" parent="spectstr_stretch/VBoxContainer3/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="spectstr_stretch/VBoxContainer3/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="hilite_trace_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2828,6 +3273,12 @@ max_value = 513.0
 value = 16.0
 exp_edit = true
 
+[node name="SaveAutomation" parent="hilite_trace_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="hilite_trace_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="blur_scatter" type="GraphNode" parent="."]
 layout_mode = 0
 offset_left = 2241.0
@@ -2872,6 +3323,12 @@ min_value = 1.0
 max_value = 513.0
 value = 16.0
 exp_edit = true
+
+[node name="SaveAutomation" parent="blur_scatter/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="blur_scatter/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="spec_gain" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2918,6 +3375,12 @@ max_value = 10.0
 step = 0.001
 value = 0.8
 exp_edit = true
+
+[node name="SaveAutomation" parent="spec_gain/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="spec_gain/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="strange_waver_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2982,6 +3445,12 @@ max_value = 150.0
 step = 0.01
 value = 1.0
 
+[node name="SaveAutomation" parent="strange_waver_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="strange_waver_1/VBoxContainer/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
+
 [node name="VBoxContainer2" parent="strange_waver_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
 tooltip_text = "The maximum frequency stretch"
@@ -2994,6 +3463,12 @@ min_value = 1.0
 max_value = 4.0
 step = 0.01
 value = 1.0
+
+[node name="SaveAutomation" parent="strange_waver_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="strange_waver_1/VBoxContainer2/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="VBoxContainer3" parent="strange_waver_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -3008,6 +3483,12 @@ max_value = 20000.0
 step = 0.1
 value = 5.0
 exp_edit = true
+
+[node name="SaveAutomation" parent="strange_waver_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="0"]
+layout_mode = 0
+
+[node name="SaveAutomation2" parent="strange_waver_1/VBoxContainer3/BreakFileMaker/AutomationEditor" index="1"]
+layout_mode = 0
 
 [node name="notes" type="GraphNode" parent="."]
 layout_mode = 0

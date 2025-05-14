@@ -939,11 +939,16 @@ func _get_slider_values_ordered(node: Node) -> Array:
 		if child is Range:
 			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
 			var time
+			var brk_data = []
+			var min_slider = child.min_value
+			var max_slider = child.max_value
 			if child.has_meta("time"):
 				time = child.get_meta("time")
 			else:
 				time = false
-			results.append([flag, child.value, time])
+			if child.has_meta("brk_data"):
+				brk_data = child.get_meta("brk_data")
+			results.append([flag, child.value, time, brk_data, min_slider, max_slider])
 		elif child.get_child_count() > 0:
 			var nested := _get_slider_values_ordered(child)
 			results.append_array(nested)
@@ -966,17 +971,56 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 	var line = "%s/%s \"%s\" \"%s\" " % [cdpprogs_location, command_name, current_infile, output_file]
 
 	# Append parameter values from the sliders, include flags if present
+	var slider_count = 0
 	for entry in slider_data:
 		var flag = entry[0]
 		var value = entry[1]
 		var time = entry[2] #checks if slider is a time percentage slider
-		if time == true:
+		var brk_data = entry[3]
+		var min_slider = entry[4]
+		var max_slider = entry[5]
+		if brk_data.size() > 0: #if breakpoint data is present on slider
+			#Sort all points by time
+			var sorted_brk_data = []
+			sorted_brk_data = brk_data.duplicate()
+			sorted_brk_data.sort_custom(sort_points)
+			
+			var calculated_brk = []
+			
+			#get length of input file in seconds
 			var infile_length = run_command(cdpprogs_location + "/sfprops -d " + "\"%s\"" % current_infile)
 			infile_length = float(infile_length[0].strip_edges())
-			value = infile_length * (value / 100) #calculate percentage time of the input file
-		line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
-	
+			
+			#scale values from automation window to the right length for file and correct slider values
+			for point in sorted_brk_data:
+				var new_x = infile_length * (point.x / 700)
+				var new_y = remap(point.y, 255, 0, min_slider, max_slider)
+				calculated_brk.append(Vector2(new_x, new_y))
+			
+			write_breakfile(calculated_brk, output_file.get_basename() + "_" + slider_count + ".txt")
+			
+		else:
+			if time == true:
+				var infile_length = run_command(cdpprogs_location + "/sfprops -d " + "\"%s\"" % current_infile)
+				infile_length = float(infile_length[0].strip_edges())
+				value = infile_length * (value / 100) #calculate percentage time of the input file
+			line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
+		
+		slider_count += 1
 	return [line.strip_edges(), output_file]
+
+func sort_points(a, b):
+	return a.x < b.x
+	
+func write_breakfile(points: Array, path: String):
+	var file = FileAccess.open(path, FileAccess.WRITE)
+	if file:
+		for point in points:
+			var line = str(point.x) + " " + str(point.y) + "\n"
+			file.store_string(line)
+		file.close()
+	else:
+		print("Failed to open file for writing.")
 
 func run_command(command: String) -> Array:
 	var is_windows = OS.get_name() == "Windows"

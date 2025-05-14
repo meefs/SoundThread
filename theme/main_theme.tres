@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=54 format=3 uid="uid://cefwkdcoxihro"]
+[gd_resource type="Theme" load_steps=55 format=3 uid="uid://cefwkdcoxihro"]
 
 [ext_resource type="Texture2D" uid="uid://b4o8vm5o4uptk" path="res://theme/images/toggle_checked.png" id="1_cibxr"]
 [ext_resource type="Texture2D" uid="uid://d0dubcywvqtkw" path="res://theme/images/toggle_unchecked.png" id="2_adhqp"]
@@ -239,6 +239,8 @@ expand_margin_top = 2.0
 expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
+[sub_resource type="ImageTexture" id="ImageTexture_ftk8o"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2u8nx"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -459,6 +461,7 @@ HScrollBar/styles/grabber_pressed = SubResource("StyleBoxFlat_m8g5i")
 HScrollBar/styles/scroll = SubResource("StyleBoxFlat_a7tdx")
 HScrollBar/styles/scroll_focus = SubResource("StyleBoxFlat_6sc48")
 HSlider/icons/grabber = ExtResource("4_m8g5i")
+HSlider/icons/grabber_disabled = SubResource("ImageTexture_ftk8o")
 HSlider/icons/grabber_highlight = ExtResource("5_a7tdx")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_2u8nx")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_nxip8")
