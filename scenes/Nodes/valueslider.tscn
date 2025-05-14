@@ -71,14 +71,14 @@ layout_mode = 3
 anchors_preset = 0
 script = ExtResource("2_6ltu5")
 
-[node name="SaveAutomationButton" type="Button" parent="BreakFileMaker/AutomationEditor"]
+[node name="SaveAutomationButton" type="Button" parent="BreakFileMaker"]
 offset_left = 7.0
 offset_top = 262.0
 offset_right = 152.0
 offset_bottom = 295.0
 text = "Save Automation"
 
-[node name="CancelButton" type="Button" parent="BreakFileMaker/AutomationEditor"]
+[node name="CancelButton" type="Button" parent="BreakFileMaker"]
 offset_left = 159.0
 offset_top = 262.0
 offset_right = 304.0
@@ -91,6 +91,6 @@ text = "Cancel"
 [connection signal="focus_exited" from="HSplitContainer/LineEdit" to="." method="_on_line_edit_focus_exited"]
 [connection signal="text_submitted" from="HSplitContainer/LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="close_requested" from="BreakFileMaker" to="." method="_on_break_file_maker_close_requested"]
-[connection signal="button_down" from="BreakFileMaker/AutomationEditor/SaveAutomationButton" to="." method="_on_save_automation_button_down"]
-[connection signal="button_down" from="BreakFileMaker/AutomationEditor/SaveAutomationButton" to="BreakFileMaker/AutomationEditor" method="_on_save_automation_button_down"]
-[connection signal="button_down" from="BreakFileMaker/AutomationEditor/CancelButton" to="." method="_on_save_automation_2_button_down"]
+[connection signal="button_down" from="BreakFileMaker/SaveAutomationButton" to="." method="_on_save_automation_button_down"]
+[connection signal="button_down" from="BreakFileMaker/SaveAutomationButton" to="BreakFileMaker/AutomationEditor" method="_on_save_automation_button_down"]
+[connection signal="button_down" from="BreakFileMaker/CancelButton" to="." method="_on_save_automation_2_button_down"]

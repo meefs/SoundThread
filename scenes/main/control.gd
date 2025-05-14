@@ -997,8 +997,12 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 				var new_y = remap(point.y, 255, 0, min_slider, max_slider)
 				calculated_brk.append(Vector2(new_x, new_y))
 			
-			write_breakfile(calculated_brk, output_file.get_basename() + "_" + slider_count + ".txt")
+			#make text file
+			var brk_file_path = output_file.get_basename() + "_" + str(slider_count) + ".txt"
+			write_breakfile(calculated_brk, brk_file_path)
 			
+			#append text file in place of value
+			line += ("\"%s\" " % brk_file_path)
 		else:
 			if time == true:
 				var infile_length = run_command(cdpprogs_location + "/sfprops -d " + "\"%s\"" % current_infile)

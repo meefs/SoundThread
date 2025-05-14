@@ -47,9 +47,15 @@ func _on_line_edit_focus_exited() -> void:
 
 		
 
-
+#check for right click
 func _on_h_slider_gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed and $HSplitContainer/HSlider.has_meta("brk"):
+	if $HSplitContainer/HSlider.has_meta("brk"):
+		$HSplitContainer/HSlider/PopupMenu.set_item_disabled(0, false)
+		$HSplitContainer/HSlider/PopupMenu.set_item_text(0, "Add Automation")
+	else:
+		$HSplitContainer/HSlider/PopupMenu.set_item_disabled(0, true)
+		$HSplitContainer/HSlider/PopupMenu.set_item_text(0, "Automation is not available for this parameter")
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_RIGHT and event.pressed:
 		var local_pos = DisplayServer.mouse_get_position()
 		# Show popup at global mouse position
 		$HSplitContainer/HSlider/PopupMenu.popup()
