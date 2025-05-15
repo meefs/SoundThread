@@ -448,13 +448,24 @@ func _register_inputs_in_node(node: Node):
 		# Check if it's already connected, and connect if not
 		if not slider.is_connected("value_changed", callable):
 			slider.connect("value_changed", callable)
+	
+	for slider in node.find_children("*", "VBoxContainer", true, false):
+		# Also connect to meta_changed if the slider has that signal
+		if slider.has_signal("meta_changed"):
+			var meta_callable = Callable(self, "_on_any_slider_meta_changed")
+			if not slider.is_connected("meta_changed", meta_callable):
+				slider.connect("meta_changed", meta_callable)
 		
-	# Track CodeEdits (if necessary)
+	# Track CodeEdits
 	for editor in node.find_children("*", "CodeEdit", true, false):
 		var callable = Callable(self, "_on_any_input_changed")
 		if not editor.is_connected("text_changed", callable):
 			editor.connect("text_changed", callable)
 			
+func _on_any_slider_meta_changed():
+	changesmade = true
+	print("Meta changed in slider")
+	
 func _register_node_movement():
 	for graphnode in graph_edit.get_children():
 		if graphnode is GraphNode:
@@ -1029,8 +1040,11 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 					#var new_y = infile_length * (remap(point.y, 255, 0, min_slider, max_slider) / 100) #slider value scaled as a percentage of infile time
 					#calculated_brk.append(Vector2(new_x, new_y))
 			#else:
-			for point in sorted_brk_data:
+			for i in range(sorted_brk_data.size()):
+				var point = sorted_brk_data[i]
 				var new_x = infile_length * (point.x / 700) #time
+				if i == sorted_brk_data.size() - 1: #check if this is last automation point
+					new_x = infile_length + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
 				var new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
 				calculated_brk.append(Vector2(new_x, new_y))
 				
@@ -1254,7 +1268,18 @@ func save_graph_edit(path: String):
 
 			for child in node.find_children("*", "Slider", true, false):
 				var relative_path = node.get_path_to(child)
-				node_data["slider_values"][str(relative_path)] = child.value
+				var path_str = str(relative_path)
+
+				# Save slider value
+				node_data["slider_values"][path_str] = {
+					"value": child.value,
+					"editable": child.editable,
+					"meta": {}
+				}
+
+				# Save all metadata
+				for key in child.get_meta_list():
+					node_data["slider_values"][path_str]["meta"][str(key)] = child.get_meta(key)
 				
 			for child in node.find_children("*", "CodeEdit", true, false):
 				node_data["notes"][child.name] = child.text
@@ -1324,7 +1349,37 @@ func load_graph_edit(path: String):
 		for slider_path_str in node_data["slider_values"]:
 			var slider = new_node.get_node_or_null(slider_path_str)
 			if slider and (slider is HSlider or slider is VSlider):
-				slider.value = node_data["slider_values"][slider_path_str]
+				var slider_info = node_data["slider_values"][slider_path_str]
+				
+				if typeof(slider_info) == TYPE_DICTIONARY:
+					slider.value = slider_info.get("value", slider.value)
+					
+					# Restore enabled/disabled
+					if slider_info.has("editable"):
+						slider.editable = slider_info["editable"]
+					
+					# Restore metadata
+					if slider_info.has("meta"):
+						for key in slider_info["meta"]:
+							var value = slider_info["meta"][key]
+
+							# Convert arrays of stringified Vector2s back to real Vector2s
+							if key == "brk_data" and typeof(value) == TYPE_ARRAY:
+								var new_array: Array = []
+								for item in value:
+									if typeof(item) == TYPE_STRING:
+										# Extract values from "(x, y)"
+										var numbers: PackedStringArray = item.strip_edges().trim_prefix("(").trim_suffix(")").split(",")
+										if numbers.size() == 2:
+											var x = float(numbers[0])
+											var y = float(numbers[1])
+											new_array.append(Vector2(x, y))
+								value = new_array
+
+							slider.set_meta(key, value)
+				else:
+					# Legacy support: just value
+					slider.value = slider_info
 			
 	
 				
