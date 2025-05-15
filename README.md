@@ -24,8 +24,8 @@ SoundThread is currently in Alpha and as such there are some bugs, missing featu
 - A selection of popular CDP time domain and frequency domain processes:
   - [Distort](https://www.composersdesktop.com/docs/html/ccdpndex.htm#DISTORT) - Average, Clip, Click (Reform), Divide, Fractal, Interpolate, Multiply, Power Factor (Quirk), Replace, Square (Reform), and Triangle (Reform)
   - [Extend](https://www.composersdesktop.com/docs/html/ccdpndex.htm#EXTEND) -  Drunk, Loop, Scramble, Shrink, and Zigzag
-  - [Filter](https://www.composersdesktop.com/docs/html/ccdpndex.htm#FILTER) - Filter Bank Harmonic Series, Filter Bank Odd, Filter Bank Linear Spacing, and Filter Bank Pitched Intervals
-  - [Granulate (Brassage)](https://www.composersdesktop.com/docs/html/cgromody.htm#BRASSAGE) - Granulate, Pitch Shift, Scramble, and Time Stretch
+  - [Filter](https://www.composersdesktop.com/docs/html/ccdpndex.htm#FILTER) - Low Pass/High Pass, Filter Bank Harmonic Series, Filter Bank Odd, Filter Bank Linear Spacing, and Filter Bank Pitched Intervals
+  - [Granulate (Brassage)](https://www.composersdesktop.com/docs/html/cgromody.htm#BRASSAGE) - Brassage, Granulate, Pitch Shift, Scramble, and Time Stretch
   - Misc - Accelerate/Decelerate, Gain, Reverse, Stack, and Varispeed
   - [PVOC](https://www.composersdesktop.com/docs/html/cspecndx.htm) - Analaysis/Resynthesis, Accumulate, Blur, Chorus, Gain, Invert, Stretch, Scatter, Trace (hilite), and Waver
 - Automation of values using automatically generated [Breakpoint Files](https://www.composersdesktop.com/docs/html//filestxt.htm#BREAKPOINTFILES) based on drawn in automation data
