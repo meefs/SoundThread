@@ -68,7 +68,14 @@ func _ready() -> void:
 		for window in get_tree().get_nodes_in_group("popup_windows"):
 			window.size = window.size * 2
 			window.content_scale_factor = 2
-	
+
+	#checks if user has opened a file from the system file menu and loads it
+	var args = OS.get_cmdline_args()
+	for arg in args:
+		var path = arg.strip_edges()
+		if FileAccess.file_exists(path) and path.get_extension().to_lower() == "thd":
+			load_graph_edit(path)
+			break
 	
 func new_patch():
 	#clear old patch
@@ -1459,16 +1466,8 @@ func _on_help_button_index_pressed(index: int) -> void:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				load_graph_edit("res://examples/frequency_domain.thd")
 		5:
-			if changesmade == true:
-				savestate = "helpfile"
-				helpfile = "res://examples/quirks.thd"
-				$SaveChangesPopup.show()
-			else:
-				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
-				load_graph_edit("res://examples/quirks.thd")
-		6:
 			pass
-		7:
+		6:
 			OS.shell_open("https://www.composersdesktop.com/docs/html/cdphome.htm")
 
 func _recycle_outfile():
@@ -1515,6 +1514,7 @@ func _on_dont_save_changes_button_down() -> void:
 	
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		$Console.hide()
 		if changesmade == true:
 			savestate = "quit"
 			$SaveChangesPopup.show()
