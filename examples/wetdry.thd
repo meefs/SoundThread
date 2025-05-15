@@ -1,0 +1,150 @@
+{
+	"connections": [
+		{
+			"from_node": "inputfile",
+			"from_port": 0,
+			"to_node": "modify_brassage_1",
+			"to_port": 0
+		},
+		{
+			"from_node": "inputfile",
+			"from_port": 0,
+			"to_node": "modify_loudness_1",
+			"to_port": 0
+		},
+		{
+			"from_node": "modify_brassage_1",
+			"from_port": 0,
+			"to_node": "modify_loudness_2",
+			"to_port": 0
+		},
+		{
+			"from_node": "modify_loudness_2",
+			"from_port": 0,
+			"to_node": "outputfile",
+			"to_port": 0
+		},
+		{
+			"from_node": "modify_loudness_1",
+			"from_port": 0,
+			"to_node": "outputfile",
+			"to_port": 0
+		}
+	],
+	"nodes": [
+		{
+			"command": "inputfile",
+			"name": "inputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 20.0,
+				"y": 80.0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1445/@MarginContainer@1485/Tree/@Popup@1471/@VBoxContainer@1472/@HSlider@1480": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"command": "outputfile",
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1440.0,
+				"y": 80.0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1553/@MarginContainer@1593/Tree/@Popup@1579/@VBoxContainer@1580/@HSlider@1588": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"command": "modify_brassage_1",
+			"name": "modify_brassage_1",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 647.777770996094,
+				"y": 83.4999923706055
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true
+					},
+					"value": 12.0
+				}
+			}
+		},
+		{
+			"command": "modify_loudness_1",
+			"name": "modify_loudness_2",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1027.77783203125,
+				"y": 83.4999923706055
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true
+					},
+					"value": 0.5
+				}
+			}
+		},
+		{
+			"command": "modify_loudness_1",
+			"name": "modify_loudness_1",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1032.22229003906,
+				"y": 230.16667175293
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true
+					},
+					"value": 1.0
+				}
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "Using \"Gain\" nodes in parallel will allow you to mix different parts of your thread.\n\nHere it is being used to blend the original input signal with a quieter pitched up version of the input signal."
+			},
+			"offset": {
+				"x": 988.888977050781,
+				"y": 405.722229003906
+			},
+			"slider_values": {
+
+			}
+		}
+	]
+}

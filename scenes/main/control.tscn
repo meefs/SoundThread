@@ -236,7 +236,7 @@ item_3/id = 3
 [node name="HelpButton" type="PopupMenu" parent="MenuBar"]
 auto_translate_mode = 1
 title = "Help"
-item_count = 7
+item_count = 12
 item_0/text = "Tutorials"
 item_0/id = 0
 item_0/separator = true
@@ -248,11 +248,22 @@ item_3/text = "Building a Thread"
 item_3/id = 3
 item_4/text = "Frequency Domain"
 item_4/id = 4
-item_5/text = "Other Help"
+item_5/text = "Automation"
 item_5/id = 5
-item_5/separator = true
-item_6/text = "CDP Documentation"
+item_6/text = "Trimming Input Files"
 item_6/id = 6
+item_7/text = "Tips"
+item_7/id = 7
+item_7/separator = true
+item_8/text = "Wet/Dry Mix"
+item_8/id = 8
+item_9/text = "Other Help"
+item_9/id = 9
+item_9/separator = true
+item_10/text = "CDP Documentation"
+item_10/id = 10
+item_11/text = "Report a Bug"
+item_11/id = 11
 
 [node name="About" type="PopupMenu" parent="MenuBar"]
 item_count = 1

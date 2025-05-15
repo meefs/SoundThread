@@ -1,0 +1,106 @@
+{
+	"connections": [
+		{
+			"from_node": "inputfile",
+			"from_port": 0,
+			"to_node": "distort_multiply",
+			"to_port": 0
+		},
+		{
+			"from_node": "distort_multiply",
+			"from_port": 0,
+			"to_node": "outputfile",
+			"to_port": 0
+		}
+	],
+	"nodes": [
+		{
+			"command": "inputfile",
+			"name": "inputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 20.0,
+				"y": 80.0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1909/@MarginContainer@1949/Tree/@Popup@1935/@VBoxContainer@1936/@HSlider@1944": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "Load a soundfile into \"Input File\".\n\nClicking and dragging on the soundfile viewer on the input and output will let you select a section of audio to play.\n\nIf audio is selected in \"Input File\" when you run the process, SoundThread will automatically cut out that section and process only that."
+			},
+			"offset": {
+				"x": 38.8888893127441,
+				"y": 303.5
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "outputfile",
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 916.666687011719,
+				"y": 80.0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@2017/@MarginContainer@2057/Tree/@Popup@2043/@VBoxContainer@2044/@HSlider@2052": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"command": "distort_multiply",
+			"name": "distort_multiply",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 532.222229003906,
+				"y": 80.1666641235352
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true
+					},
+					"value": 2.0
+				}
+			}
+		},
+		{
+			"command": "notes",
+			"name": "notes2",
+			"notes": {
+				"CodeEdit": "Clicking on the soundfile viewer while audio is playing will allow you to jump around the file to listen to different sections."
+			},
+			"offset": {
+				"x": 481.111114501953,
+				"y": 303.5
+			},
+			"slider_values": {
+
+			}
+		}
+	]
+}

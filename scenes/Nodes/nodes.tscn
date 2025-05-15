@@ -280,7 +280,7 @@ layout_mode = 2
 tooltip_text = "Number of cycles over which to average"
 
 [node name="Label" parent="distort_average/VBoxContainer" index="0"]
-text = "Cycle Count"
+text = "Cycle Count~"
 
 [node name="HSlider" parent="distort_average/VBoxContainer/HSplitContainer" index="0"]
 min_value = 2.0
@@ -403,7 +403,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Label" parent="distort_divide/VBoxContainer" index="0"]
-text = "Divider"
+text = "Divider~"
 
 [node name="HSlider" parent="distort_divide/VBoxContainer/HSplitContainer" index="0"]
 min_value = 2.0
@@ -457,7 +457,7 @@ layout_mode = 2
 tooltip_text = "Division of scale of source wave"
 
 [node name="Label" parent="distort_fractal/VBoxContainer" index="0"]
-text = "Scaling"
+text = "Scaling~"
 
 [node name="HSlider" parent="distort_fractal/VBoxContainer/HSplitContainer" index="0"]
 min_value = 2.0
@@ -471,7 +471,7 @@ layout_mode = 2
 tooltip_text = "loudness of scaled component relative to source (1.0)"
 
 [node name="Label" parent="distort_fractal/VBoxContainer2" index="0"]
-text = "Loudness"
+text = "Loudness~"
 
 [node name="HSlider" parent="distort_fractal/VBoxContainer2/HSplitContainer" index="0"]
 min_value = 0.01
@@ -516,7 +516,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Label" parent="distort_multiply/VBoxContainer" index="0"]
-text = "Multiplier"
+text = "Multiplier~"
 
 [node name="HSlider" parent="distort_multiply/VBoxContainer/HSplitContainer" index="0"]
 min_value = 2.0
@@ -560,7 +560,7 @@ layout_mode = 2
 layout_mode = 2
 
 [node name="Label" parent="distort_interpolate/VBoxContainer" index="0"]
-text = "Multiplier"
+text = "Multiplier~"
 
 [node name="HSlider" parent="distort_interpolate/VBoxContainer/HSplitContainer" index="0"]
 min_value = 2.0
@@ -713,7 +713,7 @@ layout_mode = 2
 tooltip_text = "The number of wavecycles in each group"
 
 [node name="Label" parent="distort_replace/VBoxContainer" index="0"]
-text = "Cycle Count"
+text = "Cycle Count~"
 
 [node name="HSlider" parent="distort_replace/VBoxContainer/HSplitContainer" index="0"]
 min_value = 2.0
@@ -1395,7 +1395,7 @@ layout_mode = 2
 tooltip_text = "Filter Q factor - how narrow the filer is"
 
 [node name="Label" parent="filter_bank_1/VBoxContainer" index="0"]
-text = "Q"
+text = "Q~"
 
 [node name="HSlider" parent="filter_bank_1/VBoxContainer/HSplitContainer" index="0"]
 min_value = 1.0
@@ -1532,7 +1532,7 @@ layout_mode = 2
 tooltip_text = "Filter Q factor - how narrow the filer is"
 
 [node name="Label" parent="filter_bank_2/VBoxContainer" index="0"]
-text = "Q"
+text = "Q~"
 
 [node name="HSlider" parent="filter_bank_2/VBoxContainer/HSplitContainer" index="0"]
 min_value = 1.0
@@ -1790,7 +1790,7 @@ layout_mode = 2
 tooltip_text = "Filter Q factor - how narrow the filer is"
 
 [node name="Label" parent="filter_bank_5/VBoxContainer" index="0"]
-text = "Q"
+text = "Q~"
 
 [node name="HSlider" parent="filter_bank_5/VBoxContainer/HSplitContainer" index="0"]
 min_value = 1.0
@@ -1947,7 +1947,7 @@ layout_mode = 2
 tooltip_text = "Filter Q factor - how narrow the filer is"
 
 [node name="Label" parent="filter_bank_6/VBoxContainer" index="0"]
-text = "Q"
+text = "Q~"
 
 [node name="HSlider" parent="filter_bank_6/VBoxContainer/HSplitContainer" index="0"]
 min_value = 1.0
@@ -2060,7 +2060,7 @@ layout_mode = 2
 tooltip_text = "Change of pitch in semitones"
 
 [node name="Label" parent="modify_brassage_1/VBoxContainer" index="0"]
-text = "Pitch Shift"
+text = "Pitch Shift~"
 
 [node name="HSlider" parent="modify_brassage_1/VBoxContainer/HSplitContainer" index="0"]
 min_value = -24.0
@@ -2162,7 +2162,7 @@ layout_mode = 2
 tooltip_text = "Length of each grain in ms"
 
 [node name="Label" parent="modify_brassage_4/VBoxContainer" index="0"]
-text = "Grainsize"
+text = "Grainsize~"
 
 [node name="HSlider" parent="modify_brassage_4/VBoxContainer/HSplitContainer" index="0"]
 min_value = 2.0
@@ -2176,7 +2176,7 @@ layout_mode = 2
 tooltip_text = "Range of search for next grain"
 
 [node name="Label" parent="modify_brassage_4/VBoxContainer2" index="0"]
-text = "Range"
+text = "Range~"
 
 [node name="HSlider" parent="modify_brassage_4/VBoxContainer2/HSplitContainer" index="0"]
 min_value = 1.0
@@ -2224,7 +2224,7 @@ tooltip_text = "Amount of grain overlap
 Values < 1 leaves intergrain silence"
 
 [node name="Label" parent="modify_brassage_5/VBoxContainer" index="0"]
-text = "Density"
+text = "Density~"
 
 [node name="HSlider" parent="modify_brassage_5/VBoxContainer/HSplitContainer" index="0"]
 min_value = 0.01
@@ -2351,7 +2351,7 @@ layout_mode = 2
 tooltip_text = "How fast to move through the file, >1 faster <1 slower"
 
 [node name="Label" parent="modify_brassage_6/VBoxContainer" index="0"]
-text = "Scan Speed"
+text = "Scan Speed~"
 
 [node name="HSlider" parent="modify_brassage_6/VBoxContainer/HSplitContainer" index="0"]
 min_value = 0.01
@@ -2374,7 +2374,7 @@ tooltip_text = "Amount of grain overlap
 Values < 1 leaves intergrain silence"
 
 [node name="Label" parent="modify_brassage_6/VBoxContainer2" index="0"]
-text = "Density"
+text = "Density~"
 
 [node name="HSlider" parent="modify_brassage_6/VBoxContainer2/HSplitContainer" index="0"]
 min_value = 0.2
@@ -2395,7 +2395,7 @@ layout_mode = 2
 tooltip_text = "Size of the grains in milliseconds"
 
 [node name="Label" parent="modify_brassage_6/VBoxContainer3" index="0"]
-text = "Grain Size"
+text = "Grain Size~"
 
 [node name="HSlider" parent="modify_brassage_6/VBoxContainer3/HSplitContainer" index="0"]
 min_value = 2.0
@@ -2416,7 +2416,7 @@ layout_mode = 2
 tooltip_text = "Transposition of grains in semitones"
 
 [node name="Label" parent="modify_brassage_6/VBoxContainer4" index="0"]
-text = "Pitchshift"
+text = "Pitchshift~"
 
 [node name="HSlider" parent="modify_brassage_6/VBoxContainer4/HSplitContainer" index="0"]
 min_value = -24.0
@@ -2437,7 +2437,7 @@ layout_mode = 2
 tooltip_text = "Gain applied to grains"
 
 [node name="Label" parent="modify_brassage_6/VBoxContainer5" index="0"]
-text = "Amplitude"
+text = "Amplitude~"
 
 [node name="HSlider" parent="modify_brassage_6/VBoxContainer5/HSplitContainer" index="0"]
 min_value = 0.01
@@ -2459,7 +2459,7 @@ layout_mode = 2
 tooltip_text = "Position of grains from L to R (0 = L, 1 = R)"
 
 [node name="Label" parent="modify_brassage_6/VBoxContainer6" index="0"]
-text = "Panning"
+text = "Panning~"
 
 [node name="HSlider" parent="modify_brassage_6/VBoxContainer6/HSplitContainer" index="0"]
 max_value = 1.0
@@ -2479,7 +2479,7 @@ layout_mode = 2
 tooltip_text = "Time for each grain to fade in (ms)"
 
 [node name="Label" parent="modify_brassage_6/VBoxContainer7" index="0"]
-text = "Attack"
+text = "Attack~"
 
 [node name="HSlider" parent="modify_brassage_6/VBoxContainer7/HSplitContainer" index="0"]
 min_value = 1.0
@@ -2500,7 +2500,7 @@ layout_mode = 2
 tooltip_text = "Time for each grain to fade out (ms)"
 
 [node name="Label" parent="modify_brassage_6/VBoxContainer8" index="0"]
-text = "Decay"
+text = "Decay~"
 
 [node name="HSlider" parent="modify_brassage_6/VBoxContainer8/HSplitContainer" index="0"]
 min_value = 1.0
@@ -2521,7 +2521,7 @@ layout_mode = 2
 tooltip_text = "Range in file to search for the next grain (ms)"
 
 [node name="Label" parent="modify_brassage_6/VBoxContainer9" index="0"]
-text = "Search Range"
+text = "Search Range~"
 
 [node name="HSlider" parent="modify_brassage_6/VBoxContainer9/HSplitContainer" index="0"]
 min_value = 1.0
@@ -2543,7 +2543,7 @@ layout_mode = 2
 tooltip_text = "Randomisation of grain position"
 
 [node name="Label" parent="modify_brassage_6/VBoxContainer10" index="0"]
-text = "Jitter"
+text = "Jitter~"
 
 [node name="HSlider" parent="modify_brassage_6/VBoxContainer10/HSplitContainer" index="0"]
 max_value = 1.0
@@ -2664,7 +2664,7 @@ layout_mode = 2
 tooltip_text = "Amount to scale signal by. <1 is quiet >1 is louder"
 
 [node name="Label" parent="modify_loudness_1/VBoxContainer" index="0"]
-text = "Gain"
+text = "Gain~"
 
 [node name="HSlider" parent="modify_loudness_1/VBoxContainer/HSplitContainer" index="0"]
 min_value = 0.001
@@ -2672,7 +2672,7 @@ max_value = 10.0
 step = 0.001
 value = 1.0
 exp_edit = true
-metadata/brk = false
+metadata/brk = true
 
 [node name="modify_stack" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2863,7 +2863,7 @@ layout_mode = 2
 tooltip_text = "Amount to scale signal by. <1 is quiet >1 is louder"
 
 [node name="Label" parent="modify_speed_2/VBoxContainer" index="0"]
-text = "Semitones"
+text = "Semitones~"
 
 [node name="HSlider" parent="modify_speed_2/VBoxContainer/HSplitContainer" index="0"]
 min_value = -24.0
@@ -2990,7 +2990,7 @@ layout_mode = 2
 tooltip_text = "Gain factor for accumulated sound"
 
 [node name="Label" parent="focus_accu/VBoxContainer2" index="0"]
-text = "Decay"
+text = "Decay~"
 
 [node name="HSlider" parent="focus_accu/VBoxContainer2/HSplitContainer" index="0"]
 min_value = 0.001
@@ -3005,7 +3005,7 @@ layout_mode = 2
 tooltip_text = "Sustained channel data glissandos at glis octaves per second"
 
 [node name="Label" parent="focus_accu/VBoxContainer" index="0"]
-text = "Glissandos"
+text = "Glissandos~"
 
 [node name="HSlider" parent="focus_accu/VBoxContainer/HSplitContainer" index="0"]
 min_value = -5.0
@@ -3052,7 +3052,7 @@ layout_mode = 2
 tooltip_text = "Number of windows over which to average the spectrum"
 
 [node name="Label" parent="blur_blur/VBoxContainer" index="0"]
-text = "Bluring"
+text = "Bluring~"
 
 [node name="HSlider" parent="blur_blur/VBoxContainer/HSplitContainer" index="0"]
 min_value = 1.0
@@ -3106,7 +3106,7 @@ layout_mode = 2
 tooltip_text = "Maximum random scatter of partial amplitudes"
 
 [node name="Label" parent="blur_chorus_5/VBoxContainer" index="0"]
-text = "Amplitude Randomise"
+text = "Amplitude Randomise~"
 
 [node name="HSlider" parent="blur_chorus_5/VBoxContainer/HSplitContainer" index="0"]
 min_value = 1.0
@@ -3120,7 +3120,7 @@ layout_mode = 2
 tooltip_text = "Maximum random scatter of partial frequencies"
 
 [node name="Label" parent="blur_chorus_5/VBoxContainer2" index="0"]
-text = "Frequency Randomise"
+text = "Frequency Randomise~"
 
 [node name="HSlider" parent="blur_chorus_5/VBoxContainer2/HSplitContainer" index="0"]
 min_value = 1.0
@@ -3131,10 +3131,10 @@ metadata/brk = true
 
 [node name="strange_invert_1" type="GraphNode" parent="."]
 layout_mode = 0
-offset_left = 2230.0
-offset_top = 857.0
-offset_right = 2536.0
-offset_bottom = 937.0
+offset_left = 2234.0
+offset_top = 878.0
+offset_right = 2540.0
+offset_bottom = 958.0
 tooltip_text = "Transfers the energy from the highest frequency bands to the lowest ones and vice versa"
 title = "PVOC: Invert"
 slot/0/left_enabled = true
@@ -3288,7 +3288,7 @@ layout_mode = 2
 tooltip_text = "The number of frequency bands to keep"
 
 [node name="Label" parent="hilite_trace_1/VBoxContainer" index="0"]
-text = "Amount Kept"
+text = "Amount Kept~"
 
 [node name="HSlider" parent="hilite_trace_1/VBoxContainer/HSplitContainer" index="0"]
 min_value = 1.0
@@ -3334,7 +3334,7 @@ layout_mode = 2
 tooltip_text = "The number of frequency bands to keep"
 
 [node name="Label" parent="blur_scatter/VBoxContainer" index="0"]
-text = "Amount Kept"
+text = "Amount Kept~"
 
 [node name="HSlider" parent="blur_scatter/VBoxContainer/HSplitContainer" index="0"]
 min_value = 1.0
@@ -3380,7 +3380,7 @@ layout_mode = 2
 tooltip_text = "The number of frequency bands to keep"
 
 [node name="Label" parent="spec_gain/VBoxContainer" index="0"]
-text = "Gain"
+text = "Gain~"
 
 [node name="HSlider" parent="spec_gain/VBoxContainer/HSplitContainer" index="0"]
 min_value = 0.001
@@ -3445,7 +3445,7 @@ layout_mode = 2
 tooltip_text = "The frequency of oscillation relative to the length of the input file"
 
 [node name="Label" parent="strange_waver_1/VBoxContainer" index="0"]
-text = "Vibrato Frequency"
+text = "Vibrato Frequency~"
 
 [node name="HSlider" parent="strange_waver_1/VBoxContainer/HSplitContainer" index="0"]
 min_value = 0.01
@@ -3459,7 +3459,7 @@ layout_mode = 2
 tooltip_text = "The maximum frequency stretch"
 
 [node name="Label" parent="strange_waver_1/VBoxContainer2" index="0"]
-text = "Stretch"
+text = "Stretch~"
 
 [node name="HSlider" parent="strange_waver_1/VBoxContainer2/HSplitContainer" index="0"]
 min_value = 1.0

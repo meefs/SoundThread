@@ -1466,9 +1466,37 @@ func _on_help_button_index_pressed(index: int) -> void:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				load_graph_edit("res://examples/frequency_domain.thd")
 		5:
-			pass
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/automation.thd"
+				$SaveChangesPopup.show()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				load_graph_edit("res://examples/automation.thd")
 		6:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/trimming.thd"
+				$SaveChangesPopup.show()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				load_graph_edit("res://examples/trimming.thd")
+		7:
+			pass
+		8:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/wetdry.thd"
+				$SaveChangesPopup.show()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				load_graph_edit("res://examples/wetdry.thd")
+		9:
+			pass
+		10:
 			OS.shell_open("https://www.composersdesktop.com/docs/html/cdphome.htm")
+		11:
+			OS.shell_open("https://github.com/j-p-higgins/SoundThread/issues")
 
 func _recycle_outfile():
 	if outfile != "no file":

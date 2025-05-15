@@ -153,21 +153,22 @@ func _process(delta: float) -> void:
 	
 
 func _on_button_button_down() -> void:
-	if audio_player.playing: #if audio is playing allow user to skip around the sound file
-		$Timer.stop()
-		var length = $AudioStreamPlayer.stream.get_length()
-		var pixel_to_time = length / 399
-		$Playhead.position.x = get_local_mouse_position().x
-		if $LoopRegion.size.x == 0 or get_local_mouse_position().x > $LoopRegion.position.x + $LoopRegion.size.x: #loop position is not set or click is after loop position, play to end of file
-			audio_player.seek(pixel_to_time * get_local_mouse_position().x)
-		else: #if click position is before the loop position play from there and stop at the end of the loop position
-			audio_player.seek(pixel_to_time * get_local_mouse_position().x)
-			if $LoopRegion.position.x + $LoopRegion.size.x < 399:
-				$Timer.start(pixel_to_time * ($LoopRegion.position.x + $LoopRegion.size.x - get_local_mouse_position().x))
-	else:
-		mouse_pos_x = get_local_mouse_position().x
-		$LoopRegion.position.x = mouse_pos_x
-		rect_focus = true
+	if audio_player.stream:
+		if audio_player.playing: #if audio is playing allow user to skip around the sound file
+			$Timer.stop()
+			var length = $AudioStreamPlayer.stream.get_length()
+			var pixel_to_time = length / 399
+			$Playhead.position.x = get_local_mouse_position().x
+			if $LoopRegion.size.x == 0 or get_local_mouse_position().x > $LoopRegion.position.x + $LoopRegion.size.x: #loop position is not set or click is after loop position, play to end of file
+				audio_player.seek(pixel_to_time * get_local_mouse_position().x)
+			else: #if click position is before the loop position play from there and stop at the end of the loop position
+				audio_player.seek(pixel_to_time * get_local_mouse_position().x)
+				if $LoopRegion.position.x + $LoopRegion.size.x < 399:
+					$Timer.start(pixel_to_time * ($LoopRegion.position.x + $LoopRegion.size.x - get_local_mouse_position().x))
+		else:
+			mouse_pos_x = get_local_mouse_position().x
+			$LoopRegion.position.x = mouse_pos_x
+			rect_focus = true
 
 
 func _on_button_button_up() -> void:
