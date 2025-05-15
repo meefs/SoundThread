@@ -51,7 +51,7 @@ func _on_line_edit_focus_exited() -> void:
 func _on_h_slider_gui_input(event: InputEvent) -> void:
 	if $HSplitContainer/HSlider.has_meta("brk"):
 		$HSplitContainer/HSlider/PopupMenu.set_item_disabled(0, false)
-		$HSplitContainer/HSlider/PopupMenu.set_item_text(0, "Add Automation")
+		#$HSplitContainer/HSlider/PopupMenu.set_item_text(0, "Add Automation")
 	else:
 		$HSplitContainer/HSlider/PopupMenu.set_item_disabled(0, true)
 		$HSplitContainer/HSlider/PopupMenu.set_item_text(0, "Automation is not available for this parameter")

@@ -583,6 +583,7 @@ func run_thread_with_branches():
 	# Step 4: Start processing audio
 	var batch_lines = []        # Holds all batch file commands
 	var intermediate_files = [] # Files to delete later
+	var breakfiles = [] #breakfiles to delete later
 
 	# Dictionary to keep track of each node's output file
 	var output_files = {}
@@ -653,6 +654,8 @@ func run_thread_with_branches():
 					
 					# Mark file for cleanup if needed
 					if delete_intermediate_outputs:
+						for file in makeprocess[2]:
+							breakfiles.append(file)
 						intermediate_files.append(output_file)
 
 					process_count += 1
@@ -679,6 +682,8 @@ func run_thread_with_branches():
 						
 						# Mark file for cleanup if needed
 						if delete_intermediate_outputs:
+							for file in makeprocess[2]:
+								breakfiles.append(file)
 							intermediate_files.append(output_file)
 						
 						#Delete c1 and c2 because they can be in the wrong folder and if the same infile is used more than once
@@ -703,6 +708,8 @@ func run_thread_with_branches():
 
 					# Mark file for cleanup if needed
 					if delete_intermediate_outputs:
+						for file in makeprocess[2]:
+							breakfiles.append(file)
 						intermediate_files.append(output_file)
 
 		# Increase the process step count
@@ -727,6 +734,8 @@ func run_thread_with_branches():
 					
 					# Mark file for cleanup if needed
 					if delete_intermediate_outputs:
+						for file in makeprocess[2]:
+							breakfiles.append(file)
 						intermediate_files.append(output_file)
 
 					process_count += 1
@@ -738,6 +747,10 @@ func run_thread_with_branches():
 				
 				# Store output file path for this node
 				output_files[node_name] = output_file
+				
+				# Mark file for cleanup if needed
+				if delete_intermediate_outputs:
+					intermediate_files.append(output_file)
 
 			else:
 				#Detect if input file is mono or stereo
@@ -755,6 +768,8 @@ func run_thread_with_branches():
 
 						# Mark file for cleanup if needed
 						if delete_intermediate_outputs:
+							for file in makeprocess[2]:
+								breakfiles.append(file)
 							intermediate_files.append(output_file)
 
 					else: #audio file is stereo and process is mono, split stereo, process and recombine
@@ -775,6 +790,8 @@ func run_thread_with_branches():
 							
 							# Mark file for cleanup if needed
 							if delete_intermediate_outputs:
+								for file in makeprocess[2]:
+									breakfiles.append(file)
 								intermediate_files.append(output_file)
 							
 							#Delete c1 and c2 because they can be in the wrong folder and if the same infile is used more than once
@@ -801,12 +818,15 @@ func run_thread_with_branches():
 					run_command(makeprocess[0])
 					await get_tree().process_frame
 					var output_file = makeprocess[1]
+					
 
 					# Store output file path for this node
 					output_files[node_name] = output_file
 
 					# Mark file for cleanup if needed
 					if delete_intermediate_outputs:
+						for file in makeprocess[2]:
+							breakfiles.append(file)
 						intermediate_files.append(output_file)
 
 			# Increase the process step count
@@ -846,6 +866,14 @@ func run_thread_with_branches():
 	# CLEANUP: Delete intermediate files after processing and rename final output
 	log_console("Cleaning up intermediate files.", true)
 	for file_path in intermediate_files:
+		# Adjust file path format for Windows if needed
+		var fixed_path = file_path
+		if is_windows:
+			fixed_path = fixed_path.replace("/", "\\")
+		run_command("%s \"%s\"" % [delete_cmd, fixed_path])
+		await get_tree().process_frame
+	#delete break files 
+	for file_path in breakfiles:
 		# Adjust file path format for Windows if needed
 		var fixed_path = file_path
 		if is_windows:
@@ -969,6 +997,8 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 
 	# Start building the command line
 	var line = "%s/%s \"%s\" \"%s\" " % [cdpprogs_location, command_name, current_infile, output_file]
+	
+	var cleanup = []
 
 	# Append parameter values from the sliders, include flags if present
 	var slider_count = 0
@@ -992,17 +1022,26 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 			infile_length = float(infile_length[0].strip_edges())
 			
 			#scale values from automation window to the right length for file and correct slider values
+			#need to check how time is handled in all files that accept it, zigzag is x = outfile position, y = infile position
+			#if time == true:
+				#for point in sorted_brk_data:
+					#var new_x = infile_length * (point.x / 700) #time
+					#var new_y = infile_length * (remap(point.y, 255, 0, min_slider, max_slider) / 100) #slider value scaled as a percentage of infile time
+					#calculated_brk.append(Vector2(new_x, new_y))
+			#else:
 			for point in sorted_brk_data:
-				var new_x = infile_length * (point.x / 700)
-				var new_y = remap(point.y, 255, 0, min_slider, max_slider)
+				var new_x = infile_length * (point.x / 700) #time
+				var new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
 				calculated_brk.append(Vector2(new_x, new_y))
-			
+				
 			#make text file
 			var brk_file_path = output_file.get_basename() + "_" + str(slider_count) + ".txt"
 			write_breakfile(calculated_brk, brk_file_path)
 			
 			#append text file in place of value
 			line += ("\"%s\" " % brk_file_path)
+			
+			cleanup.append(brk_file_path)
 		else:
 			if time == true:
 				var infile_length = run_command(cdpprogs_location + "/sfprops -d " + "\"%s\"" % current_infile)
@@ -1011,7 +1050,7 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 			line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
 		
 		slider_count += 1
-	return [line.strip_edges(), output_file]
+	return [line.strip_edges(), output_file, cleanup]
 
 func sort_points(a, b):
 	return a.x < b.x
@@ -1064,6 +1103,7 @@ func run_command(command: String) -> Array:
 	else:
 		console_output.append_text("[color=#9c2828][b]Processes failed with exit code: %d[/b][/color]\n" % exit_code)
 		console_output.scroll_to_line(console_output.get_line_count() - 1)
+		console_output.append_text(output_str + "\n")
 		console_output.append_text(error_str + "\n")
 		process_successful = false
 	

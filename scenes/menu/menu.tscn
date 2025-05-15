@@ -25,7 +25,7 @@ current_tab = 0
 
 [node name="Time Domain" type="TabContainer" parent="select_effect"]
 layout_mode = 2
-current_tab = 4
+current_tab = 3
 metadata/_tab_index = 0
 
 [node name="Distort" type="VBoxContainer" parent="select_effect/Time Domain"]
@@ -537,7 +537,6 @@ layout_mode = 2
 text = "+"
 
 [node name="Granulate" type="VBoxContainer" parent="select_effect/Time Domain"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
@@ -565,12 +564,30 @@ dragging_enabled = false
 [node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4"]
 layout_mode = 2
 bbcode_enabled = true
+text = "[b]Brassage[/b]
+Segment and fragment a sound file"
+fit_content = true
+scroll_active = false
+
+[node name="modify_brassage_6" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
+layout_mode = 2
+text = "+"
+
+[node name="HSplitContainer5" type="HSplitContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(565, 0)
+layout_mode = 2
+split_offset = 505
+dragging_enabled = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer5"]
+layout_mode = 2
+bbcode_enabled = true
 text = "[b]Granulate[/b]
 Add a grainy texture to the sound"
 fit_content = true
 scroll_active = false
 
-[node name="modify_brassage_5" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
+[node name="modify_brassage_5" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer5" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
@@ -644,6 +661,7 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
 [node name="Misc" type="VBoxContainer" parent="select_effect/Time Domain"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 

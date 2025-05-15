@@ -1394,6 +1394,7 @@ min_value = 1.0
 max_value = 10000.0
 step = 0.01
 value = 400.0
+metadata/brk = true
 
 [node name="VBoxContainer2" parent="filter_bank_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1530,6 +1531,7 @@ min_value = 1.0
 max_value = 10000.0
 step = 0.01
 value = 400.0
+metadata/brk = true
 
 [node name="VBoxContainer2" parent="filter_bank_2" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1675,6 +1677,7 @@ min_value = 1.0
 max_value = 10000.0
 step = 0.01
 value = 400.0
+metadata/brk = true
 
 [node name="VBoxContainer2" parent="filter_bank_5" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1831,6 +1834,7 @@ min_value = 1.0
 max_value = 10000.0
 step = 0.01
 value = 400.0
+metadata/brk = true
 
 [node name="VBoxContainer2" parent="filter_bank_6" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1943,6 +1947,7 @@ min_value = -24.0
 max_value = 24.0
 step = 0.01
 value = -12.0
+metadata/brk = true
 
 [node name="modify_brassage_2" type="GraphNode" parent="."]
 layout_mode = 0
@@ -1989,6 +1994,7 @@ max_value = 10.0
 step = 0.01
 value = 0.251
 exp_edit = true
+metadata/brk = false
 
 [node name="modify_brassage_4" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2043,6 +2049,7 @@ min_value = 2.0
 max_value = 500.0
 step = 0.01
 exp_edit = true
+metadata/brk = true
 
 [node name="VBoxContainer2" parent="modify_brassage_4" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -2057,6 +2064,7 @@ max_value = 10000.0
 step = 0.01
 value = 2500.0
 metadata/flag = "-r"
+metadata/brk = true
 
 [node name="modify_brassage_5" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2103,6 +2111,333 @@ min_value = 0.01
 max_value = 2.0
 step = 0.01
 value = 0.6
+metadata/brk = true
+
+[node name="modify_brassage_6" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1248.0
+offset_top = 1076.0
+offset_right = 1554.0
+offset_bottom = 1182.0
+tooltip_text = "Granular processor for segmenting and fragmenting sounds - works best with automation!"
+title = "Granulate: Brassage"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 0.564706)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 0.564706)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+slot/5/left_enabled = false
+slot/5/left_type = 0
+slot/5/left_color = Color(1, 1, 1, 1)
+slot/5/left_icon = null
+slot/5/right_enabled = false
+slot/5/right_type = 0
+slot/5/right_color = Color(1, 1, 1, 1)
+slot/5/right_icon = null
+slot/5/draw_stylebox = true
+slot/6/left_enabled = false
+slot/6/left_type = 0
+slot/6/left_color = Color(1, 1, 1, 1)
+slot/6/left_icon = null
+slot/6/right_enabled = false
+slot/6/right_type = 0
+slot/6/right_color = Color(1, 1, 1, 1)
+slot/6/right_icon = null
+slot/6/draw_stylebox = true
+slot/7/left_enabled = false
+slot/7/left_type = 0
+slot/7/left_color = Color(1, 1, 1, 1)
+slot/7/left_icon = null
+slot/7/right_enabled = false
+slot/7/right_type = 0
+slot/7/right_color = Color(1, 1, 1, 1)
+slot/7/right_icon = null
+slot/7/draw_stylebox = true
+slot/8/left_enabled = false
+slot/8/left_type = 0
+slot/8/left_color = Color(1, 1, 1, 1)
+slot/8/left_icon = null
+slot/8/right_enabled = false
+slot/8/right_type = 0
+slot/8/right_color = Color(1, 1, 1, 1)
+slot/8/right_icon = null
+slot/8/draw_stylebox = true
+slot/9/left_enabled = false
+slot/9/left_type = 0
+slot/9/left_color = Color(1, 1, 1, 1)
+slot/9/left_icon = null
+slot/9/right_enabled = false
+slot/9/right_type = 0
+slot/9/right_color = Color(1, 1, 1, 1)
+slot/9/right_icon = null
+slot/9/draw_stylebox = true
+slot/10/left_enabled = false
+slot/10/left_type = 0
+slot/10/left_color = Color(1, 1, 1, 1)
+slot/10/left_icon = null
+slot/10/right_enabled = false
+slot/10/right_type = 0
+slot/10/right_color = Color(1, 1, 1, 1)
+slot/10/right_icon = null
+slot/10/draw_stylebox = true
+metadata/command = "modify_brassage_6"
+metadata/stereo_input = true
+
+[node name="Control" type="Control" parent="modify_brassage_6"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="modify_brassage_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "How fast to move through the file, >1 faster <1 slower"
+
+[node name="Label" parent="modify_brassage_6/VBoxContainer" index="0"]
+text = "Scan Speed"
+
+[node name="HSlider" parent="modify_brassage_6/VBoxContainer/HSplitContainer" index="0"]
+min_value = 0.01
+max_value = 10.0
+step = 0.01
+value = 1.0
+exp_edit = true
+metadata/brk = true
+
+[node name="PopupMenu" parent="modify_brassage_6/VBoxContainer/HSplitContainer/HSlider" index="0"]
+auto_translate_mode = 1
+size = Vector2i(208, 100)
+
+[node name="BreakFileMaker" parent="modify_brassage_6/VBoxContainer" index="3"]
+auto_translate_mode = 1
+
+[node name="VBoxContainer2" parent="modify_brassage_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Amount of grain overlap 
+Values < 1 leaves intergrain silence"
+
+[node name="Label" parent="modify_brassage_6/VBoxContainer2" index="0"]
+text = "Density"
+
+[node name="HSlider" parent="modify_brassage_6/VBoxContainer2/HSplitContainer" index="0"]
+min_value = 0.2
+max_value = 8.0
+step = 0.01
+value = 2.0
+metadata/brk = true
+
+[node name="PopupMenu" parent="modify_brassage_6/VBoxContainer2/HSplitContainer/HSlider" index="0"]
+auto_translate_mode = 1
+size = Vector2i(208, 100)
+
+[node name="BreakFileMaker" parent="modify_brassage_6/VBoxContainer2" index="3"]
+auto_translate_mode = 1
+
+[node name="VBoxContainer3" parent="modify_brassage_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Size of the grains in milliseconds"
+
+[node name="Label" parent="modify_brassage_6/VBoxContainer3" index="0"]
+text = "Grain Size"
+
+[node name="HSlider" parent="modify_brassage_6/VBoxContainer3/HSplitContainer" index="0"]
+min_value = 2.0
+max_value = 200.0
+step = 0.01
+value = 50.0
+metadata/brk = true
+
+[node name="PopupMenu" parent="modify_brassage_6/VBoxContainer3/HSplitContainer/HSlider" index="0"]
+auto_translate_mode = 1
+size = Vector2i(208, 100)
+
+[node name="BreakFileMaker" parent="modify_brassage_6/VBoxContainer3" index="3"]
+auto_translate_mode = 1
+
+[node name="VBoxContainer4" parent="modify_brassage_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Transposition of grains in semitones"
+
+[node name="Label" parent="modify_brassage_6/VBoxContainer4" index="0"]
+text = "Pitchshift"
+
+[node name="HSlider" parent="modify_brassage_6/VBoxContainer4/HSplitContainer" index="0"]
+min_value = -24.0
+max_value = 24.0
+step = 0.01
+value = 0.0
+metadata/brk = true
+
+[node name="PopupMenu" parent="modify_brassage_6/VBoxContainer4/HSplitContainer/HSlider" index="0"]
+auto_translate_mode = 1
+size = Vector2i(208, 100)
+
+[node name="BreakFileMaker" parent="modify_brassage_6/VBoxContainer4" index="3"]
+auto_translate_mode = 1
+
+[node name="VBoxContainer5" parent="modify_brassage_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Gain applied to grains"
+
+[node name="Label" parent="modify_brassage_6/VBoxContainer5" index="0"]
+text = "Amplitude"
+
+[node name="HSlider" parent="modify_brassage_6/VBoxContainer5/HSplitContainer" index="0"]
+min_value = 0.01
+max_value = 1.0
+step = 0.01
+value = 1.0
+exp_edit = true
+metadata/brk = true
+
+[node name="PopupMenu" parent="modify_brassage_6/VBoxContainer5/HSplitContainer/HSlider" index="0"]
+auto_translate_mode = 1
+size = Vector2i(208, 100)
+
+[node name="BreakFileMaker" parent="modify_brassage_6/VBoxContainer5" index="3"]
+auto_translate_mode = 1
+
+[node name="VBoxContainer6" parent="modify_brassage_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Position of grains from L to R (0 = L, 1 = R)"
+
+[node name="Label" parent="modify_brassage_6/VBoxContainer6" index="0"]
+text = "Panning"
+
+[node name="HSlider" parent="modify_brassage_6/VBoxContainer6/HSplitContainer" index="0"]
+max_value = 1.0
+step = 0.01
+value = 0.5
+metadata/brk = true
+
+[node name="PopupMenu" parent="modify_brassage_6/VBoxContainer6/HSplitContainer/HSlider" index="0"]
+auto_translate_mode = 1
+size = Vector2i(208, 100)
+
+[node name="BreakFileMaker" parent="modify_brassage_6/VBoxContainer6" index="3"]
+auto_translate_mode = 1
+
+[node name="VBoxContainer7" parent="modify_brassage_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Time for each grain to fade in (ms)"
+
+[node name="Label" parent="modify_brassage_6/VBoxContainer7" index="0"]
+text = "Attack"
+
+[node name="HSlider" parent="modify_brassage_6/VBoxContainer7/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 20.0
+step = 0.01
+value = 5.0
+metadata/brk = true
+
+[node name="PopupMenu" parent="modify_brassage_6/VBoxContainer7/HSplitContainer/HSlider" index="0"]
+auto_translate_mode = 1
+size = Vector2i(208, 100)
+
+[node name="BreakFileMaker" parent="modify_brassage_6/VBoxContainer7" index="3"]
+auto_translate_mode = 1
+
+[node name="VBoxContainer8" parent="modify_brassage_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Time for each grain to fade out (ms)"
+
+[node name="Label" parent="modify_brassage_6/VBoxContainer8" index="0"]
+text = "Decay"
+
+[node name="HSlider" parent="modify_brassage_6/VBoxContainer8/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 20.0
+step = 0.01
+value = 5.0
+metadata/brk = true
+
+[node name="PopupMenu" parent="modify_brassage_6/VBoxContainer8/HSplitContainer/HSlider" index="0"]
+auto_translate_mode = 1
+size = Vector2i(208, 100)
+
+[node name="BreakFileMaker" parent="modify_brassage_6/VBoxContainer8" index="3"]
+auto_translate_mode = 1
+
+[node name="VBoxContainer9" parent="modify_brassage_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Range in file to search for the next grain (ms)"
+
+[node name="Label" parent="modify_brassage_6/VBoxContainer9" index="0"]
+text = "Search Range"
+
+[node name="HSlider" parent="modify_brassage_6/VBoxContainer9/HSplitContainer" index="0"]
+min_value = 1.0
+max_value = 200.0
+step = 0.01
+value = 1.0
+metadata/flag = "-r"
+metadata/brk = true
+
+[node name="PopupMenu" parent="modify_brassage_6/VBoxContainer9/HSplitContainer/HSlider" index="0"]
+auto_translate_mode = 1
+size = Vector2i(208, 100)
+
+[node name="BreakFileMaker" parent="modify_brassage_6/VBoxContainer9" index="3"]
+auto_translate_mode = 1
+
+[node name="VBoxContainer10" parent="modify_brassage_6" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "Randomisation of grain position"
+
+[node name="Label" parent="modify_brassage_6/VBoxContainer10" index="0"]
+text = "Jitter"
+
+[node name="HSlider" parent="modify_brassage_6/VBoxContainer10/HSplitContainer" index="0"]
+max_value = 1.0
+step = 0.01
+value = 0.5
+metadata/flag = "-j"
+metadata/brk = true
+
+[node name="PopupMenu" parent="modify_brassage_6/VBoxContainer10/HSplitContainer/HSlider" index="0"]
+auto_translate_mode = 1
+size = Vector2i(208, 100)
+
+[node name="BreakFileMaker" parent="modify_brassage_6/VBoxContainer10" index="3"]
+auto_translate_mode = 1
 
 [node name="modify_speed_5" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2217,6 +2552,7 @@ max_value = 10.0
 step = 0.001
 value = 1.0
 exp_edit = true
+metadata/brk = false
 
 [node name="modify_stack" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2542,6 +2878,7 @@ max_value = 1.0
 step = 0.001
 value = 0.5
 metadata/flag = "-d"
+metadata/brk = true
 
 [node name="VBoxContainer" parent="focus_accu" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -2556,6 +2893,7 @@ max_value = 10.0
 step = 0.1
 value = -0.5
 metadata/flag = "-g"
+metadata/brk = true
 
 [node name="blur_blur" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2600,6 +2938,7 @@ text = "Bluring"
 min_value = 1.0
 max_value = 1024.0
 value = 64.0
+metadata/brk = true
 
 [node name="blur_chorus_5" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2654,6 +2993,7 @@ min_value = 1.0
 max_value = 1028.0
 value = 30.0
 exp_edit = true
+metadata/brk = true
 
 [node name="VBoxContainer2" parent="blur_chorus_5" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -2667,6 +3007,7 @@ min_value = 1.0
 max_value = 4.0
 step = 0.01
 value = 2.0
+metadata/brk = true
 
 [node name="strange_invert_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2834,6 +3175,7 @@ min_value = 1.0
 max_value = 513.0
 value = 16.0
 exp_edit = true
+metadata/brk = true
 
 [node name="blur_scatter" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2879,6 +3221,7 @@ min_value = 1.0
 max_value = 513.0
 value = 16.0
 exp_edit = true
+metadata/brk = true
 
 [node name="spec_gain" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2925,6 +3268,7 @@ max_value = 10.0
 step = 0.001
 value = 0.8
 exp_edit = true
+metadata/brk = true
 
 [node name="strange_waver_1" type="GraphNode" parent="."]
 layout_mode = 0
@@ -2988,6 +3332,7 @@ min_value = 0.01
 max_value = 150.0
 step = 0.01
 value = 1.0
+metadata/brk = true
 
 [node name="VBoxContainer2" parent="strange_waver_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -3001,6 +3346,7 @@ min_value = 1.0
 max_value = 4.0
 step = 0.01
 value = 1.0
+metadata/brk = true
 
 [node name="VBoxContainer3" parent="strange_waver_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -3100,6 +3446,16 @@ wrap_mode = 1
 [editable path="modify_brassage_4/VBoxContainer"]
 [editable path="modify_brassage_4/VBoxContainer2"]
 [editable path="modify_brassage_5/VBoxContainer"]
+[editable path="modify_brassage_6/VBoxContainer"]
+[editable path="modify_brassage_6/VBoxContainer2"]
+[editable path="modify_brassage_6/VBoxContainer3"]
+[editable path="modify_brassage_6/VBoxContainer4"]
+[editable path="modify_brassage_6/VBoxContainer5"]
+[editable path="modify_brassage_6/VBoxContainer6"]
+[editable path="modify_brassage_6/VBoxContainer7"]
+[editable path="modify_brassage_6/VBoxContainer8"]
+[editable path="modify_brassage_6/VBoxContainer9"]
+[editable path="modify_brassage_6/VBoxContainer10"]
 [editable path="modify_speed_5/VBoxContainer"]
 [editable path="modify_speed_5/VBoxContainer2"]
 [editable path="modify_loudness_1/VBoxContainer"]
