@@ -337,6 +337,89 @@ The high-pass filter lets through all of the sound above pass-band and attenuate
 Setting the Pass-band lower than the stop-band creates a low-pass filter. Setting the Pass-band higher than the stop-band creates a high-pass filter.
 ",
   },
+ 	"modify_brassage_1": {
+	"description": 
+"Granular pitch shift keeping the same speed
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Pitch Shift[/cell][cell]Amount in semitones to shift the pitch by[/cell][cell][center]✅[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Cuts the sound file into grains and speeds them up or slows them down to change their pitch. By repeating/omitting grains it retains the original speed. At high increases in pitch this will create a metalic sound, with high decreases in pitch the sound will lose detail.
+",
+  },
+ 	"modify_brassage_2": {
+	"description": 
+"Granular time stretch keeping the same pitch
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Speed[/cell][cell]Multiplier to increase/decrease the speed by, 1 = original speed, 2 = double speed, 0.5 = half speed[/cell][cell][center]✅[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Cuts the sound file into grains and repeats omits grains to adjust the speed of the sound. At high decreases in speed this will create a metalic sound, with high increases in speed the sound will lose detail.
+",
+  },
+ 	"modify_brassage_4": {
+	"description": 
+"Random reordering of grains
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Grainsize[/cell][cell]Size of the grains in milliseconds[/cell][cell][center]✅[/center][/cell]
+[cell]Range[/cell][cell]Distance to move while looking for next grain[/cell][cell][center]✅[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Moves through the file from start to end and reorders the grains within the set timeframe of range. Small range values will retain some of the original shape of the sound, large range values will result in a very jumbled sound.
+",
+  },
+ 	"modify_brassage_5": {
+	"description": 
+"Puts a grainy surface on a source
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Density[/cell][cell]Amount of grain overlap[/cell][cell][center]✅[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Moves through the sound from start to end and cuts it into grains. The density control sets how many of these grains are played back. A density of 1 will sound close to the original file, less than 1 will introduce gaps between grains, and values greater than one will smooth out the sound and introduce doubling.
+",
+  },
+ 	"modify_brassage_6": {
+	"description": 
+"Powerful granular segmentation/fragmentation procedures
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Scan Speed[/cell][cell]How fast to move through the file, 1 = original speed, 2 = double speed, 0.5 = half speed[/cell][cell][center]✅[/center][/cell]
+[cell]Density[/cell][cell]Amount of grain overlap, values less than 1 create gaps[/cell][cell][center]✅[/center][/cell]
+[cell]Grain Size[/cell][cell]Length of grains in ms[/cell][cell][center]✅[/center][/cell]
+[cell]Pitch Shift[/cell][cell]Amount to shift pitch of grain in semitones[/cell][cell][center]✅[/center][/cell]
+[cell]Amplitude[/cell][cell]Overal amplitude of the output[/cell][cell][center]✅[/center][/cell]
+[cell]Panning[/cell][cell]Panning of grains from left to right[/cell][cell][center]✅[/center][/cell]
+[cell]Attack[/cell][cell]Amount of time in ms each grain takes to fade in[/cell][cell][center]✅[/center][/cell]
+[cell]Decay[/cell][cell]Amount of time in ms each grain takes to fade out[/cell][cell][center]✅[/center][/cell]
+[cell]Search Range[/cell][cell]Distance to move while looking for next grain[/cell][cell][center]✅[/center][/cell]
+[cell]Jitter[/cell][cell]Amount of randomisation of grain position[/cell][cell][center]✅[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+This process moves through the file from start to end at the speed set by scan speed. How linearly it moves through the file is set by the Search Range and Jitter. 
+
+As it moves through the file it cuts out small chunks - called grains - of the file and plays those back. The length of those grains and how they fade in and out is set by the Grain Size, Attack and Decay. The pitch of the grains is set by Pitch Shift. 
+
+How many grains play back is set by the Density, desities less than 1 will create gaps between grains, densities higher than 1 will cause grains to overlap and merge. 
+
+Finally the sound can be panned from left to right with Panning and the overall level of the sound can be adjusted with Amplitude. 
+
+This process works particularly well when automation is applied to many parameters to make it shift and change over time. 
+",
+  },
  	"processname": {
 	"description": 
 "Short Description
