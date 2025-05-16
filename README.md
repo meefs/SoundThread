@@ -33,7 +33,7 @@ SoundThread is currently in Alpha and as such there are some bugs, missing featu
 - Accepts stereo or mono input files (splits and merges files as needed to run the full processing Thread)
 - Threads can be saved and loaded for reuse
 - Small suite of built in getting started tutorials
-- Help tooltips throughout
+- Help tooltips and detailed help files throughout
 - Recycle output button to reuse output file for further processing 
 - Optional: automatic clean up of intermediate files
  
