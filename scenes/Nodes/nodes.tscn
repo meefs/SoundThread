@@ -208,7 +208,7 @@ metadata/outputfunction = "runprocess"
 custom_minimum_size = Vector2(0, 43)
 layout_mode = 2
 tooltip_text = "SoundThread makes a lot of files. When toggled on this deletes everything but the output file."
-text = "Delete Intermediate files"
+text = "Delete Intermediate Files"
 expand_icon = true
 metadata/outputfunction = "deleteintermediate"
 
@@ -216,7 +216,7 @@ metadata/outputfunction = "deleteintermediate"
 custom_minimum_size = Vector2(0, 43)
 layout_mode = 2
 tooltip_text = "Stops you from being prompted for new folder each time you run a thread."
-text = "Reuse last output folder"
+text = "Reuse Last Output Folder"
 expand_icon = true
 metadata/outputfunction = "reusefolder"
 
@@ -647,7 +647,7 @@ offset_top = 1444.0
 offset_right = 2004.0
 offset_bottom = 1524.0
 tooltip_text = "Reverses a soundfile to play backwards"
-title = "Modify: Reverse"
+title = "Reverse"
 slot/0/left_enabled = true
 slot/0/left_type = 0
 slot/0/left_color = Color(1, 1, 1, 0.564706)
@@ -867,9 +867,11 @@ tooltip_text = "Half-width of the region from within which the sound segments ar
 text = "Ambitus"
 
 [node name="HSlider" parent="extend_drunk_1/VBoxContainer3/HSplitContainer" index="0"]
-max_value = 6.0
+min_value = 0.1
 step = 0.01
-value = 1.0
+value = 2.0
+exp_edit = true
+metadata/time = true
 
 [node name="VBoxContainer4" parent="extend_drunk_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -879,9 +881,11 @@ tooltip_text = "Maximum length of (random) step between segment reads"
 text = "Maximum Step"
 
 [node name="HSlider" parent="extend_drunk_1/VBoxContainer4/HSplitContainer" index="0"]
-max_value = 6.0
+min_value = 0.1
 step = 0.01
-value = 0.02
+value = 0.5
+exp_edit = true
+metadata/time = true
 
 [node name="VBoxContainer5" parent="extend_drunk_1" instance=ExtResource("3_b6nw4")]
 layout_mode = 2
@@ -1045,6 +1049,7 @@ text = "Minimum Chunk Length"
 min_value = 2.0
 step = 0.01
 value = 2.0
+exp_edit = true
 metadata/time = true
 metadata/min = true
 
@@ -1059,6 +1064,7 @@ text = "Maximum Chunk Length"
 min_value = 3.0
 step = 0.01
 value = 3.0
+exp_edit = true
 metadata/time = true
 metadata/max = true
 

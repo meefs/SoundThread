@@ -1,0 +1,221 @@
+{
+  "inputfile": {
+	"description": 
+"Loads a file for processing - supports mono and stereo .wav files
+
+[b]Parameters[/b]
+[table=2]
+[cell]Load File[/cell][cell]Opens a file browser to select a sound file[/cell]
+[cell]Play/Stop[/cell][cell]Plays the input sound file[/cell]
+[/table]
+
+[b]Functionality[/b]
+SoundThread only supports mono and stereo .wav files.
+
+Clicking and dragging on the soundfile viewer will let you select a section of audio to play.
+
+If audio is selected in Input File when you run the thread, SoundThread will automatically cut out that section and process only that.
+
+Clicking on the soundfile viewer while audio is playing will allow you to jump around the file to listen to different sections.
+",
+  },
+  "outputfile": {
+	"description": 
+"Manages output for running threads
+
+[b]Parameters[/b]
+[table=2]
+[cell]File Name[/cell][cell]The name for your output file[/cell]
+[cell]Run Thread[/cell][cell]Runs the current thread, opens a file dialog to choose the folder for the output files[/cell]
+[cell]Delete Intermediate Files[/cell][cell]If switched on, deletes all files except the final output file[/cell]
+[cell]Reuse Last Output Folder[/cell][cell]If switched on, the last folder selected on Run Thread will be used for output files[/cell]
+[cell]Open Folder[/cell][cell]Opens the last used output folder[/cell]
+[cell]Recycle File[/cell][cell]Loops the output file back to the Input File node for reprocessing[/cell]
+[cell]Play/Stop[/cell][cell]Plays the last output file[/cell]
+[/table]
+
+[b]Functionality[/b]
+The name inputted in File Name will be appended with the current date and time so that you don't need to input a new file name each time.
+
+SoundThread can create a lot of files as each node in the thread can create multiple files. Turning on Delete Intermediate Files will delete everything but the main output file. 
+
+Clicking and dragging on the soundfile viewer will let you select a section of audio to play. Clicking on the soundfile viewer while audio is playing will allow you to jump around the file to listen to different sections.
+",
+  },
+  "notes": {
+	"description": 
+"A box for taking notes
+
+[b]Functionality[/b]
+Doesn't do anything other than giving you a space to take notes. You can right click in the text box to copy and paste and use special characters like emojis 😊.
+",
+  },
+  "distort_average": {
+	"description": 
+"Average the waveshape over a number of wavecycles
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Cycle Count[/cell][cell]Number of cycles over which to average[/cell][cell][center]✅[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Performs a mathematical averaging of the set number of cycle counts. The effect is more akin to a loss of resolution than the blurring which might be expected. Values below 10 retain some semblance of the original, while values of 100 create a kind of 'sample hold' effect.
+
+",
+  },
+  "clip_clip_2": {
+	"description": 
+"Clip a fraction of half wavecycles
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Fraction[/cell][cell]Fraction of each half wavecycle to clip, 1 = no change[/cell][cell][center]❌[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Cuts the top and bottom off of a wavecycle. Unlike conventional clipping that only cuts off parts of the signal that exceeds a set threshold, Clip Fraction looks at each cycle of the sound and cuts off a set fraction of that wavecycle. This produces a clipping effect that is uniform across the entire signal and maintains the dynamic range of the original. The lower you set the value, the more distorted the sound will be.
+",
+  },
+  "distort_divide": {
+	"description": 
+"Distortion by dividing wavecycle frequency
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Divider[/cell][cell] [/cell][cell][center]✅[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Takes a wavecycle and divides its frequency, pitch shifting it down and making it slower. This longer wavecycle replaces the next few wavecycles keeping the length of the file the same. This produces a rough pitch shift effect with added distortion artifacts. Works best with division values less than 4, at high division values the sound file may be too low to hear.
+
+This process is the opposite of Distort: Multiply.
+",
+  },
+  "distort_fractal": {
+	"description": 
+"Superimpose miniature copies of a wavecycles onto itself
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Scaling[/cell][cell]The division of scale of the wavecycle[/cell][cell][center]✅[/center][/cell]
+[cell]Loudness[/cell][cell]Loudness of fractal component compared to original wavecycle, 1 = same level.[/cell][cell][center]✅[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Takes a wavecycle and divides its length and makes shorter and higher copies that equal the divided length. It then takes these copies and superimposes them over the original wavecycle. The higher the scaling the shorter each copy will be and the more copies will be layered over the original. The loudness control works like a mix between the original and the copies of the wavecycle. Produces a sheen of distortion over the original sound.
+",
+  },
+  "distort_interpolate": {
+	"description": 
+"Time-stretch by repeating wavecycles and interpolating between them
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Multiplier[/cell][cell]The number of times each wavecycle repeats[/cell][cell][center]✅[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Takes a wavecycle and repeats it based on the multiplier. On each repetition the wavecycle is morphed slightly in shape so that it morphs into the shape of the next wavecycle in the file. This adds a modulatory quality to the output, successive wavecycles gliss and bend as they flow into one another.
+",
+  },
+  "distort_multiply": {
+	"description": 
+"Distortion by multiplying wavecycle frequency
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Multiplier[/cell][cell]The amount each wavecycle is multiplied by[/cell][cell][center]✅[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Takes each wavecycle and multiplies its frequency making it higher and shorter. It then repeats this wavecycle to fill the length of the original keeping the output file the same length. This produces a distorted pitching up of the sound. 
+
+This process is the opposite of Distort: Divide.
+",
+  },
+  "distort_reform_2": {
+	"description": 
+"Replaces wavecycles with square shaped wavecycles
+
+[b]Functionality[/b]
+This process reads each wavecycle and replaces it with a square waveform of the same length and amplitude. This produces a similar but considerably harsher effect to Distort: Clip Fraction.
+",
+  },
+  "distort_reform_4": {
+	"description": 
+"Replaces wavecycles with triangle shaped wavecycles
+
+[b]Functionality[/b]
+This process reads each wavecycle and replaces it with a triangle waveform of the same length and amplitude. This effect of this process is quite dependent on the input material. If applied to noisy and distorted sounds this will producing a smoothing or filtering like effect. On sounds with few harmonics - e.g. sine waves - it will add additional harmonics producing a gentle distortion.
+",
+  },
+  "distort_reform_6": {
+	"description": 
+"Replaces wavecycles with short pulses
+
+
+[b]Functionality[/b]
+This process reads each wavecycle and replaces it with a short square pulse of a random length of the same amplitude. This produces a rough, rattle like timbre.
+",
+  },
+  "distort_replace": {
+	"description": 
+"The strongest wavecycle in a group replaces the others
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Cycle Count[/cell][cell]The size of the group[/cell][cell][center]✅[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Looks at a set number of wavecycles and finds the loudest one and repeats it to replace all other wavecycles. The repeated wavecycle is repeated at its original frequency and amplitude. This produces a sample and hold like effect.
+",
+  },
+ 	"quirk_quirk_1": {
+	"description": 
+"Distortion by raising sample values of half wavecycles to a power
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Power Factor[/cell][cell]The power to raise each sample to[/cell][cell][center]❌[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Introduces distortion into a signal by raising sample values to a power. Values less than 1 tend to flatten the tops of the waveform, while values greater than 1 narrow the waveform shape, creating a thinner, raspier sound.
+",
+  },
+ 	"extend_drunk_1": {
+	"description": 
+"Wanders through a soundfile jumping forwards and backwards while repeating small segments
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Minimum Output Duration[/cell][cell]The minimum length of the output in seconds[/cell][cell][center]❌[/center][/cell]
+[cell]Location[/cell][cell]The position in percent in the input file where the drunken walk occurs[/cell][cell][center]❌[/center][/cell]
+[cell]Ambitus[/cell][cell]The percentage of the input file the walk can move either side of the location by[/cell][cell][center]❌[/center][/cell]
+[cell]Maximum Step[/cell][cell] [/cell][cell][center]❌[/center][/cell]
+[cell]Clock[/cell][cell] [/cell][cell][center]❌[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+
+",
+  },
+
+
+
+ 	"processname": {
+	"description": 
+"Short Description
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell] [/cell][cell] [/cell][cell][center]✅❌[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+
+",
+  },
+}

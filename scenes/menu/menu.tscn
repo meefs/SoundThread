@@ -25,7 +25,7 @@ current_tab = 0
 
 [node name="Time Domain" type="TabContainer" parent="select_effect"]
 layout_mode = 2
-current_tab = 2
+current_tab = 1
 metadata/_tab_index = 0
 
 [node name="Distort" type="VBoxContainer" parent="select_effect/Time Domain"]
@@ -286,7 +286,6 @@ layout_mode = 2
 text = "+"
 
 [node name="Extend" type="VBoxContainer" parent="select_effect/Time Domain"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
@@ -371,6 +370,7 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
 [node name="HSplitContainer3" type="HSplitContainer" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
+visible = false
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
@@ -411,6 +411,7 @@ layout_mode = 2
 text = "+"
 
 [node name="Filter" type="VBoxContainer" parent="select_effect/Time Domain"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 

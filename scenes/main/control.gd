@@ -35,6 +35,7 @@ func _ready() -> void:
 	$Console.hide()
 	$NoInputPopup.hide()
 	$MultipleConnectionsPopup.hide()
+	$HelpWindow.hide()
 	
 	$SaveDialog.access = FileDialog.ACCESS_FILESYSTEM
 	$SaveDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
@@ -218,13 +219,13 @@ func deselect_all_nodes():
 func show_help_for_node(node_name: String, node_title: String):
 	if help_data.has(node_name):
 		var info = help_data[node_name]
-		$HelpWindow.title = node_title
+		$HelpWindow.title = "Help - " + node_title
 		$HelpWindow/HelpTitle.text = node_title
 		$HelpWindow/HelpText.text = ""
 		$HelpWindow/HelpText.text += info.get("description", "No help available.")
 		$HelpWindow.show()
 	else:
-		$HelpWindow.title = node_title
+		$HelpWindow.title = "Help - " + node_title
 		$HelpWindow/HelpTitle.text = node_title
 		$HelpWindow/HelpText.text = ""
 		$HelpWindow/HelpText.text += "No help found."
@@ -1586,6 +1587,7 @@ func _notification(what):
 		if changesmade == true:
 			savestate = "quit"
 			$SaveChangesPopup.show()
+			$HelpWindow.hide()
 		else:
 			get_tree().quit() # default behavior
 			
