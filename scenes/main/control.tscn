@@ -31,6 +31,7 @@ access = 2
 use_native_dialog = true
 
 [node name="mainmenu" parent="." instance=ExtResource("3_dtf4o")]
+visible = false
 layout_mode = 0
 anchors_preset = 0
 anchor_right = 0.0
@@ -313,6 +314,27 @@ offset_right = 351.0
 offset_bottom = 101.0
 text = "Don't Save"
 
+[node name="HelpWindow" type="Window" parent="."]
+initial_position = 2
+size = Vector2i(600, 400)
+visible = false
+always_on_top = true
+
+[node name="HelpTitle" type="Label" parent="HelpWindow"]
+offset_left = 12.0
+offset_top = 8.0
+offset_right = 588.0
+offset_bottom = 27.0
+theme_override_font_sizes/font_size = 25
+text = "Node Name goes here"
+
+[node name="HelpText" type="RichTextLabel" parent="HelpWindow"]
+offset_left = 12.0
+offset_top = 48.0
+offset_right = 588.0
+offset_bottom = 392.0
+text = "Help Text goes in here"
+
 [connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="delete_nodes_request" from="GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
 [connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
@@ -335,3 +357,4 @@ text = "Don't Save"
 [connection signal="file_selected" from="LoadDialog" to="." method="_on_load_dialog_file_selected"]
 [connection signal="button_down" from="SaveChangesPopup/SaveChanges" to="." method="_on_save_changes_button_down"]
 [connection signal="button_down" from="SaveChangesPopup/DontSaveChanges" to="." method="_on_dont_save_changes_button_down"]
+[connection signal="close_requested" from="HelpWindow" to="." method="_on_help_window_close_requested"]

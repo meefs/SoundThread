@@ -1,0 +1,13 @@
+{
+  "inputfile": {
+	"description": 
+"Allows you to load and play a file for processing.
+Here I am testing multiple lines.
+I do not know if this will work.",
+  },
+  "outputfile": {
+	"title": "Output File",
+	"description": "Controls running your thread and plays the output file from the thread.",
+	"category": "Shader"
+  }
+}

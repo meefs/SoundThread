@@ -22,6 +22,7 @@ var outfilename #links to the user name for outputfile field
 var foldertoggle #links to the reuse folder button
 var lastoutputfolder = "none" #tracks last output folder, this can in future be used to replace global.outfile but i cba right now
 var process_successful #tracks if the last run process was successful
+var help_data := {} #stores help data for each node to display in help popup
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -76,6 +77,10 @@ func _ready() -> void:
 		if FileAccess.file_exists(path) and path.get_extension().to_lower() == "thd":
 			load_graph_edit(path)
 			break
+	
+	var file = FileAccess.open("res://scenes/main/process_help.json", FileAccess.READ)
+	if file:
+		help_data = JSON.parse_string(file.get_as_text())
 	
 func new_patch():
 	#clear old patch
@@ -173,6 +178,8 @@ func _input(event):
 		get_viewport().set_input_as_handled()
 
 	elif event.is_action_pressed("paste_node"):
+		simulate_mouse_click() #hacky fix to stop tooltips getting stuck
+		await get_tree().process_frame
 		paste_copied_nodes()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("undo"):
@@ -185,29 +192,62 @@ func _input(event):
 			$SaveDialog.popup_centered()
 		else:
 			save_graph_edit(currentfile)
+	
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_LEFT and event.double_click:
+			var pos = get_viewport().get_mouse_position()
+			var clicked_node = find_graphedit_node_under(pos)
+			if clicked_node:
+				await get_tree().process_frame #wait a frame to stop nodes jumping across graph edit
+				deselect_all_nodes() #deselect nodes to avoid dragging issues
+				show_help_for_node(clicked_node.get_meta("command"), clicked_node.title)
 
-#logic for making, connecting, disconnecting, copy pasting and deleteing nodes and connections in GraphEdit
-#mostly taken from https://gdscript.com/solutions/godot-graphnode-and-graphedit-tutorial/
-#func showmenu():
-	##check for mouse input and if menu is already open and then open or close the menu
-	##stores mouse position at time of right click to later place a node in that location
-	#if Input.is_action_just_pressed("open_menu"):
-		#if mainmenu_visible == false:
-			#effect_position = graph_edit.get_local_mouse_position()
-			##$mainmenu.position.x = min(effect_position.x, get_viewport().get_visible_rect().size.x - $mainmenu.size.x)
-			##$mainmenu.position.y = min(effect_position.y, get_viewport().get_visible_rect().size.y - $mainmenu.size.y)
-			#$mainmenu.position.x = clamp(get_viewport().get_mouse_position().x, $mainmenu/select_effect.size.x / 2, get_viewport().get_visible_rect().size.x - ($mainmenu/select_effect.size.x / 2))
-			#$mainmenu.position.y = clamp(get_viewport().get_mouse_position().y, ($mainmenu/select_effect.size.y / 2) + $ColorRect.size.y, get_viewport().get_visible_rect().size.y - ($mainmenu/select_effect.size.y / 2))
-			#print($GraphEdit.scroll_offset)
-			##print(DisplayServer.window_get_size()) #actual window size
-			##print(get_viewport().get_visible_rect().size) # window size asjusted for retina scaling
-			#$mainmenu.show()
-			#mainmenu_visible = true
-		#else:
-			#$mainmenu.hide()
-			#mainmenu_visible = false
+func find_graphedit_node_under(mouse_pos: Vector2) -> GraphNode:
+	#find the node that was double clicked on
+	for node in graph_edit.get_children():
+		if node is GraphNode and node.get_global_rect().has_point(mouse_pos):
+			return node
+	return null
 
-# creates nodes from menu
+func deselect_all_nodes():
+	for node in $GraphEdit.get_children():
+		if node is GraphNode:
+			node.selected = false
+			selected_nodes[node] = false
+
+func show_help_for_node(node_name: String, node_title: String):
+	if help_data.has(node_name):
+		var info = help_data[node_name]
+		$HelpWindow.title = node_title
+		$HelpWindow/HelpTitle.text = node_title
+		$HelpWindow/HelpText.text = ""
+		$HelpWindow/HelpText.text += info.get("description", "No help available.")
+		$HelpWindow.show()
+	else:
+		$HelpWindow.title = node_title
+		$HelpWindow/HelpTitle.text = node_title
+		$HelpWindow/HelpText.text = ""
+		$HelpWindow/HelpText.text += "No help found."
+		$HelpWindow.show()
+
+
+func simulate_mouse_click():
+	#simulates clicking the middle mouse button in order to hide any visible tooltips
+	var click_pos = get_viewport().get_mouse_position()
+
+	var down_event := InputEventMouseButton.new()
+	down_event.button_index = MOUSE_BUTTON_MIDDLE
+	down_event.pressed = true
+	down_event.position = click_pos
+	Input.parse_input_event(down_event)
+
+	var up_event := InputEventMouseButton.new()
+	up_event.button_index = MOUSE_BUTTON_MIDDLE
+	up_event.pressed = false
+	up_event.position = click_pos
+	Input.parse_input_event(up_event)
+
+
 func _on_button_pressed(button: Button):
 	#close menu
 	$mainmenu.hide()
@@ -220,7 +260,7 @@ func _on_button_pressed(button: Button):
 	effect.set_position_offset((effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 	_register_inputs_in_node(effect) #link sliders for changes tracking
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
-
+	
 	changesmade = true
 
 
@@ -1574,3 +1614,7 @@ func _on_graph_edit_popup_request(at_position: Vector2) -> void:
 	else:
 		$mainmenu.hide()
 		mainmenu_visible = false
+
+
+func _on_help_window_close_requested() -> void:
+	$HelpWindow.hide()
