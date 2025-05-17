@@ -4,9 +4,10 @@
 "Loads a file for processing - supports mono and stereo .wav files
 
 [b]Parameters[/b]
-[table=2]
-[cell]Load File[/cell][cell]Opens a file browser to select a sound file[/cell]
-[cell]Play/Stop[/cell][cell]Plays the input sound file[/cell]
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Load File[/cell][cell]Opens a file browser to select a sound file[/cell][cell][center]𐄂[/center][/cell]
+[cell]Play/Stop[/cell][cell]Plays the input sound file[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -24,14 +25,15 @@ Clicking on the soundfile viewer while audio is playing will allow you to jump a
 "Manages output for running threads
 
 [b]Parameters[/b]
-[table=2]
-[cell]File Name[/cell][cell]The name for your output file[/cell]
-[cell]Run Thread[/cell][cell]Runs the current thread, opens a file dialog to choose the folder for the output files[/cell]
-[cell]Delete Intermediate Files[/cell][cell]If switched on, deletes all files except the final output file[/cell]
-[cell]Reuse Last Output Folder[/cell][cell]If switched on, the last folder selected on Run Thread will be used for output files[/cell]
-[cell]Open Folder[/cell][cell]Opens the last used output folder[/cell]
-[cell]Recycle File[/cell][cell]Loops the output file back to the Input File node for reprocessing[/cell]
-[cell]Play/Stop[/cell][cell]Plays the last output file[/cell]
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]File Name[/cell][cell]The name for your output file[/cell][cell][center]𐄂[/center][/cell]
+[cell]Run Thread[/cell][cell]Runs the current thread, opens a file dialog to choose the folder for the output files[/cell][cell][center]𐄂[/center][/cell]
+[cell]Delete Intermediate Files[/cell][cell]If switched on, deletes all files except the final output file[/cell][cell][center]𐄂[/center][/cell]
+[cell]Reuse Last Output Folder[/cell][cell]If switched on, the last folder selected on Run Thread will be used for output files[/cell][cell][center]𐄂[/center][/cell]
+[cell]Open Folder[/cell][cell]Opens the last used output folder[/cell][cell][center]𐄂[/center][/cell]
+[cell]Recycle File[/cell][cell]Loops the output file back to the Input File node for reprocessing[/cell][cell][center]𐄂[/center][/cell]
+[cell]Play/Stop[/cell][cell]Plays the last output file[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -56,7 +58,7 @@ Doesn't do anything other than giving you a space to take notes. You can right c
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Cycle Count[/cell][cell]Number of cycles over which to average[/cell][cell][center]✅[/center][/cell]
+[cell]Cycle Count[/cell][cell]Number of cycles over which to average[/cell][cell][center]✓[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -70,7 +72,7 @@ Performs a mathematical averaging of the set number of cycle counts. The effect 
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Fraction[/cell][cell]Fraction of each half wavecycle to clip, 1 = no change[/cell][cell][center]❌[/center][/cell]
+[cell]Fraction[/cell][cell]Fraction of each half wavecycle to clip, 1 = no change[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -83,7 +85,7 @@ Cuts the top and bottom off of a wavecycle. Unlike conventional clipping that on
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Divider[/cell][cell] [/cell][cell][center]✅[/center][/cell]
+[cell]Divider[/cell][cell] [/cell][cell][center]✓[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -98,8 +100,8 @@ This process is the opposite of Distort: Multiply.
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Scaling[/cell][cell]The division of scale of the wavecycle[/cell][cell][center]✅[/center][/cell]
-[cell]Loudness[/cell][cell]Loudness of fractal component compared to original wavecycle, 1 = same level.[/cell][cell][center]✅[/center][/cell]
+[cell]Scaling[/cell][cell]The division of scale of the wavecycle[/cell][cell][center]✓[/center][/cell]
+[cell]Loudness[/cell][cell]Loudness of fractal component compared to original wavecycle, 1 = same level.[/cell][cell][center]✓[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -112,7 +114,7 @@ Takes a wavecycle and divides its length and makes shorter and higher copies tha
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Multiplier[/cell][cell]The number of times each wavecycle repeats[/cell][cell][center]✅[/center][/cell]
+[cell]Multiplier[/cell][cell]The number of times each wavecycle repeats[/cell][cell][center]✓[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -125,7 +127,7 @@ Takes a wavecycle and repeats it based on the multiplier. On each repetition the
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Multiplier[/cell][cell]The amount each wavecycle is multiplied by[/cell][cell][center]✅[/center][/cell]
+[cell]Multiplier[/cell][cell]The amount each wavecycle is multiplied by[/cell][cell][center]✓[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -165,7 +167,7 @@ This process reads each wavecycle and replaces it with a short square pulse of a
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Cycle Count[/cell][cell]The size of the group[/cell][cell][center]✅[/center][/cell]
+[cell]Cycle Count[/cell][cell]The size of the group[/cell][cell][center]✓[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -178,7 +180,7 @@ Looks at a set number of wavecycles and finds the loudest one and repeats it to 
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Power Factor[/cell][cell]The power to raise each sample to[/cell][cell][center]❌[/center][/cell]
+[cell]Power Factor[/cell][cell]The power to raise each sample to[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -191,11 +193,11 @@ Introduces distortion into a signal by raising sample values to a power. Values 
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Minimum Output Duration[/cell][cell]The minimum length of the output in seconds[/cell][cell][center]❌[/center][/cell]
-[cell]Location[/cell][cell]The position in percent of the input file where the drunken walk occurs[/cell][cell][center]❌[/center][/cell]
-[cell]Ambitus[/cell][cell]The percentage of the input file the walk can move either side of the location by over the whole process[/cell][cell][center]❌[/center][/cell]
-[cell]Maximum Step[/cell][cell]The maximum percentage of the input file the walk can move by on each step[/cell][cell][center]❌[/center][/cell]
-[cell]Clock[/cell][cell]The time between each step in seconds[/cell][cell][center]❌[/center][/cell]
+[cell]Minimum Output Duration[/cell][cell]The minimum length of the output in seconds[/cell][cell][center]𐄂[/center][/cell]
+[cell]Location[/cell][cell]The position in percent of the input file where the drunken walk occurs[/cell][cell][center]𐄂[/center][/cell]
+[cell]Ambitus[/cell][cell]The percentage of the input file the walk can move either side of the location by over the whole process[/cell][cell][center]𐄂[/center][/cell]
+[cell]Maximum Step[/cell][cell]The maximum percentage of the input file the walk can move by on each step[/cell][cell][center]𐄂[/center][/cell]
+[cell]Clock[/cell][cell]The time between each step in seconds[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -208,9 +210,9 @@ Starting at the Location in the input file this process takes a segment and repe
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Start[/cell][cell]The position in percent of the input file where the process will begin[/cell][cell][center]❌[/center][/cell]
-[cell]Loop Length[/cell][cell]The length of each looping segment in milliseconds[/cell][cell][center]❌[/center][/cell]
-[cell]Step[/cell][cell]The percentage of the input file it moves forwards by on each loop[/cell][cell][center]❌[/center][/cell]
+[cell]Start[/cell][cell]The position in percent of the input file where the process will begin[/cell][cell][center]𐄂[/center][/cell]
+[cell]Loop Length[/cell][cell]The length of each looping segment in milliseconds[/cell][cell][center]𐄂[/center][/cell]
+[cell]Step[/cell][cell]The percentage of the input file it moves forwards by on each loop[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -223,13 +225,13 @@ Joins together, end-to-end, a series of segments taken from the file. This proce
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Minimum Chunk Length[/cell][cell]Minimum percentage of the input to cut[/cell][cell][center]❌[/center][/cell]
-[cell]Maximum Chunk Length[/cell][cell]Maximum percentage of the input to cut[/cell][cell][center]❌[/center][/cell]
-[cell]Output Duration[/cell][cell]Length of the output file in seconds[/cell][cell][center]❌[/center][/cell]
+[cell]Minimum Chunk Length[/cell][cell]Minimum percentage of the input to cut[/cell][cell][center]𐄂[/center][/cell]
+[cell]Maximum Chunk Length[/cell][cell]Maximum percentage of the input to cut[/cell][cell][center]𐄂[/center][/cell]
+[cell]Output Duration[/cell][cell]Length of the output file in seconds[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
-Cuts out segments at random from the full duration of the file and splices them end to end. Randomises the length of each chunk to be between the minimum and maximum. With small maximum chunks this will produce a granulat synthesis like effect, with large chunks it will create new phrases in the material.
+Cuts out segments at random from the full duration of the file and splices them end to end. Randomises the length of each chunk to be between the minimum and maximum. With small maximum chunks this will produce a granular synthesis like effect, with large chunks it will create new phrases in the material.
 ",
   },
  	"extend_zigzag_1": {
@@ -238,10 +240,10 @@ Cuts out segments at random from the full duration of the file and splices them 
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Start Point[/cell][cell]The point in percent of the input where the process begins[/cell][cell][center]❌[/center][/cell]
-[cell]End Point[/cell][cell]The point in percent of the input where the process ends[/cell][cell][center]❌[/center][/cell]
-[cell]Output Duration[/cell][cell]The total duration of the output file[/cell][cell][center]❌[/center][/cell]
-[cell]Minimum Zigzag Time[/cell][cell]Minimum acceptable time between successive zigzag timepoints[/cell][cell][center]❌[/center][/cell]
+[cell]Start Point[/cell][cell]The point in percent of the input where the process begins[/cell][cell][center]𐄂[/center][/cell]
+[cell]End Point[/cell][cell]The point in percent of the input where the process ends[/cell][cell][center]𐄂[/center][/cell]
+[cell]Output Duration[/cell][cell]The total duration of the output file[/cell][cell][center]𐄂[/center][/cell]
+[cell]Minimum Zigzag Time[/cell][cell]Minimum acceptable time between successive zigzag timepoints[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -254,11 +256,11 @@ Unlike the other extend processes this process also plays segments of the sound 
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Q[/cell][cell]How narrow each filter band is[/cell][cell][center]✅[/center][/cell]
-[cell]Makeup Gain[/cell][cell]How much gain to apply after filtering[/cell][cell][center]❌[/center][/cell]
-[cell]Lowest Band[/cell][cell]The lowest band in the bank[/cell][cell][center]❌[/center][/cell]
-[cell]Highest Band[/cell][cell]The highest band in the bank[/cell][cell][center]❌[/center][/cell]
-[cell]Scatter[/cell][cell]Amount of deviation from the harmonic series[/cell][cell][center]❌[/center][/cell]
+[cell]Q[/cell][cell]How narrow each filter band is[/cell][cell][center]✓[/center][/cell]
+[cell]Makeup Gain[/cell][cell]How much gain to apply after filtering[/cell][cell][center]𐄂[/center][/cell]
+[cell]Lowest Band[/cell][cell]The lowest band in the bank[/cell][cell][center]𐄂[/center][/cell]
+[cell]Highest Band[/cell][cell]The highest band in the bank[/cell][cell][center]𐄂[/center][/cell]
+[cell]Scatter[/cell][cell]Amount of deviation from the harmonic series[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -271,11 +273,11 @@ This process takes the frequency of the lowest band and create filters up to the
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Q[/cell][cell]How narrow each filter band is[/cell][cell][center]✅[/center][/cell]
-[cell]Makeup Gain[/cell][cell]How much gain to apply after filtering[/cell][cell][center]❌[/center][/cell]
-[cell]Lowest Band[/cell][cell]The lowest band in the bank[/cell][cell][center]❌[/center][/cell]
-[cell]Highest Band[/cell][cell]The highest band in the bank[/cell][cell][center]❌[/center][/cell]
-[cell]Scatter[/cell][cell]Amount of deviation from the harmonic series[/cell][cell][center]❌[/center][/cell]
+[cell]Q[/cell][cell]How narrow each filter band is[/cell][cell][center]✓[/center][/cell]
+[cell]Makeup Gain[/cell][cell]How much gain to apply after filtering[/cell][cell][center]𐄂[/center][/cell]
+[cell]Lowest Band[/cell][cell]The lowest band in the bank[/cell][cell][center]𐄂[/center][/cell]
+[cell]Highest Band[/cell][cell]The highest band in the bank[/cell][cell][center]𐄂[/center][/cell]
+[cell]Scatter[/cell][cell]Amount of deviation from the harmonic series[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -288,12 +290,12 @@ This process takes the frequency of the lowest band and create filters up to the
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Q[/cell][cell]How narrow each filter band is[/cell][cell][center]✅[/center][/cell]
-[cell]Makeup Gain[/cell][cell]How much gain to apply after filtering[/cell][cell][center]❌[/center][/cell]
-[cell]Lowest Band[/cell][cell]The lowest band in the bank[/cell][cell][center]❌[/center][/cell]
-[cell]Highest Band[/cell][cell]The highest band in the bank[/cell][cell][center]❌[/center][/cell]
-[cell]Number of Filters[/cell][cell]The number of bands in the bank[/cell][cell][center]❌[/center][/cell]
-[cell]Scatter[/cell][cell]Amount of deviation from the harmonic series[/cell][cell][center]❌[/center][/cell]
+[cell]Q[/cell][cell]How narrow each filter band is[/cell][cell][center]✓[/center][/cell]
+[cell]Makeup Gain[/cell][cell]How much gain to apply after filtering[/cell][cell][center]𐄂[/center][/cell]
+[cell]Lowest Band[/cell][cell]The lowest band in the bank[/cell][cell][center]𐄂[/center][/cell]
+[cell]Highest Band[/cell][cell]The highest band in the bank[/cell][cell][center]𐄂[/center][/cell]
+[cell]Number of Filters[/cell][cell]The number of bands in the bank[/cell][cell][center]𐄂[/center][/cell]
+[cell]Scatter[/cell][cell]Amount of deviation from the harmonic series[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -306,12 +308,12 @@ This process takes the number of filters and spaces them equally in Hz between t
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Q[/cell][cell]How narrow each filter band is[/cell][cell][center]✅[/center][/cell]
-[cell]Makeup Gain[/cell][cell]How much gain to apply after filtering[/cell][cell][center]❌[/center][/cell]
-[cell]Lowest Band[/cell][cell]The lowest band in the bank[/cell][cell][center]❌[/center][/cell]
-[cell]Highest Band[/cell][cell]The highest band in the bank[/cell][cell][center]❌[/center][/cell]
-[cell]Number of Filters[/cell][cell]The number of bands in the bank[/cell][cell][center]❌[/center][/cell]
-[cell]Scatter[/cell][cell]Amount of deviation from the harmonic series[/cell][cell][center]❌[/center][/cell]
+[cell]Q[/cell][cell]How narrow each filter band is[/cell][cell][center]✓[/center][/cell]
+[cell]Makeup Gain[/cell][cell]How much gain to apply after filtering[/cell][cell][center]𐄂[/center][/cell]
+[cell]Lowest Band[/cell][cell]The lowest band in the bank[/cell][cell][center]𐄂[/center][/cell]
+[cell]Highest Band[/cell][cell]The highest band in the bank[/cell][cell][center]𐄂[/center][/cell]
+[cell]Number of Filters[/cell][cell]The number of bands in the bank[/cell][cell][center]𐄂[/center][/cell]
+[cell]Scatter[/cell][cell]Amount of deviation from the harmonic series[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -324,9 +326,9 @@ This process takes the number of filters and spaces them equally in semitones be
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Rolloff[/cell][cell]Gain reduction of the filter, in dB[/cell][cell][center]❌[/center][/cell]
-[cell]Pass-band[/cell][cell]Last pitch to be passed by the filter in Hz[/cell][cell][center]❌[/center][/cell]
-[cell]Stop-band[/cell][cell]first pitch to be stopped by the filter in Hz[/cell][cell][center]❌[/center][/cell]
+[cell]Rolloff[/cell][cell]Gain reduction of the filter, in dB[/cell][cell][center]𐄂[/center][/cell]
+[cell]Pass-band[/cell][cell]Last pitch to be passed by the filter in Hz[/cell][cell][center]𐄂[/center][/cell]
+[cell]Stop-band[/cell][cell]first pitch to be stopped by the filter in Hz[/cell][cell][center]𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -343,7 +345,7 @@ Setting the Pass-band lower than the stop-band creates a low-pass filter. Settin
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Pitch Shift[/cell][cell]Amount in semitones to shift the pitch by[/cell][cell][center]✅[/center][/cell]
+[cell]Pitch Shift[/cell][cell]Amount in semitones to shift the pitch by[/cell][cell][center]✓[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -356,7 +358,7 @@ Cuts the sound file into grains and speeds them up or slows them down to change 
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Speed[/cell][cell]Multiplier to increase/decrease the speed by, 1 = original speed, 2 = double speed, 0.5 = half speed[/cell][cell][center]✅[/center][/cell]
+[cell]Speed[/cell][cell]Multiplier to increase/decrease the speed by, 1 = original speed, 2 = double speed, 0.5 = half speed[/cell][cell][center]✓[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -369,8 +371,8 @@ Cuts the sound file into grains and repeats omits grains to adjust the speed of 
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Grainsize[/cell][cell]Size of the grains in milliseconds[/cell][cell][center]✅[/center][/cell]
-[cell]Range[/cell][cell]Distance to move while looking for next grain[/cell][cell][center]✅[/center][/cell]
+[cell]Grainsize[/cell][cell]Size of the grains in milliseconds[/cell][cell][center]✓[/center][/cell]
+[cell]Range[/cell][cell]Distance to move while looking for next grain[/cell][cell][center]✓[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -383,7 +385,7 @@ Moves through the file from start to end and reorders the grains within the set 
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Density[/cell][cell]Amount of grain overlap[/cell][cell][center]✅[/center][/cell]
+[cell]Density[/cell][cell]Amount of grain overlap[/cell][cell][center]✓[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -396,16 +398,16 @@ Moves through the sound from start to end and cuts it into grains. The density c
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell]Scan Speed[/cell][cell]How fast to move through the file, 1 = original speed, 2 = double speed, 0.5 = half speed[/cell][cell][center]✅[/center][/cell]
-[cell]Density[/cell][cell]Amount of grain overlap, values less than 1 create gaps[/cell][cell][center]✅[/center][/cell]
-[cell]Grain Size[/cell][cell]Length of grains in ms[/cell][cell][center]✅[/center][/cell]
-[cell]Pitch Shift[/cell][cell]Amount to shift pitch of grain in semitones[/cell][cell][center]✅[/center][/cell]
-[cell]Amplitude[/cell][cell]Overal amplitude of the output[/cell][cell][center]✅[/center][/cell]
-[cell]Panning[/cell][cell]Panning of grains from left to right[/cell][cell][center]✅[/center][/cell]
-[cell]Attack[/cell][cell]Amount of time in ms each grain takes to fade in[/cell][cell][center]✅[/center][/cell]
-[cell]Decay[/cell][cell]Amount of time in ms each grain takes to fade out[/cell][cell][center]✅[/center][/cell]
-[cell]Search Range[/cell][cell]Distance to move while looking for next grain[/cell][cell][center]✅[/center][/cell]
-[cell]Jitter[/cell][cell]Amount of randomisation of grain position[/cell][cell][center]✅[/center][/cell]
+[cell]Scan Speed[/cell][cell]How fast to move through the file, 1 = original speed, 2 = double speed, 0.5 = half speed[/cell][cell][center]✓[/center][/cell]
+[cell]Density[/cell][cell]Amount of grain overlap, values less than 1 create gaps[/cell][cell][center]✓[/center][/cell]
+[cell]Grain Size[/cell][cell]Length of grains in ms[/cell][cell][center]✓[/center][/cell]
+[cell]Pitch Shift[/cell][cell]Amount to shift pitch of grain in semitones[/cell][cell][center]✓[/center][/cell]
+[cell]Amplitude[/cell][cell]Overal amplitude of the output[/cell][cell][center]✓[/center][/cell]
+[cell]Panning[/cell][cell]Panning of grains from left to right[/cell][cell][center]✓[/center][/cell]
+[cell]Attack[/cell][cell]Amount of time in ms each grain takes to fade in[/cell][cell][center]✓[/center][/cell]
+[cell]Decay[/cell][cell]Amount of time in ms each grain takes to fade out[/cell][cell][center]✓[/center][/cell]
+[cell]Search Range[/cell][cell]Distance to move while looking for next grain[/cell][cell][center]✓[/center][/cell]
+[cell]Jitter[/cell][cell]Amount of randomisation of grain position[/cell][cell][center]✓[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
@@ -420,13 +422,221 @@ Finally the sound can be panned from left to right with Panning and the overall 
 This process works particularly well when automation is applied to many parameters to make it shift and change over time. 
 ",
   },
+ 	"modify_loudness_1": {
+	"description": 
+"Adjust gain
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Gain[/cell][cell]The amount to scale the signal by[/cell][cell][center]✓[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Adjusts the gain of a sound making it louder and quieter. Less than 1 is quieter, more than 1 is louder. Useful for adjusting the level of a sound before a process to avoid clipping and for blending parallel processing in your thread (see Help > Tips > Wet/Dry Mix for more). 
+",
+  },
+ 	"modify_radical_1": {
+	"description": 
+"Reverses a sound
+
+[b]Functionality[/b]
+Makes the sound play backwards. Particularly useful before processes like Stack to create interesting attack and decays.
+",
+  },
+ 	"modify_speed_2": {
+	"description": 
+"Speeds up or slows down a sound changing pitch
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Semitones[/cell][cell]The amount to adjust the speed/pitch by in semitones[/cell][cell][center]✓[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Plays the sound faster or slower to adjust its speed and pitch. -12 semitones is half speed, +12 semitones is double speed. 
+",
+  }, 
+ 	"modify_speed_5": {
+	"description": 
+"Speed up or slow down a sound over time
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Transposition Ratio[/cell][cell]The amount to adjust the speed by as a multiplier[/cell][cell][center]𐄂[/center][/cell]
+[cell]Goal Time[/cell][cell]The point in the input sound in percent to have reached the transposition ratio by[/cell][cell][center]𐄂[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Creates a glissando effect by gradually speeding up or slowing down the file. Once the target time in the sound is reached it will continue sliding up or down to the end of the sound. 0.5 = half speed and 1 octave lower, 2 = double speed and 1 octave higher. Note: for more control over speed over time you can automate the Speed process instead. 
+",
+  },
+ 	"modify_stack": {
+	"description": 
+"Stacks transposed versions of a sound on top of one another
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Transposition[/cell][cell]The amount in semitones each layer is transposed by[/cell][cell][center]𐄂[/center][/cell]
+[cell]Layers[/cell][cell]The number of layers[/cell][cell][center]𐄂[/center][/cell]
+[cell]Lean[/cell][cell]The loudness of the highest layer relative to the others[/cell][cell][center]𐄂[/center][/cell]
+[cell]Attack Offset[/cell][cell]The point in the file in percent where the attack of the sound begins[/cell][cell][center]𐄂[/center][/cell]
+[cell]Output Gain[/cell][cell]Adjusts the output gain to avoid clipping[/cell][cell][center]𐄂[/center][/cell]
+[cell]Output Duration[/cell][cell]The amount of the sound to render, 1 is the full sound[/cell][cell][center]𐄂[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+This process takes the sound and makes numerous copies of it, set by the number of layers. Each copy is sped up or slowed down by the transposition amount mulitplied by its layer number - -12 semitones = half speec, +12 semitones = double speed. These layers are then stacks on top of each other to create a denser sound. The attack offset is used to line up the layers so that their attacks all line up, adjust this to the point in the input where you want all the sounds to line up. The output duration allows you to trim off the end of the sound as with negative transposition and many layers the output can get very long. 
+",
+  },
+ 	"blur_blur": {
+	"description": 
+"Time-average the spectrum
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Bluring[/cell][cell]The number of windows over which to average the spectrum[/cell][cell][center]✓[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+This process 'blurs' detail in the time dimension by interpolating between the spectral envelope values of the start and end windows blurring windows. Note that it is not interpolating continuously over all the windows inbetween, just between the data in the start and end windows. The overall result is somewhat affected by just how different the data is in these two windows. The interpolation process produces a 'straight line' (linear) scale of values between the start and end points.
+",
+  },
+ 	"blur_chorus_5": {
+	"description": 
+"Chorusing by randomising amplitudes and frequencies of partials
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Amplitude Randomise[/cell][cell]Maximum random scatter of partial amplitudes[/cell][cell][center]✓[/center][/cell]
+[cell]Frequency Randomise[/cell][cell]Maximum random scatter of partial frequencies[/cell][cell][center]✓[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+This process attempts to achieve a chorusing effect by randomising the amplitude and frequency values of the partials. If very large amplitude aspread values are used, the sound will turn to noise. The chorusing effect itself is achieved by values just a little above 1. Values of 2 or 3 begin to create a granular effect, and values of 10, 100 and 1000 create more and more noise.
+",
+  },
+ 	"blur_scatter": {
+	"description": 
+"Randomly thin the spectrum
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Amount Kept[/cell][cell]Number of randomly chosen blocks to keep in each spectral window[/cell][cell][center]✓[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+This function throws away a specified proportion of the analysis data in each window at random. This produces a result similar to the Trace process however, unlike Trace the material kept by Thin Randomly may or may not include prominent parts of the sound.
+",
+  },
+ 	"focus_accu": {
+	"description": 
+"Sustain each spectral band until louder data appears in that band
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Decay[/cell][cell]Ammount for each sustained band to decay each second[/cell][cell][center]✓[/center][/cell]
+[cell]Glissandos[/cell][cell]Amount each sustained band glissandos in octaves per second[/cell][cell][center]✓[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Frequencies are sustained into subsequent windows. The overall effect is one of sustaining, but one which also makes the spectrum more complex.
+
+The Glissandos parameter produces glissandos within the spectrum of the sound. Very effective slow glissandos are produced when gliss is near 0, e.g., -0.9 or 0.1. At 0.5, there are several glissandos, at 1, they are fairly fast, and at 10 it becomes a wash.
+",
+  },
+ 	"hilite_trace_1": {
+	"description": 
+"Highlight the loudest partials
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Amount Kept[/cell][cell]The number of partials to keep[/cell][cell][center]✓[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Looks for and retains only the N loudest partials in the analysis data on a window-by-window basis. This reduces the data in the spectral dimension and produces an aural 'trace' of the original sound.
+
+With non-'noisy' sources it is necessary to reduce the number of channels quite considerably to make any appreciable aural change to the source sound. Even the 10 loudest channels will retain a surprising amount of the original sound. The flip-side of this is that HILITE TRACE can be used to 'clean' a sound, if a certain amount of data loss is not a problem. 
+
+This works well with Blur after it to create a smeared simplified version of the sound.
+",
+  },
+ 	"pvoc_anal_1": {
+	"description": 
+"Convert a sound from the time domain to the frequency domain
+
+[b]Functionality[/b]
+This is process is used to analyse and a sound and convert it from the time domain to the frequency domain. This allows for processes in the PVOC processes menu to be used to manipulate the sound. Once you are done processing in the frequency domain you can convert it back to audio again using Resynthesise. See Help > Tutorials > PVOC for more.
+",
+  },
+ 	"pvoc_synth": {
+	"description": 
+"Convert a sound from the frequency domain to the time domain
+
+[b]Functionality[/b]
+This is process is used to take the analysis of a sound file and resynthesise it back into the time domain. This should be used after you are done processing in the frequency domain to convert back to audio. See Help > Tutorials > PVOC for more. 
+",
+  },
+ 	"spec_gain": {
+	"description": 
+"Adjusts the gain in the frequency domain
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Gain[/cell][cell]The amount to scale the gain by[/cell][cell][center]✓[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+This process is very similar to the time domain Gain process, it adjusts how loud the signal is, however this process operates on signals that are in the frequency domain. This is useful for adjusting signals that may clip when converted back to the time domain.
+",
+  },
+ 	"spectstr_stretch": {
+	"description": 
+"Time-stretch a sound without changing pitch
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Stretch Multiplier[/cell][cell]The amount to stretch the sound by[/cell][cell][center]𐄂[/center][/cell]
+[cell]D-Ratio[/cell][cell]Proportion of channels to discohere[/cell][cell][center]𐄂[/center][/cell]
+[cell]D-Random[/cell][cell]Frequency randomisation of discohered channels[/cell][cell][center]𐄂[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Stretches or shrinks the sound over time, without changing frequency. It creates extra time-windows to expand the overall time-base of the sound, without a change of frequency. When using large stretch values you will make very long sound files and this process may take some time to run.
+
+D-Ratio and D-Random allow you to randomise some of the channels in the sound to create internal variation and different timbres. Small amounts of this will blur the sound slightly and on long stretches help the sound feel less static. With large amounts of randomisation the texture of the sound starts to feel granular.
+",
+  },
+ 	"strange_invert_1": {
+	"description": 
+"Invert the spectral envelope
+
+[b]Functionality[/b]
+Inverts the spectral envelope, relative to the overall spectral envelope. This means that the energy asociated with the highest frequency bands is transferred to the lowest ones and vice versa. As the lowest partials in many sounds have the greatest amplitude and the highest ones the least, the result is typically a much brighter timbre.
+",
+  },
+ 	"strange_waver_1": {
+	"description": 
+"Oscillate between harmonic and inharmonic state
+
+[table=3]
+[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
+[cell]Vibrato Frequency[/cell][cell]Speed of oscillations in Hz[/cell][cell][center]✓[/center][/cell]
+[cell]Stretch[/cell][cell]The maximum spectral stretch in the inharmonic state[/cell][cell][center]✓[/center][/cell]
+[cell]Base Frequency[/cell][cell]The frequency above which spectral stretching happens[/cell][cell][center]𐄂[/center][/cell]
+[/table]
+
+[b]Functionality[/b]
+Introduces an oscillation towards and away from inharmonicness in the spectrum of a sound. The program moves towards inharmonicness by means of the stretch factor. 
+",
+  },
  	"processname": {
 	"description": 
 "Short Description
 
 [table=3]
 [cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]
-[cell] [/cell][cell] [/cell][cell][center]✅❌[/center][/cell]
+[cell] [/cell][cell] [/cell][cell][center]✓𐄂[/center][/cell]
 [/table]
 
 [b]Functionality[/b]
