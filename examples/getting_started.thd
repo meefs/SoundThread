@@ -19,7 +19,7 @@
 			"command": "notes",
 			"name": "notes2",
 			"notes": {
-				"CodeEdit": "Each node is a function from the Composers Desktop Project.\n\nYou can hover your mouse over the name of a node to find out a bit more about it.\nYou can also hover over sliders to get more information about them.\n\nConnect \"Input File\" to \"Distort: Average\" and \"Distort:Average\" to \"Output File\"."
+				"CodeEdit": "Each node is a function from the Composers Desktop Project.\n\nYou can hover your mouse over nodes and controls to get some quick information about them. Double click on a node to open its full help file.\n\nConnect \"Input File\" to \"Distort: Average\" and \"Distort:Average\" to \"Output File\"."
 			},
 			"offset": {
 				"x": 956.777709960938,
@@ -68,7 +68,13 @@
 				"y": 36.1110992431641
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@2192/@MarginContainer@2232/Tree/@Popup@2218/@VBoxContainer@2219/@HSlider@2227": 0.0
+				"AudioPlayer/FileDialog/@VBoxContainer@1697/@MarginContainer@1737/Tree/@Popup@1723/@VBoxContainer@1724/@HSlider@1732": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
 			}
 		},
 		{
@@ -82,7 +88,13 @@
 				"y": 185.888885498047
 			},
 			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": 18.0
+				"VBoxContainer/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true
+					},
+					"value": 18.0
+				}
 			}
 		},
 		{
@@ -96,7 +108,13 @@
 				"y": 128.111099243164
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@2303/@MarginContainer@2343/Tree/@Popup@2329/@VBoxContainer@2330/@HSlider@2338": 0.0
+				"AudioPlayer/FileDialog/@VBoxContainer@1813/@MarginContainer@1853/Tree/@Popup@1839/@VBoxContainer@1840/@HSlider@1848": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
 			}
 		}
 	]
