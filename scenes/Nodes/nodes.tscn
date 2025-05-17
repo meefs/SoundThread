@@ -3058,7 +3058,7 @@ layout_mode = 2
 tooltip_text = "Number of windows over which to average the spectrum"
 
 [node name="Label" parent="blur_blur/VBoxContainer" index="0"]
-text = "Bluring~"
+text = "Blurring~"
 
 [node name="HSlider" parent="blur_blur/VBoxContainer/HSplitContainer" index="0"]
 min_value = 1.0

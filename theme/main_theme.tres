@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=55 format=3 uid="uid://cefwkdcoxihro"]
+[gd_resource type="Theme" load_steps=64 format=3 uid="uid://cefwkdcoxihro"]
 
 [ext_resource type="Texture2D" uid="uid://b4o8vm5o4uptk" path="res://theme/images/toggle_checked.png" id="1_cibxr"]
 [ext_resource type="Texture2D" uid="uid://d0dubcywvqtkw" path="res://theme/images/toggle_unchecked.png" id="2_adhqp"]
@@ -266,6 +266,101 @@ bg_color = Color(0.1, 0.1, 0.1, 0.6)
 corner_radius_bottom_left = 4
 corner_detail = 6
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4xa5k"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_fqy7u"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0)
+draw_center = false
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1g5yx"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0)
+draw_center = false
+corner_detail = 5
+expand_margin_left = 2.0
+expand_margin_top = 2.0
+expand_margin_right = 2.0
+expand_margin_bottom = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dkcgw"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.07)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_egqfp"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.4)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0nqb6"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.4)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_opadq"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xnh8w"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.3)
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2b3ki"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(1, 1, 1, 0.3)
+corner_detail = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7hjjl"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -466,6 +561,15 @@ HSlider/icons/grabber_highlight = ExtResource("5_a7tdx")
 HSlider/styles/grabber_area = SubResource("StyleBoxFlat_2u8nx")
 HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_nxip8")
 HSlider/styles/slider = SubResource("StyleBoxFlat_qu8em")
+ItemList/styles/cursor = SubResource("StyleBoxFlat_4xa5k")
+ItemList/styles/cursor_unfocused = SubResource("StyleBoxFlat_fqy7u")
+ItemList/styles/focus = SubResource("StyleBoxFlat_1g5yx")
+ItemList/styles/hovered = SubResource("StyleBoxFlat_dkcgw")
+ItemList/styles/hovered_selected = SubResource("StyleBoxFlat_egqfp")
+ItemList/styles/hovered_selected_focus = SubResource("StyleBoxFlat_0nqb6")
+ItemList/styles/panel = SubResource("StyleBoxFlat_opadq")
+ItemList/styles/selected = SubResource("StyleBoxFlat_xnh8w")
+ItemList/styles/selected_focus = SubResource("StyleBoxFlat_2b3ki")
 LineEdit/styles/focus = SubResource("StyleBoxFlat_7hjjl")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_wnmfn")
 PopupMenu/constants/item_end_padding = 20

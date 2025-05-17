@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://dta7rfalv4uvd"]
+
+[ext_resource type="Script" uid="uid://c7krcoq5poxdn" path="res://scenes/main/audiosettings.gd" id="2_7qbns"]
+
+[node name="AudioSettingsControl" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 12.0
+offset_top = 58.0
+offset_right = 588.0
+offset_bottom = 58.0
+script = ExtResource("2_7qbns")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_top = -52.0
+offset_right = 576.0
+offset_bottom = 47.0
+
+[node name="WindowTitle" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Audio Settings"
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Available audio devices:"
+
+[node name="ItemList" type="ItemList" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 1)
+layout_mode = 2
+
+[node name="DeviceInfo" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Current device:"
+
+[node name="DevicePollTimer" type="Timer" parent="."]
+
+[connection signal="item_selected" from="VBoxContainer/ItemList" to="." method="_on_item_list_item_selected"]

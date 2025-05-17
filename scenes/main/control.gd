@@ -23,6 +23,7 @@ var foldertoggle #links to the reuse folder button
 var lastoutputfolder = "none" #tracks last output folder, this can in future be used to replace global.outfile but i cba right now
 var process_successful #tracks if the last run process was successful
 var help_data := {} #stores help data for each node to display in help popup
+var HelpWindowScene = preload("res://scenes/main/help_window.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -35,7 +36,6 @@ func _ready() -> void:
 	$Console.hide()
 	$NoInputPopup.hide()
 	$MultipleConnectionsPopup.hide()
-	$HelpWindow.hide()
 	
 	$SaveDialog.access = FileDialog.ACCESS_FILESYSTEM
 	$SaveDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
@@ -217,19 +217,66 @@ func deselect_all_nodes():
 			selected_nodes[node] = false
 
 func show_help_for_node(node_name: String, node_title: String):
+	#check if there is already a help window open for this node and pop it up instead of making a new one
+	for child in get_tree().current_scene.get_children():
+		if child is Window and child.title == "Help - " + node_title:
+			# Found existing window, bring it to front
+			if child.is_visible():
+				child.hide()
+				child.popup()
+			else:
+				child.popup()
+			return
+	
 	if help_data.has(node_name):
+		#looks up the help data from the json and stores it in info
 		var info = help_data[node_name]
-		$HelpWindow.title = "Help - " + node_title
-		$HelpWindow/HelpTitle.text = node_title
-		$HelpWindow/HelpText.text = ""
-		$HelpWindow/HelpText.text += info.get("description", "No help available.")
-		$HelpWindow.show()
+		#makes an instance of the help_window scene
+		var help_window = HelpWindowScene.instantiate()
+		help_window.title = "Help - " + node_title
+		help_window.get_node("HelpTitle").text = node_title
+		
+		var output = ""
+		output += info.get("short_description", "") + "\n\n"
+		
+		var parameters = info.get("parameters", {})
+		#checks if there are parameters and if there are places them in a table
+		if parameters.size() > 0:
+			output += "[table=3]\n"
+			output += "[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]\n"
+			for key in parameters.keys(): #scans through all parameters
+				var param = parameters[key]
+				var name = param.get("paramname", "")
+				var desc = param.get("paramdescription", "")
+				var automatable = param.get("automatable", false)
+				var autom_text = "[center]✓[/center]" if automatable else "[center]𐄂[/center]" #replaces true and false with ticks and crosses
+				output += "[cell]%s[/cell][cell]%s[/cell][cell]%s[/cell]\n" % [name, desc, autom_text] #places each param detail into cells of the table
+			output += "[/table]\n\n" #ends the table
+		
+		output += "[b]Functionality[/b]\n"
+		var description_text = info.get("description", "")
+		output += description_text.strip_edges()
+		#check if this is a cdp process or a utility and display the cdp process if it is one
+		var category = info.get("category", "")
+		if category != "utility":
+			output += "\n\n[b]CDP Process[/b]\nThis node runs the CDP Process: " + node_name.replace("_", " ")
+		
+		help_window.get_node("HelpText").bbcode_text = output
+		help_window.get_node("HelpText").scroll_to_line(0) #scrolls to the first line of the help file just incase
+		
+		# Add to the current scene tree to show it
+		get_tree().current_scene.add_child(help_window)
+		
+		help_window.popup() 
+		
 	else:
-		$HelpWindow.title = "Help - " + node_title
-		$HelpWindow/HelpTitle.text = node_title
-		$HelpWindow/HelpText.text = ""
-		$HelpWindow/HelpText.text += "No help found."
-		$HelpWindow.show()
+		# If no help available, even though there always should be, show a window saying no help found
+		var help_window = HelpWindowScene.instance()
+		help_window.title = "Help - " + node_title
+		help_window.get_node("HelpTitle").text = node_title
+		help_window.get_node("HelpText").bbcode_text = "No help found."
+		get_tree().current_scene.add_child(help_window)
+		help_window.popup()
 
 
 func simulate_mouse_click():
@@ -1267,6 +1314,9 @@ func _on_settings_button_index_pressed(index: int) -> void:
 				ConfigHandler.save_interface_settings("auto_close_console", false)
 		3:
 			$Console.show()
+		4:
+			#$AudioSettings.size = Vector2(600, $AudioSettings/Control/VBoxContainer.size.y + ($AudioSettings/Control/VBoxContainer/ItemList.item_count * 25) + 10)
+			$AudioSettings.popup()
 
 func _on_file_button_index_pressed(index: int) -> void:
 	match index:
@@ -1616,7 +1666,3 @@ func _on_graph_edit_popup_request(at_position: Vector2) -> void:
 	else:
 		$mainmenu.hide()
 		mainmenu_visible = false
-
-
-func _on_help_window_close_requested() -> void:
-	$HelpWindow.hide()

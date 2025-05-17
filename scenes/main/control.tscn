@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bcs87y7ptx3ke"]
+[gd_scene load_steps=6 format=3 uid="uid://bcs87y7ptx3ke"]
 
 [ext_resource type="Script" uid="uid://bdlfvuljckmu1" path="res://scenes/main/control.gd" id="1_2f0aq"]
 [ext_resource type="Script" uid="uid://l2yejnjysupr" path="res://scenes/main/graph_edit.gd" id="2_3ioqo"]
 [ext_resource type="PackedScene" uid="uid://b0wdj8v6o0wq0" path="res://scenes/menu/menu.tscn" id="3_dtf4o"]
 [ext_resource type="Texture2D" uid="uid://cdwux1smquvpi" path="res://theme/images/logo.png" id="4_3ioqo"]
+[ext_resource type="PackedScene" uid="uid://dta7rfalv4uvd" path="res://scenes/main/audio_settings.tscn" id="5_dtf4o"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -222,7 +223,7 @@ item_3/id = 1
 
 [node name="SettingsButton" type="PopupMenu" parent="MenuBar"]
 title = "Settings"
-item_count = 4
+item_count = 5
 item_0/text = "Change CDP Folder Location"
 item_0/id = 0
 item_1/text = "Disable PVOC Multi Input Warning"
@@ -233,6 +234,8 @@ item_2/checkable = 1
 item_2/id = 2
 item_3/text = "Open the Console"
 item_3/id = 3
+item_4/text = "Audio Settings"
+item_4/id = 4
 
 [node name="HelpButton" type="PopupMenu" parent="MenuBar"]
 auto_translate_mode = 1
@@ -314,36 +317,8 @@ offset_right = 351.0
 offset_bottom = 101.0
 text = "Don't Save"
 
-[node name="HelpWindow" type="Window" parent="."]
-initial_position = 2
-size = Vector2i(600, 400)
+[node name="AudioSettings" parent="." instance=ExtResource("5_dtf4o")]
 visible = false
-unresizable = true
-always_on_top = true
-
-[node name="ColorRect" type="ColorRect" parent="HelpWindow"]
-offset_right = 604.0
-offset_bottom = 400.0
-color = Color(0.101961, 0.101961, 0.101961, 0.6)
-
-[node name="HelpTitle" type="Label" parent="HelpWindow"]
-offset_left = 12.0
-offset_top = 8.0
-offset_right = 588.0
-offset_bottom = 27.0
-theme_override_font_sizes/font_size = 25
-text = "Node Name goes here"
-
-[node name="HelpText" type="RichTextLabel" parent="HelpWindow"]
-offset_left = 12.0
-offset_top = 48.0
-offset_right = 588.0
-offset_bottom = 392.0
-theme_override_colors/table_odd_row_bg = Color(0.101961, 0.101961, 0.101961, 0.262745)
-theme_override_constants/table_v_separation = 8
-theme_override_constants/table_h_separation = 10
-bbcode_enabled = true
-text = "Help Text goes in here"
 
 [connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="delete_nodes_request" from="GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
@@ -367,4 +342,4 @@ text = "Help Text goes in here"
 [connection signal="file_selected" from="LoadDialog" to="." method="_on_load_dialog_file_selected"]
 [connection signal="button_down" from="SaveChangesPopup/SaveChanges" to="." method="_on_save_changes_button_down"]
 [connection signal="button_down" from="SaveChangesPopup/DontSaveChanges" to="." method="_on_dont_save_changes_button_down"]
-[connection signal="close_requested" from="HelpWindow" to="." method="_on_help_window_close_requested"]
+[connection signal="close_requested" from="AudioSettings" to="." method="_on_audio_settings_close_requested"]
