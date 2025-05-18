@@ -1,6 +1,13 @@
 [gd_scene format=3 uid="uid://b0wdj8v6o0wq0"]
 
-[node name="Control" type="Control"]
+[node name="Window" type="Window"]
+transparent_bg = true
+size = Vector2i(600, 454)
+borderless = true
+transparent = true
+popup_window = true
+
+[node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -8,7 +15,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="select_effect" type="TabContainer" parent="."]
+[node name="select_effect" type="TabContainer" parent="Control"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -23,37 +30,37 @@ grow_horizontal = 2
 grow_vertical = 2
 current_tab = 0
 
-[node name="Time Domain" type="TabContainer" parent="select_effect"]
+[node name="Time Domain" type="TabContainer" parent="Control/select_effect"]
 layout_mode = 2
 current_tab = 1
 metadata/_tab_index = 0
 
-[node name="Distort" type="VBoxContainer" parent="select_effect/Time Domain"]
+[node name="Distort" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="select_effect/Time Domain/Distort"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Time Domain/Distort"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="select_effect/Time Domain/Distort/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer"]
 custom_minimum_size = Vector2(560, 380)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer"]
 layout_mode = 2
 
-[node name="HSplitContainer" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Average[/b]
@@ -61,21 +68,21 @@ Average the waveshape over a set number of wavecycles"
 fit_content = true
 scroll_active = false
 
-[node name="distort_average" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer" groups=["make_node_buttons"]]
+[node name="distort_average" type="Button" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer2" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer2" type="HSplitContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer2"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer2"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Clip Fraction[/b]
@@ -83,21 +90,21 @@ Clip half-waveforms at a specified fraction"
 fit_content = true
 scroll_active = false
 
-[node name="clip_clip_2" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer2" groups=["make_node_buttons"]]
+[node name="clip_clip_2" type="Button" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer2" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer8" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer8" type="MarginContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer9" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer9" type="HSplitContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer9"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer9"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Click[/b]
@@ -105,21 +112,21 @@ Convert wavecycles to short pulses"
 fit_content = true
 scroll_active = false
 
-[node name="distort_reform_6" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
+[node name="distort_reform_6" type="Button" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer2" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer3" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer3" type="HSplitContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer3"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer3"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Divide[/b]
@@ -127,21 +134,21 @@ Distortion by dividing wavecycle frequency"
 fit_content = true
 scroll_active = false
 
-[node name="distort_divide" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
+[node name="distort_divide" type="Button" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer3" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer4" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer4" type="HSplitContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer4"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer4"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Fractal[/b]
@@ -149,21 +156,21 @@ Superimpose copies of wavecycles onto themselves"
 fit_content = true
 scroll_active = false
 
-[node name="distort_fractal" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
+[node name="distort_fractal" type="Button" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer4" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer4" type="MarginContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer6" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer6" type="HSplitContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer6"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer6"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Interpolate[/b]
@@ -171,21 +178,21 @@ Time-stretch by repeating and interpolating wavecycles"
 fit_content = true
 scroll_active = false
 
-[node name="distort_interpolate" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer6" groups=["make_node_buttons"]]
+[node name="distort_interpolate" type="Button" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer6" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer6" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer6" type="MarginContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer5" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer5" type="HSplitContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer5"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer5"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Multiply[/b]
@@ -193,21 +200,21 @@ Distortion by multiplying wavecycle frequency"
 fit_content = true
 scroll_active = false
 
-[node name="distort_multiply" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer5" groups=["make_node_buttons"]]
+[node name="distort_multiply" type="Button" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer5" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer5" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer5" type="MarginContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer11" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer11" type="HSplitContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer11"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer11"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Power Factor[/b]
@@ -215,21 +222,21 @@ Distortion by raising sample values to a power"
 fit_content = true
 scroll_active = false
 
-[node name="quirk_quirk_1" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer11" groups=["make_node_buttons"]]
+[node name="quirk_quirk_1" type="Button" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer11" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer10" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer10" type="MarginContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer10" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer10" type="HSplitContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer10"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer10"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Replace[/b]
@@ -237,21 +244,21 @@ The strongest wavecycle in a group replaces the others"
 fit_content = true
 scroll_active = false
 
-[node name="distort_replace" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer10" groups=["make_node_buttons"]]
+[node name="distort_replace" type="Button" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer10" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer9" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer9" type="MarginContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer7" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer7" type="HSplitContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer7"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer7"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Square[/b]
@@ -259,21 +266,21 @@ Convert wavecycles to square waves"
 fit_content = true
 scroll_active = false
 
-[node name="distort_reform_2" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer7" groups=["make_node_buttons"]]
+[node name="distort_reform_2" type="Button" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer7" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer7" type="MarginContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer7" type="MarginContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer8" type="HSplitContainer" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer8" type="HSplitContainer" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer8"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer8"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Triangle[/b]
@@ -281,35 +288,35 @@ Convert wavecycles to triangle waves"
 fit_content = true
 scroll_active = false
 
-[node name="distort_reform_4" type="Button" parent="select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer8" groups=["make_node_buttons"]]
+[node name="distort_reform_4" type="Button" parent="Control/select_effect/Time Domain/Distort/MarginContainer/ScrollContainer/VBoxContainer/HSplitContainer8" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="Extend" type="VBoxContainer" parent="select_effect/Time Domain"]
+[node name="Extend" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="MarginContainer2" type="MarginContainer" parent="select_effect/Time Domain/Extend"]
+[node name="MarginContainer2" type="MarginContainer" parent="Control/select_effect/Time Domain/Extend"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="select_effect/Time Domain/Extend/MarginContainer2"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Time Domain/Extend/MarginContainer2"]
 custom_minimum_size = Vector2(560, 380)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer"]
 layout_mode = 2
 
-[node name="HSplitContainer" type="HSplitContainer" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Drunk[/b]
@@ -317,21 +324,21 @@ Random stumbling walk through the sound"
 fit_content = true
 scroll_active = false
 
-[node name="extend_drunk_1" type="Button" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer" groups=["make_node_buttons"]]
+[node name="extend_drunk_1" type="Button" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer" type="MarginContainer" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer2" type="HSplitContainer" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer2" type="HSplitContainer" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Loop[/b]
@@ -339,21 +346,21 @@ Repeat advancing segments of the sound"
 fit_content = true
 scroll_active = false
 
-[node name="extend_loop_1" type="Button" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2" groups=["make_node_buttons"]]
+[node name="extend_loop_1" type="Button" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer8" type="MarginContainer" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer8" type="MarginContainer" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer9" type="HSplitContainer" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer9" type="HSplitContainer" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Scramble[/b]
@@ -361,22 +368,22 @@ Cut random chunks from the sound and arrange end to end"
 fit_content = true
 scroll_active = false
 
-[node name="extend_scramble_1" type="Button" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
+[node name="extend_scramble_1" type="Button" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer2" type="MarginContainer" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer3" type="HSplitContainer" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer3" type="HSplitContainer" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Shrink[/b]
@@ -384,21 +391,21 @@ Repeat a sound, shortening it on each repetition"
 fit_content = true
 scroll_active = false
 
-[node name="shrink_shrink_1" type="Button" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
+[node name="shrink_shrink_1" type="Button" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer3" type="MarginContainer" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer4" type="HSplitContainer" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer4" type="HSplitContainer" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Zigzag[/b]
@@ -406,36 +413,36 @@ Randomly move forwards and backwards through the sound"
 fit_content = true
 scroll_active = false
 
-[node name="extend_zigzag_1" type="Button" parent="select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
+[node name="extend_zigzag_1" type="Button" parent="Control/select_effect/Time Domain/Extend/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="Filter" type="VBoxContainer" parent="select_effect/Time Domain"]
+[node name="Filter" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 2
 
-[node name="MarginContainer2" type="MarginContainer" parent="select_effect/Time Domain/Filter"]
+[node name="MarginContainer2" type="MarginContainer" parent="Control/select_effect/Time Domain/Filter"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="select_effect/Time Domain/Filter/MarginContainer2"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2"]
 custom_minimum_size = Vector2(560, 380)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer"]
 layout_mode = 2
 
-[node name="HSplitContainer" type="HSplitContainer" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Harmonic Series[/b]
@@ -443,21 +450,21 @@ Filter bank spaced over the harmonic series"
 fit_content = true
 scroll_active = false
 
-[node name="filter_bank_1" type="Button" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer" groups=["make_node_buttons"]]
+[node name="filter_bank_1" type="Button" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer8" type="MarginContainer" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer8" type="MarginContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer9" type="HSplitContainer" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer9" type="HSplitContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Linear Filter Bank[/b]
@@ -465,21 +472,21 @@ Filter bank with equal spacing in Hz between filters"
 fit_content = true
 scroll_active = false
 
-[node name="filter_bank_5" type="Button" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
+[node name="filter_bank_5" type="Button" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer" type="MarginContainer" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer10" type="HSplitContainer" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer10" type="HSplitContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer10"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer10"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Low Pass/High Pass[/b]
@@ -487,21 +494,21 @@ Filter for removing low or high frequencies"
 fit_content = true
 scroll_active = false
 
-[node name="filter_lohi_1" type="Button" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer10" groups=["make_node_buttons"]]
+[node name="filter_lohi_1" type="Button" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer10" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer4" type="MarginContainer" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer4" type="MarginContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer2" type="HSplitContainer" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer2" type="HSplitContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Odd Harmonics[/b]
@@ -509,21 +516,21 @@ Filter bank with only odd harmonics of the harmonic series"
 fit_content = true
 scroll_active = false
 
-[node name="filter_bank_2" type="Button" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2" groups=["make_node_buttons"]]
+[node name="filter_bank_2" type="Button" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer2" type="MarginContainer" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer3" type="HSplitContainer" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer3" type="HSplitContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Pitched Intervals[/b]
@@ -531,22 +538,22 @@ Filter bank with equal spacing in semitones between filters"
 fit_content = true
 scroll_active = false
 
-[node name="filter_bank_6" type="Button" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
+[node name="filter_bank_6" type="Button" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer3" type="MarginContainer" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer4" type="HSplitContainer" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer4" type="HSplitContainer" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer"]
 visible = false
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Varibank[/b]
@@ -554,37 +561,37 @@ Definable time-varying filterbank with variable Q"
 fit_content = true
 scroll_active = false
 
-[node name="filter_varibank_1" type="Button" parent="select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
+[node name="filter_varibank_1" type="Button" parent="Control/select_effect/Time Domain/Filter/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="Granulate" type="VBoxContainer" parent="select_effect/Time Domain"]
+[node name="Granulate" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
-[node name="MarginContainer2" type="MarginContainer" parent="select_effect/Time Domain/Granulate"]
+[node name="MarginContainer2" type="MarginContainer" parent="Control/select_effect/Time Domain/Granulate"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2"]
 custom_minimum_size = Vector2(560, 380)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer"]
 layout_mode = 2
 
-[node name="HSplitContainer4" type="HSplitContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer4" type="HSplitContainer" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Brassage[/b]
@@ -592,21 +599,21 @@ Segment and fragment a sound file"
 fit_content = true
 scroll_active = false
 
-[node name="modify_brassage_6" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
+[node name="modify_brassage_6" type="Button" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer5" type="MarginContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer5" type="MarginContainer" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer5" type="HSplitContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer5" type="HSplitContainer" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer5"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer5"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Granulate[/b]
@@ -614,20 +621,20 @@ Add a grainy texture to the sound"
 fit_content = true
 scroll_active = false
 
-[node name="modify_brassage_5" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer5" groups=["make_node_buttons"]]
+[node name="modify_brassage_5" type="Button" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer5" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer4" type="MarginContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer4" type="MarginContainer" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer" type="HSplitContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Pitchshift[/b]
@@ -635,21 +642,21 @@ Pitch shift grains to change pitch independent of time"
 fit_content = true
 scroll_active = false
 
-[node name="modify_brassage_1" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer" groups=["make_node_buttons"]]
+[node name="modify_brassage_1" type="Button" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer" type="MarginContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer3" type="HSplitContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer3" type="HSplitContainer" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Scramble[/b]
@@ -657,21 +664,21 @@ Random reordering of grains within a set time frame"
 fit_content = true
 scroll_active = false
 
-[node name="modify_brassage_4" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
+[node name="modify_brassage_4" type="Button" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer3" type="MarginContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer2" type="HSplitContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer2" type="HSplitContainer" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Timestrech[/b]
@@ -679,41 +686,41 @@ Repeat grains to stretch time without changing pitch"
 fit_content = true
 scroll_active = false
 
-[node name="modify_brassage_2" type="Button" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2" groups=["make_node_buttons"]]
+[node name="modify_brassage_2" type="Button" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer2" type="MarginContainer" parent="select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="Control/select_effect/Time Domain/Granulate/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="Misc" type="VBoxContainer" parent="select_effect/Time Domain"]
+[node name="Misc" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 
-[node name="MarginContainer2" type="MarginContainer" parent="select_effect/Time Domain/Misc"]
+[node name="MarginContainer2" type="MarginContainer" parent="Control/select_effect/Time Domain/Misc"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="select_effect/Time Domain/Misc/MarginContainer2"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2"]
 custom_minimum_size = Vector2(560, 380)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer"]
 layout_mode = 2
 
-[node name="HSplitContainer9" type="HSplitContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer9" type="HSplitContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Accelerate/Decelerate[/b]
@@ -721,21 +728,21 @@ Linear acceleration/deceleration of a sounds speed (and pitch)"
 fit_content = true
 scroll_active = false
 
-[node name="modify_speed_5" type="Button" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
+[node name="modify_speed_5" type="Button" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer2" type="MarginContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer3" type="HSplitContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer3" type="HSplitContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Gain[/b]
@@ -743,21 +750,21 @@ Adjust the level of a signal"
 fit_content = true
 scroll_active = false
 
-[node name="modify_loudness_1" type="Button" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
+[node name="modify_loudness_1" type="Button" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer3" type="MarginContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer4" type="HSplitContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer4" type="HSplitContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Notes[/b]
@@ -765,21 +772,21 @@ An empty node for taking notes about your patch in"
 fit_content = true
 scroll_active = false
 
-[node name="notes" type="Button" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
+[node name="notes" type="Button" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer5" type="MarginContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer5" type="MarginContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer5" type="HSplitContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer5" type="HSplitContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer5"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer5"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Reverse[/b]
@@ -787,20 +794,20 @@ Reverses a soundfile to play backwards"
 fit_content = true
 scroll_active = false
 
-[node name="modify_radical_1" type="Button" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer5" groups=["make_node_buttons"]]
+[node name="modify_radical_1" type="Button" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer5" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer4" type="MarginContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer4" type="MarginContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer" type="HSplitContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Stack[/b]
@@ -808,21 +815,21 @@ Stacks transposed versions of a sound on top of one another"
 fit_content = true
 scroll_active = false
 
-[node name="modify_stack" type="Button" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer" groups=["make_node_buttons"]]
+[node name="modify_stack" type="Button" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer" type="MarginContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer2" type="HSplitContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer2" type="HSplitContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Speed[/b]
@@ -830,56 +837,56 @@ Change the speed and pitch of a sound in semitones"
 fit_content = true
 scroll_active = false
 
-[node name="modify_speed_2" type="Button" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2" groups=["make_node_buttons"]]
+[node name="modify_speed_2" type="Button" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer/HSplitContainer2" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer8" type="MarginContainer" parent="select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer8" type="MarginContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer2/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="Frequency Domain" type="TabContainer" parent="select_effect"]
+[node name="Frequency Domain" type="TabContainer" parent="Control/select_effect"]
 visible = false
 layout_mode = 2
 current_tab = 0
 metadata/_tab_index = 1
 
-[node name="Convert" type="VBoxContainer" parent="select_effect/Frequency Domain"]
+[node name="Convert" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="MarginContainer3" type="MarginContainer" parent="select_effect/Frequency Domain/Convert"]
+[node name="MarginContainer3" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Convert"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="select_effect/Frequency Domain/Convert/MarginContainer3"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Frequency Domain/Convert/MarginContainer3"]
 custom_minimum_size = Vector2(560, 380)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="Control/select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(560, 0)
 layout_mode = 2
 text = "To use the frequency domain processes you must first convert the sound using Analyse and then once you have processed the frequency domain data convert it back to audio again using Resynthesise."
 autowrap_mode = 2
 
-[node name="MarginContainer3" type="MarginContainer" parent="select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer9" type="HSplitContainer" parent="select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer9" type="HSplitContainer" parent="Control/select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer/HSplitContainer9"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer/HSplitContainer9"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Analyse[/b]
@@ -887,21 +894,21 @@ Convert a sound file to the frequency domain"
 fit_content = true
 scroll_active = false
 
-[node name="pvoc_anal_1" type="Button" parent="select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
+[node name="pvoc_anal_1" type="Button" parent="Control/select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer2" type="MarginContainer" parent="select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer3" type="HSplitContainer" parent="select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer3" type="HSplitContainer" parent="Control/select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer/HSplitContainer3"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer/HSplitContainer3"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Resynthesise[/b]
@@ -909,37 +916,37 @@ Convert from the frequency domain back to a sound file"
 fit_content = true
 scroll_active = false
 
-[node name="pvoc_synth" type="Button" parent="select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
+[node name="pvoc_synth" type="Button" parent="Control/select_effect/Frequency Domain/Convert/MarginContainer3/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="Process" type="VBoxContainer" parent="select_effect/Frequency Domain"]
+[node name="Process" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="MarginContainer4" type="MarginContainer" parent="select_effect/Frequency Domain/Process"]
+[node name="MarginContainer4" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Process"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4"]
 custom_minimum_size = Vector2(560, 380)
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer"]
 layout_mode = 2
 
-[node name="HSplitContainer5" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer5" type="HSplitContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer5"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer5"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Accumulate[/b]
@@ -947,21 +954,21 @@ Sustain spectral bands until louder data appears in that band"
 fit_content = true
 scroll_active = false
 
-[node name="focus_accu" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer5" groups=["make_node_buttons"]]
+[node name="focus_accu" type="Button" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer5" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer5" type="MarginContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer5" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer9" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer9" type="HSplitContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer9"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer9"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Blur[/b]
@@ -969,21 +976,21 @@ Smear frequencies over time"
 fit_content = true
 scroll_active = false
 
-[node name="blur_blur" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
+[node name="blur_blur" type="Button" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer9" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer2" type="MarginContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer2" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer3" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer3" type="HSplitContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer3"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer3"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Chorus[/b]
@@ -991,21 +998,21 @@ Randomise amplitudes and frequencies of partials"
 fit_content = true
 scroll_active = false
 
-[node name="blur_chorus_5" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
+[node name="blur_chorus_5" type="Button" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer3" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer3" type="MarginContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer3" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer4" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer4" type="HSplitContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer4"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer4"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Gain[/b]
@@ -1013,21 +1020,21 @@ Adjust the gain of a frequency domain signal"
 fit_content = true
 scroll_active = false
 
-[node name="spec_gain" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
+[node name="spec_gain" type="Button" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer4" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer9" type="MarginContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer9" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer11" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer11" type="HSplitContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer11"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer11"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Invert[/b]
@@ -1035,21 +1042,21 @@ Flip the spectral envelope of a sound"
 fit_content = true
 scroll_active = false
 
-[node name="strange_invert_1" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer11" groups=["make_node_buttons"]]
+[node name="strange_invert_1" type="Button" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer11" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer7" type="MarginContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer7" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer8" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer8" type="HSplitContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer8"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer8"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Stretch[/b]
@@ -1057,21 +1064,21 @@ Stretch or shrink time without altering pitch"
 fit_content = true
 scroll_active = false
 
-[node name="spectstr_stretch" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer8" groups=["make_node_buttons"]]
+[node name="spectstr_stretch" type="Button" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer8" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer4" type="MarginContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer4" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer10" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer10" type="HSplitContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer10"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer10"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Thin Randomly[/b]
@@ -1079,21 +1086,21 @@ Keeps only a select number of random bands per bin"
 fit_content = true
 scroll_active = false
 
-[node name="blur_scatter" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer10" groups=["make_node_buttons"]]
+[node name="blur_scatter" type="Button" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer10" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer6" type="MarginContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer6" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer6" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer6" type="HSplitContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer6"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer6"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Trace[/b]
@@ -1101,21 +1108,21 @@ Keep only a set number of the loudest bands"
 fit_content = true
 scroll_active = false
 
-[node name="hilite_trace_1" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer6" groups=["make_node_buttons"]]
+[node name="hilite_trace_1" type="Button" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer6" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"
 
-[node name="MarginContainer8" type="MarginContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="MarginContainer8" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="HSplitContainer7" type="HSplitContainer" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
+[node name="HSplitContainer7" type="HSplitContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(565, 0)
 layout_mode = 2
 split_offset = 505
 dragging_enabled = false
 
-[node name="RichTextLabel" type="RichTextLabel" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer7"]
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer7"]
 layout_mode = 2
 bbcode_enabled = true
 text = "[b]Waver[/b]
@@ -1123,6 +1130,6 @@ Oscillate between harmonic and inharmonic states"
 fit_content = true
 scroll_active = false
 
-[node name="strange_waver_1" type="Button" parent="select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer7" groups=["make_node_buttons"]]
+[node name="strange_waver_1" type="Button" parent="Control/select_effect/Frequency Domain/Process/MarginContainer4/ScrollContainer/VBoxContainer/HSplitContainer7" groups=["make_node_buttons"]]
 layout_mode = 2
 text = "+"

@@ -30,9 +30,9 @@ var uiscale = 1.0 #tracks scaling for retina screens
 func _ready() -> void:
 	Nodes.hide()
 	$mainmenu.hide()
-	$"mainmenu/select_effect/Time Domain".show()
-	$"mainmenu/select_effect/Time Domain/Distort".show()
-	$"mainmenu/select_effect/Frequency Domain/Convert".show()
+	#$"mainmenu/select_effect/Time Domain".show()
+	#$"mainmenu/select_effect/Time Domain/Distort".show()
+	#$"mainmenu/select_effect/Frequency Domain/Convert".show()
 	$NoLocationPopup.hide()
 	$Console.hide()
 	$NoInputPopup.hide()
@@ -1708,20 +1708,25 @@ func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
 
 
 func _on_graph_edit_popup_request(at_position: Vector2) -> void:
-	if mainmenu_visible == false:
-		effect_position = graph_edit.get_local_mouse_position()
-		#$mainmenu.position.x = min(effect_position.x, get_viewport().get_visible_rect().size.x - $mainmenu.size.x)
-		#$mainmenu.position.y = min(effect_position.y, get_viewport().get_visible_rect().size.y - $mainmenu.size.y)
-		$mainmenu.position.x = clamp(get_viewport().get_mouse_position().x, $mainmenu/select_effect.size.x / 2, get_viewport().get_visible_rect().size.x - ($mainmenu/select_effect.size.x / 2))
-		$mainmenu.position.y = clamp(get_viewport().get_mouse_position().y, ($mainmenu/select_effect.size.y / 2) + $ColorRect.size.y, get_viewport().get_visible_rect().size.y - ($mainmenu/select_effect.size.y / 2))
-		print($GraphEdit.scroll_offset)
-		#print(DisplayServer.window_get_size()) #actual window size
-		#print(get_viewport().get_visible_rect().size) # window size asjusted for retina scaling
-		$mainmenu.show()
-		mainmenu_visible = true
-	else:
-		$mainmenu.hide()
-		mainmenu_visible = false
+	effect_position = graph_edit.get_local_mouse_position()
+	
+	#get the mouse position in screen coordinates
+	var mouse_screen_pos = DisplayServer.mouse_get_position()  
+	#get the window position in screen coordinates
+	var window_screen_pos = get_window().position
+	#get the window size relative to its scaling for retina displays
+	var window_size = get_window().size * DisplayServer.screen_get_scale()
+	#get the size of the popup menu
+	var popup_size = $mainmenu.size
+
+	#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
+	var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - popup_size.x)
+	var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - popup_size.y)
+	
+	#position and show the menu
+	$mainmenu.position = Vector2(clamped_x, clamped_y)
+	$mainmenu.popup()
+
 
 func _on_audio_settings_close_requested() -> void:
 	$AudioSettings.hide()
@@ -1735,9 +1740,6 @@ func _on_open_audio_settings_button_down() -> void:
 func _on_audio_device_popup_close_requested() -> void:
 	$AudioDevicePopup.hide()
 
-
-#func _unhandled_input(event: InputEvent) -> void:
-	#if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		#if mainmenu_visible and !$mainmenu.get_global_rect().has_point(get_global_mouse_position()):
-			#mainmenu_visible = false
-			#$mainmenu.hide()
+func _on_mainmenu_close_requested() -> void:
+	#closes menu if click is anywhere other than the menu as it is a window with popup set to true
+	$mainmenu.hide()

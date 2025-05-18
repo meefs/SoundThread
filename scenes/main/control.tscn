@@ -31,18 +31,8 @@ file_mode = 2
 access = 2
 use_native_dialog = true
 
-[node name="mainmenu" parent="." instance=ExtResource("3_dtf4o")]
+[node name="mainmenu" parent="." groups=["popup_windows"] instance=ExtResource("3_dtf4o")]
 visible = false
-layout_mode = 0
-anchors_preset = 0
-anchor_right = 0.0
-anchor_bottom = 0.0
-offset_left = 600.0
-offset_top = 456.0
-offset_right = 600.0
-offset_bottom = 456.0
-grow_horizontal = 1
-grow_vertical = 1
 
 [node name="NoLocationPopup" type="Window" parent="." groups=["popup_windows"]]
 auto_translate_mode = 1
@@ -359,6 +349,7 @@ visible = false
 [connection signal="node_selected" from="GraphEdit" to="." method="_on_graph_edit_node_selected"]
 [connection signal="popup_request" from="GraphEdit" to="." method="_on_graph_edit_popup_request"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
+[connection signal="close_requested" from="mainmenu" to="." method="_on_mainmenu_close_requested"]
 [connection signal="meta_clicked" from="NoLocationPopup/RichTextLabel" to="." method="_on_rich_text_label_meta_clicked"]
 [connection signal="button_down" from="NoLocationPopup/OkButton" to="." method="_on_ok_button_button_down"]
 [connection signal="button_down" from="NoInputPopup/OkButton2" to="." method="_on_ok_button_2_button_down"]
