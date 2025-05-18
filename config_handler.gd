@@ -13,6 +13,7 @@ func _ready():
 	ensure_setting("cdpprogs", "location", "no_location")
 	ensure_setting("interface_settings", "disable_pvoc_warning", false)
 	ensure_setting("interface_settings", "auto_close_console", false)
+	ensure_setting("interface_settings", "console_on_top", true)
 	ensure_setting("audio_settings", "device", "Default")
 
 	# Only save if we added anything new

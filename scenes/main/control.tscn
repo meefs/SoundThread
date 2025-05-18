@@ -76,7 +76,7 @@ text = "Welcome to SoundThread!
 SoundThread is an interface for the Composers Desktop Project (CDP) audio processing tools. As such it requires you to have CDP installed to work correctly. If you don't already have CDP installed you can [url=\"https://www.unstablesound.net/cdp.html\"]download it here.[/url]
 
 When you close this window you will be prompted for the location of your _cdprogs folder. The default location for this folder is:
-Windows: C:/cdpr8/_cdp/_cdprogs
+Windows: C:\\cdpr8\\_cdp\\_cdprogs
 Mac: ~/cdpr8/_cdp/_cdprogs
 
 SoundThread will remember this but you can always change it later in Settings.
@@ -251,7 +251,7 @@ item_3/id = 1
 
 [node name="SettingsButton" type="PopupMenu" parent="MenuBar"]
 title = "Settings"
-item_count = 5
+item_count = 6
 item_0/text = "Change CDP Folder Location"
 item_0/id = 0
 item_1/text = "Disable PVOC Multi Input Warning"
@@ -260,10 +260,13 @@ item_1/id = 1
 item_2/text = "Auto Close Console"
 item_2/checkable = 1
 item_2/id = 2
-item_3/text = "Open the Console"
-item_3/id = 3
-item_4/text = "Audio Settings"
-item_4/id = 4
+item_3/text = "Console Always on Top"
+item_3/checkable = 1
+item_3/id = 5
+item_4/text = "Open the Console"
+item_4/id = 3
+item_5/text = "Audio Settings"
+item_5/id = 4
 
 [node name="HelpButton" type="PopupMenu" parent="MenuBar"]
 auto_translate_mode = 1
@@ -351,6 +354,7 @@ visible = false
 [connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="delete_nodes_request" from="GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
 [connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
+[connection signal="focus_entered" from="GraphEdit" to="." method="_on_graph_edit_focus_entered"]
 [connection signal="node_deselected" from="GraphEdit" to="." method="_on_graph_edit_node_deselected"]
 [connection signal="node_selected" from="GraphEdit" to="." method="_on_graph_edit_node_selected"]
 [connection signal="popup_request" from="GraphEdit" to="." method="_on_graph_edit_popup_request"]

@@ -144,6 +144,8 @@ func check_user_preferences():
 	var audio_devices = AudioServer.get_output_device_list()
 	$MenuBar/SettingsButton.set_item_checked(1, interface_settings.disable_pvoc_warning)
 	$MenuBar/SettingsButton.set_item_checked(2, interface_settings.auto_close_console)
+	$MenuBar/SettingsButton.set_item_checked(3, interface_settings.console_on_top)
+	$Console.always_on_top = interface_settings.console_on_top
 	if audio_devices.has(audio_settings.device):
 		AudioServer.set_output_device(audio_settings.device)
 	else:
@@ -172,6 +174,7 @@ func _on_ok_button_button_down() -> void:
 func _on_cdp_location_dialog_dir_selected(dir: String) -> void:
 	#saves default location for cdp programs in config file
 	ConfigHandler.save_cdpprogs_settings(dir)
+	cdpprogs_location = dir
 
 func _on_cdp_location_dialog_canceled() -> void:
 	#cycles around the set location prompt if user cancels the file dialog
@@ -380,7 +383,7 @@ func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
 
 	for node in selected_nodes.keys():
 		if selected_nodes[node]:
-			if node.name in ["inputfile", "outputfile"]:
+			if node.get_meta("command") == "inputfile" or node.get_meta("command") == "outputfile":
 				print("can't delete input or output")
 			else:
 				# Store duplicate and state for undo
@@ -436,7 +439,7 @@ func copy_selected_nodes():
 	for node in graph_edit.get_children():
 		# Check if the node is selected and not an 'inputfile' or 'outputfile'
 		if node is GraphNode and selected_nodes.get(node, false):
-			if node.name == "inputfile" or node.name == "outputfile":
+			if node.get_meta("command") == "inputfile" or node.get_meta("command") == "outputfile":
 				continue  # Skip these nodes
 
 			var node_data = {
@@ -461,7 +464,7 @@ func copy_selected_nodes():
 		var is_to_selected = to_ref != null and selected_nodes.get(to_ref, false)
 
 		# Skip if any of the connected nodes are 'inputfile' or 'outputfile'
-		if (from_ref != null and (from_ref.name == "inputfile" or from_ref.name == "outputfile")) or (to_ref != null and (to_ref.name == "inputfile" or to_ref.name == "outputfile")):
+		if (from_ref != null and (from_ref.get_meta("command") == "inputfile" or from_ref.get_meta("command") == "outputfile")) or (to_ref != null and (to_ref.get_meta("command") == "inputfile" or to_ref.get_meta("command") == "outputfile")):
 			continue
 
 		if is_from_selected and is_to_selected:
@@ -608,7 +611,12 @@ func _run_process() -> void:
 func _on_file_dialog_dir_selected(dir: String) -> void:
 	lastoutputfolder = dir
 	console_output.clear()
-	$Console.show()
+	if $Console.is_visible():
+		$Console.hide()
+		await get_tree().process_frame  # Wait a frame to allow hide to complete
+		$Console.popup()
+	else:
+		$Console.popup()
 	await get_tree().process_frame
 	log_console("Generating processing queue", true)
 	await get_tree().process_frame
@@ -651,7 +659,7 @@ func run_thread_with_branches():
 	var is_valid = path_exists_through_all_nodes()
 	if is_valid == false:
 		log_console("[color=#9c2828][b]Error: Valid Thread not found[/b][/color]", true)
-		log_console("Threads must contain at least one processing node and a valid path from the Inputfile to the Outputfile.", true)
+		log_console("Threads must contain at least one processing node and a valid path from the Input File to the Output File.", true)
 		await get_tree().process_frame  # Let UI update
 		return
 	else:
@@ -956,7 +964,8 @@ func run_thread_with_branches():
 	# Collect all nodes that are connected to the outputfile node
 	var output_inputs := []
 	for conn in connections:
-		if conn["to_node"] == "outputfile":
+		var to_node = str(conn["to_node"])
+		if all_nodes.has(to_node) and all_nodes[to_node].get_meta("command") == "outputfile":
 			output_inputs.append(str(conn["from_node"]))
 
 	# List to hold the final output files to be merged (if needed)
@@ -1227,6 +1236,10 @@ func run_command(command: String) -> Array:
 		console_output.scroll_to_line(console_output.get_line_count() - 1)
 		console_output.append_text(output_str + "\n")
 		console_output.append_text(error_str + "\n")
+		if output_str.contains("as an internal or external command"): #check for cdprogs location error on windows
+			console_output.append_text("[color=#9c2828][b]Please make sure your cdprogs folder is set to the correct location in the Settings menu. The default location is C:\\CDPR8\\_cdp\\_cdprogs[/b][/color]\n")
+		if output_str.contains("command not found"): #check for cdprogs location error on unix systems
+			console_output.append_text("[color=#9c2828][b]Please make sure your cdprogs folder is set to the correct location in the Settings menu. The default location is ~/cdpr8/_cdp/_cdprogs[/b][/color]\n")
 		process_successful = false
 	
 	return output
@@ -1237,13 +1250,29 @@ func path_exists_through_all_nodes() -> bool:
 	var all_nodes = {}
 	var graph = {}
 
+	var input_node_name = ""
+	var output_node_name = ""
+
 	# Gather all relevant nodes
 	for child in graph_edit.get_children():
 		if child is GraphNode:
 			var name = str(child.name)
 			all_nodes[name] = child
-			if name in ["inputfile", "outputfile"] or not child.has_meta("utility"):
+
+			var command = child.get_meta("command")
+			if command == "inputfile":
+				input_node_name = name
+			elif command == "outputfile":
+				output_node_name = name
+
+			# Skip utility nodes, include others
+			if command in ["inputfile", "outputfile"] or not child.has_meta("utility"):
 				graph[name] = []
+
+	# Ensure both input and output were found
+	if input_node_name == "" or output_node_name == "":
+		print("Input or output node not found!")
+		return false
 
 	# Add edges to graph from the connection list
 	var connection_list = graph_edit.get_connection_list()
@@ -1255,7 +1284,7 @@ func path_exists_through_all_nodes() -> bool:
 
 	# BFS traversal to check path and depth
 	var visited = {}
-	var queue = [ { "node": "inputfile", "depth": 0 } ]
+	var queue = [ { "node": input_node_name, "depth": 0 } ]
 	var has_intermediate = false
 
 	while queue.size() > 0:
@@ -1267,7 +1296,7 @@ func path_exists_through_all_nodes() -> bool:
 			continue
 		visited[current_node] = true
 
-		if current_node == "outputfile" and depth >= 2:
+		if current_node == output_node_name and depth >= 2:
 			has_intermediate = true
 
 		if graph.has(current_node):
@@ -1326,8 +1355,22 @@ func _on_settings_button_index_pressed(index: int) -> void:
 				$MenuBar/SettingsButton.set_item_checked(index, false)
 				ConfigHandler.save_interface_settings("auto_close_console", false)
 		3:
-			$Console.show()
+			if interface_settings.console_on_top == false:
+				$MenuBar/SettingsButton.set_item_checked(index, true)
+				ConfigHandler.save_interface_settings("console_on_top", true)
+				$Console.always_on_top = true
+			else:
+				$MenuBar/SettingsButton.set_item_checked(index, false)
+				ConfigHandler.save_interface_settings("console_on_top", false)
+				$Console.always_on_top = false
 		4:
+			if $Console.is_visible():
+				$Console.hide()
+				await get_tree().process_frame  # Wait a frame to allow hide to complete
+				$Console.popup()
+			else:
+				$Console.popup()
+		5:
 			#$AudioSettings.size = Vector2(600, $AudioSettings/Control/VBoxContainer.size.y + ($AudioSettings/Control/VBoxContainer/ItemList.item_count * 25) + 10)
 			$AudioSettings.popup()
 
@@ -1650,7 +1693,7 @@ func _notification(what):
 		if changesmade == true:
 			savestate = "quit"
 			$SaveChangesPopup.show()
-			$HelpWindow.hide()
+			#$HelpWindow.hide()
 		else:
 			get_tree().quit() # default behavior
 			
@@ -1691,3 +1734,10 @@ func _on_open_audio_settings_button_down() -> void:
 
 func _on_audio_device_popup_close_requested() -> void:
 	$AudioDevicePopup.hide()
+
+
+#func _unhandled_input(event: InputEvent) -> void:
+	#if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		#if mainmenu_visible and !$mainmenu.get_global_rect().has_point(get_global_mouse_position()):
+			#mainmenu_visible = false
+			#$mainmenu.hide()
