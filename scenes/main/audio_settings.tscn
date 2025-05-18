@@ -2,20 +2,25 @@
 
 [ext_resource type="Script" uid="uid://c7krcoq5poxdn" path="res://scenes/main/audiosettings.gd" id="2_7qbns"]
 
-[node name="AudioSettingsControl" type="Control"]
-layout_mode = 3
-anchors_preset = 0
-offset_left = 12.0
-offset_top = 58.0
-offset_right = 588.0
-offset_bottom = 58.0
+[node name="AudioSettings" type="Window"]
+title = "Audio Settings"
+initial_position = 2
+size = Vector2i(600, 200)
+transient = true
+unresizable = true
+always_on_top = true
 script = ExtResource("2_7qbns")
 
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 604.0
+offset_bottom = 204.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_top = -52.0
-offset_right = 576.0
-offset_bottom = 47.0
+offset_left = 12.0
+offset_top = 6.0
+offset_right = 588.0
+offset_bottom = 192.0
 
 [node name="WindowTitle" type="Label" parent="VBoxContainer"]
 layout_mode = 2
@@ -29,6 +34,7 @@ text = "Available audio devices:"
 [node name="ItemList" type="ItemList" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
+allow_reselect = true
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 1)
@@ -40,4 +46,7 @@ text = "Current device:"
 
 [node name="DevicePollTimer" type="Timer" parent="."]
 
+[connection signal="about_to_popup" from="." to="." method="_on_about_to_popup"]
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
 [connection signal="item_selected" from="VBoxContainer/ItemList" to="." method="_on_item_list_item_selected"]
+[connection signal="timeout" from="DevicePollTimer" to="." method="_on_device_poll_timer_timeout"]

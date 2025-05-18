@@ -24,6 +24,7 @@ var lastoutputfolder = "none" #tracks last output folder, this can in future be 
 var process_successful #tracks if the last run process was successful
 var help_data := {} #stores help data for each node to display in help popup
 var HelpWindowScene = preload("res://scenes/main/help_window.tscn")
+var uiscale = 1.0 #tracks scaling for retina screens
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -36,6 +37,8 @@ func _ready() -> void:
 	$Console.hide()
 	$NoInputPopup.hide()
 	$MultipleConnectionsPopup.hide()
+	$AudioSettings.hide()
+	$AudioDevicePopup.hide()
 	
 	$SaveDialog.access = FileDialog.ACCESS_FILESYSTEM
 	$SaveDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
@@ -63,13 +66,14 @@ func _ready() -> void:
 	export_config.load("res://export_presets.cfg")
 	$MenuBar/About.set_item_text(0, "SoundThread v" + export_config.get_value("preset.0.options", "application/product_version", "version unknown") + "-alpha") 
 	
-	#checks if display is hidpi and scales ui accordingly
+	#checks if display is hidpi and scales ui accordingly hidpi - 144
 	if DisplayServer.screen_get_dpi(0) >= 144:
-		get_window().content_scale_factor = 2.0
+		uiscale = 2.0
+		get_window().content_scale_factor = uiscale
 		#goes through popup_windows group and scales all popups and resizes them
 		for window in get_tree().get_nodes_in_group("popup_windows"):
-			window.size = window.size * 2
-			window.content_scale_factor = 2
+			window.size = window.size * uiscale
+			window.content_scale_factor = uiscale
 
 	#checks if user has opened a file from the system file menu and loads it
 	var args = OS.get_cmdline_args()
@@ -136,8 +140,14 @@ func link_output():
 
 func check_user_preferences():
 	var interface_settings = ConfigHandler.load_interface_settings()
+	var audio_settings = ConfigHandler.load_audio_settings()
+	var audio_devices = AudioServer.get_output_device_list()
 	$MenuBar/SettingsButton.set_item_checked(1, interface_settings.disable_pvoc_warning)
 	$MenuBar/SettingsButton.set_item_checked(2, interface_settings.auto_close_console)
+	if audio_devices.has(audio_settings.device):
+		AudioServer.set_output_device(audio_settings.device)
+	else:
+		$AudioDevicePopup.popup()
 
 	
 func check_cdp_location_set():
@@ -266,6 +276,9 @@ func show_help_for_node(node_name: String, node_title: String):
 		
 		# Add to the current scene tree to show it
 		get_tree().current_scene.add_child(help_window)
+		if help_window.content_scale_factor < uiscale:
+			help_window.size = help_window.size * uiscale
+			help_window.content_scale_factor = uiscale
 		
 		help_window.popup() 
 		
@@ -1666,3 +1679,15 @@ func _on_graph_edit_popup_request(at_position: Vector2) -> void:
 	else:
 		$mainmenu.hide()
 		mainmenu_visible = false
+
+func _on_audio_settings_close_requested() -> void:
+	$AudioSettings.hide()
+
+
+func _on_open_audio_settings_button_down() -> void:
+	$AudioDevicePopup.hide()
+	$AudioSettings.popup()
+
+
+func _on_audio_device_popup_close_requested() -> void:
+	$AudioDevicePopup.hide()
