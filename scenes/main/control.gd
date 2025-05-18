@@ -1598,7 +1598,7 @@ func _on_help_button_index_pressed(index: int) -> void:
 		9:
 			pass
 		10:
-			OS.shell_open("https://www.composersdesktop.com/docs/html/cdphome.htm")
+			OS.shell_open("https://www.composersdesktop.com/docs/html/ccdpndex.htm")
 		11:
 			OS.shell_open("https://github.com/j-p-higgins/SoundThread/issues")
 
