@@ -39,6 +39,7 @@ func _ready() -> void:
 	$MultipleConnectionsPopup.hide()
 	$AudioSettings.hide()
 	$AudioDevicePopup.hide()
+	$SearchMenu.hide()
 	
 	$SaveDialog.access = FileDialog.ACCESS_FILESYSTEM
 	$SaveDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
@@ -53,6 +54,8 @@ func _ready() -> void:
 	for child in get_tree().get_nodes_in_group("make_node_buttons"):
 		if child is Button:
 			child.pressed.connect(_on_button_pressed.bind(child))
+	
+	get_node("SearchMenu").make_node.connect(_make_node_from_search_menu)
 	
 	check_cdp_location_set()
 	check_user_preferences()
@@ -145,6 +148,7 @@ func check_user_preferences():
 	$MenuBar/SettingsButton.set_item_checked(1, interface_settings.disable_pvoc_warning)
 	$MenuBar/SettingsButton.set_item_checked(2, interface_settings.auto_close_console)
 	$MenuBar/SettingsButton.set_item_checked(3, interface_settings.console_on_top)
+	$MenuBar/SettingsButton.set_item_checked(3, interface_settings.use_search)
 	$Console.always_on_top = interface_settings.console_on_top
 	if audio_devices.has(audio_settings.device):
 		AudioServer.set_output_device(audio_settings.device)
@@ -311,6 +315,27 @@ func simulate_mouse_click():
 	up_event.position = click_pos
 	Input.parse_input_event(up_event)
 
+func _make_node_from_search_menu(command: String):
+	#close menu
+	$SearchMenu.hide()
+	
+	#Find node with matching name to button and create a version of it in the graph edit
+	#and position it close to the origin right click to open the menu
+	var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
+	get_node("GraphEdit").add_child(effect, true)
+	effect.set_position_offset((effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
+	_register_inputs_in_node(effect) #link sliders for changes tracking
+	_register_node_movement() #link nodes for tracking position changes for changes tracking
+
+	changesmade = true
+
+	# Remove node with UndoRedo
+	undo_redo.create_action("Add Node")
+	undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
+	undo_redo.add_undo_method(Callable(effect, "queue_free"))
+	undo_redo.add_undo_method(Callable(self, "_track_changes"))
+	undo_redo.commit_action()
+	
 
 func _on_button_pressed(button: Button):
 	#close menu
@@ -324,7 +349,7 @@ func _on_button_pressed(button: Button):
 	effect.set_position_offset((effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 	_register_inputs_in_node(effect) #link sliders for changes tracking
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
-	
+
 	changesmade = true
 
 
@@ -1364,15 +1389,21 @@ func _on_settings_button_index_pressed(index: int) -> void:
 				ConfigHandler.save_interface_settings("console_on_top", false)
 				$Console.always_on_top = false
 		4:
+			if interface_settings.use_search == false:
+				$MenuBar/SettingsButton.set_item_checked(index, true)
+				ConfigHandler.save_interface_settings("use_search", true)
+			else:
+				$MenuBar/SettingsButton.set_item_checked(index, false)
+				ConfigHandler.save_interface_settings("use_search", false)
+		5:
+			$AudioSettings.popup()
+		6:
 			if $Console.is_visible():
 				$Console.hide()
 				await get_tree().process_frame  # Wait a frame to allow hide to complete
 				$Console.popup()
 			else:
 				$Console.popup()
-		5:
-			#$AudioSettings.size = Vector2(600, $AudioSettings/Control/VBoxContainer.size.y + ($AudioSettings/Control/VBoxContainer/ItemList.item_count * 25) + 10)
-			$AudioSettings.popup()
 
 func _on_file_button_index_pressed(index: int) -> void:
 	match index:
@@ -1708,25 +1739,42 @@ func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
 
 
 func _on_graph_edit_popup_request(at_position: Vector2) -> void:
+	var interface_settings = ConfigHandler.load_interface_settings()
+	
 	effect_position = graph_edit.get_local_mouse_position()
 	
-	#get the mouse position in screen coordinates
-	var mouse_screen_pos = DisplayServer.mouse_get_position()  
-	#get the window position in screen coordinates
-	var window_screen_pos = get_window().position
-	#get the window size relative to its scaling for retina displays
-	var window_size = get_window().size * DisplayServer.screen_get_scale()
-	#get the size of the popup menu
-	var popup_size = $mainmenu.size
+	if interface_settings.use_search == false:
+		#get the mouse position in screen coordinates
+		var mouse_screen_pos = DisplayServer.mouse_get_position()  
+		#get the window position in screen coordinates
+		var window_screen_pos = get_window().position
+		#get the window size relative to its scaling for retina displays
+		var window_size = get_window().size * DisplayServer.screen_get_scale()
+		#get the size of the popup menu
+		var popup_size = $mainmenu.size
 
-	#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
-	var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - popup_size.x)
-	var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - popup_size.y)
-	
-	#position and show the menu
-	$mainmenu.position = Vector2(clamped_x, clamped_y)
-	$mainmenu.popup()
+		#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
+		var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - popup_size.x)
+		var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - popup_size.y)
+		
+		#position and show the menu
+		$mainmenu.position = Vector2(clamped_x, clamped_y)
+		$mainmenu.popup()
+	else:
+		#get the mouse position in screen coordinates
+		var mouse_screen_pos = DisplayServer.mouse_get_position()  
+		#get the window position in screen coordinates
+		var window_screen_pos = get_window().position
+		#get the window size relative to its scaling for retina displays
+		var window_size = get_window().size * DisplayServer.screen_get_scale()
 
+		#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
+		var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - $SearchMenu.size.x)
+		var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - (420 * DisplayServer.screen_get_scale()))
+		
+		#position and show the menu
+		$SearchMenu.position = Vector2(clamped_x, clamped_y)
+		$SearchMenu.popup()
 
 func _on_audio_settings_close_requested() -> void:
 	$AudioSettings.hide()

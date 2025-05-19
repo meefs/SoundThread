@@ -74,7 +74,7 @@
   },
   "notes": {
 	"category": "utility",
-	"subcategory": "",
+	"subcategory": "utility",
 	"stereo": false,
 	"title": "Notes",
 	"parameters": {},
@@ -1803,30 +1803,5 @@
 	},
 	"short_description": "Oscillate between harmonic and inharmonic state",
 	"description": "Introduces an oscillation towards and away from inharmonicness in the spectrum of a sound. The program moves towards inharmonicness by means of the stretch factor. \n"
-  },
-  "processname": {
-	"category": "time",
-	"subcategory": "",
-	"stereo": false,
-	"title": "",
-	"parameters": {
-	  "param1": {
-		"paramname": "",
-		"paramdescription": "",
-		"automatable": true,
-		"time": false,
-		"min": false,
-		"max": false,
-		"flag": "",
-		"minrange": "",
-		"maxrange": "",
-		"step": "",
-		"value": "",
-		"exponential": false,
-		"uitype": "hslider"
-	  }
-	},
-	"short_description": "Short Description",
-	"description": "\n"
   }
 }

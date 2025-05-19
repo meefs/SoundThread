@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bcs87y7ptx3ke"]
+[gd_scene load_steps=7 format=3 uid="uid://bcs87y7ptx3ke"]
 
 [ext_resource type="Script" uid="uid://bdlfvuljckmu1" path="res://scenes/main/control.gd" id="1_2f0aq"]
 [ext_resource type="Script" uid="uid://l2yejnjysupr" path="res://scenes/main/graph_edit.gd" id="2_3ioqo"]
 [ext_resource type="PackedScene" uid="uid://b0wdj8v6o0wq0" path="res://scenes/menu/menu.tscn" id="3_dtf4o"]
 [ext_resource type="Texture2D" uid="uid://cdwux1smquvpi" path="res://theme/images/logo.png" id="4_3ioqo"]
 [ext_resource type="PackedScene" uid="uid://dta7rfalv4uvd" path="res://scenes/main/audio_settings.tscn" id="5_dtf4o"]
+[ext_resource type="Script" uid="uid://dlcbmyu3s2phc" path="res://scenes/menu/search_menu.gd" id="6_fyarh"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -241,7 +242,7 @@ item_3/id = 1
 
 [node name="SettingsButton" type="PopupMenu" parent="MenuBar"]
 title = "Settings"
-item_count = 6
+item_count = 7
 item_0/text = "Change CDP Folder Location"
 item_0/id = 0
 item_1/text = "Disable PVOC Multi Input Warning"
@@ -253,10 +254,13 @@ item_2/id = 2
 item_3/text = "Console Always on Top"
 item_3/checkable = 1
 item_3/id = 5
-item_4/text = "Open the Console"
-item_4/id = 3
+item_4/text = "Use Search Menu (Experimental)"
+item_4/checkable = 1
+item_4/id = 6
 item_5/text = "Audio Settings"
 item_5/id = 4
+item_6/text = "Open the Console"
+item_6/id = 3
 
 [node name="HelpButton" type="PopupMenu" parent="MenuBar"]
 auto_translate_mode = 1
@@ -341,6 +345,31 @@ text = "Don't Save"
 [node name="AudioSettings" parent="." groups=["popup_windows"] instance=ExtResource("5_dtf4o")]
 visible = false
 
+[node name="SearchMenu" type="PopupPanel" parent="." groups=["popup_windows"]]
+auto_translate_mode = 1
+position = Vector2i(100, 100)
+size = Vector2i(600, 49)
+script = ExtResource("6_fyarh")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SearchMenu"]
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 596.0
+offset_bottom = 45.0
+
+[node name="SearchBar" type="LineEdit" parent="SearchMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SearchMenu/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ItemContainer" type="VBoxContainer" parent="SearchMenu/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="delete_nodes_request" from="GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
 [connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
@@ -368,3 +397,5 @@ visible = false
 [connection signal="button_down" from="SaveChangesPopup/SaveChanges" to="." method="_on_save_changes_button_down"]
 [connection signal="button_down" from="SaveChangesPopup/DontSaveChanges" to="." method="_on_dont_save_changes_button_down"]
 [connection signal="close_requested" from="AudioSettings" to="." method="_on_audio_settings_close_requested"]
+[connection signal="about_to_popup" from="SearchMenu" to="SearchMenu" method="_on_about_to_popup"]
+[connection signal="text_changed" from="SearchMenu/VBoxContainer/SearchBar" to="SearchMenu" method="_on_search_bar_text_changed"]

@@ -32,11 +32,10 @@ current_tab = 0
 
 [node name="Time Domain" type="TabContainer" parent="Control/select_effect"]
 layout_mode = 2
-current_tab = 1
+current_tab = 0
 metadata/_tab_index = 0
 
 [node name="Distort" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 0
 
@@ -293,6 +292,7 @@ layout_mode = 2
 text = "+"
 
 [node name="Extend" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
