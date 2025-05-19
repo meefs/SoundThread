@@ -210,6 +210,8 @@ func _input(event):
 			$SaveDialog.popup_centered()
 		else:
 			save_graph_edit(currentfile)
+	elif event.is_action_pressed("open_explore"):
+		open_explore()
 	
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_LEFT and event.double_click:
@@ -1791,3 +1793,23 @@ func _on_audio_device_popup_close_requested() -> void:
 func _on_mainmenu_close_requested() -> void:
 	#closes menu if click is anywhere other than the menu as it is a window with popup set to true
 	$mainmenu.hide()
+
+func open_explore():
+	effect_position = graph_edit.get_local_mouse_position()
+	
+	#get the mouse position in screen coordinates
+	var mouse_screen_pos = DisplayServer.mouse_get_position()  
+	#get the window position in screen coordinates
+	var window_screen_pos = get_window().position
+	#get the window size relative to its scaling for retina displays
+	var window_size = get_window().size * DisplayServer.screen_get_scale()
+	#get the size of the popup menu
+	var popup_size = $mainmenu.size
+
+	#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
+	var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - popup_size.x)
+	var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - popup_size.y)
+	
+	#position and show the menu
+	$mainmenu.position = Vector2(clamped_x, clamped_y)
+	$mainmenu.popup()
