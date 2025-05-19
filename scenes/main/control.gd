@@ -59,8 +59,7 @@ func _ready() -> void:
 	
 	check_cdp_location_set()
 	check_user_preferences()
-	new_patch()
-	get_tree().set_auto_accept_quit(false)
+	get_tree().set_auto_accept_quit(false) #disable closing the app with the x and instead handle it internally
 	
 	#Check export config for version number and set about menu to current version
 	#Assumes version of mac + linux builds is the same as windows
@@ -90,6 +89,8 @@ func _ready() -> void:
 	if file:
 		help_data = JSON.parse_string(file.get_as_text())
 	
+	new_patch()
+	
 func new_patch():
 	#clear old patch
 	graph_edit.clear_connections()
@@ -98,6 +99,8 @@ func new_patch():
 		if node is GraphNode:
 			node.queue_free()
 	
+	graph_edit.scroll_offset = Vector2(0, 0)
+	
 		#Generate input and output nodes
 	var effect: GraphNode = Nodes.get_node(NodePath("inputfile")).duplicate()
 	get_node("GraphEdit").add_child(effect, true)
@@ -105,7 +108,7 @@ func new_patch():
 	
 	effect = Nodes.get_node(NodePath("outputfile")).duplicate()
 	get_node("GraphEdit").add_child(effect, true)
-	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) ,80)
+	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) / uiscale, 80)
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
 	
 	changesmade = false #so it stops trying to save unchanged empty files
