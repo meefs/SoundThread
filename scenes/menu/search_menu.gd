@@ -65,7 +65,7 @@ func display_items(filter: String):
 	
 	#resize menu within certain bounds
 	await get_tree().process_frame
-	self.size.y = min(item_container.size.y + search_bar.size.y + 10, 410 * DisplayServer.screen_get_scale()) #i think this will scale for retina screens but might be wrong
+	self.size.y = min((item_container.size.y * DisplayServer.screen_get_scale()) + search_bar.size.y + 50, 410 * DisplayServer.screen_get_scale()) #i think this will scale for retina screens but might be wrong
 	
 func _on_search_bar_text_changed(new_text: String) -> void:
 	display_items(new_text)

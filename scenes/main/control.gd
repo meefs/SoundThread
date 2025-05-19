@@ -151,7 +151,7 @@ func check_user_preferences():
 	$MenuBar/SettingsButton.set_item_checked(1, interface_settings.disable_pvoc_warning)
 	$MenuBar/SettingsButton.set_item_checked(2, interface_settings.auto_close_console)
 	$MenuBar/SettingsButton.set_item_checked(3, interface_settings.console_on_top)
-	$MenuBar/SettingsButton.set_item_checked(3, interface_settings.use_search)
+	$MenuBar/SettingsButton.set_item_checked(4, interface_settings.use_search)
 	$Console.always_on_top = interface_settings.console_on_top
 	if audio_devices.has(audio_settings.device):
 		AudioServer.set_output_device(audio_settings.device)
