@@ -355,7 +355,7 @@ script = ExtResource("6_fyarh")
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 596.0
-offset_bottom = 49.0
+offset_bottom = 45.0
 
 [node name="SearchBar" type="LineEdit" parent="SearchMenu/VBoxContainer"]
 layout_mode = 2

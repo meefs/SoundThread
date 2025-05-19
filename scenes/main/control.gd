@@ -1236,7 +1236,10 @@ func run_command(command: String) -> Array:
 	if is_windows:
 		exit_code = OS.execute("cmd.exe", ["/C", command], output, true, false)
 	else:
-		exit_code = OS.execute("sh", [command], output, true, false)
+		var command_split = command.split(" ", true, 1)
+		var args = command_split[1].split(" ")
+		print(command_split)
+		exit_code = OS.execute(command_split[0], args, output, true, false)
 
 	var output_str := ""
 	for item in output:
