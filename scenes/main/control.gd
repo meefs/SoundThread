@@ -1044,7 +1044,7 @@ func run_thread_with_branches():
 		final_output_dir_fixed_path = final_output_dir_fixed_path.replace("/", "\\")
 		run_command(rename_cmd, [final_output_dir_fixed_path, final_filename.get_file()])
 	else:
-		run_command(rename_cmd, [final_output_dir_fixed_path, Global.outfile])
+		run_command(rename_cmd, [final_output_dir_fixed_path, "%s.wav" % Global.outfile])
 	final_output_dir = Global.outfile + ".wav"
 	
 	output_audio_player.play_outfile(final_output_dir)
@@ -1247,9 +1247,6 @@ func run_command(command: String, args: Array) -> Array:
 		args.insert(0, "/C")
 		exit_code = OS.execute("cmd.exe", args, output, true, false)
 	else:
-		#var command_split = command.split(" ", true, 1)
-		#var args = command_split[1].split(" ")
-		#print(command_split)
 		exit_code = OS.execute(command, args, output, true, false)
 
 	var output_str := ""
