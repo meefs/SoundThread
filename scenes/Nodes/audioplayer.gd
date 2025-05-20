@@ -63,13 +63,26 @@ func _on_file_selected(path: String):
 	voice_preview_generator.generate_preview(audio_player.stream)
 	Global.infile = path
 	print("Infile set: " + Global.infile)
+	reset_playback()
+	
+func reset_playback():
 	$LoopRegion.size.x = 0
 	$Playhead.position.x = 0
+	$PlayButton.text = "Play"
+	$Timer.stop()
+	Global.trim_infile = false
+	
 	
 func play_outfile(path: String):
 	outfile_path = path
 	audio_player.stream = AudioStreamWAV.load_from_file(path)
+	print(audio_player.stream)
+	if audio_player.stream == null:
+		voice_preview_generator._reset_to_blank()
+		reset_playback()
+		return
 	voice_preview_generator.generate_preview(audio_player.stream)
+	reset_playback()
 
 	
 func recycle_outfile(path: String):
@@ -81,8 +94,7 @@ func recycle_outfile(path: String):
 	voice_preview_generator.generate_preview(audio_player.stream)
 	Global.infile = path
 	print("Infile set: " + Global.infile)
-	$LoopRegion.size.x = 0
-	$Playhead.position.x = 0
+	reset_playback()
 
 
 func _on_play_button_button_down() -> void:

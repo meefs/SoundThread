@@ -740,7 +740,7 @@ func run_thread_with_branches():
 	
 	#If trim is enabled trim input audio
 	if Global.trim_infile == true:
-		run_command(cdpprogs_location + "/sfedit", ["cut", "1", "2\"%s\"" % starting_infile, "\"%s_trimmed.wav\"" % Global.outfile, str(Global.infile_start), str(Global.infile_stop)])
+		run_command(cdpprogs_location + "/sfedit", ["cut", "1", starting_infile, "%s_trimmed.wav" % Global.outfile, str(Global.infile_start), str(Global.infile_stop)])
 		starting_infile = Global.outfile + "_trimmed.wav"
 		# Mark trimmed file for cleanup if needed
 		if delete_intermediate_outputs:

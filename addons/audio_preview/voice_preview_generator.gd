@@ -34,6 +34,7 @@ func generate_preview(stream: AudioStreamWAV, image_max_width: int = 500):
 	
 	if image_max_width <= 0:
 		return # User wasn't remarkably brilliant
+		
 	
 	if is_working:
 		must_abort = true
@@ -153,5 +154,10 @@ func generate_preview(stream: AudioStreamWAV, image_max_width: int = 500):
 	
 	is_working = false
 	
+	emit_signal("texture_ready", ImageTexture.create_from_image(img))
+	
+func _reset_to_blank():
+	var img = Image.create(1, IMAGE_HEIGHT, true, Image.FORMAT_RGBA8)
+	img.fill(Color.DARK_SLATE_GRAY)
 	emit_signal("texture_ready", ImageTexture.create_from_image(img))
 	
