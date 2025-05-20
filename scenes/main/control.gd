@@ -219,8 +219,8 @@ func _input(event):
 			$SaveDialog.popup_centered()
 		else:
 			save_graph_edit(currentfile)
-	#elif event.is_action_pressed("open_explore"):
-		#open_explore()
+	elif event.is_action_pressed("open_explore"):
+		open_explore()
 	
 
 func show_help_for_node(node_name: String, node_title: String):
