@@ -63,9 +63,12 @@ func display_items(filter: String):
 		btn.connect("pressed", Callable(self, "_on_item_selected").bind(key)) #pass key (process name) when button is pressed
 		item_container.add_child(btn)
 	
-	#resize menu within certain bounds
+	#resize menu within certain bounds #50
 	await get_tree().process_frame
-	self.size.y = min((item_container.size.y * DisplayServer.screen_get_scale()) + search_bar.size.y + 50, 410 * DisplayServer.screen_get_scale()) #i think this will scale for retina screens but might be wrong
+	if DisplayServer.screen_get_scale() > 1:
+		self.size.y = min((item_container.size.y * DisplayServer.screen_get_scale()) + search_bar.size.y + 50, 410 * DisplayServer.screen_get_scale()) #i think this will scale for retina screens but might be wrong
+	else:
+		self.size.y = min(item_container.size.y + search_bar.size.y + 12, 410)
 	
 func _on_search_bar_text_changed(new_text: String) -> void:
 	display_items(new_text)
