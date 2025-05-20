@@ -219,30 +219,9 @@ func _input(event):
 			$SaveDialog.popup_centered()
 		else:
 			save_graph_edit(currentfile)
-	elif event.is_action_pressed("open_explore"):
-		open_explore()
+	#elif event.is_action_pressed("open_explore"):
+		#open_explore()
 	
-	#if event is InputEventMouseButton and event.pressed:
-		#if event.button_index == MOUSE_BUTTON_LEFT and event.double_click:
-			#var pos = get_viewport().get_mouse_position()
-			#var clicked_node = find_graphedit_node_under(pos)
-			#if clicked_node:
-				#await get_tree().process_frame #wait a frame to stop nodes jumping across graph edit
-				#deselect_all_nodes() #deselect nodes to avoid dragging issues
-				#show_help_for_node(clicked_node.get_meta("command"), clicked_node.title)
-#
-#func find_graphedit_node_under(mouse_pos: Vector2) -> GraphNode:
-	##find the node that was double clicked on
-	#for node in graph_edit.get_children():
-		#if node is GraphNode and node.get_global_rect().has_point(mouse_pos):
-			#return node
-	#return null
-
-#func deselect_all_nodes():
-	#for node in $GraphEdit.get_children():
-		#if node is GraphNode:
-			#node.selected = false
-			#selected_nodes[node] = false
 
 func show_help_for_node(node_name: String, node_title: String):
 	#check if there is already a help window open for this node and pop it up instead of making a new one
@@ -1191,7 +1170,7 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 			var calculated_brk = []
 			
 			#get length of input file in seconds
-			var infile_length = run_command(cdpprogs_location + "/sfprops", ["-d", "\"%s\"" % current_infile])
+			var infile_length = run_command(cdpprogs_location + "/sfprops", ["-d", current_infile])
 			infile_length = float(infile_length[0].strip_edges())
 			
 			#scale values from automation window to the right length for file and correct slider values
@@ -1216,12 +1195,12 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 			
 			#append text file in place of value
 			line += ("\"%s\" " % brk_file_path)
-			args.append("\"%s\" " % brk_file_path)
+			args.append(brk_file_path)
 			
 			cleanup.append(brk_file_path)
 		else:
 			if time == true:
-				var infile_length = run_command(cdpprogs_location + "/sfprops", ["-d", "\"%s\"" % current_infile])
+				var infile_length = run_command(cdpprogs_location + "/sfprops", ["-d", current_infile])
 				infile_length = float(infile_length[0].strip_edges())
 				value = infile_length * (value / 100) #calculate percentage time of the input file
 			line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)

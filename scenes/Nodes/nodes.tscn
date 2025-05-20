@@ -17,7 +17,7 @@ layout_mode = 0
 offset_left = 21.0
 offset_top = 6.0
 offset_right = 449.0
-offset_bottom = 204.0
+offset_bottom = 212.0
 tooltip_text = "Stores your input file to be processed. Supports mono and stereo .wav files."
 title = "Input File"
 slot/0/left_enabled = false
@@ -2703,10 +2703,9 @@ text = "Gain~"
 
 [node name="HSlider" parent="modify_loudness_1/VBoxContainer/HSplitContainer" index="0"]
 min_value = 0.001
-max_value = 10.0
+max_value = 2.0
 step = 0.001
 value = 1.0
-exp_edit = true
 metadata/brk = true
 
 [node name="modify_stack" type="GraphNode" parent="."]
@@ -3431,10 +3430,9 @@ text = "Gain~"
 
 [node name="HSlider" parent="spec_gain/VBoxContainer/HSplitContainer" index="0"]
 min_value = 0.001
-max_value = 10.0
+max_value = 2.0
 step = 0.001
 value = 0.8
-exp_edit = true
 metadata/brk = true
 
 [node name="strange_waver_1" type="GraphNode" parent="."]

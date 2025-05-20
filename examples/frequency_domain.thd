@@ -1,164 +1,121 @@
 {
 	"connections": [
 		{
-			"from_node": "inputfile",
+			"from_node_id": 1,
 			"from_port": 0,
-			"to_node": "pvoc_anal_1",
+			"to_node_id": 3,
 			"to_port": 0
 		},
 		{
-			"from_node": "spectstr_stretch",
+			"from_node_id": 3,
 			"from_port": 0,
-			"to_node": "blur_blur",
+			"to_node_id": 2,
 			"to_port": 0
 		},
 		{
-			"from_node": "pvoc_anal_1",
+			"from_node_id": 6,
 			"from_port": 0,
-			"to_node": "spectstr_stretch",
+			"to_node_id": 5,
 			"to_port": 0
 		},
 		{
-			"from_node": "pvoc_synth",
+			"from_node_id": 5,
 			"from_port": 0,
-			"to_node": "outputfile",
+			"to_node_id": 4,
 			"to_port": 0
 		},
 		{
-			"from_node": "blur_blur",
+			"from_node_id": 2,
 			"from_port": 0,
-			"to_node": "pvoc_synth2",
+			"to_node_id": 7,
 			"to_port": 0
 		},
 		{
-			"from_node": "pvoc_synth2",
+			"from_node_id": 2,
 			"from_port": 0,
-			"to_node": "outputfile",
+			"to_node_id": 6,
 			"to_port": 0
 		},
 		{
-			"from_node": "spectstr_stretch",
+			"from_node_id": 7,
 			"from_port": 0,
-			"to_node": "blur_scatter",
+			"to_node_id": 8,
 			"to_port": 0
 		},
 		{
-			"from_node": "blur_scatter",
+			"from_node_id": 8,
 			"from_port": 0,
-			"to_node": "pvoc_synth",
+			"to_node_id": 4,
 			"to_port": 0
 		}
 	],
 	"nodes": [
 		{
-			"command": "spectstr_stretch",
-			"name": "spectstr_stretch",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 815.333312988281,
-				"y": 78.7777404785156
-			},
-			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": 3.131,
-				"VBoxContainer2/HSplitContainer/HSlider": 0.0,
-				"VBoxContainer3/HSplitContainer/HSlider": 0.0
-			}
-		},
-		{
-			"command": "blur_blur",
-			"name": "blur_blur",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 1150.88891601563,
-				"y": 232.999954223633
-			},
-			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": 445.0
-			}
-		},
-		{
-			"command": "pvoc_synth",
-			"name": "pvoc_synth",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 1477.66662597656,
-				"y": 79.2222137451172
-			},
-			"slider_values": {
-
-			}
-		},
-		{
-			"command": "pvoc_synth",
-			"name": "pvoc_synth2",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 1478.77783203125,
-				"y": 232.666625976563
-			},
-			"slider_values": {
-
-			}
-		},
-		{
-			"command": "pvoc_anal_1",
-			"name": "pvoc_anal_1",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 484.0,
-				"y": 78.3333358764648
-			},
-			"slider_values": {
-
-			}
-		},
-		{
 			"command": "inputfile",
+			"id": 1,
 			"name": "inputfile",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 18.8888874053955,
-				"y": 78.8888854980469
+				"x": 20.0,
+				"y": 80.0
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@2175/@MarginContainer@2215/Tree/@Popup@2201/@VBoxContainer@2202/@HSlider@2210": 0.0
+				"AudioPlayer/FileDialog/@VBoxContainer@3995/@MarginContainer@4035/Tree/@Popup@4021/@VBoxContainer@4022/@HSlider@4030": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
 			}
 		},
 		{
-			"command": "blur_scatter",
-			"name": "blur_scatter",
+			"command": "spectstr_stretch",
+			"id": 2,
+			"name": "spectstr_stretch",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 1149.55541992188,
-				"y": 79.8888244628906
+				"x": 785.555725097656,
+				"y": 80.0000152587891
 			},
 			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": 16.0
+				"VBoxContainer/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 3.001
+				},
+				"VBoxContainer2/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				},
+				"VBoxContainer3/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
 			}
 		},
 		{
-			"command": "notes",
-			"name": "notes",
+			"command": "pvoc_anal_1",
+			"id": 3,
+			"name": "pvoc_anal_1",
 			"notes": {
-				"CodeEdit": "The \"Frequency Domain\" processes allow you to perform unique transformations to a sound. Load a file into \"Input File\" to test it out.\n\nThese processes work by manipulating FFT analysis files of the audio and as such your audio must first be analysed using \"PVOC: Analyse\"."
+
 			},
 			"offset": {
-				"x": 27.6944522857666,
-				"y": 446.1611328125
+				"x": 466.666778564453,
+				"y": 80.0000152587891
 			},
 			"slider_values": {
 
@@ -166,27 +123,92 @@
 		},
 		{
 			"command": "outputfile",
+			"id": 4,
 			"name": "outputfile",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 1863.27893066406,
-				"y": 77.7777786254883
+				"x": 1795.5556640625,
+				"y": 79.0000076293945
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@2294/@MarginContainer@2334/Tree/@Popup@2320/@VBoxContainer@2321/@HSlider@2329": 0.0
+				"AudioPlayer/FileDialog/@VBoxContainer@4104/@MarginContainer@4144/Tree/@Popup@4130/@VBoxContainer@4131/@HSlider@4139": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
 			}
 		},
 		{
-			"command": "notes",
-			"name": "notes3",
+			"command": "pvoc_synth",
+			"id": 5,
+			"name": "pvoc_synth",
 			"notes": {
-				"CodeEdit": "This enables processing that is difficult/impossible to do in the time domain. E.g. PVOC: Stretch allows extreme time stretching without changing pitch."
+
 			},
 			"offset": {
-				"x": 497.705474853516,
-				"y": 446.306701660156
+				"x": 1448.18920898438,
+				"y": 79.2222518920898
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "hilite_trace_1",
+			"id": 6,
+			"name": "hilite_trace_1",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1117.77807617188,
+				"y": 78.7777938842773
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true
+					},
+					"value": 4.0
+				}
+			}
+		},
+		{
+			"command": "blur_blur",
+			"id": 7,
+			"name": "blur_blur",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1115.74475097656,
+				"y": 223.444488525391
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true
+					},
+					"value": 300.0
+				}
+			}
+		},
+		{
+			"command": "pvoc_synth",
+			"id": 8,
+			"name": "pvoc_synth2",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1445.74475097656,
+				"y": 224.666732788086
 			},
 			"slider_values": {
 
@@ -194,27 +216,59 @@
 		},
 		{
 			"command": "notes",
+			"id": 9,
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "The \"Frequency Domain\" processes allow you to perform unique transformations to a sound. Load a file into \"Input File\" to test it out.\n\nThese processes work by manipulating FFT analysis files of the audio and as such your audio must first be analysed using \"PVOC: Analyse\"."
+			},
+			"offset": {
+				"x": 30.4112148284912,
+				"y": 488.666778564453
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"id": 10,
+			"name": "notes2",
+			"notes": {
+				"CodeEdit": "This enables processing that is difficult/impossible to do in the time domain. \n\nE.g. PVOC: Stretch allows extreme time stretching without changing pitch."
+			},
+			"offset": {
+				"x": 481.411315917969,
+				"y": 493.5556640625
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"id": 11,
 			"name": "notes4",
+			"notes": {
+				"CodeEdit": "You can use both Time Domain and Frequency Domain processes in the same Thread. You just need to convert between the two using \"PVOC: Analyse\" and \"PVOC: Resynthesise\".\n\nTime domain inputs and outputs are white and Frequency Domain inputs and outputs are black."
+			},
+			"offset": {
+				"x": 1376.078125,
+				"y": 492.333435058594
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"id": 12,
+			"name": "notes3",
 			"notes": {
 				"CodeEdit": "Frequency Domain PVOC signals can be split but they cannot be mixed directly, if you want to mix the signals you will need to convert them back using \"PVOC: Resynthesise\".\n\nThis process will take the analysis files that PVOC uses and turn it back into audio."
 			},
 			"offset": {
-				"x": 951.683349609375,
-				"y": 443.973327636719
-			},
-			"slider_values": {
-
-			}
-		},
-		{
-			"command": "notes",
-			"name": "notes5",
-			"notes": {
-				"CodeEdit": "You can use both Time Domain and Frequency Domain processes in the same Thread. You just need to convert between the two using \"PVOC: Anlalyse\" and \"PVOC: Resynthesise\".\n\nTime domain inputs and outputs are white and Frequency Domain inputs and outputs are black."
-			},
-			"offset": {
-				"x": 1407.61108398438,
-				"y": 442.272155761719
+				"x": 931.189208984375,
+				"y": 491.111206054688
 			},
 			"slider_values": {
 

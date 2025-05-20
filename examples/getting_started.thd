@@ -3,27 +3,14 @@
 	"nodes": [
 		{
 			"command": "notes",
-			"name": "notes_copy_5112",
-			"notes": {
-				"CodeEdit": "The little white squares on the sides of these nodes are inputs (left) and outputs (right). \n\nYou can connect nodes together by clicking and dragging from one to another.\n\nYou can detach a node by clicking on the input (left)."
-			},
-			"offset": {
-				"x": 521.555419921875,
-				"y": 596.999938964844
-			},
-			"slider_values": {
-
-			}
-		},
-		{
-			"command": "notes",
+			"id": 1,
 			"name": "notes2",
 			"notes": {
-				"CodeEdit": "Each node is a function from the Composers Desktop Project.\n\nYou can hover your mouse over nodes and controls to get some quick information about them. Double click on a node to open its full help file.\n\nConnect \"Input File\" to \"Distort: Average\" and \"Distort:Average\" to \"Output File\"."
+				"CodeEdit": "The white squares on each side of the nodes are inputs (left) and outputs (right). \n\nConnect nodes together by clicking and dragging from outputs to inputs. You can detach a cable by clicking on the input.\n\nConnect \"Input File\" to \"Distort: Average\" and \"Distort: Average\" to the Output File."
 			},
 			"offset": {
-				"x": 956.777709960938,
-				"y": 601.666687011719
+				"x": 530.0,
+				"y": 595.555541992188
 			},
 			"slider_values": {
 
@@ -31,13 +18,14 @@
 		},
 		{
 			"command": "notes",
+			"id": 2,
 			"name": "notes3",
 			"notes": {
-				"CodeEdit": "Click \"Run Thread\" and it will prompt you for a location to save the audio files that CDP Generates and then it will run the process.\n\nIf it runs successfully you can close the console and press play on \"Output File\".\n"
+				"CodeEdit": "Each node is a function from the Composers Desktop Project.\n\nClick the \"?\" on a node to open its full help file. Or, hover your mouse over nodes and controls to get some quick tips. "
 			},
 			"offset": {
-				"x": 1430.88879394531,
-				"y": 600.111022949219
+				"x": 992.22216796875,
+				"y": 596.666687011719
 			},
 			"slider_values": {
 
@@ -45,13 +33,29 @@
 		},
 		{
 			"command": "notes",
+			"id": 3,
 			"name": "notes",
 			"notes": {
 				"CodeEdit": "Welcome to SoundThread!\n\nTo get started, load a sound file into \"Input File\"\n\nIt supports a mono or stereo .wav file."
 			},
 			"offset": {
-				"x": 47.7777099609375,
-				"y": 597.555480957031
+				"x": 70.0,
+				"y": 596.666687011719
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"id": 4,
+			"name": "notes4",
+			"notes": {
+				"CodeEdit": "Click \"Run Thread\" and it will prompt you for a location to save the audio files that CDP Generates and then it will run the process.\n\nIf it runs successfully you can close the console and press play on \"Output File\"."
+			},
+			"offset": {
+				"x": 1461.0654296875,
+				"y": 593.270690917969
 			},
 			"slider_values": {
 
@@ -59,16 +63,38 @@
 		},
 		{
 			"command": "outputfile",
+			"id": 5,
 			"name": "outputfile",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 1416.11096191406,
-				"y": 36.1110992431641
+				"x": 1415.55541992188,
+				"y": 72.2222290039063
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1697/@MarginContainer@1737/Tree/@Popup@1723/@VBoxContainer@1724/@HSlider@1732": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1711/@MarginContainer@1751/Tree/@Popup@1737/@VBoxContainer@1738/@HSlider@1746": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"command": "inputfile",
+			"id": 6,
+			"name": "inputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 55.5555572509766,
+				"y": 67.7777786254883
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1820/@MarginContainer@1860/Tree/@Popup@1846/@VBoxContainer@1847/@HSlider@1855": {
 					"editable": true,
 					"meta": {
 
@@ -79,13 +105,14 @@
 		},
 		{
 			"command": "distort_average",
+			"id": 7,
 			"name": "distort_average",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 758.444396972656,
-				"y": 185.888885498047
+				"x": 778.888916015625,
+				"y": 66.6666641235352
 			},
 			"slider_values": {
 				"VBoxContainer/HSplitContainer/HSlider": {
@@ -94,26 +121,6 @@
 						"brk": true
 					},
 					"value": 18.0
-				}
-			}
-		},
-		{
-			"command": "inputfile",
-			"name": "inputfile",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 58.6666221618652,
-				"y": 128.111099243164
-			},
-			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1813/@MarginContainer@1853/Tree/@Popup@1839/@VBoxContainer@1840/@HSlider@1848": {
-					"editable": true,
-					"meta": {
-
-					},
-					"value": 0.0
 				}
 			}
 		}

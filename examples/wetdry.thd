@@ -1,39 +1,40 @@
 {
 	"connections": [
 		{
-			"from_node": "inputfile",
+			"from_node_id": 1,
 			"from_port": 0,
-			"to_node": "modify_brassage_1",
+			"to_node_id": 3,
 			"to_port": 0
 		},
 		{
-			"from_node": "inputfile",
+			"from_node_id": 3,
 			"from_port": 0,
-			"to_node": "modify_loudness_1",
+			"to_node_id": 4,
 			"to_port": 0
 		},
 		{
-			"from_node": "modify_brassage_1",
+			"from_node_id": 4,
 			"from_port": 0,
-			"to_node": "modify_loudness_2",
+			"to_node_id": 2,
 			"to_port": 0
 		},
 		{
-			"from_node": "modify_loudness_2",
+			"from_node_id": 5,
 			"from_port": 0,
-			"to_node": "outputfile",
+			"to_node_id": 2,
 			"to_port": 0
 		},
 		{
-			"from_node": "modify_loudness_1",
+			"from_node_id": 1,
 			"from_port": 0,
-			"to_node": "outputfile",
+			"to_node_id": 5,
 			"to_port": 0
 		}
 	],
 	"nodes": [
 		{
 			"command": "inputfile",
+			"id": 1,
 			"name": "inputfile",
 			"notes": {
 
@@ -43,7 +44,7 @@
 				"y": 80.0
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1445/@MarginContainer@1485/Tree/@Popup@1471/@VBoxContainer@1472/@HSlider@1480": {
+				"AudioPlayer/FileDialog/@VBoxContainer@2389/@MarginContainer@2429/Tree/@Popup@2415/@VBoxContainer@2416/@HSlider@2424": {
 					"editable": true,
 					"meta": {
 
@@ -54,6 +55,7 @@
 		},
 		{
 			"command": "outputfile",
+			"id": 2,
 			"name": "outputfile",
 			"notes": {
 
@@ -63,7 +65,7 @@
 				"y": 80.0
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1553/@MarginContainer@1593/Tree/@Popup@1579/@VBoxContainer@1580/@HSlider@1588": {
+				"AudioPlayer/FileDialog/@VBoxContainer@2498/@MarginContainer@2538/Tree/@Popup@2524/@VBoxContainer@2525/@HSlider@2533": {
 					"editable": true,
 					"meta": {
 
@@ -74,13 +76,14 @@
 		},
 		{
 			"command": "modify_brassage_1",
+			"id": 3,
 			"name": "modify_brassage_1",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 647.777770996094,
-				"y": 83.4999923706055
+				"x": 608.888916015625,
+				"y": 83.3333358764648
 			},
 			"slider_values": {
 				"VBoxContainer/HSplitContainer/HSlider": {
@@ -94,13 +97,14 @@
 		},
 		{
 			"command": "modify_loudness_1",
-			"name": "modify_loudness_2",
+			"id": 4,
+			"name": "modify_loudness_1",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 1027.77783203125,
-				"y": 83.4999923706055
+				"x": 973.333374023438,
+				"y": 83.3333358764648
 			},
 			"slider_values": {
 				"VBoxContainer/HSplitContainer/HSlider": {
@@ -114,13 +118,14 @@
 		},
 		{
 			"command": "modify_loudness_1",
-			"name": "modify_loudness_1",
+			"id": 5,
+			"name": "modify_loudness_2",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 1032.22229003906,
-				"y": 230.16667175293
+				"x": 965.555603027344,
+				"y": 286.666687011719
 			},
 			"slider_values": {
 				"VBoxContainer/HSplitContainer/HSlider": {
@@ -130,20 +135,6 @@
 					},
 					"value": 1.0
 				}
-			}
-		},
-		{
-			"command": "notes",
-			"name": "notes",
-			"notes": {
-				"CodeEdit": "Using \"Gain\" nodes in parallel will allow you to mix different parts of your thread.\n\nHere it is being used to blend the original input signal with a quieter pitched up version of the input signal."
-			},
-			"offset": {
-				"x": 988.888977050781,
-				"y": 405.722229003906
-			},
-			"slider_values": {
-
 			}
 		}
 	]

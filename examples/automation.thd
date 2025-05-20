@@ -1,68 +1,35 @@
 {
 	"connections": [
 		{
-			"from_node": "inputfile",
+			"from_node_id": 2,
 			"from_port": 0,
-			"to_node": "modify_speed_2",
+			"to_node_id": 1,
 			"to_port": 0
 		},
 		{
-			"from_node": "modify_brassage_4",
+			"from_node_id": 1,
 			"from_port": 0,
-			"to_node": "outputfile",
+			"to_node_id": 6,
 			"to_port": 0
 		},
 		{
-			"from_node": "modify_speed_2",
+			"from_node_id": 6,
 			"from_port": 0,
-			"to_node": "modify_brassage_4",
+			"to_node_id": 3,
 			"to_port": 0
 		}
 	],
 	"nodes": [
 		{
-			"command": "inputfile",
-			"name": "inputfile",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 20.0,
-				"y": 80.0
-			},
-			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1445/@MarginContainer@1485/Tree/@Popup@1471/@VBoxContainer@1472/@HSlider@1480": {
-					"editable": true,
-					"meta": {
-
-					},
-					"value": 0.0
-				}
-			}
-		},
-		{
-			"command": "notes",
-			"name": "notes",
-			"notes": {
-				"CodeEdit": "Parametes with a tilde (~) next to their name can have automation applied to them to change their value over time.\n\nRight click on the Semitones~ slider to apply automation to that parameter.\n\nIn the automation window, automation timings (% of input file) are on the x axis and the value change is on the y axis. "
-			},
-			"offset": {
-				"x": 483.333343505859,
-				"y": 367.944458007813
-			},
-			"slider_values": {
-
-			}
-		},
-		{
 			"command": "modify_speed_2",
+			"id": 1,
 			"name": "modify_speed_2",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 513.333374023438,
-				"y": 80.1666641235352
+				"x": 591.5556640625,
+				"y": 80.6666870117188
 			},
 			"slider_values": {
 				"VBoxContainer/HSplitContainer/HSlider": {
@@ -75,17 +42,18 @@
 			}
 		},
 		{
-			"command": "outputfile",
-			"name": "outputfile",
+			"command": "inputfile",
+			"id": 2,
+			"name": "inputfile",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 1333.33337402344,
+				"x": 110.444465637207,
 				"y": 80.0
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1553/@MarginContainer@1593/Tree/@Popup@1579/@VBoxContainer@1580/@HSlider@1588": {
+				"AudioPlayer/FileDialog/@VBoxContainer@5578/@MarginContainer@5618/Tree/@Popup@5604/@VBoxContainer@5605/@HSlider@5613": {
 					"editable": true,
 					"meta": {
 
@@ -95,14 +63,66 @@
 			}
 		},
 		{
+			"command": "outputfile",
+			"id": 3,
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1353.22216796875,
+				"y": 81.2222213745117
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@5687/@MarginContainer@5727/Tree/@Popup@5713/@VBoxContainer@5714/@HSlider@5722": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"command": "notes",
+			"id": 4,
+			"name": "notes2",
+			"notes": {
+				"CodeEdit": "When automation is applied the slider will lock and its value cannot be changed.\n\nAutomation can be edited or removed by right clicking on a locked slider.\n\nGrainsize~ already has some automation applied, right click it to edit the automation."
+			},
+			"offset": {
+				"x": 924.000183105469,
+				"y": 451.000091552734
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"id": 5,
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "Parametes with a tilde (~) next to their name can have automation applied to them to change their value over time.\n\nRight click on the Semitones~ slider to apply automation to that parameter.\n\nIn the automation window, automation timings (% of input file) are on the x axis and the value change is on the y axis. "
+			},
+			"offset": {
+				"x": 515.777954101563,
+				"y": 452.222320556641
+			},
+			"slider_values": {
+
+			}
+		},
+		{
 			"command": "modify_brassage_4",
+			"id": 6,
 			"name": "modify_brassage_4",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 934.444519042969,
-				"y": 80.1666641235352
+				"x": 957.000244140625,
+				"y": 80.6666870117188
 			},
 			"slider_values": {
 				"VBoxContainer/HSplitContainer/HSlider": {
@@ -110,12 +130,12 @@
 					"meta": {
 						"brk": true,
 						"brk_data": [
-							"(0.0, 233.0)",
+							"(0.0, 231.0)",
 							"(700.0, 128.0)",
-							"(174.0, 109.0)",
-							"(354.0, 251.0)",
-							"(562.0, 251.0)",
-							"(137.0, 249.0)"
+							"(123.0, 253.0)",
+							"(170.0, 105.0)",
+							"(342.0, 251.0)",
+							"(552.0, 250.0)"
 						]
 					},
 					"value": 10.0
@@ -128,20 +148,6 @@
 					},
 					"value": 2500.0
 				}
-			}
-		},
-		{
-			"command": "notes",
-			"name": "notes2",
-			"notes": {
-				"CodeEdit": "When automation is applied the slider will lock and its value cannot be changed.\n\nAutomation can be edited or removed by right clicking on a locked slider.\n\nGrainsize~ already has some automation applied, right click it to edit the automation."
-			},
-			"offset": {
-				"x": 897.77783203125,
-				"y": 366.833343505859
-			},
-			"slider_values": {
-
 			}
 		}
 	]

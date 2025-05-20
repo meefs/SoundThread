@@ -1,82 +1,29 @@
 {
 	"connections": [
 		{
-			"from_node": "inputfile",
+			"from_node_id": 3,
 			"from_port": 0,
-			"to_node": "distort_multiply",
+			"to_node_id": 1,
 			"to_port": 0
 		},
 		{
-			"from_node": "distort_multiply",
+			"from_node_id": 1,
 			"from_port": 0,
-			"to_node": "outputfile",
+			"to_node_id": 2,
 			"to_port": 0
 		}
 	],
 	"nodes": [
 		{
-			"command": "inputfile",
-			"name": "inputfile",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 20.0,
-				"y": 80.0
-			},
-			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1909/@MarginContainer@1949/Tree/@Popup@1935/@VBoxContainer@1936/@HSlider@1944": {
-					"editable": true,
-					"meta": {
-
-					},
-					"value": 0.0
-				}
-			}
-		},
-		{
-			"command": "notes",
-			"name": "notes",
-			"notes": {
-				"CodeEdit": "Load a soundfile into \"Input File\".\n\nClicking and dragging on the soundfile viewer on the input and output will let you select a section of audio to play.\n\nIf audio is selected in \"Input File\" when you run the process, SoundThread will automatically cut out that section and process only that."
-			},
-			"offset": {
-				"x": 38.8888893127441,
-				"y": 303.5
-			},
-			"slider_values": {
-
-			}
-		},
-		{
-			"command": "outputfile",
-			"name": "outputfile",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 916.666687011719,
-				"y": 80.0
-			},
-			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@2017/@MarginContainer@2057/Tree/@Popup@2043/@VBoxContainer@2044/@HSlider@2052": {
-					"editable": true,
-					"meta": {
-
-					},
-					"value": 0.0
-				}
-			}
-		},
-		{
 			"command": "distort_multiply",
+			"id": 1,
 			"name": "distort_multiply",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 532.222229003906,
-				"y": 80.1666641235352
+				"x": 595.555541992188,
+				"y": 88.8888931274414
 			},
 			"slider_values": {
 				"VBoxContainer/HSplitContainer/HSlider": {
@@ -84,19 +31,77 @@
 					"meta": {
 						"brk": true
 					},
-					"value": 2.0
+					"value": 3.0
+				}
+			}
+		},
+		{
+			"command": "outputfile",
+			"id": 2,
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 967.77783203125,
+				"y": 88.8888931274414
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@2083/@MarginContainer@2123/Tree/@Popup@2109/@VBoxContainer@2110/@HSlider@2118": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"command": "inputfile",
+			"id": 3,
+			"name": "inputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 111.111114501953,
+				"y": 88.8888931274414
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1974/@MarginContainer@2014/Tree/@Popup@2000/@VBoxContainer@2001/@HSlider@2009": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
 				}
 			}
 		},
 		{
 			"command": "notes",
+			"id": 4,
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "Load a soundfile into \"Input File\".\n\nClicking and dragging on the soundfile viewer on the input and output will let you select a section of audio to play.\n\nIf audio is selected in \"Input File\" when you run the process, SoundThread will automatically cut out that section and process only that."
+			},
+			"offset": {
+				"x": 117.777778625488,
+				"y": 368.888885498047
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"id": 5,
 			"name": "notes2",
 			"notes": {
 				"CodeEdit": "Clicking on the soundfile viewer while audio is playing will allow you to jump around the file to listen to different sections."
 			},
 			"offset": {
-				"x": 481.111114501953,
-				"y": 303.5
+				"x": 542.222229003906,
+				"y": 367.777801513672
 			},
 			"slider_values": {
 
