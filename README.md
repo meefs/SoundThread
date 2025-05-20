@@ -14,7 +14,7 @@ CDP is a suite of [open source](https://github.com/ComposersDesktop/CDP8) comman
 > [CDP About](https://www.composersdesktop.com/docs/html/cdphome.htm)
 
 ## Download
-The latest builds for Mac and Windows as well as previous versions can be found in [Releases](https://github.com/j-p-higgins/SoundThread/releases)
+The latest builds for Mac and Windows can be found in [Releases](https://github.com/j-p-higgins/SoundThread/releases/latest)
 Additionally you will need to download CDP for SoundThread to interface with, this can be [downloaded here](https://www.unstablesound.net/cdp.html).
 
 ## What works?
