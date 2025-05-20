@@ -751,7 +751,7 @@ func run_thread_with_branches():
 	
 	#If trim is enabled trim input audio
 	if Global.trim_infile == true:
-		run_command(cdpprogs_location + "/sfedit cut 1" + " \"%s\"" % starting_infile + " \"%s_trimmed.wav\"" % Global.outfile + " " + str(Global.infile_start) + " " + str(Global.infile_stop))
+		run_command(cdpprogs_location + "/sfedit", ["cut", "1", "2\"%s\"" % starting_infile, "\"%s_trimmed.wav\"" % Global.outfile, str(Global.infile_start), str(Global.infile_stop)])
 		starting_infile = Global.outfile + "_trimmed.wav"
 		# Mark trimmed file for cleanup if needed
 		if delete_intermediate_outputs:
@@ -804,7 +804,7 @@ func run_thread_with_branches():
 				for infile in current_infile:
 					var makeprocess = make_process(node, process_count, infile, slider_data)
 					# run the command
-					run_command(makeprocess[0])
+					run_command(makeprocess[0], makeprocess[3])
 					await get_tree().process_frame
 					var output_file = makeprocess[1]
 					pvoc_stereo_files.append(output_file)
@@ -824,7 +824,7 @@ func run_thread_with_branches():
 					#audio file is stereo and needs to be split for pvoc processing
 					var pvoc_stereo_files = []
 					##Split stereo to c1/c2
-					run_command(cdpprogs_location + "/housekeep chans 2 " + "\"%s\"" % current_infile)
+					run_command(cdpprogs_location + "/housekeep",["chans", "2", current_infile])
 			
 					# Process left and right seperately
 					for channel in ["c1", "c2"]:
@@ -832,7 +832,7 @@ func run_thread_with_branches():
 						
 						var makeprocess = make_process(node, process_count, dual_mono_file, slider_data)
 						# run the command
-						run_command(makeprocess[0])
+						run_command(makeprocess[0], makeprocess[3])
 						await get_tree().process_frame
 						var output_file = makeprocess[1]
 						pvoc_stereo_files.append(output_file)
@@ -847,7 +847,7 @@ func run_thread_with_branches():
 						#with this stereo process CDP will throw errors in the console even though its fine
 						if is_windows:
 							dual_mono_file = dual_mono_file.replace("/", "\\")
-						run_command("%s \"%s\"" % [delete_cmd, dual_mono_file])
+						run_command(delete_cmd, [dual_mono_file])
 						process_count += 1
 						
 						# Store output file path for this node
@@ -856,7 +856,7 @@ func run_thread_with_branches():
 					#input file is mono run through process
 					var makeprocess = make_process(node, process_count, current_infile, slider_data)
 					# run the command
-					run_command(makeprocess[0])
+					run_command(makeprocess[0], makeprocess[3])
 					await get_tree().process_frame
 					var output_file = makeprocess[1]
 
@@ -884,7 +884,7 @@ func run_thread_with_branches():
 				for infile in current_infile:
 					var makeprocess = make_process(node, process_count, infile, slider_data)
 					# run the command
-					run_command(makeprocess[0])
+					run_command(makeprocess[0], makeprocess[3])
 					await get_tree().process_frame
 					var output_file = makeprocess[1]
 					pvoc_stereo_files.append(output_file)
@@ -900,8 +900,7 @@ func run_thread_with_branches():
 					
 				#interleave left and right
 				var output_file = Global.outfile.get_basename() + str(process_count) + "_interleaved.wav"
-				run_command(cdpprogs_location + "/submix interleave" + " \"%s\"" % pvoc_stereo_files[0] + " \"%s\"" % pvoc_stereo_files[1] + " \"%s\"" % output_file)
-				
+				run_command(cdpprogs_location + "/submix", ["interleave", pvoc_stereo_files[0], pvoc_stereo_files[1], output_file])
 				# Store output file path for this node
 				output_files[node_name] = output_file
 				
@@ -916,7 +915,7 @@ func run_thread_with_branches():
 					if node.get_meta("stereo_input") == true: #audio file is stereo and process is stereo, run file through process
 						var makeprocess = make_process(node, process_count, current_infile, slider_data)
 						# run the command
-						run_command(makeprocess[0])
+						run_command(makeprocess[0], makeprocess[3])
 						await get_tree().process_frame
 						var output_file = makeprocess[1]
 						
@@ -931,7 +930,7 @@ func run_thread_with_branches():
 
 					else: #audio file is stereo and process is mono, split stereo, process and recombine
 						##Split stereo to c1/c2
-						run_command(cdpprogs_location + "/housekeep chans 2 " + "\"%s\"" % current_infile)
+						run_command(cdpprogs_location + "/housekeep",["chans", "2", current_infile])
 				
 						# Process left and right seperately
 						var dual_mono_output = []
@@ -940,7 +939,7 @@ func run_thread_with_branches():
 							
 							var makeprocess = make_process(node, process_count, dual_mono_file, slider_data)
 							# run the command
-							run_command(makeprocess[0])
+							run_command(makeprocess[0], makeprocess[3])
 							await get_tree().process_frame
 							var output_file = makeprocess[1]
 							dual_mono_output.append(output_file)
@@ -955,12 +954,12 @@ func run_thread_with_branches():
 							#with this stereo process CDP will throw errors in the console even though its fine
 							if is_windows:
 								dual_mono_file = dual_mono_file.replace("/", "\\")
-							run_command("%s \"%s\"" % [delete_cmd, dual_mono_file])
+							run_command(delete_cmd, [dual_mono_file])
 							process_count += 1
 						
 						
 						var output_file = Global.outfile.get_basename() + str(process_count) + "_interleaved.wav"
-						run_command(cdpprogs_location + "/submix interleave" + " \"%s\"" % dual_mono_output[0] + " \"%s\"" % dual_mono_output[1] + " \"%s\"" % output_file)
+						run_command(cdpprogs_location + "/submix", ["interleave", dual_mono_output[0], dual_mono_output[1], output_file])
 						
 						# Store output file path for this node
 						output_files[node_name] = output_file
@@ -972,7 +971,7 @@ func run_thread_with_branches():
 				else: #audio file is mono, run through the process
 					var makeprocess = make_process(node, process_count, current_infile, slider_data)
 					# run the command
-					run_command(makeprocess[0])
+					run_command(makeprocess[0], makeprocess[3])
 					await get_tree().process_frame
 					var output_file = makeprocess[1]
 					
@@ -1028,7 +1027,7 @@ func run_thread_with_branches():
 		var fixed_path = file_path
 		if is_windows:
 			fixed_path = fixed_path.replace("/", "\\")
-		run_command("%s \"%s\"" % [delete_cmd, fixed_path])
+		run_command(delete_cmd, [fixed_path])
 		await get_tree().process_frame
 	#delete break files 
 	for file_path in breakfiles:
@@ -1036,16 +1035,16 @@ func run_thread_with_branches():
 		var fixed_path = file_path
 		if is_windows:
 			fixed_path = fixed_path.replace("/", "\\")
-		run_command("%s \"%s\"" % [delete_cmd, fixed_path])
+		run_command(delete_cmd, [fixed_path])
 		await get_tree().process_frame
 		
-	var final_filename = "\"%s.wav\"" % Global.outfile
+	var final_filename = "%s.wav" % Global.outfile
 	var final_output_dir_fixed_path = final_output_dir
 	if is_windows:
 		final_output_dir_fixed_path = final_output_dir_fixed_path.replace("/", "\\")
-		run_command(rename_cmd + " \"%s\"" % final_output_dir_fixed_path + " " + final_filename.get_file())
+		run_command(rename_cmd, [final_output_dir_fixed_path, final_filename.get_file()])
 	else:
-		run_command(rename_cmd + " \"%s\"" % final_output_dir_fixed_path + " \"%s.wav\"" % Global.outfile)
+		run_command(rename_cmd, [final_output_dir_fixed_path, Global.outfile])
 	final_output_dir = Global.outfile + ".wav"
 	
 	output_audio_player.play_outfile(final_output_dir)
@@ -1057,7 +1056,7 @@ func run_thread_with_branches():
 
 
 func is_stereo(file: String) -> bool:
-	var output = run_command(cdpprogs_location + "/sfprops -c " + "\"%s\"" % file)
+	var output = run_command(cdpprogs_location + "/sfprops", ["-c", file])
 	output = int(output[0].strip_edges()) #convert output from cmd to clean int
 	if output == 1:
 		return false
@@ -1079,23 +1078,18 @@ func merge_many_files(process_count: int, input_files: Array) -> Array:
 
 	# STEP 1: Check each file's channel count
 	for f in input_files:
-		var output = run_command(cdpprogs_location + "/sfprops -c " + "\"%s\"" % f)
-		if process_successful == true and output.size() > 0:
-			var channels = int(output[0].strip_edges())
-			if channels == 1:
-				mono_files.append(f)
-			elif channels == 2:
-				stereo_files.append(f)
-			else:
-				push_error("Unexpected channel count in file: %s" % f)
-		else:
-			push_error("Failed to get channel count for file: %s" % f)
+		var stereo = is_stereo(f)
+		if stereo == false:
+			mono_files.append(f)
+		elif stereo == true:
+			stereo_files.append(f)
+
 
 	# STEP 2: Convert mono to stereo if there is a mix
 	if mono_files.size() > 0 and stereo_files.size() > 0:
 		for mono_file in mono_files:
 			var stereo_file = "%s_stereo.wav" % mono_file.get_basename()
-			run_command(cdpprogs_location + "/submix interleave" + " \"%s\"" % mono_file + " \"%s\"" % mono_file + " \"%s\"" % stereo_file)
+			run_command(cdpprogs_location + "/submix", ["interleave", mono_file, mono_file, stereo_file])
 			if process_successful == false:
 				log_console("Failed to interleave mono file: %s" % mono_file, true)
 			else:
@@ -1110,9 +1104,10 @@ func merge_many_files(process_count: int, input_files: Array) -> Array:
 	# STEP 3: Merge all input files (converted or original)
 	var quoted_inputs := []
 	for f in inputs_to_merge:
-		quoted_inputs.append("\"%s\"" % f)
-
-	run_command(cdpprogs_location + "/submix mergemany " + " ".join(quoted_inputs) + " \"%s\"" % merge_output)
+		quoted_inputs.append(f)
+	quoted_inputs.insert(0, "mergemany")
+	quoted_inputs.append(merge_output)
+	run_command(cdpprogs_location + "/submix", quoted_inputs)
 
 	if process_successful == false:
 		log_console("Failed to to merge files to" + merge_output, true)
@@ -1151,10 +1146,20 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 
 	# Get the command name from metadata or default to node name
 	var command_name = str(node.get_meta("command"))
-	command_name = command_name.replace("_", " ")
-
-	# Start building the command line
+	#command_name = command_name.replace("_", " ")
+	command_name = command_name.split("_", true, 1)
+	print(command_name)
+	var command = "%s/%s" %[cdpprogs_location, command_name[0]]
+	print(command)
+	var args = command_name[1].split("_", true, 1)
+	print(args)
+	args.append(current_infile)
+	args.append(output_file)
+	print(args)
+	# Start building the command line windows
 	var line = "%s/%s \"%s\" \"%s\" " % [cdpprogs_location, command_name, current_infile, output_file]
+	#mac
+
 	
 	var cleanup = []
 
@@ -1176,7 +1181,7 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 			var calculated_brk = []
 			
 			#get length of input file in seconds
-			var infile_length = run_command(cdpprogs_location + "/sfprops -d " + "\"%s\"" % current_infile)
+			var infile_length = run_command(cdpprogs_location + "/sfprops", ["-d", "\"%s\"" % current_infile])
 			infile_length = float(infile_length[0].strip_edges())
 			
 			#scale values from automation window to the right length for file and correct slider values
@@ -1201,17 +1206,20 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 			
 			#append text file in place of value
 			line += ("\"%s\" " % brk_file_path)
+			args.append("\"%s\" " % brk_file_path)
 			
 			cleanup.append(brk_file_path)
 		else:
 			if time == true:
-				var infile_length = run_command(cdpprogs_location + "/sfprops -d " + "\"%s\"" % current_infile)
+				var infile_length = run_command(cdpprogs_location + "/sfprops", ["-d", "\"%s\"" % current_infile])
 				infile_length = float(infile_length[0].strip_edges())
 				value = infile_length * (value / 100) #calculate percentage time of the input file
 			line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
-		
+			args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value))
+			
 		slider_count += 1
-	return [line.strip_edges(), output_file, cleanup]
+	return [command, output_file, cleanup, args]
+	#return [line.strip_edges(), output_file, cleanup]
 
 func sort_points(a, b):
 	return a.x < b.x
@@ -1226,7 +1234,7 @@ func write_breakfile(points: Array, path: String):
 	else:
 		print("Failed to open file for writing.")
 
-func run_command(command: String) -> Array:
+func run_command(command: String, args: Array) -> Array:
 	var is_windows = OS.get_name() == "Windows"
 
 	var output: Array = []
@@ -1234,12 +1242,15 @@ func run_command(command: String) -> Array:
 
 	var exit_code := 0
 	if is_windows:
-		exit_code = OS.execute("cmd.exe", ["/C", command], output, true, false)
+		#exit_code = OS.execute("cmd.exe", ["/C", command], output, true, false)
+		args.insert(0, command)
+		args.insert(0, "/C")
+		exit_code = OS.execute("cmd.exe", args, output, true, false)
 	else:
-		var command_split = command.split(" ", true, 1)
-		var args = command_split[1].split(" ")
-		print(command_split)
-		exit_code = OS.execute(command_split[0], args, output, true, false)
+		#var command_split = command.split(" ", true, 1)
+		#var args = command_split[1].split(" ")
+		#print(command_split)
+		exit_code = OS.execute(command, args, output, true, false)
 
 	var output_str := ""
 	for item in output:
@@ -1248,8 +1259,12 @@ func run_command(command: String) -> Array:
 	var error_str := ""
 	for item in error:
 		error_str += item + "\n"
-		
-	console_output.append_text(command + "\n")
+	
+	if is_windows:
+		args.remove_at(0)
+		console_output.append_text(" ".join(args) + "\n")
+	else:
+		console_output.append_text(command + " " + " ".join(args) + "\n")
 	console_output.scroll_to_line(console_output.get_line_count() - 1)
 	
 	if exit_code == 0:
