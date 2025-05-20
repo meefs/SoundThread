@@ -38,6 +38,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "inputfile"
 metadata/utility = true
 
@@ -174,6 +175,7 @@ slot/12/right_type = 0
 slot/12/right_color = Color(1, 1, 1, 1)
 slot/12/right_icon = null
 slot/12/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "outputfile"
 metadata/utility = true
 
@@ -269,6 +271,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "distort_average"
 metadata/stereo_input = false
 
@@ -313,6 +316,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "clip_clip_2"
 metadata/stereo_input = true
 
@@ -357,6 +361,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "distort_reform_6"
 metadata/stereo_input = false
 
@@ -393,6 +398,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "distort_divide"
 metadata/stereo_input = false
 
@@ -446,6 +452,7 @@ slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "distort_fractal"
 metadata/stereo_input = false
 
@@ -506,6 +513,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "distort_multiply"
 metadata/stereo_input = false
 
@@ -550,6 +558,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "distort_interpolate"
 metadata/stereo_input = false
 
@@ -594,6 +603,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "distort_reform_2"
 metadata/stereo_input = false
 
@@ -630,6 +640,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "distort_reform_4"
 metadata/stereo_input = false
 
@@ -666,6 +677,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "modify_radical_1"
 metadata/stereo_input = true
 
@@ -702,6 +714,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "distort_replace"
 metadata/stereo_input = false
 
@@ -747,6 +760,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "quirk_quirk_1"
 metadata/stereo_input = false
 
@@ -828,6 +842,7 @@ slot/5/right_type = 0
 slot/5/right_color = Color(1, 1, 1, 1)
 slot/5/right_icon = null
 slot/5/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "extend_drunk_1"
 metadata/stereo_input = true
 
@@ -944,6 +959,7 @@ slot/3/right_type = 0
 slot/3/right_color = Color(1, 1, 1, 1)
 slot/3/right_icon = null
 slot/3/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "extend_loop_1"
 metadata/stereo_input = true
 
@@ -1143,6 +1159,7 @@ slot/5/right_type = 0
 slot/5/right_color = Color(1, 1, 1, 1)
 slot/5/right_icon = null
 slot/5/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "shrink_shrink_1"
 metadata/stereo_input = true
 
@@ -1390,6 +1407,7 @@ slot/5/right_type = 0
 slot/5/right_color = Color(1, 1, 1, 1)
 slot/5/right_icon = null
 slot/5/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "filter_bank_1"
 metadata/stereo_input = true
 
@@ -1527,6 +1545,7 @@ slot/5/right_type = 0
 slot/5/right_color = Color(1, 1, 1, 1)
 slot/5/right_icon = null
 slot/5/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "filter_bank_2"
 metadata/stereo_input = true
 
@@ -1646,6 +1665,7 @@ slot/3/right_type = 0
 slot/3/right_color = Color(1, 1, 1, 1)
 slot/3/right_icon = null
 slot/3/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "filter_lohi_1"
 metadata/stereo_input = true
 
@@ -1785,6 +1805,7 @@ slot/6/right_type = 0
 slot/6/right_color = Color(1, 1, 1, 1)
 slot/6/right_icon = null
 slot/6/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "filter_bank_5"
 metadata/stereo_input = true
 
@@ -1942,6 +1963,7 @@ slot/6/right_type = 0
 slot/6/right_color = Color(1, 1, 1, 1)
 slot/6/right_icon = null
 slot/6/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "filter_bank_6"
 metadata/stereo_input = true
 
@@ -2055,6 +2077,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "modify_brassage_1"
 metadata/stereo_input = true
 
@@ -2101,6 +2124,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "modify_brassage_2"
 metadata/stereo_input = true
 
@@ -2157,6 +2181,7 @@ slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "modify_brassage_4"
 metadata/stereo_input = true
 
@@ -2218,6 +2243,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "modify_brassage_5"
 metadata/stereo_input = true
 
@@ -2346,6 +2372,7 @@ slot/10/right_type = 0
 slot/10/right_color = Color(1, 1, 1, 1)
 slot/10/right_icon = null
 slot/10/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "modify_brassage_6"
 metadata/stereo_input = true
 
@@ -2600,6 +2627,7 @@ slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "modify_speed_5"
 metadata/stereo_input = true
 
@@ -2659,6 +2687,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "modify_loudness_1"
 metadata/stereo_input = true
 
@@ -2751,6 +2780,7 @@ slot/6/right_type = 0
 slot/6/right_color = Color(1, 1, 1, 1)
 slot/6/right_icon = null
 slot/6/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "modify_stack"
 metadata/stereo_input = true
 
@@ -2858,6 +2888,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "modify_speed_2"
 metadata/stereo_input = true
 
@@ -2904,6 +2935,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "pvoc_anal_1"
 metadata/stereo_input = false
 
@@ -2940,6 +2972,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "pvoc_synth"
 metadata/stereo_input = false
 
@@ -2985,6 +3018,7 @@ slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "focus_accu"
 metadata/stereo_input = false
 
@@ -3047,6 +3081,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "blur_blur"
 metadata/stereo_input = false
 
@@ -3101,6 +3136,7 @@ slot/2/right_type = 0
 slot/2/right_color = Color(1, 1, 1, 1)
 slot/2/right_icon = null
 slot/2/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "blur_chorus_5"
 metadata/stereo_input = false
 
@@ -3161,6 +3197,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "strange_invert_1"
 metadata/stereo_input = false
 
@@ -3215,6 +3252,7 @@ slot/3/right_type = 0
 slot/3/right_color = Color(1, 1, 1, 1)
 slot/3/right_icon = null
 slot/3/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "spectstr_stretch"
 metadata/stereo_input = false
 
@@ -3283,6 +3321,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "hilite_trace_1"
 metadata/stereo_input = false
 
@@ -3329,6 +3368,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "blur_scatter"
 metadata/stereo_input = false
 
@@ -3375,6 +3415,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "spec_gain"
 metadata/stereo_input = false
 
@@ -3440,6 +3481,7 @@ slot/3/right_type = 0
 slot/3/right_color = Color(1, 1, 1, 1)
 slot/3/right_icon = null
 slot/3/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "strange_waver_1"
 metadata/stereo_input = false
 
@@ -3505,6 +3547,7 @@ slot/0/right_type = 1
 slot/0/right_color = Color(0, 0, 0, 1)
 slot/0/right_icon = null
 slot/0/draw_stylebox = true
+script = ExtResource("3_uv17x")
 metadata/command = "notes"
 metadata/utility = true
 

@@ -13,6 +13,7 @@ func _ready() -> void:
 	var titlebar = self.get_titlebar_hbox()
 	var btn = Button.new()
 	btn.text = "?"
+	btn.tooltip_text = "Open help for " + self.title
 	btn.connect("pressed", Callable(self, "_open_help")) #pass key (process name) when button is pressed
 	titlebar.add_child(btn)
 
@@ -52,4 +53,4 @@ func _on_slider_value_changed(value: float, changed_slider: HSlider) -> void:
 				changed_slider.value = min_value + min_gap
 
 func _open_help():
-	open_help.emit(self.get_meta("command"))
+	open_help.emit(self.get_meta("command"), self.title)

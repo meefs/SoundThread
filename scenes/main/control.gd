@@ -107,11 +107,13 @@ func new_patch():
 	var effect: GraphNode = Nodes.get_node(NodePath("inputfile")).duplicate()
 	effect.name = "inputfile"
 	get_node("GraphEdit").add_child(effect, true)
+	effect.connect("open_help", Callable(self, "show_help_for_node"))
 	effect.position_offset = Vector2(20,80)
 	
 	effect = Nodes.get_node(NodePath("outputfile")).duplicate()
 	effect.name = "outputfile"
 	get_node("GraphEdit").add_child(effect, true)
+	effect.connect("open_help", Callable(self, "show_help_for_node"))
 	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) / uiscale, 80)
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
 	
@@ -220,27 +222,27 @@ func _input(event):
 	elif event.is_action_pressed("open_explore"):
 		open_explore()
 	
-	if event is InputEventMouseButton and event.pressed:
-		if event.button_index == MOUSE_BUTTON_LEFT and event.double_click:
-			var pos = get_viewport().get_mouse_position()
-			var clicked_node = find_graphedit_node_under(pos)
-			if clicked_node:
-				await get_tree().process_frame #wait a frame to stop nodes jumping across graph edit
-				deselect_all_nodes() #deselect nodes to avoid dragging issues
-				show_help_for_node(clicked_node.get_meta("command"), clicked_node.title)
+	#if event is InputEventMouseButton and event.pressed:
+		#if event.button_index == MOUSE_BUTTON_LEFT and event.double_click:
+			#var pos = get_viewport().get_mouse_position()
+			#var clicked_node = find_graphedit_node_under(pos)
+			#if clicked_node:
+				#await get_tree().process_frame #wait a frame to stop nodes jumping across graph edit
+				#deselect_all_nodes() #deselect nodes to avoid dragging issues
+				#show_help_for_node(clicked_node.get_meta("command"), clicked_node.title)
+#
+#func find_graphedit_node_under(mouse_pos: Vector2) -> GraphNode:
+	##find the node that was double clicked on
+	#for node in graph_edit.get_children():
+		#if node is GraphNode and node.get_global_rect().has_point(mouse_pos):
+			#return node
+	#return null
 
-func find_graphedit_node_under(mouse_pos: Vector2) -> GraphNode:
-	#find the node that was double clicked on
-	for node in graph_edit.get_children():
-		if node is GraphNode and node.get_global_rect().has_point(mouse_pos):
-			return node
-	return null
-
-func deselect_all_nodes():
-	for node in $GraphEdit.get_children():
-		if node is GraphNode:
-			node.selected = false
-			selected_nodes[node] = false
+#func deselect_all_nodes():
+	#for node in $GraphEdit.get_children():
+		#if node is GraphNode:
+			#node.selected = false
+			#selected_nodes[node] = false
 
 func show_help_for_node(node_name: String, node_title: String):
 	#check if there is already a help window open for this node and pop it up instead of making a new one
@@ -333,6 +335,7 @@ func _make_node_from_search_menu(command: String):
 	var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
 	effect.name = command
 	get_node("GraphEdit").add_child(effect, true)
+	effect.connect("open_help", Callable(self, "show_help_for_node"))
 	effect.set_position_offset((effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 	_register_inputs_in_node(effect) #link sliders for changes tracking
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
@@ -357,6 +360,7 @@ func _on_button_pressed(button: Button):
 	var effect: GraphNode = Nodes.get_node(NodePath(button.name)).duplicate()
 	effect.name = button.name
 	get_node("GraphEdit").add_child(effect, true)
+	effect.connect("open_help", Callable(self, "show_help_for_node"))
 	effect.set_position_offset((effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 	_register_inputs_in_node(effect) #link sliders for changes tracking
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
