@@ -1,12 +1,20 @@
 extends GraphNode
 
 @export var min_gap: float = 0.5  # editable value in inspector for the minimum gap between min and max
+signal open_help
 
 func _ready() -> void:
 	var sliders := _get_all_hsliders(self) #finds all sliders
 	#links sliders to this script
 	for slider in sliders:
 		slider.value_changed.connect(_on_slider_value_changed.bind(slider))
+		
+	#add button to title bar
+	var titlebar = self.get_titlebar_hbox()
+	var btn = Button.new()
+	btn.text = "?"
+	btn.connect("pressed", Callable(self, "_open_help")) #pass key (process name) when button is pressed
+	titlebar.add_child(btn)
 
 func _get_all_hsliders(node: Node) -> Array:
 	#moves through all children recusively to find nested sliders
@@ -42,3 +50,6 @@ func _on_slider_value_changed(value: float, changed_slider: HSlider) -> void:
 			var min_value: float = other_slider.value
 			if changed_slider.value < min_value + min_gap:
 				changed_slider.value = min_value + min_gap
+
+func _open_help():
+	open_help.emit(self.get_meta("command"))

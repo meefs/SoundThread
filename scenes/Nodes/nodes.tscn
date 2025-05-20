@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://csapiqka522fh" path="res://scenes/Nodes/audioplayer.tscn" id="2_b6nw4"]
 [ext_resource type="PackedScene" uid="uid://dya5kxx132fgp" path="res://scenes/Nodes/valueslider.tscn" id="3_b6nw4"]
-[ext_resource type="Script" uid="uid://cdbx1dt3ohqte" path="res://scenes/Nodes/min_max_sliders.gd" id="3_uv17x"]
+[ext_resource type="Script" uid="uid://cdbx1dt3ohqte" path="res://scenes/Nodes/node_logic.gd" id="3_uv17x"]
 
 [node name="Control" type="Control"]
 layout_mode = 3

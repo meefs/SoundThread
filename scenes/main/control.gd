@@ -99,14 +99,18 @@ func new_patch():
 		if node is GraphNode:
 			node.queue_free()
 	
+	await get_tree().process_frame  # Wait for nodes to actually be removed
+	
 	graph_edit.scroll_offset = Vector2(0, 0)
 	
 		#Generate input and output nodes
 	var effect: GraphNode = Nodes.get_node(NodePath("inputfile")).duplicate()
+	effect.name = "inputfile"
 	get_node("GraphEdit").add_child(effect, true)
 	effect.position_offset = Vector2(20,80)
 	
 	effect = Nodes.get_node(NodePath("outputfile")).duplicate()
+	effect.name = "outputfile"
 	get_node("GraphEdit").add_child(effect, true)
 	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) / uiscale, 80)
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
@@ -327,6 +331,7 @@ func _make_node_from_search_menu(command: String):
 	#Find node with matching name to button and create a version of it in the graph edit
 	#and position it close to the origin right click to open the menu
 	var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
+	effect.name = command
 	get_node("GraphEdit").add_child(effect, true)
 	effect.set_position_offset((effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 	_register_inputs_in_node(effect) #link sliders for changes tracking
@@ -350,6 +355,7 @@ func _on_button_pressed(button: Button):
 	#Find node with matching name to button and create a version of it in the graph edit
 	#and position it close to the origin right click to open the menu
 	var effect: GraphNode = Nodes.get_node(NodePath(button.name)).duplicate()
+	effect.name = button.name
 	get_node("GraphEdit").add_child(effect, true)
 	effect.set_position_offset((effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 	_register_inputs_in_node(effect) #link sliders for changes tracking
@@ -1450,7 +1456,6 @@ func _on_file_button_index_pressed(index: int) -> void:
 			else:
 				$LoadDialog.popup_centered()
 
-
 func save_graph_edit(path: String):
 	var file = FileAccess.open(path, FileAccess.WRITE)
 	if file == null:
@@ -1459,45 +1464,59 @@ func save_graph_edit(path: String):
 
 	var node_data_list = []
 	var connection_data_list = []
+	var node_id_map = {}  # Map node name to numeric ID
 
+	var node_id = 1
+	# Assign each node a unique numeric ID and gather node data
 	for node in graph_edit.get_children():
 		if node is GraphNode:
+			node_id_map[node.name] = node_id
+
 			var offset = node.position_offset
 			var node_data = {
+				"id": node_id,
 				"name": node.name,
 				"command": node.get_meta("command"),
 				"offset": { "x": offset.x, "y": offset.y },
 				"slider_values": {},
-				"notes":{}
+				"notes": {}
 			}
 
+			# Save slider values and metadata
 			for child in node.find_children("*", "Slider", true, false):
 				var relative_path = node.get_path_to(child)
 				var path_str = str(relative_path)
 
-				# Save slider value
 				node_data["slider_values"][path_str] = {
 					"value": child.value,
 					"editable": child.editable,
 					"meta": {}
 				}
-
-				# Save all metadata
 				for key in child.get_meta_list():
 					node_data["slider_values"][path_str]["meta"][str(key)] = child.get_meta(key)
 				
+			# Save notes from CodeEdit children
 			for child in node.find_children("*", "CodeEdit", true, false):
 				node_data["notes"][child.name] = child.text
 
 			node_data_list.append(node_data)
+			node_id += 1
 
+	# Save connections using node IDs instead of names
 	for conn in graph_edit.get_connection_list():
-		connection_data_list.append({
-			"from_node": conn["from_node"],
-			"from_port": conn["from_port"],
-			"to_node": conn["to_node"],
-			"to_port": conn["to_port"]
-		})
+		# Map from_node and to_node names to IDs
+		var from_id = node_id_map.get(conn["from_node"], null)
+		var to_id = node_id_map.get(conn["to_node"], null)
+
+		if from_id != null and to_id != null:
+			connection_data_list.append({
+				"from_node_id": from_id,
+				"from_port": conn["from_port"],
+				"to_node_id": to_id,
+				"to_port": conn["to_port"]
+			})
+		else:
+			print("Warning: Connection references unknown node(s). Skipping connection.")
 
 	var graph_data = {
 		"nodes": node_data_list,
@@ -1530,12 +1549,16 @@ func load_graph_edit(path: String):
 	var graph_data = json.get_data()
 	graph_edit.clear_connections()
 
+	# Remove all existing GraphNodes from graph_edit
 	for node in graph_edit.get_children():
 		if node is GraphNode:
 			node.queue_free()
 
-	await get_tree().process_frame  # Ensure nodes are cleared
+	await get_tree().process_frame  # Ensure nodes are freed before adding new ones
 
+	var id_to_node = {}  # Map node IDs to new node instances
+
+	# Recreate nodes and store them by ID
 	for node_data in graph_data["nodes"]:
 		var command_name = node_data.get("command", "")
 		var template = Nodes.get_node_or_null(command_name)
@@ -1548,61 +1571,213 @@ func load_graph_edit(path: String):
 		new_node.position_offset = Vector2(node_data["offset"]["x"], node_data["offset"]["y"])
 		new_node.set_meta("command", command_name)
 		graph_edit.add_child(new_node)
-		_register_node_movement() #link nodes for tracking position changes for changes tracking
+		_register_node_movement()  # Track node movement changes
+
+		id_to_node[node_data["id"]] = new_node
 
 		# Restore sliders
 		for slider_path_str in node_data["slider_values"]:
 			var slider = new_node.get_node_or_null(slider_path_str)
 			if slider and (slider is HSlider or slider is VSlider):
 				var slider_info = node_data["slider_values"][slider_path_str]
-				
 				if typeof(slider_info) == TYPE_DICTIONARY:
 					slider.value = slider_info.get("value", slider.value)
-					
-					# Restore enabled/disabled
 					if slider_info.has("editable"):
 						slider.editable = slider_info["editable"]
-					
-					# Restore metadata
 					if slider_info.has("meta"):
 						for key in slider_info["meta"]:
 							var value = slider_info["meta"][key]
-
-							# Convert arrays of stringified Vector2s back to real Vector2s
 							if key == "brk_data" and typeof(value) == TYPE_ARRAY:
 								var new_array: Array = []
 								for item in value:
 									if typeof(item) == TYPE_STRING:
-										# Extract values from "(x, y)"
 										var numbers: PackedStringArray = item.strip_edges().trim_prefix("(").trim_suffix(")").split(",")
 										if numbers.size() == 2:
 											var x = float(numbers[0])
 											var y = float(numbers[1])
 											new_array.append(Vector2(x, y))
 								value = new_array
-
 							slider.set_meta(key, value)
 				else:
-					# Legacy support: just value
 					slider.value = slider_info
-			
-	
-				
+
 		# Restore notes
 		for codeedit_name in node_data["notes"]:
 			var codeedit = new_node.find_child(codeedit_name, true, false)
 			if codeedit and (codeedit is CodeEdit):
 				codeedit.text = node_data["notes"][codeedit_name]
-		_register_inputs_in_node(new_node) #link sliders for changes tracking
-	# Restore connections
+
+		_register_inputs_in_node(new_node)  # Track slider changes
+
+	# Recreate connections by looking up nodes by ID
 	for conn in graph_data["connections"]:
-		graph_edit.connect_node(
-			conn["from_node"], conn["from_port"],
-			conn["to_node"], conn["to_port"]
-		)
+		var from_node = id_to_node.get(conn["from_node_id"], null)
+		var to_node = id_to_node.get(conn["to_node_id"], null)
+
+		if from_node != null and to_node != null:
+			graph_edit.connect_node(
+				from_node.name, conn["from_port"],
+				to_node.name, conn["to_port"]
+			)
+		else:
+			print("Warning: Connection references unknown node ID(s). Skipping connection.")
+
 	link_output()
 	print("Graph loaded.")
 	get_window().title = "SoundThread - " + path.get_file().trim_suffix(".thd")
+
+#func save_graph_edit(path: String):
+	#var file = FileAccess.open(path, FileAccess.WRITE)
+	#if file == null:
+		#print("Failed to open file for saving")
+		#return
+#
+	#var node_data_list = []
+	#var connection_data_list = []
+#
+	#for node in graph_edit.get_children():
+		#if node is GraphNode:
+			#var offset = node.position_offset
+			#var node_data = {
+				#"name": node.name,
+				#"command": node.get_meta("command"),
+				#"offset": { "x": offset.x, "y": offset.y },
+				#"slider_values": {},
+				#"notes":{}
+			#}
+#
+			#for child in node.find_children("*", "Slider", true, false):
+				#var relative_path = node.get_path_to(child)
+				#var path_str = str(relative_path)
+#
+				## Save slider value
+				#node_data["slider_values"][path_str] = {
+					#"value": child.value,
+					#"editable": child.editable,
+					#"meta": {}
+				#}
+#
+				## Save all metadata
+				#for key in child.get_meta_list():
+					#node_data["slider_values"][path_str]["meta"][str(key)] = child.get_meta(key)
+				#
+			#for child in node.find_children("*", "CodeEdit", true, false):
+				#node_data["notes"][child.name] = child.text
+#
+			#node_data_list.append(node_data)
+#
+	#for conn in graph_edit.get_connection_list():
+		#connection_data_list.append({
+			#"from_node": conn["from_node"],
+			#"from_port": conn["from_port"],
+			#"to_node": conn["to_node"],
+			#"to_port": conn["to_port"]
+		#})
+#
+	#var graph_data = {
+		#"nodes": node_data_list,
+		#"connections": connection_data_list
+	#}
+#
+	#var json = JSON.new()
+	#var json_string = json.stringify(graph_data, "\t")
+	#file.store_string(json_string)
+	#file.close()
+	#print("Graph saved.")
+	#changesmade = false
+	#get_window().title = "SoundThread - " + path.get_file().trim_suffix(".thd")
+#
+#
+#func load_graph_edit(path: String):
+	#var file = FileAccess.open(path, FileAccess.READ)
+	#if file == null:
+		#print("Failed to open file for loading")
+		#return
+#
+	#var json_text = file.get_as_text()
+	#file.close()
+#
+	#var json = JSON.new()
+	#if json.parse(json_text) != OK:
+		#print("Error parsing JSON")
+		#return
+#
+	#var graph_data = json.get_data()
+	#graph_edit.clear_connections()
+#
+	#for node in graph_edit.get_children():
+		#if node is GraphNode:
+			#node.queue_free()
+#
+	#await get_tree().process_frame  # Ensure nodes are cleared
+#
+	#for node_data in graph_data["nodes"]:
+		#var command_name = node_data.get("command", "")
+		#var template = Nodes.get_node_or_null(command_name)
+		#if not template:
+			#print("Template not found for command:", command_name)
+			#continue
+#
+		#var new_node: GraphNode = template.duplicate()
+		#new_node.name = node_data["name"]
+		#new_node.position_offset = Vector2(node_data["offset"]["x"], node_data["offset"]["y"])
+		#new_node.set_meta("command", command_name)
+		#graph_edit.add_child(new_node)
+		#_register_node_movement() #link nodes for tracking position changes for changes tracking
+#
+		## Restore sliders
+		#for slider_path_str in node_data["slider_values"]:
+			#var slider = new_node.get_node_or_null(slider_path_str)
+			#if slider and (slider is HSlider or slider is VSlider):
+				#var slider_info = node_data["slider_values"][slider_path_str]
+				#
+				#if typeof(slider_info) == TYPE_DICTIONARY:
+					#slider.value = slider_info.get("value", slider.value)
+					#
+					## Restore enabled/disabled
+					#if slider_info.has("editable"):
+						#slider.editable = slider_info["editable"]
+					#
+					## Restore metadata
+					#if slider_info.has("meta"):
+						#for key in slider_info["meta"]:
+							#var value = slider_info["meta"][key]
+#
+							## Convert arrays of stringified Vector2s back to real Vector2s
+							#if key == "brk_data" and typeof(value) == TYPE_ARRAY:
+								#var new_array: Array = []
+								#for item in value:
+									#if typeof(item) == TYPE_STRING:
+										## Extract values from "(x, y)"
+										#var numbers: PackedStringArray = item.strip_edges().trim_prefix("(").trim_suffix(")").split(",")
+										#if numbers.size() == 2:
+											#var x = float(numbers[0])
+											#var y = float(numbers[1])
+											#new_array.append(Vector2(x, y))
+								#value = new_array
+#
+							#slider.set_meta(key, value)
+				#else:
+					## Legacy support: just value
+					#slider.value = slider_info
+			#
+	#
+				#
+		## Restore notes
+		#for codeedit_name in node_data["notes"]:
+			#var codeedit = new_node.find_child(codeedit_name, true, false)
+			#if codeedit and (codeedit is CodeEdit):
+				#codeedit.text = node_data["notes"][codeedit_name]
+		#_register_inputs_in_node(new_node) #link sliders for changes tracking
+	## Restore connections
+	#for conn in graph_data["connections"]:
+		#graph_edit.connect_node(
+			#conn["from_node"], conn["from_port"],
+			#conn["to_node"], conn["to_port"]
+		#)
+	#link_output()
+	#print("Graph loaded.")
+	#get_window().title = "SoundThread - " + path.get_file().trim_suffix(".thd")
 
 
 func _on_save_dialog_file_selected(path: String) -> void:
