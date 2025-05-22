@@ -59,7 +59,6 @@ func _ready() -> void:
 	get_node("mainmenu").make_node.connect(_make_node_from_search_menu)
 	get_node("mainmenu").open_help.connect(show_help_for_node)
 	
-	check_cdp_location_set()
 	check_user_preferences()
 	get_tree().set_auto_accept_quit(false) #disable closing the app with the x and instead handle it internally
 	
@@ -92,6 +91,7 @@ func _ready() -> void:
 		help_data = JSON.parse_string(file.get_as_text())
 	
 	new_patch()
+	check_cdp_location_set()
 	
 func new_patch():
 	#clear old patch
@@ -182,7 +182,7 @@ func _on_ok_button_button_down() -> void:
 	if OS.get_name() == "Windows":
 		$CdpLocationDialog.current_dir = "C:/"
 	else:
-		$CdpLocationDialog.current_dir = "~/"
+		$CdpLocationDialog.current_dir = OS.get_environment("HOME")
 	$CdpLocationDialog.show()
 
 func _on_cdp_location_dialog_dir_selected(dir: String) -> void:

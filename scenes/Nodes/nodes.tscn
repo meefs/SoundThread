@@ -2952,6 +2952,7 @@ text = "Length of Silence"
 min_value = 0.01
 max_value = 60.0
 step = 0.01
+value = 10.01
 
 [node name="PopupMenu" parent="silend_silend_1/VBoxContainer/HSplitContainer/HSlider" index="0"]
 auto_translate_mode = 1
