@@ -60,7 +60,7 @@ func trim_suffix(text: String, suffix: String) -> String:
 	
 func _show_update_popup(new_version: String):
 	$UpdatePopup/Label.text = "A new version of SoundThread (" + new_version + ") is available to download."
-	$UpdatePopup.show()
+	$UpdatePopup.popup_centered()
 
 func _on_open_audio_settings_button_down() -> void:
 	$UpdatePopup.hide()

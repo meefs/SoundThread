@@ -163,14 +163,14 @@ func check_user_preferences():
 	if audio_devices.has(audio_settings.device):
 		AudioServer.set_output_device(audio_settings.device)
 	else:
-		$AudioDevicePopup.popup()
+		$AudioDevicePopup.popup_centered()
 
 	
 func check_cdp_location_set():
 	#checks if the location has been set and prompts user to set it
 	var cdpprogs_settings = ConfigHandler.load_cdpprogs_settings()
 	if cdpprogs_settings.location == "no_location":
-		$NoLocationPopup.show()
+		$NoLocationPopup.popup_centred()
 	else:
 		#if location is set, stores it in a variable
 		cdpprogs_location = str(cdpprogs_settings.location)
@@ -374,7 +374,7 @@ func _on_graph_edit_connection_request(from_node: StringName, from_port: int, to
 				if existing_connections >= 1:
 					var interface_settings = ConfigHandler.load_interface_settings()
 					if interface_settings.disable_pvoc_warning == false:
-						$MultipleConnectionsPopup.show()
+						$MultipleConnectionsPopup.popup_centered()
 					return
 
 	# If no conflict, allow the connection
@@ -620,7 +620,7 @@ func _track_changes():
 
 func _run_process() -> void:
 	if Global.infile == "no_file":
-		$NoInputPopup.show()
+		$NoInputPopup.popup_centered()
 	else:
 		if foldertoggle.button_pressed == true and lastoutputfolder != "none":
 			_on_file_dialog_dir_selected(lastoutputfolder)
@@ -634,9 +634,9 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	if $Console.is_visible():
 		$Console.hide()
 		await get_tree().process_frame  # Wait a frame to allow hide to complete
-		$Console.popup()
+		$Console.popup_centered()
 	else:
-		$Console.popup()
+		$Console.popup_centered()
 	await get_tree().process_frame
 	log_console("Generating processing queue", true)
 	await get_tree().process_frame
@@ -1399,21 +1399,21 @@ func _on_settings_button_index_pressed(index: int) -> void:
 				ConfigHandler.save_interface_settings("console_on_top", false)
 				$Console.always_on_top = false
 		4:
-			$AudioSettings.popup()
+			$AudioSettings.popup_centered()
 		5:
 			if $Console.is_visible():
 				$Console.hide()
 				await get_tree().process_frame  # Wait a frame to allow hide to complete
-				$Console.popup()
+				$Console.popup_centered()
 			else:
-				$Console.popup()
+				$Console.popup_centered()
 
 func _on_file_button_index_pressed(index: int) -> void:
 	match index:
 		0:
 			if changesmade == true:
 				savestate = "newfile"
-				$SaveChangesPopup.show()
+				$SaveChangesPopup.popup_centered()
 			else:
 				new_patch()
 				currentfile = "none" #reset current file to none for save tracking
@@ -1429,7 +1429,7 @@ func _on_file_button_index_pressed(index: int) -> void:
 		3:
 			if changesmade == true:
 				savestate = "load"
-				$SaveChangesPopup.show()
+				$SaveChangesPopup.popup_centered()
 			else:
 				$LoadDialog.popup_centered()
 
@@ -1788,7 +1788,7 @@ func _on_help_button_index_pressed(index: int) -> void:
 			if changesmade == true:
 				savestate = "helpfile"
 				helpfile = "res://examples/getting_started.thd"
-				$SaveChangesPopup.show()
+				$SaveChangesPopup.popup_centered()
 			else:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				load_graph_edit("res://examples/getting_started.thd")
@@ -1796,7 +1796,7 @@ func _on_help_button_index_pressed(index: int) -> void:
 			if changesmade == true:
 				savestate = "helpfile"
 				helpfile = "res://examples/navigating.thd"
-				$SaveChangesPopup.show()
+				$SaveChangesPopup.popup_centered()
 			else:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				load_graph_edit("res://examples/navigating.thd")
@@ -1804,7 +1804,7 @@ func _on_help_button_index_pressed(index: int) -> void:
 			if changesmade == true:
 				savestate = "helpfile"
 				helpfile = "res://examples/building_a_thread.thd"
-				$SaveChangesPopup.show()
+				$SaveChangesPopup.popup_centered()
 			else:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				load_graph_edit("res://examples/building_a_thread.thd")
@@ -1812,7 +1812,7 @@ func _on_help_button_index_pressed(index: int) -> void:
 			if changesmade == true:
 				savestate = "helpfile"
 				helpfile = "res://examples/frequency_domain.thd"
-				$SaveChangesPopup.show()
+				$SaveChangesPopup.popup_centered()
 			else:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				load_graph_edit("res://examples/frequency_domain.thd")
@@ -1820,7 +1820,7 @@ func _on_help_button_index_pressed(index: int) -> void:
 			if changesmade == true:
 				savestate = "helpfile"
 				helpfile = "res://examples/automation.thd"
-				$SaveChangesPopup.show()
+				$SaveChangesPopup.popup_centered()
 			else:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				load_graph_edit("res://examples/automation.thd")
@@ -1828,7 +1828,7 @@ func _on_help_button_index_pressed(index: int) -> void:
 			if changesmade == true:
 				savestate = "helpfile"
 				helpfile = "res://examples/trimming.thd"
-				$SaveChangesPopup.show()
+				$SaveChangesPopup.popup_centered()
 			else:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				load_graph_edit("res://examples/trimming.thd")
@@ -1838,7 +1838,7 @@ func _on_help_button_index_pressed(index: int) -> void:
 			if changesmade == true:
 				savestate = "helpfile"
 				helpfile = "res://examples/wetdry.thd"
-				$SaveChangesPopup.show()
+				$SaveChangesPopup.popup_centered()
 			else:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				load_graph_edit("res://examples/wetdry.thd")
@@ -1846,7 +1846,7 @@ func _on_help_button_index_pressed(index: int) -> void:
 			if changesmade == true:
 				savestate = "helpfile"
 				helpfile = "res://examples/resonant_filters.thd"
-				$SaveChangesPopup.show()
+				$SaveChangesPopup.popup_centered()
 			else:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				load_graph_edit("res://examples/resonant_filters.thd")
@@ -1904,7 +1904,7 @@ func _notification(what):
 		$Console.hide()
 		if changesmade == true:
 			savestate = "quit"
-			$SaveChangesPopup.show()
+			$SaveChangesPopup.popup_centered()
 			#$HelpWindow.hide()
 		else:
 			get_tree().quit() # default behavior
@@ -1944,7 +1944,7 @@ func _on_audio_settings_close_requested() -> void:
 
 func _on_open_audio_settings_button_down() -> void:
 	$AudioDevicePopup.hide()
-	$AudioSettings.popup()
+	$AudioSettings.popup_centered()
 
 
 func _on_audio_device_popup_close_requested() -> void:
