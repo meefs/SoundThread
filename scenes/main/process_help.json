@@ -405,7 +405,7 @@
 		"uitype": "hslider"
 	  }
 	},
-	"short_description": "Wanders through a sound file jumping forwards and backwards while repeating small segments",
+	"short_description": "Random stumbling walk through a sound",
 	"description": "Starting at the Location in the input file this process takes a segment and repeats it. When the next clock tick occurs, the process will step to another segment and start repeating that. The distance in the file that each step can be is set by the Maximum Step and the amount of the file that it is possible for the process to explore either side of the original Location is set by the Ambitus. \n"
   },
   "extend_loop_1": {
@@ -670,7 +670,7 @@
 		"uitype": "hslider"
 	  }
 	},
-	"short_description": "Bank of filters tuned to the harmonic series",
+	"short_description": "Filter bank tuned to the harmonic series",
 	"description": "This process takes the frequency of the lowest band and create filters up to the value of the highest band tuned to the harmonic series. Scatter applies some randomisation of these values moving the sound from something very harmonic to something more bell like in tone. The makeup gain provides a way of adding a boost to the filtered signal, you may need to adjust this if clipping occurs. Note, Q can be automated although doing this does sometimes produce temperamental results.\n"
   },
   "filter_bank_2": {
@@ -755,7 +755,7 @@
 		"uitype": "hslider"
 	  }
 	},
-	"short_description": "Bank of filters tuned to odd harmonics from the harmonic series",
+	"short_description": "Filter bank tuned to odd harmonics from the harmonic series",
 	"description": "This process takes the frequency of the lowest band and create filters up to the value of the highest band tuned to odd harmonics of the harmonic series. Scatter applies some randomisation of these values moving the sound from something very harmonic to something more bell like in tone. The makeup gain provides a way of adding a boost to the filtered signal, you may need to adjust this if clipping occurs. Note, Q can be automated although doing this does sometimes produce temperamental results.\n"
   },
   "filter_bank_5": {
@@ -855,7 +855,7 @@
 		"uitype": "hslider"
 	  }
 	},
-	"short_description": "Bank of filters with a fixed number of bands spaced linearly between two frequencies",
+	"short_description": "Filter bank with equal spacing in Hz",
 	"description": "This process takes the number of filters and spaces them equally in Hz between the lowest and highest bands. Scatter applies some randomisation of these values. The makeup gain provides a way of adding a boost to the filtered signal, you may need to adjust this if clipping occurs. Note, Q can be automated although doing this does sometimes produce temperamental results. Unlike Filter Bank: Pitched Intervals this will produce a more discordant sound as the frequencies will not align to uniform harmonic intervals.\n"
   },
   "filter_bank_6": {
@@ -955,7 +955,7 @@
 		"uitype": "hslider"
 	  }
 	},
-	"short_description": "Bank of filters with a fixed number of bands spaced musically between two frequencies",
+	"short_description": "Filter bank with equal spacing in semitones",
 	"description": "This process takes the number of filters and spaces them equally in semitones between the lowest and highest bands. Scatter applies some randomisation of these values moving the sound from something very harmonic to something more bell like in tone. The makeup gain provides a way of adding a boost to the filtered signal, you may need to adjust this if clipping occurs. Note, Q can be automated although doing this does sometimes produce temperamental results. Unlike Filter Bank: Linear this will produce a more consonant sound as the frequencies will align to uniform harmonic intervals.\n"
   },
   "filter_lohi_1": {
