@@ -4,3 +4,6 @@
 /.tmp_audio
 splash.xcf
 /theme/images/icon.xcf
+cdprogs/windows/
+cdprogs/mac/
+cdprogs/linux/

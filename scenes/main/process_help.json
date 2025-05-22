@@ -218,7 +218,7 @@
 		"uitype": "hslider"
 	  }
 	},
-	"short_description": "Time-stretch by repeating wavecycles and interpolating between them",
+	"short_description": "Time-stretch by repeating and interpolating wavecycles",
 	"description": "Takes a wavecycle and repeats it based on the multiplier. On each repetition the wavecycle is morphed slightly in shape so that it morphs into the shape of the next wavecycle in the file. This adds a modulatory quality to the output, successive wavecycles glissando and bend as they flow into one another.\n"
   },
   "distort_multiply": {

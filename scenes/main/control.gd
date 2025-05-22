@@ -56,6 +56,8 @@ func _ready() -> void:
 			child.pressed.connect(_on_button_pressed.bind(child))
 	
 	get_node("SearchMenu").make_node.connect(_make_node_from_search_menu)
+	get_node("mainmenu").make_node.connect(_make_node_from_search_menu)
+	get_node("mainmenu").open_help.connect(show_help_for_node)
 	
 	check_cdp_location_set()
 	check_user_preferences()
