@@ -159,7 +159,6 @@ func check_user_preferences():
 	$MenuBar/SettingsButton.set_item_checked(1, interface_settings.disable_pvoc_warning)
 	$MenuBar/SettingsButton.set_item_checked(2, interface_settings.auto_close_console)
 	$MenuBar/SettingsButton.set_item_checked(3, interface_settings.console_on_top)
-	$MenuBar/SettingsButton.set_item_checked(4, interface_settings.use_search)
 	$Console.always_on_top = interface_settings.console_on_top
 	if audio_devices.has(audio_settings.device):
 		AudioServer.set_output_device(audio_settings.device)
@@ -1400,15 +1399,8 @@ func _on_settings_button_index_pressed(index: int) -> void:
 				ConfigHandler.save_interface_settings("console_on_top", false)
 				$Console.always_on_top = false
 		4:
-			if interface_settings.use_search == false:
-				$MenuBar/SettingsButton.set_item_checked(index, true)
-				ConfigHandler.save_interface_settings("use_search", true)
-			else:
-				$MenuBar/SettingsButton.set_item_checked(index, false)
-				ConfigHandler.save_interface_settings("use_search", false)
-		5:
 			$AudioSettings.popup()
-		6:
+		5:
 			if $Console.is_visible():
 				$Console.hide()
 				await get_tree().process_frame  # Wait a frame to allow hide to complete
@@ -1556,6 +1548,7 @@ func load_graph_edit(path: String):
 		new_node.position_offset = Vector2(node_data["offset"]["x"], node_data["offset"]["y"])
 		new_node.set_meta("command", command_name)
 		graph_edit.add_child(new_node)
+		new_node.connect("open_help", Callable(self, "show_help_for_node"))
 		_register_node_movement()  # Track node movement changes
 
 		id_to_node[node_data["id"]] = new_node
@@ -1850,10 +1843,18 @@ func _on_help_button_index_pressed(index: int) -> void:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				load_graph_edit("res://examples/wetdry.thd")
 		9:
-			pass
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/resonant_filters.thd"
+				$SaveChangesPopup.show()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				load_graph_edit("res://examples/resonant_filters.thd")
 		10:
-			OS.shell_open("https://www.composersdesktop.com/docs/html/ccdpndex.htm")
+			pass
 		11:
+			OS.shell_open("https://www.composersdesktop.com/docs/html/ccdpndex.htm")
+		12:
 			OS.shell_open("https://github.com/j-p-higgins/SoundThread/issues")
 
 func _recycle_outfile():
@@ -1919,42 +1920,23 @@ func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
 
 
 func _on_graph_edit_popup_request(at_position: Vector2) -> void:
-	var interface_settings = ConfigHandler.load_interface_settings()
-	
+
 	effect_position = graph_edit.get_local_mouse_position()
+
+	#get the mouse position in screen coordinates
+	var mouse_screen_pos = DisplayServer.mouse_get_position()  
+	#get the window position in screen coordinates
+	var window_screen_pos = get_window().position
+	#get the window size relative to its scaling for retina displays
+	var window_size = get_window().size * DisplayServer.screen_get_scale()
+
+	#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
+	var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - $SearchMenu.size.x)
+	var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - (420 * DisplayServer.screen_get_scale()))
 	
-	if interface_settings.use_search == false:
-		#get the mouse position in screen coordinates
-		var mouse_screen_pos = DisplayServer.mouse_get_position()  
-		#get the window position in screen coordinates
-		var window_screen_pos = get_window().position
-		#get the window size relative to its scaling for retina displays
-		var window_size = get_window().size * DisplayServer.screen_get_scale()
-		#get the size of the popup menu
-		var popup_size = $mainmenu.size
-
-		#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
-		var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - popup_size.x)
-		var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - popup_size.y)
-		
-		#position and show the menu
-		$mainmenu.position = Vector2(clamped_x, clamped_y)
-		$mainmenu.popup()
-	else:
-		#get the mouse position in screen coordinates
-		var mouse_screen_pos = DisplayServer.mouse_get_position()  
-		#get the window position in screen coordinates
-		var window_screen_pos = get_window().position
-		#get the window size relative to its scaling for retina displays
-		var window_size = get_window().size * DisplayServer.screen_get_scale()
-
-		#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
-		var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - $SearchMenu.size.x)
-		var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - (420 * DisplayServer.screen_get_scale()))
-		
-		#position and show the menu
-		$SearchMenu.position = Vector2(clamped_x, clamped_y)
-		$SearchMenu.popup()
+	#position and show the menu
+	$SearchMenu.position = Vector2(clamped_x, clamped_y)
+	$SearchMenu.popup()
 
 func _on_audio_settings_close_requested() -> void:
 	$AudioSettings.hide()

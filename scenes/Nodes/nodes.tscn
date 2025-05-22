@@ -2908,6 +2908,58 @@ step = 0.01
 value = -12.0
 metadata/brk = true
 
+[node name="silend_silend_1" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1700.0
+offset_top = 1548.0
+offset_right = 2006.0
+offset_bottom = 1654.0
+tooltip_text = "Adds silence to the end of the sound"
+title = "Append Silence"
+slot/0/left_enabled = true
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 0.564706)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 0.564706)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+script = ExtResource("3_uv17x")
+metadata/command = "silend_silend_1"
+metadata/stereo_input = true
+
+[node name="Control" type="Control" parent="silend_silend_1"]
+layout_mode = 2
+
+[node name="VBoxContainer" parent="silend_silend_1" instance=ExtResource("3_b6nw4")]
+layout_mode = 2
+tooltip_text = "The amount of silence to add in seconds"
+
+[node name="Label" parent="silend_silend_1/VBoxContainer" index="0"]
+text = "Length of Silence"
+
+[node name="HSlider" parent="silend_silend_1/VBoxContainer/HSplitContainer" index="0"]
+min_value = 0.01
+max_value = 60.0
+step = 0.01
+
+[node name="PopupMenu" parent="silend_silend_1/VBoxContainer/HSplitContainer/HSlider" index="0"]
+auto_translate_mode = 1
+size = Vector2i(208, 100)
+
+[node name="BreakFileMaker" parent="silend_silend_1/VBoxContainer" index="3"]
+auto_translate_mode = 1
+
 [node name="pvoc_anal_1" type="GraphNode" parent="."]
 layout_mode = 0
 offset_left = 2213.0
@@ -3636,6 +3688,7 @@ wrap_mode = 1
 [editable path="modify_stack/VBoxContainer5"]
 [editable path="modify_stack/VBoxContainer6"]
 [editable path="modify_speed_2/VBoxContainer"]
+[editable path="silend_silend_1/VBoxContainer"]
 [editable path="focus_accu/VBoxContainer2"]
 [editable path="focus_accu/VBoxContainer"]
 [editable path="blur_blur/VBoxContainer"]

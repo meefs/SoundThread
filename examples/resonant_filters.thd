@@ -1,0 +1,200 @@
+{
+	"connections": [
+		{
+			"from_node_id": 3,
+			"from_port": 0,
+			"to_node_id": 4,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 4,
+			"from_port": 0,
+			"to_node_id": 5,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 2,
+			"from_port": 0,
+			"to_node_id": 3,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 1,
+			"from_port": 0,
+			"to_node_id": 2,
+			"to_port": 0
+		}
+	],
+	"nodes": [
+		{
+			"command": "inputfile",
+			"id": 1,
+			"name": "inputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 20.0,
+				"y": 80.0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1675/@MarginContainer@1715/Tree/@Popup@1701/@VBoxContainer@1702/@HSlider@1710": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"command": "modify_brassage_5",
+			"id": 2,
+			"name": "modify_brassage_5",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 519.111083984375,
+				"y": 80.0
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true
+					},
+					"value": 0.23
+				}
+			}
+		},
+		{
+			"command": "silend_silend_1",
+			"id": 3,
+			"name": "silend_silend_1",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 890.666687011719,
+				"y": 80.0
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 30.28
+				}
+			}
+		},
+		{
+			"command": "filter_bank_6",
+			"id": 4,
+			"name": "filter_bank_6",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1256.66674804688,
+				"y": 80.0
+			},
+			"slider_values": {
+				"VBoxContainer/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true
+					},
+					"value": 5353.44
+				},
+				"VBoxContainer2/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 1.5
+				},
+				"VBoxContainer3/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 110.0
+				},
+				"VBoxContainer4/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 12000.0
+				},
+				"VBoxContainer5/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 7.0
+				},
+				"VBoxContainer6/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"flag": "-s"
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"command": "outputfile",
+			"id": 5,
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1624.88879394531,
+				"y": 80.0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@1784/@MarginContainer@1824/Tree/@Popup@1810/@VBoxContainer@1811/@HSlider@1819": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"command": "notes",
+			"id": 6,
+			"name": "notes2",
+			"notes": {
+				"CodeEdit": "Resonant filters and other processes that add durational elements onto a sound (such as PVOC: Blur) can often get their tails cut off during the process. Using Append Silence we can add some silence onto our sound before processing by the filter to allow some room for the tail to decay. "
+			},
+			"offset": {
+				"x": 994.444458007813,
+				"y": 534.444458007813
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"command": "notes",
+			"id": 7,
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "Applying a low density granular process before a resonant filter can help the sound ping and activate the filter making it rhythmic and percussive rather than a constant drone."
+			},
+			"offset": {
+				"x": 494.444458007813,
+				"y": 524.444458007813
+			},
+			"slider_values": {
+
+			}
+		}
+	]
+}

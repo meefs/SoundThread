@@ -1347,6 +1347,31 @@
 	"short_description": "Speeds up or slows down a sound changing pitch",
 	"description": "Plays the sound faster or slower to adjust its speed and pitch. -12 semitones is half speed; +12 semitones is double speed. \n"
   },
+ "silend_silend_1": {
+	"category": "time",
+	"subcategory": "misc",
+	"stereo": true,
+	"title": "Append Silence",
+	"parameters": {
+	  "param1": {
+		"paramname": "Length of Silence",
+		"paramdescription": "The length of silence to add to the end of the sound in seconds",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": "",
+		"maxrange": "",
+		"step": "",
+		"value": "",
+		"exponential": false,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Adds silence to the end of a sound",
+	"description": "Adds silence at the end of the sound, very useful  before processes which add long tails such as resonant filters and bluring. Can also be used with scramble processes to add silences into the scramble. \n"
+  },
   "modify_speed_5": {
 	"category": "time",
 	"subcategory": "misc",
