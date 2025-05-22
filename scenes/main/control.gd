@@ -170,7 +170,7 @@ func check_cdp_location_set():
 	#checks if the location has been set and prompts user to set it
 	var cdpprogs_settings = ConfigHandler.load_cdpprogs_settings()
 	if cdpprogs_settings.location == "no_location":
-		$NoLocationPopup.popup_centred()
+		$NoLocationPopup.popup_centered()
 	else:
 		#if location is set, stores it in a variable
 		cdpprogs_location = str(cdpprogs_settings.location)
@@ -538,6 +538,7 @@ func paste_copied_nodes():
 				child.value = node_data["slider_values"][child.name]
 
 		graph_edit.add_child(new_node, true)
+		new_node.connect("open_help", Callable(self, "show_help_for_node"))
 		_register_inputs_in_node(new_node) #link sliders for changes tracking
 		_register_node_movement() # link nodes for changes tracking
 		name_map[node_data["name"]] = new_node.name
