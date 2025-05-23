@@ -23,28 +23,28 @@ SoundThread is currently in Alpha and as such there are some bugs, missing featu
 - Node based patching system with support for patching parallel processes and mixing outputs
 - A selection of popular CDP time domain and frequency domain processes:
   - [Distort](https://www.composersdesktop.com/docs/html/ccdpndex.htm#DISTORT) - Average, Clip, Click (Reform), Divide, Fractal, Interpolate, Multiply, Power Factor (Quirk), Replace, Square (Reform), and Triangle (Reform)
-  - [Extend](https://www.composersdesktop.com/docs/html/ccdpndex.htm#EXTEND) -  Drunk, Loop, Scramble, Shrink, and Zigzag
+  - [Extend](https://www.composersdesktop.com/docs/html/ccdpndex.htm#EXTEND) -  Drunk, Loop, Scramble, and Zigzag
   - [Filter](https://www.composersdesktop.com/docs/html/ccdpndex.htm#FILTER) - Low Pass/High Pass, Filter Bank Harmonic Series, Filter Bank Odd, Filter Bank Linear Spacing, and Filter Bank Pitched Intervals
   - [Granulate (Brassage)](https://www.composersdesktop.com/docs/html/cgromody.htm#BRASSAGE) - Brassage, Granulate, Pitch Shift, Scramble, and Time Stretch
-  - Misc - Accelerate/Decelerate, Gain, Reverse, Stack, and Varispeed
-  - [PVOC](https://www.composersdesktop.com/docs/html/cspecndx.htm) - Analaysis/Resynthesis, Accumulate, Blur, Chorus, Gain, Invert, Stretch, Scatter, Trace (hilite), and Waver
+  - Misc - Accelerate/Decelerate, Append Silence, Gain, Reverse, Stack, and Varispeed
+  - [PVOC](https://www.composersdesktop.com/docs/html/cspecndx.htm) - Analysis/Resynthesis, Accumulate, Blur, Chorus, Gain, Invert, Stretch, Scatter, Trace (hilite), and Waver
 - Automation of values using automatically generated [Breakpoint Files](https://www.composersdesktop.com/docs/html//filestxt.htm#BREAKPOINTFILES) based on drawn in automation data
-- Mac and Windows builds
+- Windows, Mac and Linux builds
 - Accepts stereo or mono input files (splits and merges files as needed to run the full processing Thread)
 - Threads can be saved and loaded for reuse
 - Small suite of built in getting started tutorials
 - Help tooltips and detailed help files throughout
 - Recycle output button to reuse output file for further processing 
-- Optional: automatic clean up of intermediate files
+- Optional automatic clean up of intermediate files
+- Customisable colour schemes
  
 ## What doesn't work?
-A number of things are not yet implemented or supported. Not all features of CDP will likely be implemented in SoundThread, as not all processes work well with the node based system. For access to all features of CDP I reccomend [SoundLoom, Soundshaper](https://www.composersdesktop.com/docs/html/cdphome.htm#GUIS) or using the command line directly.
+A number of things are not yet implemented or supported. Not all features of CDP will likely be implemented in SoundThread, as not all processes work well with the node based system. For access to all features of CDP I recommend [SoundLoom, Soundshaper](https://www.composersdesktop.com/docs/html/cdphome.htm#GUIS) or using the command line directly.
 ### Main missing features:
 - Text files other than simple value/pair breakpoint files and PVOC analysis files
-- Support for multiple input files and therefore all processes which require more than one input file
+- Support for multiple input files and therefore all processes which require more than one input file and those that really benefit from multiple input files (e.g. Texture processes)
 - Support for audio files with more than 2 channels
 - Support for audio formats other than WAV
-- Nodes for many CDP processes have not yet been made
-- Linux build is not yet tested (should work fine in theory just needs testing)
+- Many CDP processes have not yet been implemented
 
-If you find any bugs or have feature ideas, please raise a ticket in [issues](https://github.com/j-p-higgins/SoundThread/issues).
+If you find any bugs or have user interface feature ideas, please raise a ticket in [issues](https://github.com/j-p-higgins/SoundThread/issues). If you would like to request specific CDP processes be added to SoundThread, please comment on [this community discussion](https://github.com/j-p-higgins/SoundThread/discussions/59).

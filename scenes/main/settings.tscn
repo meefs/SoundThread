@@ -1,0 +1,125 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1a6elrpk4eks"]
+
+[ext_resource type="Script" uid="uid://co12pspac25gq" path="res://scenes/main/settings.gd" id="1_uey6c"]
+
+[node name="Settings" type="Window"]
+auto_translate_mode = 1
+title = "SoundThread Settings"
+initial_position = 2
+size = Vector2i(500, 380)
+transient = true
+unresizable = true
+always_on_top = true
+script = ExtResource("1_uey6c")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 604.0
+offset_bottom = 382.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+offset_left = 12.0
+offset_top = 6.0
+offset_right = 490.0
+offset_bottom = 367.0
+
+[node name="WindowTitle" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "SoundThread Settings"
+
+[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 3
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "Composers Desktop Project"
+
+[node name="ChangeCDP" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Change location for cdprogs folder"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 7
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "User Interface"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(183, 100)
+layout_mode = 2
+text = "Theme: "
+
+[node name="ThemeList" type="ItemList" parent="VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+auto_height = true
+item_count = 4
+item_0/text = "Classic"
+item_1/text = "Dark"
+item_2/text = "Light"
+item_3/text = "Custom"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Custom theme colour: "
+
+[node name="CustomColourPicker" type="ColorPickerButton" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 25)
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.184314, 0.309804, 0.305882, 1)
+edit_alpha = false
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+text = "Disable frequency domain multiple input warning:"
+
+[node name="PvocWarning" type="CheckButton" parent="VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+text = "Auto close console when thread is complete: "
+
+[node name="AutoCloseConsole" type="CheckButton" parent="VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+text = "Console always on top: "
+
+[node name="ConsoleAlwaysOnTop" type="CheckButton" parent="VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[connection signal="about_to_popup" from="." to="." method="_on_about_to_popup"]
+[connection signal="close_requested" from="." to="." method="_on_close_requested"]
+[connection signal="button_down" from="VBoxContainer/ChangeCDP" to="." method="_on_change_cdp_button_down"]
+[connection signal="item_selected" from="VBoxContainer/HBoxContainer5/ThemeList" to="." method="_on_theme_list_item_selected"]
+[connection signal="color_changed" from="VBoxContainer/HBoxContainer/CustomColourPicker" to="." method="_on_custom_colour_picker_color_changed"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer2/PvocWarning" to="." method="_on_pvoc_warning_toggled"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer3/AutoCloseConsole" to="." method="_on_auto_close_console_toggled"]
+[connection signal="toggled" from="VBoxContainer/HBoxContainer4/ConsoleAlwaysOnTop" to="." method="_on_console_always_on_top_toggled"]

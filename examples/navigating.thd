@@ -21,7 +21,7 @@
 			"id": 2,
 			"name": "notes3",
 			"notes": {
-				"CodeEdit": "Click and drag on the background to select multiple nodes at once.\n\nPressing Backspace/Delete will remove selected nodes. Note: \"Input File\" and \"Output File\" can't be deleted.\n\nSoundThread allows you to undo most major changes with ctrl/cmd+z. Please note this not yet fully implemented."
+				"CodeEdit": "Click and drag on the background to select multiple nodes at once.\n\nPressing Backspace/Delete will remove selected nodes. Note: \"Input File\" and \"Output File\" can't be deleted.\n\nSoundThread allows you to undo most major changes with ctrl/cmd and Z. Note: this not yet fully implemented."
 			},
 			"offset": {
 				"x": 964.444641113281,
@@ -32,23 +32,8 @@
 			}
 		},
 		{
-			"command": "notes",
-			"id": 3,
-			"name": "notes2",
-			"notes": {
-				"CodeEdit": "Right click anywhere in SoundThread to bring up the main menu.\n\nThis menu lists the available processes in SoundThread. Click the + next to a process to add it to your Thread.\n\nNodes can be dragged around to rearrange and you can copy and paste nodes with ctrl/cmd+c and ctrl/cmd+v."
-			},
-			"offset": {
-				"x": 531.111267089844,
-				"y": 162.222259521484
-			},
-			"slider_values": {
-
-			}
-		},
-		{
 			"command": "inputfile",
-			"id": 4,
+			"id": 3,
 			"name": "inputfile",
 			"notes": {
 
@@ -58,7 +43,7 @@
 				"y": 164.444458007813
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@2060/@MarginContainer@2100/Tree/@Popup@2086/@VBoxContainer@2087/@HSlider@2095": {
+				"AudioPlayer/FileDialog/@VBoxContainer@2892/@MarginContainer@2932/Tree/@Popup@2918/@VBoxContainer@2919/@HSlider@2927": {
 					"editable": true,
 					"meta": {
 
@@ -69,7 +54,7 @@
 		},
 		{
 			"command": "outputfile",
-			"id": 5,
+			"id": 4,
 			"name": "outputfile",
 			"notes": {
 
@@ -79,13 +64,28 @@
 				"y": 393.333435058594
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@2169/@MarginContainer@2209/Tree/@Popup@2195/@VBoxContainer@2196/@HSlider@2204": {
+				"AudioPlayer/FileDialog/@VBoxContainer@3001/@MarginContainer@3041/Tree/@Popup@3027/@VBoxContainer@3028/@HSlider@3036": {
 					"editable": true,
 					"meta": {
 
 					},
 					"value": 0.0
 				}
+			}
+		},
+		{
+			"command": "notes",
+			"id": 5,
+			"name": "notes2",
+			"notes": {
+				"CodeEdit": "Press ctrl/cmd and E to browse all processes in SoundThread or, right click anywhere in empty space to search and add nodes.\n\nNodes can be dragged around to rearrange and you can copy and paste nodes with ctrl/cmd+c and ctrl/cmd+v."
+			},
+			"offset": {
+				"x": 531.111267089844,
+				"y": 166.666702270508
+			},
+			"slider_values": {
+
 			}
 		}
 	]

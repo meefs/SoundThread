@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bcs87y7ptx3ke"]
+[gd_scene load_steps=9 format=3 uid="uid://bcs87y7ptx3ke"]
 
 [ext_resource type="Script" uid="uid://bdlfvuljckmu1" path="res://scenes/main/control.gd" id="1_2f0aq"]
 [ext_resource type="Script" uid="uid://l2yejnjysupr" path="res://scenes/main/graph_edit.gd" id="2_3ioqo"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dta7rfalv4uvd" path="res://scenes/main/audio_settings.tscn" id="5_dtf4o"]
 [ext_resource type="Script" uid="uid://dlcbmyu3s2phc" path="res://scenes/menu/search_menu.gd" id="6_fyarh"]
 [ext_resource type="Script" uid="uid://b6r7k326k3vif" path="res://scenes/Nodes/check_for_updates.gd" id="7_1kc3g"]
+[ext_resource type="PackedScene" uid="uid://c1a6elrpk4eks" path="res://scenes/main/settings.tscn" id="8_16l5g"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -243,22 +244,13 @@ item_3/id = 1
 
 [node name="SettingsButton" type="PopupMenu" parent="MenuBar"]
 title = "Settings"
-item_count = 6
-item_0/text = "Change CDP Folder Location"
+item_count = 3
+item_0/text = "SoundThread Settings"
 item_0/id = 0
-item_1/text = "Disable PVOC Multi Input Warning"
-item_1/checkable = 1
+item_1/text = "Audio Settings"
 item_1/id = 1
-item_2/text = "Auto Close Console"
-item_2/checkable = 1
+item_2/text = "Open the Console"
 item_2/id = 2
-item_3/text = "Console Always on Top"
-item_3/checkable = 1
-item_3/id = 5
-item_4/text = "Audio Settings"
-item_4/id = 4
-item_5/text = "Open the Console"
-item_5/id = 3
 
 [node name="HelpButton" type="PopupMenu" parent="MenuBar"]
 auto_translate_mode = 1
@@ -401,6 +393,9 @@ offset_top = 69.0
 offset_right = 382.0
 offset_bottom = 100.0
 text = "Get the update"
+
+[node name="Settings" parent="." instance=ExtResource("8_16l5g")]
+visible = false
 
 [connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="delete_nodes_request" from="GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
