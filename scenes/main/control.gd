@@ -1276,6 +1276,7 @@ func monitor_process(pid: int, stdout: FileAccess, stderr: FileAccess) -> String
 			console_output.scroll_to_line(console_output.get_line_count() - 1)
 		while stderr.get_position() < stderr.get_length():
 			var line = stderr.get_line()
+			output += line
 			console_output.append_text(line + "\n")
 			console_output.scroll_to_line(console_output.get_line_count() - 1)
 	
@@ -1299,7 +1300,12 @@ func monitor_process(pid: int, stdout: FileAccess, stderr: FileAccess) -> String
 			
 	return output
 
-
+func _on_kill_process_button_down() -> void:
+	if process_running and process_info.has("pid"):
+		# Terminate the process by PID
+		OS.kill(process_info["pid"])
+		process_running = false
+		print("Process cancelled.")
 
 	
 	#if is_windows:
