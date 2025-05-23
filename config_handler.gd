@@ -12,6 +12,7 @@ func _ready():
 	# Set defaults only if not present
 	ensure_setting("cdpprogs", "location", "no_location")
 	ensure_setting("interface_settings", "disable_pvoc_warning", false)
+	ensure_setting("interface_settings", "disable_progress_bar", false)
 	ensure_setting("interface_settings", "auto_close_console", false)
 	ensure_setting("interface_settings", "console_on_top", true)
 	ensure_setting("interface_settings", "theme", 0)
