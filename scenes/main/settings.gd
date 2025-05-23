@@ -22,12 +22,17 @@ func _on_about_to_popup() -> void:
 	$VBoxContainer/HBoxContainer5/ThemeList.select(interface_settings.theme, true)
 	$VBoxContainer/HBoxContainer/CustomColourPicker.color = Color(interface_settings.theme_custom_colour)
 	$VBoxContainer/HBoxContainer2/PvocWarning.button_pressed = interface_settings.disable_pvoc_warning
+	$VBoxContainer/HBoxContainer6/ProgressBar.button_pressed = interface_settings.disable_progress_bar
 	$VBoxContainer/HBoxContainer3/AutoCloseConsole.button_pressed = interface_settings.auto_close_console
 	$VBoxContainer/HBoxContainer4/ConsoleAlwaysOnTop.button_pressed = interface_settings.console_on_top
 	
 
 func _on_pvoc_warning_toggled(toggled_on: bool) -> void:
 	ConfigHandler.save_interface_settings("disable_pvoc_warning", toggled_on)
+
+func _on_progress_bar_toggled(toggled_on: bool) -> void:
+	ConfigHandler.save_interface_settings("disable_progress_bar", toggled_on)
+
 
 
 func _on_auto_close_console_toggled(toggled_on: bool) -> void:

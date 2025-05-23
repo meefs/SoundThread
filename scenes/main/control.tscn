@@ -186,6 +186,7 @@ use_native_dialog = true
 title = "Generating Output"
 initial_position = 5
 size = Vector2i(600, 400)
+visible = false
 unresizable = true
 always_on_top = true
 
@@ -402,6 +403,38 @@ text = "Get the update"
 [node name="Settings" parent="." instance=ExtResource("8_16l5g")]
 visible = false
 
+[node name="ProgressWindow" type="Window" parent="."]
+initial_position = 2
+size = Vector2i(600, 110)
+visible = false
+transient = true
+exclusive = true
+borderless = true
+
+[node name="ProgressBar" type="ProgressBar" parent="ProgressWindow"]
+offset_left = 10.0
+offset_top = 11.0
+offset_right = 590.0
+offset_bottom = 51.0
+show_percentage = false
+
+[node name="ProgressLabel" type="Label" parent="ProgressWindow"]
+offset_left = 10.0
+offset_top = 11.0
+offset_right = 590.0
+offset_bottom = 51.0
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="KillProcess2" type="Button" parent="ProgressWindow"]
+offset_left = 8.0
+offset_top = 59.0
+offset_right = 592.0
+offset_bottom = 100.0
+text = "Stop Running Thread"
+
 [connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
 [connection signal="delete_nodes_request" from="GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
 [connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
@@ -434,3 +467,4 @@ visible = false
 [connection signal="text_changed" from="SearchMenu/VBoxContainer/SearchBar" to="SearchMenu" method="_on_search_bar_text_changed"]
 [connection signal="close_requested" from="CheckForUpdates/UpdatePopup" to="CheckForUpdates" method="_on_update_popup_close_requested"]
 [connection signal="button_down" from="CheckForUpdates/UpdatePopup/OpenAudioSettings" to="CheckForUpdates" method="_on_open_audio_settings_button_down"]
+[connection signal="button_down" from="ProgressWindow/KillProcess2" to="." method="_on_kill_process_button_down"]

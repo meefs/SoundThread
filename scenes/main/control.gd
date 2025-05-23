@@ -27,6 +27,7 @@ var HelpWindowScene = preload("res://scenes/main/help_window.tscn")
 var uiscale = 1.0 #tracks scaling for retina screens
 var process_info = {} #tracks the data of the currently running process
 var process_running := false #tracks if a process is currently running
+var process_cancelled = false #checks if the currently running process has been cancelled
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -43,6 +44,7 @@ func _ready() -> void:
 	$AudioDevicePopup.hide()
 	$SearchMenu.hide()
 	$Settings.hide()
+	$ProgressWindow.hide()
 	
 	$SaveDialog.access = FileDialog.ACCESS_FILESYSTEM
 	$SaveDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
@@ -646,12 +648,16 @@ func _run_process() -> void:
 func _on_file_dialog_dir_selected(dir: String) -> void:
 	lastoutputfolder = dir
 	console_output.clear()
-	if $Console.is_visible():
-		$Console.hide()
-		await get_tree().process_frame  # Wait a frame to allow hide to complete
-		$Console.popup_centered()
+	var interface_settings = ConfigHandler.load_interface_settings()
+	if interface_settings.disable_progress_bar == false:
+		$ProgressWindow.show()
 	else:
-		$Console.popup_centered()
+		if $Console.is_visible():
+			$Console.hide()
+			await get_tree().process_frame  # Wait a frame to allow hide to complete
+			$Console.popup_centered()
+		else:
+			$Console.popup_centered()
 	await get_tree().process_frame
 	log_console("Generating processing queue", true)
 	await get_tree().process_frame
@@ -670,6 +676,8 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	run_thread_with_branches()
 	
 func run_thread_with_branches():
+	process_cancelled = false
+	process_successful = true
 	# Detect platform: Determine if the OS is Windows
 	var is_windows := OS.get_name() == "Windows"
 	
@@ -710,8 +718,21 @@ func run_thread_with_branches():
 				graph[name] = []
 				reverse_graph[name] = []
 				indegree[name] = 0  # Start with zero incoming edges
+	#do calculations for progress bar
+	var progress_step
+	if Global.trim_infile == true:
+		progress_step = 100 / (graph.size() + 4)
+	else:
+		progress_step = 100 / (graph.size() + 3)
+	
 
 	# Step 2: Build graph relationships from connections
+	if process_cancelled:
+		$ProgressWindow/ProgressLabel.text = "Thread Stopped"
+		log_console("[b]Thread Stopped[/b]", true)
+		return
+	else:
+		$ProgressWindow/ProgressLabel.text = "Building Thread"
 	for conn in connections:
 		var from = str(conn["from_node"])
 		var to = str(conn["to_node"])
@@ -741,7 +762,7 @@ func run_thread_with_branches():
 		log_console("[color=#9c2828][b]Error: Thread not valid[/b][/color]", true)
 		log_console("Threads cannot contain loops.", true)
 		return
-
+	$ProgressWindow/ProgressBar.value = progress_step
 	# Step 4: Start processing audio
 	var batch_lines = []        # Holds all batch file commands
 	var intermediate_files = [] # Files to delete later
@@ -754,20 +775,32 @@ func run_thread_with_branches():
 	# Start with the original input file
 	var starting_infile = Global.infile
 	
+	
 	#If trim is enabled trim input audio
 	if Global.trim_infile == true:
+		if process_cancelled:
+			$ProgressWindow/ProgressLabel.text = "Thread Stopped"
+			log_console("[b]Thread Stopped[/b]", true)
+			return
+		else:
+			$ProgressWindow/ProgressLabel.text = "Trimming input audio"
 		await run_command(cdpprogs_location + "/sfedit", ["cut", "1", starting_infile, "%s_trimmed.wav" % Global.outfile, str(Global.infile_start), str(Global.infile_stop)])
 		starting_infile = Global.outfile + "_trimmed.wav"
 		# Mark trimmed file for cleanup if needed
 		if delete_intermediate_outputs:
 			intermediate_files.append(Global.outfile + "_trimmed.wav")
-			
+		$ProgressWindow/ProgressBar.value += progress_step
 	var current_infile = starting_infile
 
 	# Iterate over the processing nodes in topological order
 	for node_name in sorted:
 		var node = all_nodes[node_name]
-		
+		if process_cancelled:
+			$ProgressWindow/ProgressLabel.text = "Thread Stopped"
+			log_console("[b]Thread Stopped[/b]", true)
+			break
+		else:
+			$ProgressWindow/ProgressLabel.text = "Running process: " + node.get_title()
 		# Find upstream nodes connected to the current node
 		var inputs = reverse_graph[node_name]
 		var input_files = []
@@ -992,10 +1025,16 @@ func run_thread_with_branches():
 
 			# Increase the process step count
 			process_count += 1
-
+		$ProgressWindow/ProgressBar.value += progress_step
 	# FINAL OUTPUT STAGE
 
 	# Collect all nodes that are connected to the outputfile node
+	if process_cancelled:
+		$ProgressWindow/ProgressLabel.text = "Thread Stopped"
+		log_console("[b]Thread Stopped[/b]", true)
+		return
+	else:
+		$ProgressWindow/ProgressLabel.text = "Finalising output"
 	var output_inputs := []
 	for conn in connections:
 		var to_node = str(conn["to_node"])
@@ -1024,9 +1063,15 @@ func run_thread_with_branches():
 		var single_output = final_outputs[0]
 		final_output_dir = single_output
 		intermediate_files.erase(single_output)
-
+	$ProgressWindow/ProgressBar.value += progress_step
 	# CLEANUP: Delete intermediate files after processing and rename final output
-	log_console("Cleaning up intermediate files.", true)
+	if process_cancelled:
+		$ProgressWindow/ProgressLabel.text = "Thread Stopped"
+		log_console("[b]Thread Stopped[/b]", true)
+		return
+	else:
+		log_console("Cleaning up intermediate files.", true)
+		$ProgressWindow/ProgressLabel.text = "Cleaning up"
 	for file_path in intermediate_files:
 		# Adjust file path format for Windows if needed
 		var fixed_path = file_path
@@ -1054,8 +1099,9 @@ func run_thread_with_branches():
 	
 	output_audio_player.play_outfile(final_output_dir)
 	outfile = final_output_dir
-			
+	$ProgressWindow/ProgressBar.value = 100.0
 	var interface_settings = ConfigHandler.load_interface_settings() #checks if close console is enabled and closes console on a success
+	$ProgressWindow.hide()
 	if interface_settings.auto_close_console and process_successful == true:
 		$Console.hide()
 
@@ -1285,12 +1331,22 @@ func monitor_process(pid: int, stdout: FileAccess, stderr: FileAccess) -> String
 		if output.contains("ERROR:"): #checks if CDP reported an error but passed exit code 0 anyway
 			console_output.append_text("[color=#9c2828][b]Processes failed[/b][/color]\n\n")
 			console_output.scroll_to_line(console_output.get_line_count() - 1)
+			process_successful = false
+			if process_cancelled == false:
+				$ProgressWindow.hide()
+				if !$Console.visible:
+					$Console.popup_centered()
 		else:
 			console_output.append_text("[color=#638382]Processes ran successfully[/color]\n\n")
 			console_output.scroll_to_line(console_output.get_line_count() - 1)
 	else:
 		console_output.append_text("[color=#9c2828][b]Processes failed with exit code: %d[/b][/color]\n" % exit_code + "\n")
 		console_output.scroll_to_line(console_output.get_line_count() - 1)
+		process_successful = false
+		if process_cancelled == false:
+			$ProgressWindow.hide()
+			if !$Console.visible:
+				$Console.popup_centered()
 		if output.contains("as an internal or external command"): #check for cdprogs location error on windows
 			console_output.append_text("[color=#9c2828][b]Please make sure your cdprogs folder is set to the correct location in the Settings menu. The default location is C:\\CDPR8\\_cdp\\_cdprogs[/b][/color]\n\n")
 			console_output.scroll_to_line(console_output.get_line_count() - 1)
@@ -1298,47 +1354,17 @@ func monitor_process(pid: int, stdout: FileAccess, stderr: FileAccess) -> String
 			console_output.append_text("[color=#9c2828][b]Please make sure your cdprogs folder is set to the correct location in the Settings menu. The default location is ~/cdpr8/_cdp/_cdprogs[/b][/color]\n\n")
 			console_output.scroll_to_line(console_output.get_line_count() - 1)
 			
+	process_running = false
 	return output
 
 func _on_kill_process_button_down() -> void:
 	if process_running and process_info.has("pid"):
+		$ProgressWindow.hide()
 		# Terminate the process by PID
 		OS.kill(process_info["pid"])
 		process_running = false
 		print("Process cancelled.")
-
-	
-	#if is_windows:
-		#args.remove_at(0)
-		#console_output.append_text(" ".join(args) + "\n")
-	#else:
-		#console_output.append_text(command + " " + " ".join(args) + "\n")
-	#console_output.scroll_to_line(console_output.get_line_count() - 1)
-	#
-	#if exit_code == 0:
-		#if output_str.contains("ERROR:"): #checks if CDP reported an error but passed exit code 0 anyway
-			#console_output.append_text("[color=#9c2828][b]Processes failed[/b][/color]\n")
-			#console_output.scroll_to_line(console_output.get_line_count() - 1)
-			#console_output.append_text(output_str + "\n")
-			#process_successful = false
-		#else:
-			#console_output.append_text("[color=#638382]Processes ran successfully[/color]\n")
-			#console_output.scroll_to_line(console_output.get_line_count() - 1)
-			#console_output.append_text(output_str + "\n")
-			#process_successful = true
-			#
-	#else:
-		#console_output.append_text("[color=#9c2828][b]Processes failed with exit code: %d[/b][/color]\n" % exit_code)
-		#console_output.scroll_to_line(console_output.get_line_count() - 1)
-		#console_output.append_text(output_str + "\n")
-		#console_output.append_text(error_str + "\n")
-		#if output_str.contains("as an internal or external command"): #check for cdprogs location error on windows
-			#console_output.append_text("[color=#9c2828][b]Please make sure your cdprogs folder is set to the correct location in the Settings menu. The default location is C:\\CDPR8\\_cdp\\_cdprogs[/b][/color]\n")
-		#if output_str.contains("command not found"): #check for cdprogs location error on unix systems
-			#console_output.append_text("[color=#9c2828][b]Please make sure your cdprogs folder is set to the correct location in the Settings menu. The default location is ~/cdpr8/_cdp/_cdprogs[/b][/color]\n")
-		#process_successful = false
-	
-
+		process_cancelled = true
 
 	
 func path_exists_through_all_nodes() -> bool:
@@ -1784,6 +1810,7 @@ func _on_dont_save_changes_button_down() -> void:
 	
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_on_kill_process_button_down()
 		$Console.hide()
 		if changesmade == true:
 			savestate = "quit"
