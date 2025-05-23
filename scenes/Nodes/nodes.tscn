@@ -3319,10 +3319,8 @@ tooltip_text = "Amount to multiply the original length of the file by"
 text = "Stretch Multiplier"
 
 [node name="HSlider" parent="spectstr_stretch/VBoxContainer/HSplitContainer" index="0"]
-min_value = 0.001
-max_value = 10000.0
+min_value = 0.1
 step = 0.01
-value = 10.001
 exp_edit = true
 
 [node name="VBoxContainer2" parent="spectstr_stretch" instance=ExtResource("3_b6nw4")]
