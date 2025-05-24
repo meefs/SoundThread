@@ -70,7 +70,8 @@ func reset_playback():
 	$Playhead.position.x = 0
 	$PlayButton.text = "Play"
 	$Timer.stop()
-	Global.trim_infile = false
+	if get_meta("loadenable") == true:
+		Global.trim_infile = false
 	
 	
 func play_outfile(path: String):
