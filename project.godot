@@ -22,8 +22,8 @@ boot_splash/minimum_display_time=500
 [autoload]
 
 Nodes="*res://scenes/Nodes/nodes.tscn"
-Global="*res://Global/Global.gd"
-ConfigHandler="*res://Global/config_handler.gd"
+Global="*res://global/Global.gd"
+ConfigHandler="*res://global/config_handler.gd"
 
 [display]
 

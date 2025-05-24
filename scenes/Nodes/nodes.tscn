@@ -318,7 +318,6 @@ slot/1/right_icon = null
 slot/1/draw_stylebox = true
 script = ExtResource("3_uv17x")
 metadata/command = "clip_clip_2"
-metadata/stereo_input = true
 
 [node name="Control" type="Control" parent="clip_clip_2"]
 layout_mode = 2
@@ -3321,6 +3320,7 @@ text = "Stretch Multiplier"
 [node name="HSlider" parent="spectstr_stretch/VBoxContainer/HSplitContainer" index="0"]
 min_value = 0.1
 step = 0.01
+value = 10.1
 exp_edit = true
 
 [node name="VBoxContainer2" parent="spectstr_stretch" instance=ExtResource("3_b6nw4")]
