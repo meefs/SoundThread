@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=66 format=3 uid="uid://cefwkdcoxihro"]
+[gd_resource type="Theme" load_steps=67 format=3 uid="uid://cefwkdcoxihro"]
 
 [ext_resource type="Texture2D" uid="uid://b4o8vm5o4uptk" path="res://theme/images/toggle_checked.png" id="1_cibxr"]
 [ext_resource type="Texture2D" uid="uid://d0dubcywvqtkw" path="res://theme/images/toggle_unchecked.png" id="2_adhqp"]
@@ -386,6 +386,14 @@ border_color = Color(0, 0, 0, 0.6)
 corner_detail = 5
 shadow_color = Color(0, 0, 0, 0)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5mqb0"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_detail = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cibxr"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -597,6 +605,7 @@ ItemList/styles/selected = SubResource("StyleBoxFlat_xnh8w")
 ItemList/styles/selected_focus = SubResource("StyleBoxFlat_2b3ki")
 LineEdit/styles/focus = SubResource("StyleBoxFlat_7hjjl")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_wnmfn")
+Panel/styles/panel = SubResource("StyleBoxFlat_5mqb0")
 PopupMenu/constants/item_end_padding = 20
 PopupMenu/constants/v_separation = 8
 PopupMenu/styles/hover = SubResource("StyleBoxFlat_cibxr")

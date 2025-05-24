@@ -400,10 +400,10 @@ offset_right = 382.0
 offset_bottom = 100.0
 text = "Get the update"
 
-[node name="Settings" parent="." instance=ExtResource("8_16l5g")]
+[node name="Settings" parent="." groups=["popup_windows"] instance=ExtResource("8_16l5g")]
 visible = false
 
-[node name="ProgressWindow" type="Window" parent="."]
+[node name="ProgressWindow" type="Window" parent="." groups=["popup_windows"]]
 initial_position = 2
 size = Vector2i(600, 110)
 visible = false
