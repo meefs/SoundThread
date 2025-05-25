@@ -5,6 +5,7 @@
 SoundThread is a cross-platform user interface for The Composers Desktop Project (CDP) suite of sound manipulation tools. It allows for modular style routing of various CDP processes to quickly build up complex Threads that allow for extensive sound manipulation. The goal of SoundThread is to make CDP as user friendly as possible and it is particularly well suited to those new to experimental sound processing.
 
 [Full video overview of SoundThread's interface](https://youtu.be/6dOh-Geq6f8)
+
 [Quick look at processing audio in SoundThread](https://youtu.be/Mebi9f8jP6g)
 
 ## What is CDP?
