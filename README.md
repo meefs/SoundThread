@@ -2,7 +2,10 @@
 ## Node based interface for [The Composers Desktop Project](https://www.composersdesktop.com/)
 ![soundthread ui](readmeimages/main_screenshot.png?raw=true)
 ## What is SoundThread?
-SoundThread is a cross-platform user interface for The Composers Desktop Project (CDP) suite of sound manipulation tools. It allows for modular style routing of various CDP processes to quickly build up complex Threads that allow for extensive sound manipulation. The goal of SoundThread is to make CDP as user friendly as possible and it is particularly well suited to those new to experimental sound processing. 
+SoundThread is a cross-platform user interface for The Composers Desktop Project (CDP) suite of sound manipulation tools. It allows for modular style routing of various CDP processes to quickly build up complex Threads that allow for extensive sound manipulation. The goal of SoundThread is to make CDP as user friendly as possible and it is particularly well suited to those new to experimental sound processing.
+
+[Full video overview of SoundThread's interface](https://youtu.be/6dOh-Geq6f8)
+[Quick look at processing audio in SoundThread](https://youtu.be/Mebi9f8jP6g)
 
 ## What is CDP?
 
@@ -14,11 +17,12 @@ CDP is a suite of [open source](https://github.com/ComposersDesktop/CDP8) comman
 > [CDP About](https://www.composersdesktop.com/docs/html/cdphome.htm)
 
 ## Download
-The latest builds for Mac and Windows can be found in [Releases](https://github.com/j-p-higgins/SoundThread/releases/latest)
+The latest builds for Mac and Windows can be found in [Releases](https://github.com/j-p-higgins/SoundThread/releases/latest).
 Additionally you will need to download CDP for SoundThread to interface with, this can be [downloaded here](https://www.unstablesound.net/cdp.html).
 
+
 ## What works?
-SoundThread is currently in Alpha and as such there are some bugs, missing features and limitations. However, it is mostly very stable and has enough implemented already to be a powerful sound design tool.
+SoundThread is currently in Beta and as such there are some bugs, missing features and limitations. However, it is mostly very stable and has enough implemented already to be a powerful sound design tool.
 ### Currently implemented features:
 - Node based patching system with support for patching parallel processes and mixing outputs
 - A selection of popular CDP time domain and frequency domain processes:
