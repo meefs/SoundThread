@@ -21,13 +21,11 @@ var helpfile #tracks which help file the user was trying to load when savechange
 var outfilename #links to the user name for outputfile field
 var foldertoggle #links to the reuse folder button
 var lastoutputfolder = "none" #tracks last output folder, this can in future be used to replace global.outfile but i cba right now
-var process_successful #tracks if the last run process was successful
-var help_data := {} #stores help data for each node to display in help popup
-var HelpWindowScene = preload("res://scenes/main/help_window.tscn")
 var uiscale = 1.0 #tracks scaling for retina screens
-var process_info = {} #tracks the data of the currently running process
-var process_running := false #tracks if a process is currently running
-var process_cancelled = false #checks if the currently running process has been cancelled
+
+#scripts
+var open_help
+var run_thread
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -54,6 +52,13 @@ func _ready() -> void:
 	$LoadDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	$LoadDialog.filters = ["*.thd"]
 	
+	#connect scripts
+	open_help = preload("res://scenes/main/scripts/open_help.gd").new()
+	open_help.init(self)
+	add_child(open_help)
+	run_thread = preload("res://scenes/main/scripts/run_thread.gd").new()
+	run_thread.init(self, $ProgressWindow, $ProgressWindow/ProgressLabel, $ProgressWindow/ProgressBar, $GraphEdit, $Console, $Console/ConsoleOutput)
+	add_child(run_thread)
 	
 	#Goes through all nodes in scene and checks for buttons in the make_node_buttons group
 	#Associates all buttons with the _on_button_pressed fuction and passes the button as an argument
@@ -63,7 +68,7 @@ func _ready() -> void:
 	
 	get_node("SearchMenu").make_node.connect(_make_node_from_search_menu)
 	get_node("mainmenu").make_node.connect(_make_node_from_search_menu)
-	get_node("mainmenu").open_help.connect(show_help_for_node)
+	get_node("mainmenu").open_help.connect(open_help.show_help_for_node)
 	get_node("Settings").open_cdp_location.connect(show_cdp_location)
 	get_node("Settings").console_on_top.connect(change_console_settings)
 	
@@ -94,9 +99,6 @@ func _ready() -> void:
 			load_graph_edit(path)
 			break
 	
-	var file = FileAccess.open("res://scenes/main/process_help.json", FileAccess.READ)
-	if file:
-		help_data = JSON.parse_string(file.get_as_text())
 	
 	new_patch()
 	check_cdp_location_set()
@@ -117,13 +119,13 @@ func new_patch():
 	var effect: GraphNode = Nodes.get_node(NodePath("inputfile")).duplicate()
 	effect.name = "inputfile"
 	get_node("GraphEdit").add_child(effect, true)
-	effect.connect("open_help", Callable(self, "show_help_for_node"))
+	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
 	effect.position_offset = Vector2(20,80)
 	
 	effect = Nodes.get_node(NodePath("outputfile")).duplicate()
 	effect.name = "outputfile"
 	get_node("GraphEdit").add_child(effect, true)
-	effect.connect("open_help", Callable(self, "show_help_for_node"))
+	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
 	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) / uiscale, 80)
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
 	
@@ -240,70 +242,7 @@ func _input(event):
 		open_explore()
 	
 
-func show_help_for_node(node_name: String, node_title: String):
-	#check if there is already a help window open for this node and pop it up instead of making a new one
-	for child in get_tree().current_scene.get_children():
-		if child is Window and child.title == "Help - " + node_title:
-			# Found existing window, bring it to front
-			if child.is_visible():
-				child.hide()
-				child.popup()
-			else:
-				child.popup()
-			return
-	
-	if help_data.has(node_name):
-		#looks up the help data from the json and stores it in info
-		var info = help_data[node_name]
-		#makes an instance of the help_window scene
-		var help_window = HelpWindowScene.instantiate()
-		help_window.title = "Help - " + node_title
-		help_window.get_node("HelpTitle").text = node_title
-		
-		var output = ""
-		output += info.get("short_description", "") + "\n\n"
-		
-		var parameters = info.get("parameters", {})
-		#checks if there are parameters and if there are places them in a table
-		if parameters.size() > 0:
-			output += "[table=3]\n"
-			output += "[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]\n"
-			for key in parameters.keys(): #scans through all parameters
-				var param = parameters[key]
-				var name = param.get("paramname", "")
-				var desc = param.get("paramdescription", "")
-				var automatable = param.get("automatable", false)
-				var autom_text = "[center]✓[/center]" if automatable else "[center]𐄂[/center]" #replaces true and false with ticks and crosses
-				output += "[cell]%s[/cell][cell]%s[/cell][cell]%s[/cell]\n" % [name, desc, autom_text] #places each param detail into cells of the table
-			output += "[/table]\n\n" #ends the table
-		
-		output += "[b]Functionality[/b]\n"
-		var description_text = info.get("description", "")
-		output += description_text.strip_edges()
-		#check if this is a cdp process or a utility and display the cdp process if it is one
-		var category = info.get("category", "")
-		if category != "utility":
-			output += "\n\n[b]CDP Process[/b]\nThis node runs the CDP Process: " + node_name.replace("_", " ")
-		
-		help_window.get_node("HelpText").bbcode_text = output
-		help_window.get_node("HelpText").scroll_to_line(0) #scrolls to the first line of the help file just incase
-		
-		# Add to the current scene tree to show it
-		get_tree().current_scene.add_child(help_window)
-		if help_window.content_scale_factor < uiscale:
-			help_window.size = help_window.size * uiscale
-			help_window.content_scale_factor = uiscale
-		
-		help_window.popup() 
-		
-	else:
-		# If no help available, even though there always should be, show a window saying no help found
-		var help_window = HelpWindowScene.instance()
-		help_window.title = "Help - " + node_title
-		help_window.get_node("HelpTitle").text = node_title
-		help_window.get_node("HelpText").bbcode_text = "No help found."
-		get_tree().current_scene.add_child(help_window)
-		help_window.popup()
+
 
 
 func simulate_mouse_click():
@@ -331,7 +270,7 @@ func _make_node_from_search_menu(command: String):
 	var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
 	effect.name = command
 	get_node("GraphEdit").add_child(effect, true)
-	effect.connect("open_help", Callable(self, "show_help_for_node"))
+	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
 	effect.set_position_offset((effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 	_register_inputs_in_node(effect) #link sliders for changes tracking
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
@@ -356,7 +295,7 @@ func _on_button_pressed(button: Button):
 	var effect: GraphNode = Nodes.get_node(NodePath(button.name)).duplicate()
 	effect.name = button.name
 	get_node("GraphEdit").add_child(effect, true)
-	effect.connect("open_help", Callable(self, "show_help_for_node"))
+	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
 	effect.set_position_offset((effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 	_register_inputs_in_node(effect) #link sliders for changes tracking
 	_register_node_movement() #link nodes for tracking position changes for changes tracking
@@ -554,7 +493,7 @@ func paste_copied_nodes():
 				child.value = node_data["slider_values"][child.name]
 
 		graph_edit.add_child(new_node, true)
-		new_node.connect("open_help", Callable(self, "show_help_for_node"))
+		new_node.connect("open_help", Callable(open_help, "show_help_for_node"))
 		_register_inputs_in_node(new_node) #link sliders for changes tracking
 		_register_node_movement() # link nodes for changes tracking
 		name_map[node_data["name"]] = new_node.name
@@ -659,7 +598,7 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 		else:
 			$Console.popup_centered()
 	await get_tree().process_frame
-	log_console("Generating processing queue", true)
+	run_thread.log_console("Generating processing queue", true)
 	await get_tree().process_frame
 
 	#get the current time in hh-mm-ss format as default : causes file name issues
@@ -670,762 +609,10 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	var second = str(time_dict.second).pad_zeros(2)
 	var time_str = hour + "-" + minute + "-" + second
 	Global.outfile = dir + "/" + outfilename.text.get_basename() + "_" + Time.get_date_string_from_system() + "_" + time_str
-	log_console("Output directory and file name(s):" + Global.outfile, true)
+	run_thread.log_console("Output directory and file name(s):" + Global.outfile, true)
 	await get_tree().process_frame
 	
-	run_thread_with_branches()
-	
-func run_thread_with_branches():
-	process_cancelled = false
-	process_successful = true
-	# Detect platform: Determine if the OS is Windows
-	var is_windows := OS.get_name() == "Windows"
-	
-	# Choose appropriate commands based on OS
-	var delete_cmd = "del" if is_windows else "rm"
-	var rename_cmd = "ren" if is_windows else "mv"
-	var path_sep := "/"  # Always use forward slash for paths
-
-	# Get all node connections in the GraphEdit
-	var connections = graph_edit.get_connection_list()
-
-	# Prepare data structures for graph traversal
-	var graph = {}          # forward adjacency list
-	var reverse_graph = {}  # reverse adjacency list (for input lookup)
-	var indegree = {}       # used for topological sort
-	var all_nodes = {}      # map of node name -> GraphNode reference
-
-	log_console("Mapping thread.", true)
-	await get_tree().process_frame  # Let UI update
-
-	#Step 0: check thread is valid
-	var is_valid = path_exists_through_all_nodes()
-	if is_valid == false:
-		log_console("[color=#9c2828][b]Error: Valid Thread not found[/b][/color]", true)
-		log_console("Threads must contain at least one processing node and a valid path from the Input File to the Output File.", true)
-		await get_tree().process_frame  # Let UI update
-		return
-	else:
-		log_console("[color=#638382][b]Valid Thread found[/b][/color]", true)
-		await get_tree().process_frame  # Let UI update
-		
-	# Step 1: Gather nodes from the GraphEdit
-	for child in graph_edit.get_children():
-		if child is GraphNode:
-			var name = str(child.name)
-			all_nodes[name] = child
-			if not child.has_meta("utility"):
-				graph[name] = []
-				reverse_graph[name] = []
-				indegree[name] = 0  # Start with zero incoming edges
-	#do calculations for progress bar
-	var progress_step
-	if Global.trim_infile == true:
-		progress_step = 100 / (graph.size() + 4)
-	else:
-		progress_step = 100 / (graph.size() + 3)
-	
-
-	# Step 2: Build graph relationships from connections
-	if process_cancelled:
-		$ProgressWindow/ProgressLabel.text = "Thread Stopped"
-		log_console("[b]Thread Stopped[/b]", true)
-		return
-	else:
-		$ProgressWindow/ProgressLabel.text = "Building Thread"
-	for conn in connections:
-		var from = str(conn["from_node"])
-		var to = str(conn["to_node"])
-		if graph.has(from) and graph.has(to):
-			graph[from].append(to)
-			reverse_graph[to].append(from)
-			indegree[to] += 1  # Count incoming edges
-
-	# Step 3: Topological sort to get execution order
-	var sorted = []  # Sorted list of node names
-	var queue = []   # Queue of nodes with 0 indegree
-
-	for node in graph.keys():
-		if indegree[node] == 0:
-			queue.append(node)
-
-	while not queue.is_empty():
-		var current = queue.pop_front()
-		sorted.append(current)
-		for neighbor in graph[current]:
-			indegree[neighbor] -= 1
-			if indegree[neighbor] == 0:
-				queue.append(neighbor)
-
-	# If not all nodes were processed, there's a cycle
-	if sorted.size() != graph.size():
-		log_console("[color=#9c2828][b]Error: Thread not valid[/b][/color]", true)
-		log_console("Threads cannot contain loops.", true)
-		return
-	$ProgressWindow/ProgressBar.value = progress_step
-	# Step 4: Start processing audio
-	var batch_lines = []        # Holds all batch file commands
-	var intermediate_files = [] # Files to delete later
-	var breakfiles = [] #breakfiles to delete later
-
-	# Dictionary to keep track of each node's output file
-	var output_files = {}
-	var process_count = 0
-
-	# Start with the original input file
-	var starting_infile = Global.infile
-	
-	
-	#If trim is enabled trim input audio
-	if Global.trim_infile == true:
-		if process_cancelled:
-			$ProgressWindow/ProgressLabel.text = "Thread Stopped"
-			log_console("[b]Thread Stopped[/b]", true)
-			return
-		else:
-			$ProgressWindow/ProgressLabel.text = "Trimming input audio"
-		await run_command(cdpprogs_location + "/sfedit", ["cut", "1", starting_infile, "%s_trimmed.wav" % Global.outfile, str(Global.infile_start), str(Global.infile_stop)])
-		starting_infile = Global.outfile + "_trimmed.wav"
-		# Mark trimmed file for cleanup if needed
-		if delete_intermediate_outputs:
-			intermediate_files.append(Global.outfile + "_trimmed.wav")
-		$ProgressWindow/ProgressBar.value += progress_step
-	var current_infile = starting_infile
-
-	# Iterate over the processing nodes in topological order
-	for node_name in sorted:
-		var node = all_nodes[node_name]
-		if process_cancelled:
-			$ProgressWindow/ProgressLabel.text = "Thread Stopped"
-			log_console("[b]Thread Stopped[/b]", true)
-			break
-		else:
-			$ProgressWindow/ProgressLabel.text = "Running process: " + node.get_title()
-		# Find upstream nodes connected to the current node
-		var inputs = reverse_graph[node_name]
-		var input_files = []
-		for input_node in inputs:
-			input_files.append(output_files[input_node])
-
-		# Merge inputs if this node has more than one input
-		if input_files.size() > 1:
-			# Prepare final merge output file name
-			var runmerge = await merge_many_files(process_count, input_files)
-			var merge_output = runmerge[0]
-			var converted_files = runmerge[1]
-
-			# Track the output and intermediate files
-			current_infile = merge_output
-			
-			if delete_intermediate_outputs:
-				intermediate_files.append(merge_output)
-				for f in converted_files:
-					intermediate_files.append(f)
-
-		# If only one input, use that
-		elif input_files.size() == 1:
-			current_infile = input_files[0]
-
-		## If no input, use the original input file
-		else:
-			current_infile = starting_infile
-
-		# Build the command for the current node's audio processing
-		var slider_data = _get_slider_values_ordered(node)
-		
-		if node.get_slot_type_right(0) == 1: #detect if process outputs pvoc data
-			if typeof(current_infile) == TYPE_ARRAY:
-				#check if infile is an array meaning that the last pvoc process was run in dual mono mode
-				# Process left and right seperately
-				var pvoc_stereo_files = []
-				
-				for infile in current_infile:
-					var makeprocess = await make_process(node, process_count, infile, slider_data)
-					# run the command
-					await run_command(makeprocess[0], makeprocess[3])
-					await get_tree().process_frame
-					var output_file = makeprocess[1]
-					pvoc_stereo_files.append(output_file)
-					
-					# Mark file for cleanup if needed
-					if delete_intermediate_outputs:
-						for file in makeprocess[2]:
-							breakfiles.append(file)
-						intermediate_files.append(output_file)
-
-					process_count += 1
-					
-				output_files[node_name] = pvoc_stereo_files
-			else:
-				var input_stereo = await is_stereo(current_infile)
-				if input_stereo == true: 
-					#audio file is stereo and needs to be split for pvoc processing
-					var pvoc_stereo_files = []
-					##Split stereo to c1/c2
-					await run_command(cdpprogs_location + "/housekeep",["chans", "2", current_infile])
-			
-					# Process left and right seperately
-					for channel in ["c1", "c2"]:
-						var dual_mono_file = current_infile.get_basename() + "_%s.wav" % channel
-						
-						var makeprocess = await make_process(node, process_count, dual_mono_file, slider_data)
-						# run the command
-						await run_command(makeprocess[0], makeprocess[3])
-						await get_tree().process_frame
-						var output_file = makeprocess[1]
-						pvoc_stereo_files.append(output_file)
-						
-						# Mark file for cleanup if needed
-						if delete_intermediate_outputs:
-							for file in makeprocess[2]:
-								breakfiles.append(file)
-							intermediate_files.append(output_file)
-						
-						#Delete c1 and c2 because they can be in the wrong folder and if the same infile is used more than once
-						#with this stereo process CDP will throw errors in the console even though its fine
-						if is_windows:
-							dual_mono_file = dual_mono_file.replace("/", "\\")
-						await run_command(delete_cmd, [dual_mono_file])
-						process_count += 1
-						
-						# Store output file path for this node
-					output_files[node_name] = pvoc_stereo_files
-				else: 
-					#input file is mono run through process
-					var makeprocess = await make_process(node, process_count, current_infile, slider_data)
-					# run the command
-					await run_command(makeprocess[0], makeprocess[3])
-					await get_tree().process_frame
-					var output_file = makeprocess[1]
-
-					# Store output file path for this node
-					output_files[node_name] = output_file
-
-					# Mark file for cleanup if needed
-					if delete_intermediate_outputs:
-						for file in makeprocess[2]:
-							breakfiles.append(file)
-						intermediate_files.append(output_file)
-
-		# Increase the process step count
-			process_count += 1
-			
-		else: 
-			#Process outputs audio
-			#check if this is the last pvoc process in a stereo processing chain
-			if node.get_meta("command") == "pvoc_synth" and typeof(current_infile) == TYPE_ARRAY:
-			
-				#check if infile is an array meaning that the last pvoc process was run in dual mono mode
-				# Process left and right seperately
-				var pvoc_stereo_files = []
-				
-				for infile in current_infile:
-					var makeprocess = await make_process(node, process_count, infile, slider_data)
-					# run the command
-					await run_command(makeprocess[0], makeprocess[3])
-					await get_tree().process_frame
-					var output_file = makeprocess[1]
-					pvoc_stereo_files.append(output_file)
-					
-					# Mark file for cleanup if needed
-					if delete_intermediate_outputs:
-						for file in makeprocess[2]:
-							breakfiles.append(file)
-						intermediate_files.append(output_file)
-
-					process_count += 1
-					
-					
-				#interleave left and right
-				var output_file = Global.outfile.get_basename() + str(process_count) + "_interleaved.wav"
-				await run_command(cdpprogs_location + "/submix", ["interleave", pvoc_stereo_files[0], pvoc_stereo_files[1], output_file])
-				# Store output file path for this node
-				output_files[node_name] = output_file
-				
-				# Mark file for cleanup if needed
-				if delete_intermediate_outputs:
-					intermediate_files.append(output_file)
-
-			else:
-				#Detect if input file is mono or stereo
-				var input_stereo = await is_stereo(current_infile)
-				if input_stereo == true:
-					if node.get_meta("stereo_input") == true: #audio file is stereo and process is stereo, run file through process
-						var makeprocess = await make_process(node, process_count, current_infile, slider_data)
-						# run the command
-						await run_command(makeprocess[0], makeprocess[3])
-						await get_tree().process_frame
-						var output_file = makeprocess[1]
-						
-						# Store output file path for this node
-						output_files[node_name] = output_file
-
-						# Mark file for cleanup if needed
-						if delete_intermediate_outputs:
-							for file in makeprocess[2]:
-								breakfiles.append(file)
-							intermediate_files.append(output_file)
-
-					else: #audio file is stereo and process is mono, split stereo, process and recombine
-						##Split stereo to c1/c2
-						await run_command(cdpprogs_location + "/housekeep",["chans", "2", current_infile])
-				
-						# Process left and right seperately
-						var dual_mono_output = []
-						for channel in ["c1", "c2"]:
-							var dual_mono_file = current_infile.get_basename() + "_%s.wav" % channel
-							
-							var makeprocess = await make_process(node, process_count, dual_mono_file, slider_data)
-							# run the command
-							await run_command(makeprocess[0], makeprocess[3])
-							await get_tree().process_frame
-							var output_file = makeprocess[1]
-							dual_mono_output.append(output_file)
-							
-							# Mark file for cleanup if needed
-							if delete_intermediate_outputs:
-								for file in makeprocess[2]:
-									breakfiles.append(file)
-								intermediate_files.append(output_file)
-							
-							#Delete c1 and c2 because they can be in the wrong folder and if the same infile is used more than once
-							#with this stereo process CDP will throw errors in the console even though its fine
-							if is_windows:
-								dual_mono_file = dual_mono_file.replace("/", "\\")
-							await run_command(delete_cmd, [dual_mono_file])
-							process_count += 1
-						
-						
-						var output_file = Global.outfile.get_basename() + str(process_count) + "_interleaved.wav"
-						await run_command(cdpprogs_location + "/submix", ["interleave", dual_mono_output[0], dual_mono_output[1], output_file])
-						
-						# Store output file path for this node
-						output_files[node_name] = output_file
-
-						# Mark file for cleanup if needed
-						if delete_intermediate_outputs:
-							intermediate_files.append(output_file)
-
-				else: #audio file is mono, run through the process
-					var makeprocess = await make_process(node, process_count, current_infile, slider_data)
-					# run the command
-					await run_command(makeprocess[0], makeprocess[3])
-					await get_tree().process_frame
-					var output_file = makeprocess[1]
-					
-
-					# Store output file path for this node
-					output_files[node_name] = output_file
-
-					# Mark file for cleanup if needed
-					if delete_intermediate_outputs:
-						for file in makeprocess[2]:
-							breakfiles.append(file)
-						intermediate_files.append(output_file)
-
-			# Increase the process step count
-			process_count += 1
-		$ProgressWindow/ProgressBar.value += progress_step
-	# FINAL OUTPUT STAGE
-
-	# Collect all nodes that are connected to the outputfile node
-	if process_cancelled:
-		$ProgressWindow/ProgressLabel.text = "Thread Stopped"
-		log_console("[b]Thread Stopped[/b]", true)
-		return
-	else:
-		$ProgressWindow/ProgressLabel.text = "Finalising output"
-	var output_inputs := []
-	for conn in connections:
-		var to_node = str(conn["to_node"])
-		if all_nodes.has(to_node) and all_nodes[to_node].get_meta("command") == "outputfile":
-			output_inputs.append(str(conn["from_node"]))
-
-	# List to hold the final output files to be merged (if needed)
-	var final_outputs := []
-	for node_name in output_inputs:
-		if output_files.has(node_name):
-			final_outputs.append(output_files[node_name])
-
-	# If multiple outputs go to the outputfile node, merge them
-	if final_outputs.size() > 1:
-		var runmerge = await merge_many_files(process_count, final_outputs)
-		final_output_dir = runmerge[0]
-		var converted_files = runmerge[1]
-		
-		if delete_intermediate_outputs:
-			for f in converted_files:
-				intermediate_files.append(f)
-
-
-	# Only one output, no merge needed
-	elif final_outputs.size() == 1:
-		var single_output = final_outputs[0]
-		final_output_dir = single_output
-		intermediate_files.erase(single_output)
-	$ProgressWindow/ProgressBar.value += progress_step
-	# CLEANUP: Delete intermediate files after processing and rename final output
-	if process_cancelled:
-		$ProgressWindow/ProgressLabel.text = "Thread Stopped"
-		log_console("[b]Thread Stopped[/b]", true)
-		return
-	else:
-		log_console("Cleaning up intermediate files.", true)
-		$ProgressWindow/ProgressLabel.text = "Cleaning up"
-	for file_path in intermediate_files:
-		# Adjust file path format for Windows if needed
-		var fixed_path = file_path
-		if is_windows:
-			fixed_path = fixed_path.replace("/", "\\")
-		await run_command(delete_cmd, [fixed_path])
-		await get_tree().process_frame
-	#delete break files 
-	for file_path in breakfiles:
-		# Adjust file path format for Windows if needed
-		var fixed_path = file_path
-		if is_windows:
-			fixed_path = fixed_path.replace("/", "\\")
-		await run_command(delete_cmd, [fixed_path])
-		await get_tree().process_frame
-		
-	var final_filename = "%s.wav" % Global.outfile
-	var final_output_dir_fixed_path = final_output_dir
-	if is_windows:
-		final_output_dir_fixed_path = final_output_dir_fixed_path.replace("/", "\\")
-		await run_command(rename_cmd, [final_output_dir_fixed_path, final_filename.get_file()])
-	else:
-		await run_command(rename_cmd, [final_output_dir_fixed_path, "%s.wav" % Global.outfile])
-	final_output_dir = Global.outfile + ".wav"
-	
-	output_audio_player.play_outfile(final_output_dir)
-	outfile = final_output_dir
-	$ProgressWindow/ProgressBar.value = 100.0
-	var interface_settings = ConfigHandler.load_interface_settings() #checks if close console is enabled and closes console on a success
-	$ProgressWindow.hide()
-	if interface_settings.auto_close_console and process_successful == true:
-		$Console.hide()
-
-
-func is_stereo(file: String) -> bool:
-	var output = await run_command(cdpprogs_location + "/sfprops", ["-c", file])
-	output = int(output.strip_edges()) #convert output from cmd to clean int
-	if output == 1:
-		return false
-	elif output == 2:
-		return true
-	elif output == 1026: #ignore pvoc .ana files
-		return false
-	else:
-		log_console("[color=#9c2828]Error: Only mono and stereo files are supported[/color]", true)
-		return false
-
-func merge_many_files(process_count: int, input_files: Array) -> Array:
-	var merge_output = "%s_merge_%d.wav" % [Global.outfile.get_basename(), process_count]
-	var converted_files := []  # Track any mono->stereo converted files
-	var inputs_to_merge := []  # Files to be used in the final merge
-
-	var mono_files := []
-	var stereo_files := []
-
-	# STEP 1: Check each file's channel count
-	for f in input_files:
-		var stereo = await is_stereo(f)
-		if stereo == false:
-			mono_files.append(f)
-		elif stereo == true:
-			stereo_files.append(f)
-
-
-	# STEP 2: Convert mono to stereo if there is a mix
-	if mono_files.size() > 0 and stereo_files.size() > 0:
-		for mono_file in mono_files:
-			var stereo_file = "%s_stereo.wav" % mono_file.get_basename()
-			await run_command(cdpprogs_location + "/submix", ["interleave", mono_file, mono_file, stereo_file])
-			if process_successful == false:
-				log_console("Failed to interleave mono file: %s" % mono_file, true)
-			else:
-				converted_files.append(stereo_file)
-				inputs_to_merge.append(stereo_file)
-		# Add existing stereo files
-		inputs_to_merge += stereo_files
-	else:
-		# All mono or all stereo — use input_files directly
-		inputs_to_merge = input_files.duplicate()
-
-	# STEP 3: Merge all input files (converted or original)
-	var quoted_inputs := []
-	for f in inputs_to_merge:
-		quoted_inputs.append(f)
-	quoted_inputs.insert(0, "mergemany")
-	quoted_inputs.append(merge_output)
-	await run_command(cdpprogs_location + "/submix", quoted_inputs)
-
-	if process_successful == false:
-		log_console("Failed to to merge files to" + merge_output, true)
-	
-	return [merge_output, converted_files]
-
-func _get_slider_values_ordered(node: Node) -> Array:
-	var results := []
-	for child in node.get_children():
-		if child is Range:
-			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
-			var time
-			var brk_data = []
-			var min_slider = child.min_value
-			var max_slider = child.max_value
-			if child.has_meta("time"):
-				time = child.get_meta("time")
-			else:
-				time = false
-			if child.has_meta("brk_data"):
-				brk_data = child.get_meta("brk_data")
-			results.append([flag, child.value, time, brk_data, min_slider, max_slider])
-		elif child.get_child_count() > 0:
-			var nested := _get_slider_values_ordered(child)
-			results.append_array(nested)
-	return results
-
-
-
-func make_process(node: Node, process_count: int, current_infile: String, slider_data: Array) -> Array:
-	# Determine output extension: .wav or .ana based on the node's slot type
-	var extension = ".wav" if node.get_slot_type_right(0) == 0 else ".ana"
-
-	# Construct output filename for this step
-	var output_file = "%s_%d%s" % [Global.outfile.get_basename(), process_count, extension]
-
-	# Get the command name from metadata or default to node name
-	var command_name = str(node.get_meta("command"))
-	#command_name = command_name.replace("_", " ")
-	command_name = command_name.split("_", true, 1)
-	print(command_name)
-	var command = "%s/%s" %[cdpprogs_location, command_name[0]]
-	print(command)
-	var args = command_name[1].split("_", true, 1)
-	print(args)
-	args.append(current_infile)
-	args.append(output_file)
-	print(args)
-	# Start building the command line windows
-	var line = "%s/%s \"%s\" \"%s\" " % [cdpprogs_location, command_name, current_infile, output_file]
-	#mac
-
-	
-	var cleanup = []
-
-	# Append parameter values from the sliders, include flags if present
-	var slider_count = 0
-	for entry in slider_data:
-		var flag = entry[0]
-		var value = entry[1]
-		var time = entry[2] #checks if slider is a time percentage slider
-		var brk_data = entry[3]
-		var min_slider = entry[4]
-		var max_slider = entry[5]
-		if brk_data.size() > 0: #if breakpoint data is present on slider
-			#Sort all points by time
-			var sorted_brk_data = []
-			sorted_brk_data = brk_data.duplicate()
-			sorted_brk_data.sort_custom(sort_points)
-			
-			var calculated_brk = []
-			
-			#get length of input file in seconds
-			var infile_length = await run_command(cdpprogs_location + "/sfprops", ["-d", current_infile])
-			infile_length = float(infile_length.strip_edges())
-			
-			#scale values from automation window to the right length for file and correct slider values
-			#need to check how time is handled in all files that accept it, zigzag is x = outfile position, y = infile position
-			#if time == true:
-				#for point in sorted_brk_data:
-					#var new_x = infile_length * (point.x / 700) #time
-					#var new_y = infile_length * (remap(point.y, 255, 0, min_slider, max_slider) / 100) #slider value scaled as a percentage of infile time
-					#calculated_brk.append(Vector2(new_x, new_y))
-			#else:
-			for i in range(sorted_brk_data.size()):
-				var point = sorted_brk_data[i]
-				var new_x = infile_length * (point.x / 700) #time
-				if i == sorted_brk_data.size() - 1: #check if this is last automation point
-					new_x = infile_length + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
-				var new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
-				calculated_brk.append(Vector2(new_x, new_y))
-				
-			#make text file
-			var brk_file_path = output_file.get_basename() + "_" + str(slider_count) + ".txt"
-			write_breakfile(calculated_brk, brk_file_path)
-			
-			#append text file in place of value
-			line += ("\"%s\" " % brk_file_path)
-			args.append(brk_file_path)
-			
-			cleanup.append(brk_file_path)
-		else:
-			if time == true:
-				var infile_length = await run_command(cdpprogs_location + "/sfprops", ["-d", current_infile])
-				infile_length = float(infile_length.strip_edges())
-				value = infile_length * (value / 100) #calculate percentage time of the input file
-			line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
-			args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value))
-			
-		slider_count += 1
-	return [command, output_file, cleanup, args]
-	#return [line.strip_edges(), output_file, cleanup]
-
-func sort_points(a, b):
-	return a.x < b.x
-	
-func write_breakfile(points: Array, path: String):
-	var file = FileAccess.open(path, FileAccess.WRITE)
-	if file:
-		for point in points:
-			var line = str(point.x) + " " + str(point.y) + "\n"
-			file.store_string(line)
-		file.close()
-	else:
-		print("Failed to open file for writing.")
-
-func run_command(command: String, args: Array) -> String:
-	var is_windows = OS.get_name() == "Windows"
-
-	console_output.append_text(command + " " + " ".join(args) + "\n")
-	console_output.scroll_to_line(console_output.get_line_count() - 1)
-	await get_tree().process_frame
-	
-	if is_windows:
-		#exit_code = OS.execute("cmd.exe", ["/C", command], output, true, false)
-		args.insert(0, command)
-		args.insert(0, "/C")
-		process_info = OS.execute_with_pipe("cmd.exe", args, false)
-	else:
-		process_info = OS.execute_with_pipe(command, args, false)
-	# Check if the process was successfully started
-	if !process_info.has("pid"):
-		print("Failed to start process.")
-		return ""
-	
-	process_running = true
-	
-	# Start monitoring the process output and status
-	return await monitor_process(process_info["pid"], process_info["stdio"], process_info["stderr"])
-
-func monitor_process(pid: int, stdout: FileAccess, stderr: FileAccess) -> String:
-	var output := ""
-	
-	while OS.is_process_running(pid):
-		await get_tree().process_frame
-		
-		while stdout.get_position() < stdout.get_length():
-			var line = stdout.get_line()
-			output += line
-			console_output.append_text(line + "\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-		while stderr.get_position() < stderr.get_length():
-			var line = stderr.get_line()
-			output += line
-			console_output.append_text(line + "\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-	
-	var exit_code = OS.get_process_exit_code(pid)
-	if exit_code == 0:
-		if output.contains("ERROR:"): #checks if CDP reported an error but passed exit code 0 anyway
-			console_output.append_text("[color=#9c2828][b]Processes failed[/b][/color]\n\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-			process_successful = false
-			if process_cancelled == false:
-				$ProgressWindow.hide()
-				if !$Console.visible:
-					$Console.popup_centered()
-		else:
-			console_output.append_text("[color=#638382]Processes ran successfully[/color]\n\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-	else:
-		console_output.append_text("[color=#9c2828][b]Processes failed with exit code: %d[/b][/color]\n" % exit_code + "\n")
-		console_output.scroll_to_line(console_output.get_line_count() - 1)
-		process_successful = false
-		if process_cancelled == false:
-			$ProgressWindow.hide()
-			if !$Console.visible:
-				$Console.popup_centered()
-		if output.contains("as an internal or external command"): #check for cdprogs location error on windows
-			console_output.append_text("[color=#9c2828][b]Please make sure your cdprogs folder is set to the correct location in the Settings menu. The default location is C:\\CDPR8\\_cdp\\_cdprogs[/b][/color]\n\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-		if output.contains("command not found"): #check for cdprogs location error on unix systems
-			console_output.append_text("[color=#9c2828][b]Please make sure your cdprogs folder is set to the correct location in the Settings menu. The default location is ~/cdpr8/_cdp/_cdprogs[/b][/color]\n\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-			
-	process_running = false
-	return output
-
-func _on_kill_process_button_down() -> void:
-	if process_running and process_info.has("pid"):
-		$ProgressWindow.hide()
-		# Terminate the process by PID
-		OS.kill(process_info["pid"])
-		process_running = false
-		print("Process cancelled.")
-		process_cancelled = true
-
-	
-func path_exists_through_all_nodes() -> bool:
-	var all_nodes = {}
-	var graph = {}
-
-	var input_node_name = ""
-	var output_node_name = ""
-
-	# Gather all relevant nodes
-	for child in graph_edit.get_children():
-		if child is GraphNode:
-			var name = str(child.name)
-			all_nodes[name] = child
-
-			var command = child.get_meta("command")
-			if command == "inputfile":
-				input_node_name = name
-			elif command == "outputfile":
-				output_node_name = name
-
-			# Skip utility nodes, include others
-			if command in ["inputfile", "outputfile"] or not child.has_meta("utility"):
-				graph[name] = []
-
-	# Ensure both input and output were found
-	if input_node_name == "" or output_node_name == "":
-		print("Input or output node not found!")
-		return false
-
-	# Add edges to graph from the connection list
-	var connection_list = graph_edit.get_connection_list()
-	for conn in connection_list:
-		var from = str(conn["from_node"])
-		var to = str(conn["to_node"])
-		if graph.has(from):
-			graph[from].append(to)
-
-	# BFS traversal to check path and depth
-	var visited = {}
-	var queue = [ { "node": input_node_name, "depth": 0 } ]
-	var has_intermediate = false
-
-	while queue.size() > 0:
-		var current = queue.pop_front()
-		var current_node = current["node"]
-		var depth = current["depth"]
-
-		if current_node in visited:
-			continue
-		visited[current_node] = true
-
-		if current_node == output_node_name and depth >= 2:
-			has_intermediate = true
-
-		if graph.has(current_node):
-			for neighbor in graph[current_node]:
-				queue.append({ "node": neighbor, "depth": depth + 1 })
-
-	return has_intermediate
-
+	run_thread.run_thread_with_branches()
 
 func _toggle_delete(toggled_on: bool):
 	delete_intermediate_outputs = toggled_on
@@ -1434,11 +621,6 @@ func _toggle_delete(toggled_on: bool):
 func _on_console_close_requested() -> void:
 	$Console.hide()
 
-func log_console(text: String, update: bool) -> void:
-	console_output.append_text(text + "\n \n")
-	console_output.scroll_to_line(console_output.get_line_count() - 1)
-	if update == true:
-		await get_tree().process_frame  # Optional: ensure UI updates
 
 
 func _on_console_open_folder_button_down() -> void:
@@ -1611,7 +793,7 @@ func load_graph_edit(path: String):
 		new_node.position_offset = Vector2(node_data["offset"]["x"], node_data["offset"]["y"])
 		new_node.set_meta("command", command_name)
 		graph_edit.add_child(new_node)
-		new_node.connect("open_help", Callable(self, "show_help_for_node"))
+		new_node.connect("open_help", Callable(open_help, "show_help_for_node"))
 		_register_node_movement()  # Track node movement changes
 
 		id_to_node[node_data["id"]] = new_node
@@ -1810,7 +992,7 @@ func _on_dont_save_changes_button_down() -> void:
 	
 func _notification(what):
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		_on_kill_process_button_down()
+		run_thread._on_kill_process_button_down()
 		$Console.hide()
 		if changesmade == true:
 			savestate = "quit"
@@ -1886,3 +1068,7 @@ func open_explore():
 	
 func change_console_settings(toggled: bool):
 	$Console.always_on_top = toggled
+
+
+func _on_kill_process_button_down() -> void:
+	run_thread._on_kill_process_button_down()
