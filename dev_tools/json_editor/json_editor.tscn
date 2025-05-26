@@ -1,0 +1,195 @@
+[gd_scene load_steps=2 format=3 uid="uid://bsyqoblcrf33j"]
+
+[ext_resource type="Script" uid="uid://cn856n7rmy8pp" path="res://dev_tools/json_editor/json_editor.gd" id="1_gr6lf"]
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gr6lf")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "json editor"
+
+[node name="search" type="VBoxContainer" parent="HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 650)
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer/search"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/search/MarginContainer"]
+custom_minimum_size = Vector2(620, 640)
+layout_mode = 2
+
+[node name="SearchBar" type="LineEdit" parent="HBoxContainer/VBoxContainer/search/MarginContainer/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "Type to search"
+
+[node name="MarginContainer4" type="MarginContainer" parent="HBoxContainer/VBoxContainer/search/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer/search/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ItemContainer" type="VBoxContainer" parent="HBoxContainer/VBoxContainer/search/MarginContainer/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NewProcess" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "New Process
+"
+
+[node name="SaveChanges" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Save Changes"
+
+[node name="SaveNew" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Save New"
+
+[node name="SortJSON" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Sort JSON"
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 40
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Key (process command):"
+
+[node name="key" type="LineEdit" parent="HBoxContainer/VBoxContainer2/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer2"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Category:"
+
+[node name="category" type="LineEdit" parent="HBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer3"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Subcategory:"
+
+[node name="subcategory" type="LineEdit" parent="HBoxContainer/VBoxContainer2/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer4"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Title:"
+
+[node name="title" type="LineEdit" parent="HBoxContainer/VBoxContainer2/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer5"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Short description:"
+
+[node name="shortdescription" type="LineEdit" parent="HBoxContainer/VBoxContainer2/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer7"]
+custom_minimum_size = Vector2(250, 200)
+layout_mode = 2
+text = "Long description:"
+
+[node name="longdescription" type="TextEdit" parent="HBoxContainer/VBoxContainer2/HBoxContainer7"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+size_flags_horizontal = 3
+wrap_mode = 1
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer6"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Stereo:"
+
+[node name="stereo" type="CheckBox" parent="HBoxContainer/VBoxContainer2/HBoxContainer6"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="parameter_container" type="VBoxContainer" parent="HBoxContainer/VBoxContainer2/ScrollContainer"]
+custom_minimum_size = Vector2(0, 400)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="Button" type="Button" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+text = "Add a parameter"
+
+[connection signal="text_changed" from="HBoxContainer/VBoxContainer/search/MarginContainer/VBoxContainer/SearchBar" to="." method="_on_search_bar_text_changed"]
+[connection signal="button_down" from="HBoxContainer/VBoxContainer2/Button" to="." method="_on_button_button_down"]
