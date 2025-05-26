@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c1a6elrpk4eks"]
 
-[ext_resource type="Script" uid="uid://co12pspac25gq" path="res://scenes/main/settings.gd" id="1_uey6c"]
+[ext_resource type="Script" uid="uid://co12pspac25gq" path="res://scenes/main/scripts/settings.gd" id="1_uey6c"]
 
 [node name="Settings" type="Window"]
 auto_translate_mode = 1

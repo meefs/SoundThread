@@ -1,10 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://bcs87y7ptx3ke"]
+[gd_scene load_steps=10 format=3 uid="uid://bcs87y7ptx3ke"]
 
-[ext_resource type="Script" uid="uid://bdlfvuljckmu1" path="res://scenes/main/control.gd" id="1_2f0aq"]
-[ext_resource type="Script" uid="uid://l2yejnjysupr" path="res://scenes/main/graph_edit.gd" id="2_3ioqo"]
+[ext_resource type="Script" uid="uid://bdlfvuljckmu1" path="res://scenes/main/scripts/control.gd" id="1_2f0aq"]
+[ext_resource type="Script" uid="uid://l2yejnjysupr" path="res://scenes/main/scripts/graph_edit.gd" id="2_3ioqo"]
 [ext_resource type="PackedScene" uid="uid://b0wdj8v6o0wq0" path="res://scenes/menu/menu.tscn" id="3_dtf4o"]
 [ext_resource type="Texture2D" uid="uid://cdwux1smquvpi" path="res://theme/images/logo.png" id="4_3ioqo"]
 [ext_resource type="PackedScene" uid="uid://dta7rfalv4uvd" path="res://scenes/main/audio_settings.tscn" id="5_dtf4o"]
+[ext_resource type="Script" uid="uid://wja0lo4nobh1" path="res://scenes/main/scripts/about_menu.gd" id="5_yf4wl"]
 [ext_resource type="Script" uid="uid://dlcbmyu3s2phc" path="res://scenes/menu/search_menu.gd" id="6_fyarh"]
 [ext_resource type="Script" uid="uid://b6r7k326k3vif" path="res://scenes/Nodes/check_for_updates.gd" id="7_1kc3g"]
 [ext_resource type="PackedScene" uid="uid://c1a6elrpk4eks" path="res://scenes/main/settings.tscn" id="8_16l5g"]
@@ -296,6 +297,7 @@ item_12/id = 11
 item_count = 1
 item_0/id = 0
 item_0/disabled = true
+script = ExtResource("5_yf4wl")
 
 [node name="SaveDialog" type="FileDialog" parent="."]
 use_native_dialog = true
@@ -435,12 +437,11 @@ offset_right = 592.0
 offset_bottom = 100.0
 text = "Stop Running Thread"
 
-[connection signal="connection_request" from="GraphEdit" to="." method="_on_graph_edit_connection_request"]
-[connection signal="delete_nodes_request" from="GraphEdit" to="." method="_on_graph_edit_delete_nodes_request"]
-[connection signal="disconnection_request" from="GraphEdit" to="." method="_on_graph_edit_disconnection_request"]
-[connection signal="focus_entered" from="GraphEdit" to="." method="_on_graph_edit_focus_entered"]
-[connection signal="node_deselected" from="GraphEdit" to="." method="_on_graph_edit_node_deselected"]
-[connection signal="node_selected" from="GraphEdit" to="." method="_on_graph_edit_node_selected"]
+[connection signal="connection_request" from="GraphEdit" to="GraphEdit" method="_on_connection_request"]
+[connection signal="delete_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_delete_nodes_request"]
+[connection signal="disconnection_request" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_disconnection_request"]
+[connection signal="node_deselected" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_node_deselected"]
+[connection signal="node_selected" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_node_selected"]
 [connection signal="popup_request" from="GraphEdit" to="." method="_on_graph_edit_popup_request"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="close_requested" from="mainmenu" to="." method="_on_mainmenu_close_requested"]

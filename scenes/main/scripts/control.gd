@@ -1,0 +1,579 @@
+extends Control
+
+var mainmenu_visible : bool = false #used to test if mainmenu is open
+var effect_position = Vector2(40,40) #tracks mouse position for node placement offset
+@onready var graph_edit = $GraphEdit
+var cdpprogs_location #stores the cdp programs location from user prefs for easy access
+var delete_intermediate_outputs # tracks state of delete intermediate outputs toggle
+@onready var console_output: RichTextLabel = $Console/ConsoleOutput
+var final_output_dir
+var undo_redo := UndoRedo.new() 
+var output_audio_player #tracks the node that is the current output player for linking
+var input_audio_player #tracks node that is the current input player for linking
+var outfile = "no file" #tracks dir of output file from cdp process
+var currentfile = "none" #tracks dir of currently loaded file for saving
+var changesmade = false #tracks if user has made changes to the currently loaded save file
+var savestate # tracks what the user is trying to do when savechangespopup is called
+var helpfile #tracks which help file the user was trying to load when savechangespopup is called
+var outfilename #links to the user name for outputfile field
+var foldertoggle #links to the reuse folder button
+var lastoutputfolder = "none" #tracks last output folder, this can in future be used to replace global.outfile but i cba right now
+var uiscale = 1.0 #tracks scaling for retina screens
+
+#scripts
+var open_help
+var run_thread
+var save_load
+
+# Called when the node enters the scene tree for the first time.
+func _ready() -> void:
+	Nodes.hide()
+	$mainmenu.hide()
+	$NoLocationPopup.hide()
+	$Console.hide()
+	$NoInputPopup.hide()
+	$MultipleConnectionsPopup.hide()
+	$AudioSettings.hide()
+	$AudioDevicePopup.hide()
+	$SearchMenu.hide()
+	$Settings.hide()
+	$ProgressWindow.hide()
+	
+	$SaveDialog.access = FileDialog.ACCESS_FILESYSTEM
+	$SaveDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
+	$SaveDialog.filters = ["*.thd"]
+	
+	$LoadDialog.access = FileDialog.ACCESS_FILESYSTEM
+	$LoadDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	$LoadDialog.filters = ["*.thd"]
+	
+	get_tree().set_auto_accept_quit(false) #disable closing the app with the x and instead handle it internally
+	
+	load_scripts()
+	make_signal_connections()
+	check_user_preferences()
+	hidpi_adjustment()
+	new_patch()
+	check_cdp_location_set()
+	
+func load_scripts():
+	#load and initialise scripts
+	open_help = preload("res://scenes/main/scripts/open_help.gd").new()
+	open_help.init(self)
+	add_child(open_help)
+	
+	run_thread = preload("res://scenes/main/scripts/run_thread.gd").new()
+	run_thread.init(self, $ProgressWindow, $ProgressWindow/ProgressLabel, $ProgressWindow/ProgressBar, $GraphEdit, $Console, $Console/ConsoleOutput)
+	add_child(run_thread)
+	
+	graph_edit.init(self, $GraphEdit, Callable(open_help, "show_help_for_node"), $MultipleConnectionsPopup)
+	
+	save_load = preload("res://scenes/main/scripts/save_load.gd").new()
+	save_load.init(self, $GraphEdit, Callable(open_help, "show_help_for_node"), Callable(graph_edit, "_register_node_movement"), Callable(graph_edit, "_register_inputs_in_node"), Callable(self, "link_output"))
+	add_child(save_load)
+
+func make_signal_connections():
+	get_node("SearchMenu").make_node.connect(graph_edit._make_node)
+	get_node("mainmenu").make_node.connect(graph_edit._make_node)
+	get_node("mainmenu").open_help.connect(open_help.show_help_for_node)
+	get_node("Settings").open_cdp_location.connect(show_cdp_location)
+	get_node("Settings").console_on_top.connect(change_console_settings)
+	
+func hidpi_adjustment():
+	#checks if display is hidpi and scales ui accordingly hidpi - 144
+	if DisplayServer.screen_get_dpi(0) >= 144:
+		uiscale = 2.0
+		get_window().content_scale_factor = uiscale
+		#goes through popup_windows group and scales all popups and resizes them
+		for window in get_tree().get_nodes_in_group("popup_windows"):
+			window.size = window.size * uiscale
+			window.content_scale_factor = uiscale
+
+	#checks if user has opened a file from the system file menu and loads it
+	var args = OS.get_cmdline_args()
+	for arg in args:
+		var path = arg.strip_edges()
+		if FileAccess.file_exists(path) and path.get_extension().to_lower() == "thd":
+			save_load.load_graph_edit(path)
+			break
+
+func new_patch():
+	#clear old patch
+	graph_edit.clear_connections()
+
+	for node in graph_edit.get_children():
+		if node is GraphNode:
+			node.queue_free()
+	
+	await get_tree().process_frame  # Wait for nodes to actually be removed
+	
+	graph_edit.scroll_offset = Vector2(0, 0)
+	
+		#Generate input and output nodes
+	var effect: GraphNode = Nodes.get_node(NodePath("inputfile")).duplicate()
+	effect.name = "inputfile"
+	get_node("GraphEdit").add_child(effect, true)
+	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
+	effect.position_offset = Vector2(20,80)
+	
+	effect = Nodes.get_node(NodePath("outputfile")).duplicate()
+	effect.name = "outputfile"
+	get_node("GraphEdit").add_child(effect, true)
+	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
+	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) / uiscale, 80)
+	graph_edit._register_node_movement() #link nodes for tracking position changes for changes tracking
+	
+	changesmade = false #so it stops trying to save unchanged empty files
+	Global.infile = "no_file" #resets input to stop processes running with old files
+	get_window().title = "SoundThread"
+	link_output()
+	
+	
+func link_output():
+	#links various buttons and function in the input nodes - this is called after they are created so that it still works on new and loading files
+	for control in get_tree().get_nodes_in_group("outputnode"): #check all items in outputnode group
+		if control.get_meta("outputfunction") == "deleteintermediate": #link delete intermediate files toggle to script
+			control.toggled.connect(_toggle_delete)
+			control.button_pressed = true
+		elif control.get_meta("outputfunction") == "runprocess": #link runprocess button
+			control.button_down.connect(_run_process)
+		elif control.get_meta("outputfunction") == "recycle": #link recycle button
+			control.button_down.connect(_recycle_outfile)
+		elif control.get_meta("outputfunction") == "audioplayer": #link output audio player
+			output_audio_player = control
+		elif control.get_meta("outputfunction") == "filename":
+			control.text = "outfile"
+			outfilename = control
+		elif control.get_meta("outputfunction") == "reusefolder":
+			foldertoggle = control
+			foldertoggle.button_pressed = true
+		elif control.get_meta("outputfunction") == "openfolder":
+			control.button_down.connect(_open_output_folder)
+
+	for control in get_tree().get_nodes_in_group("inputnode"):
+		if control.get_meta("inputfunction") == "audioplayer": #link input for recycle function
+			print("input player found")
+			input_audio_player = control
+
+func check_user_preferences():
+	var interface_settings = ConfigHandler.load_interface_settings()
+	var audio_settings = ConfigHandler.load_audio_settings()
+	var audio_devices = AudioServer.get_output_device_list()
+	$Console.always_on_top = interface_settings.console_on_top
+	if audio_devices.has(audio_settings.device):
+		AudioServer.set_output_device(audio_settings.device)
+	else:
+		$AudioDevicePopup.popup_centered()
+	
+	match interface_settings.theme:
+		0:
+			RenderingServer.set_default_clear_color(Color("#2f4f4e"))
+		1:
+			RenderingServer.set_default_clear_color(Color("#000807"))
+		2:
+			RenderingServer.set_default_clear_color(Color("#98d4d2"))
+		3:
+			RenderingServer.set_default_clear_color(Color(interface_settings.theme_custom_colour))
+func show_cdp_location():
+	$CdpLocationDialog.show()
+	
+func check_cdp_location_set():
+	#checks if the location has been set and prompts user to set it
+	var cdpprogs_settings = ConfigHandler.load_cdpprogs_settings()
+	if cdpprogs_settings.location == "no_location":
+		$NoLocationPopup.popup_centered()
+	else:
+		#if location is set, stores it in a variable
+		cdpprogs_location = str(cdpprogs_settings.location)
+		print(cdpprogs_location)
+
+func _on_ok_button_button_down() -> void:
+	#after user has read dialog on where to find cdp progs this loads the file browser
+	$NoLocationPopup.hide()
+	if OS.get_name() == "Windows":
+		$CdpLocationDialog.current_dir = "C:/"
+	else:
+		$CdpLocationDialog.current_dir = OS.get_environment("HOME")
+	$CdpLocationDialog.show()
+
+func _on_cdp_location_dialog_dir_selected(dir: String) -> void:
+	#saves default location for cdp programs in config file
+	ConfigHandler.save_cdpprogs_settings(dir)
+	cdpprogs_location = dir
+
+func _on_cdp_location_dialog_canceled() -> void:
+	#cycles around the set location prompt if user cancels the file dialog
+	check_cdp_location_set()
+	
+
+func _input(event):
+	if event.is_action_pressed("copy_node"):
+		graph_edit.copy_selected_nodes()
+		get_viewport().set_input_as_handled()
+
+	elif event.is_action_pressed("paste_node"):
+		simulate_mouse_click() #hacky fix to stop tooltips getting stuck
+		await get_tree().process_frame
+		graph_edit.paste_copied_nodes()
+		get_viewport().set_input_as_handled()
+	elif event.is_action_pressed("undo"):
+		undo_redo.undo()
+	elif event.is_action_pressed("redo"):
+		undo_redo.redo()
+	elif event.is_action_pressed("save"):
+		if currentfile == "none":
+			savestate = "saveas"
+			$SaveDialog.popup_centered()
+		else:
+			save_load.save_graph_edit(currentfile)
+	elif event.is_action_pressed("open_explore"):
+		open_explore()
+	
+
+
+func simulate_mouse_click():
+	#simulates clicking the middle mouse button in order to hide any visible tooltips
+	var click_pos = get_viewport().get_mouse_position()
+
+	var down_event := InputEventMouseButton.new()
+	down_event.button_index = MOUSE_BUTTON_MIDDLE
+	down_event.pressed = true
+	down_event.position = click_pos
+	Input.parse_input_event(down_event)
+
+	var up_event := InputEventMouseButton.new()
+	up_event.button_index = MOUSE_BUTTON_MIDDLE
+	up_event.pressed = false
+	up_event.position = click_pos
+	Input.parse_input_event(up_event)
+
+
+func _run_process() -> void:
+	if Global.infile == "no_file":
+		$NoInputPopup.popup_centered()
+	else:
+		if foldertoggle.button_pressed == true and lastoutputfolder != "none":
+			_on_file_dialog_dir_selected(lastoutputfolder)
+		else:
+			$FileDialog.show()
+			
+
+func _on_file_dialog_dir_selected(dir: String) -> void:
+	lastoutputfolder = dir
+	console_output.clear()
+	var interface_settings = ConfigHandler.load_interface_settings()
+	if interface_settings.disable_progress_bar == false:
+		$ProgressWindow.show()
+	else:
+		if $Console.is_visible():
+			$Console.hide()
+			await get_tree().process_frame  # Wait a frame to allow hide to complete
+			$Console.popup_centered()
+		else:
+			$Console.popup_centered()
+	await get_tree().process_frame
+	run_thread.log_console("Generating processing queue", true)
+	await get_tree().process_frame
+
+	#get the current time in hh-mm-ss format as default : causes file name issues
+	var time_dict = Time.get_time_dict_from_system()
+	# Pad with zeros to ensure two digits for hour, minute, second
+	var hour = str(time_dict.hour).pad_zeros(2)
+	var minute = str(time_dict.minute).pad_zeros(2)
+	var second = str(time_dict.second).pad_zeros(2)
+	var time_str = hour + "-" + minute + "-" + second
+	Global.outfile = dir + "/" + outfilename.text.get_basename() + "_" + Time.get_date_string_from_system() + "_" + time_str
+	run_thread.log_console("Output directory and file name(s):" + Global.outfile, true)
+	await get_tree().process_frame
+	
+	run_thread.run_thread_with_branches()
+
+func _toggle_delete(toggled_on: bool):
+	delete_intermediate_outputs = toggled_on
+	print(toggled_on)
+
+func _on_console_close_requested() -> void:
+	$Console.hide()
+
+
+
+func _on_console_open_folder_button_down() -> void:
+	$Console.hide()
+	OS.shell_open(Global.outfile.get_base_dir())
+
+
+func _on_ok_button_2_button_down() -> void:
+	$NoInputPopup.hide()
+
+
+func _on_ok_button_3_button_down() -> void:
+	$MultipleConnectionsPopup.hide()
+
+
+
+func _on_settings_button_index_pressed(index: int) -> void:
+	var interface_settings = ConfigHandler.load_interface_settings()
+	
+	match index:
+		0:
+			$Settings.popup_centered()
+		1:
+			$AudioSettings.popup_centered()
+		2:
+			if $Console.is_visible():
+				$Console.hide()
+				await get_tree().process_frame  # Wait a frame to allow hide to complete
+				$Console.popup_centered()
+			else:
+				$Console.popup_centered()
+
+func _on_file_button_index_pressed(index: int) -> void:
+	match index:
+		0:
+			if changesmade == true:
+				savestate = "newfile"
+				$SaveChangesPopup.popup_centered()
+			else:
+				new_patch()
+				currentfile = "none" #reset current file to none for save tracking
+		1:
+			if currentfile == "none":
+				savestate = "saveas"
+				$SaveDialog.popup_centered()
+			else:
+				save_load.save_graph_edit(currentfile)
+		2:
+			savestate = "saveas"
+			$SaveDialog.popup_centered()
+		3:
+			if changesmade == true:
+				savestate = "load"
+				$SaveChangesPopup.popup_centered()
+			else:
+				$LoadDialog.popup_centered()
+
+
+
+func _on_save_dialog_file_selected(path: String) -> void:
+	save_load.save_graph_edit(path) #save file
+	#check what the user was trying to do before save and do that action
+	if savestate == "newfile":
+		new_patch()
+		currentfile = "none" #reset current file to none for save tracking
+	elif savestate == "load":
+		$LoadDialog.popup_centered()
+	elif savestate == "helpfile":
+		currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+		save_load.load_graph_edit(helpfile)
+	elif savestate == "quit":
+		await get_tree().create_timer(0.25).timeout #little pause so that it feels like it actually saved even though it did
+		get_tree().quit()
+		
+	savestate = "none" #reset save state, not really needed but feels good
+
+
+func _on_load_dialog_file_selected(path: String) -> void:
+	currentfile = path #tracking path here only means "save" only saves patches the user has loaded rather than overwriting help files
+	save_load.load_graph_edit(path)
+
+func _on_help_button_index_pressed(index: int) -> void:
+	match index:
+		0:
+			pass
+		1:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/getting_started.thd"
+				$SaveChangesPopup.popup_centered()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				save_load.load_graph_edit("res://examples/getting_started.thd")
+		2:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/navigating.thd"
+				$SaveChangesPopup.popup_centered()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				save_load.load_graph_edit("res://examples/navigating.thd")
+		3:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/building_a_thread.thd"
+				$SaveChangesPopup.popup_centered()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				save_load.load_graph_edit("res://examples/building_a_thread.thd")
+		4:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/frequency_domain.thd"
+				$SaveChangesPopup.popup_centered()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				save_load.load_graph_edit("res://examples/frequency_domain.thd")
+		5:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/automation.thd"
+				$SaveChangesPopup.popup_centered()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				save_load.load_graph_edit("res://examples/automation.thd")
+		6:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/trimming.thd"
+				$SaveChangesPopup.popup_centered()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				save_load.load_graph_edit("res://examples/trimming.thd")
+		7:
+			pass
+		8:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/wetdry.thd"
+				$SaveChangesPopup.popup_centered()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				save_load.load_graph_edit("res://examples/wetdry.thd")
+		9:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/resonant_filters.thd"
+				$SaveChangesPopup.popup_centered()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				save_load.load_graph_edit("res://examples/resonant_filters.thd")
+		10:
+			pass
+		11:
+			OS.shell_open("https://www.composersdesktop.com/docs/html/ccdpndex.htm")
+		12:
+			OS.shell_open("https://github.com/j-p-higgins/SoundThread/issues")
+
+func _recycle_outfile():
+	if outfile != "no file":
+		input_audio_player.recycle_outfile(outfile)
+
+
+
+func _on_save_changes_button_down() -> void:
+	$SaveChangesPopup.hide()
+	if currentfile == "none":
+		$SaveDialog.show()
+	else:
+		save_load.save_graph_edit(currentfile)
+		if savestate == "newfile":
+			new_patch()
+			currentfile = "none" #reset current file to none for save tracking
+		elif savestate == "load":
+			$LoadDialog.popup_centered()
+		elif savestate == "helpfile":
+			currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+			save_load.load_graph_edit(helpfile)
+		elif savestate == "quit":
+			await get_tree().create_timer(0.25).timeout #little pause so that it feels like it actually saved even though it did
+			get_tree().quit()
+			
+		savestate = "none"
+
+
+func _on_dont_save_changes_button_down() -> void:
+	$SaveChangesPopup.hide()
+	if savestate == "newfile":
+		new_patch()
+		currentfile = "none" #reset current file to none for save tracking
+	elif savestate == "load":
+		$LoadDialog.popup_centered()
+	elif savestate == "helpfile":
+		currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+		save_load.load_graph_edit(helpfile)
+	elif savestate == "quit":
+		get_tree().quit()
+	
+	savestate = "none"
+	
+func _notification(what):
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		run_thread._on_kill_process_button_down()
+		$Console.hide()
+		if changesmade == true:
+			savestate = "quit"
+			$SaveChangesPopup.popup_centered()
+			#$HelpWindow.hide()
+		else:
+			get_tree().quit() # default behavior
+			
+func _open_output_folder():
+	if lastoutputfolder != "none":
+		OS.shell_open(lastoutputfolder)
+		
+
+func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
+	print(str(meta))
+	OS.shell_open(str(meta))
+
+
+func _on_graph_edit_popup_request(at_position: Vector2) -> void:
+
+	effect_position = graph_edit.get_local_mouse_position()
+
+	#get the mouse position in screen coordinates
+	var mouse_screen_pos = DisplayServer.mouse_get_position()  
+	#get the window position in screen coordinates
+	var window_screen_pos = get_window().position
+	#get the window size relative to its scaling for retina displays
+	var window_size = get_window().size * DisplayServer.screen_get_scale()
+
+	#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
+	var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - $SearchMenu.size.x)
+	var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - (420 * DisplayServer.screen_get_scale()))
+	
+	#position and show the menu
+	$SearchMenu.position = Vector2(clamped_x, clamped_y)
+	$SearchMenu.popup()
+
+func _on_audio_settings_close_requested() -> void:
+	$AudioSettings.hide()
+
+
+func _on_open_audio_settings_button_down() -> void:
+	$AudioDevicePopup.hide()
+	$AudioSettings.popup_centered()
+
+
+func _on_audio_device_popup_close_requested() -> void:
+	$AudioDevicePopup.hide()
+
+func _on_mainmenu_close_requested() -> void:
+	#closes menu if click is anywhere other than the menu as it is a window with popup set to true
+	$mainmenu.hide()
+
+func open_explore():
+	effect_position = graph_edit.get_local_mouse_position()
+	
+	#get the mouse position in screen coordinates
+	var mouse_screen_pos = DisplayServer.mouse_get_position()  
+	#get the window position in screen coordinates
+	var window_screen_pos = get_window().position
+	#get the window size relative to its scaling for retina displays
+	var window_size = get_window().size * DisplayServer.screen_get_scale()
+	#get the size of the popup menu
+	var popup_size = $mainmenu.size
+
+	#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
+	var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - popup_size.x)
+	var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - popup_size.y)
+	
+	#position and show the menu
+	$mainmenu.position = Vector2(clamped_x, clamped_y)
+	$mainmenu.popup()
+	
+func change_console_settings(toggled: bool):
+	$Console.always_on_top = toggled
+
+
+func _on_kill_process_button_down() -> void:
+	run_thread._on_kill_process_button_down()
