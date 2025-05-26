@@ -3,13 +3,10 @@ extends Control
 var mainmenu_visible : bool = false #used to test if mainmenu is open
 var effect_position = Vector2(40,40) #tracks mouse position for node placement offset
 @onready var graph_edit = $GraphEdit
-var selected_nodes = {} #used to track which nodes in the GraphEdit are selected
 var cdpprogs_location #stores the cdp programs location from user prefs for easy access
 var delete_intermediate_outputs # tracks state of delete intermediate outputs toggle
 @onready var console_output: RichTextLabel = $Console/ConsoleOutput
 var final_output_dir
-var copied_nodes_data = [] #stores node data on ctrl+c
-var copied_connections = [] #stores all connections on ctrl+c
 var undo_redo := UndoRedo.new() 
 var output_audio_player #tracks the node that is the current output player for linking
 var input_audio_player #tracks node that is the current input player for linking
@@ -60,18 +57,16 @@ func _ready() -> void:
 	run_thread = preload("res://scenes/main/scripts/run_thread.gd").new()
 	run_thread.init(self, $ProgressWindow, $ProgressWindow/ProgressLabel, $ProgressWindow/ProgressBar, $GraphEdit, $Console, $Console/ConsoleOutput)
 	add_child(run_thread)
+	
+	graph_edit.init(self, $GraphEdit, Callable(open_help, "show_help_for_node"), $MultipleConnectionsPopup)
+	
 	save_load = preload("res://scenes/main/scripts/save_load.gd").new()
-	save_load.init(self, $GraphEdit, Callable(open_help, "show_help_for_node"), Callable(self, "_register_node_movement"), Callable(self, "_register_inputs_in_node"), Callable(self, "link_output"))
+	save_load.init(self, $GraphEdit, Callable(open_help, "show_help_for_node"), Callable(graph_edit, "_register_node_movement"), Callable(graph_edit, "_register_inputs_in_node"), Callable(self, "link_output"))
 	add_child(save_load)
+
 	
-	#Goes through all nodes in scene and checks for buttons in the make_node_buttons group
-	#Associates all buttons with the _on_button_pressed fuction and passes the button as an argument
-	for child in get_tree().get_nodes_in_group("make_node_buttons"):
-		if child is Button:
-			child.pressed.connect(_on_button_pressed.bind(child))
-	
-	get_node("SearchMenu").make_node.connect(_make_node_from_search_menu)
-	get_node("mainmenu").make_node.connect(_make_node_from_search_menu)
+	get_node("SearchMenu").make_node.connect(graph_edit._make_node)
+	get_node("mainmenu").make_node.connect(graph_edit._make_node)
 	get_node("mainmenu").open_help.connect(open_help.show_help_for_node)
 	get_node("Settings").open_cdp_location.connect(show_cdp_location)
 	get_node("Settings").console_on_top.connect(change_console_settings)
@@ -131,7 +126,7 @@ func new_patch():
 	get_node("GraphEdit").add_child(effect, true)
 	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
 	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) / uiscale, 80)
-	_register_node_movement() #link nodes for tracking position changes for changes tracking
+	graph_edit._register_node_movement() #link nodes for tracking position changes for changes tracking
 	
 	changesmade = false #so it stops trying to save unchanged empty files
 	Global.infile = "no_file" #resets input to stop processes running with old files
@@ -224,13 +219,13 @@ func _process(delta: float) -> void:
 
 func _input(event):
 	if event.is_action_pressed("copy_node"):
-		copy_selected_nodes()
+		graph_edit.copy_selected_nodes()
 		get_viewport().set_input_as_handled()
 
 	elif event.is_action_pressed("paste_node"):
 		simulate_mouse_click() #hacky fix to stop tooltips getting stuck
 		await get_tree().process_frame
-		paste_copied_nodes()
+		graph_edit.paste_copied_nodes()
 		get_viewport().set_input_as_handled()
 	elif event.is_action_pressed("undo"):
 		undo_redo.undo()
@@ -265,316 +260,7 @@ func simulate_mouse_click():
 	up_event.position = click_pos
 	Input.parse_input_event(up_event)
 
-func _make_node_from_search_menu(command: String):
-	#close menu
-	$SearchMenu.hide()
-	
-	#Find node with matching name to button and create a version of it in the graph edit
-	#and position it close to the origin right click to open the menu
-	var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
-	effect.name = command
-	get_node("GraphEdit").add_child(effect, true)
-	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
-	effect.set_position_offset((effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
-	_register_inputs_in_node(effect) #link sliders for changes tracking
-	_register_node_movement() #link nodes for tracking position changes for changes tracking
 
-	changesmade = true
-
-	# Remove node with UndoRedo
-	undo_redo.create_action("Add Node")
-	undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
-	undo_redo.add_undo_method(Callable(effect, "queue_free"))
-	undo_redo.add_undo_method(Callable(self, "_track_changes"))
-	undo_redo.commit_action()
-	
-
-func _on_button_pressed(button: Button):
-	#close menu
-	$mainmenu.hide()
-	mainmenu_visible = false
-	
-	#Find node with matching name to button and create a version of it in the graph edit
-	#and position it close to the origin right click to open the menu
-	var effect: GraphNode = Nodes.get_node(NodePath(button.name)).duplicate()
-	effect.name = button.name
-	get_node("GraphEdit").add_child(effect, true)
-	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
-	effect.set_position_offset((effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
-	_register_inputs_in_node(effect) #link sliders for changes tracking
-	_register_node_movement() #link nodes for tracking position changes for changes tracking
-
-	changesmade = true
-
-
-	# Remove node with UndoRedo
-	undo_redo.create_action("Add Node")
-	undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
-	undo_redo.add_undo_method(Callable(effect, "queue_free"))
-	undo_redo.add_undo_method(Callable(self, "_track_changes"))
-	undo_redo.commit_action()
-
-func _on_graph_edit_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
-	#get_node("GraphEdit").connect_node(from_node, from_port, to_node, to_port)
-	var graph_edit = get_node("GraphEdit")
-	var to_graph_node = graph_edit.get_node(NodePath(to_node))
-
-	# Get the type of the input port using GraphNode's built-in method
-	var port_type = to_graph_node.get_input_port_type(to_port)
-
-	# If port type is 1 and already has a connection, reject the request
-	if port_type == 1:
-		var connections = graph_edit.get_connection_list()
-		var existing_connections = 0
-
-		for conn in connections:
-			if conn.to_node == to_node and conn.to_port == to_port:
-				existing_connections += 1
-				if existing_connections >= 1:
-					var interface_settings = ConfigHandler.load_interface_settings()
-					if interface_settings.disable_pvoc_warning == false:
-						$MultipleConnectionsPopup.popup_centered()
-					return
-
-	# If no conflict, allow the connection
-	graph_edit.connect_node(from_node, from_port, to_node, to_port)
-	changesmade = true
-
-func _on_graph_edit_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
-	get_node("GraphEdit").disconnect_node(from_node, from_port, to_node, to_port)
-	changesmade = true
-
-func _on_graph_edit_node_selected(node: Node) -> void:
-	selected_nodes[node] = true
-
-func _on_graph_edit_node_deselected(node: Node) -> void:
-	selected_nodes[node] = false
-
-func _unhandled_key_input(event: InputEvent) -> void:
-	if event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_BACKSPACE:
-			_on_graph_edit_delete_nodes_request(PackedStringArray(selected_nodes.keys().filter(func(k): return selected_nodes[k])))
-			pass
-
-func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
-	var graph_edit = get_node("GraphEdit")
-	undo_redo.create_action("Delete Nodes (Undo only)")
-
-	for node in selected_nodes.keys():
-		if selected_nodes[node]:
-			if node.get_meta("command") == "inputfile" or node.get_meta("command") == "outputfile":
-				print("can't delete input or output")
-			else:
-				# Store duplicate and state for undo
-				var node_data = node.duplicate()
-				var position = node.position_offset
-
-				# Store all connections for undo
-				var conns = []
-				for con in graph_edit.get_connection_list():
-					if con["to_node"] == node.name or con["from_node"] == node.name:
-						conns.append(con)
-
-				# Delete
-				remove_connections_to_node(node)
-				node.queue_free()
-				changesmade = true
-
-				# Register undo restore
-				undo_redo.add_undo_method(Callable(graph_edit, "add_child").bind(node_data, true))
-				undo_redo.add_undo_method(Callable(node_data, "set_position_offset").bind(position))
-				for con in conns:
-					undo_redo.add_undo_method(Callable(graph_edit, "connect_node").bind(
-						con["from_node"], con["from_port"],
-						con["to_node"], con["to_port"]
-					))
-				undo_redo.add_undo_method(Callable(self, "set_node_selected").bind(node_data, true))
-				undo_redo.add_undo_method(Callable(self, "_track_changes"))
-				undo_redo.add_undo_method(Callable(self, "_register_inputs_in_node").bind(node_data)) #link sliders for changes tracking
-				undo_redo.add_undo_method(Callable(self, "_register_node_movement")) # link nodes for changes tracking
-
-	# Clear selection
-	selected_nodes = {}
-
-	undo_redo.commit_action()
-
-func set_node_selected(node: Node, selected: bool) -> void:
-	selected_nodes[node] = selected
-#
-func remove_connections_to_node(node):
-	for con in get_node("GraphEdit").get_connection_list():
-		if con["to_node"] == node.name or con["from_node"] == node.name:
-			get_node("GraphEdit").disconnect_node(con["from_node"], con["from_port"], con["to_node"], con["to_port"])
-			changesmade = true
-			
-#copy and paste nodes with vertical offset on paste
-func copy_selected_nodes():
-	copied_nodes_data.clear()
-	copied_connections.clear()
-
-	var graph_edit = get_node("GraphEdit")
-
-	# Store selected nodes and their slider values
-	for node in graph_edit.get_children():
-		# Check if the node is selected and not an 'inputfile' or 'outputfile'
-		if node is GraphNode and selected_nodes.get(node, false):
-			if node.get_meta("command") == "inputfile" or node.get_meta("command") == "outputfile":
-				continue  # Skip these nodes
-
-			var node_data = {
-				"name": node.name,
-				"type": node.get_class(),
-				"offset": node.position_offset,
-				"slider_values": {}
-			}
-
-			for child in node.get_children():
-				if child is HSlider or child is VSlider:
-					node_data["slider_values"][child.name] = child.value
-
-			copied_nodes_data.append(node_data)
-
-	# Store connections between selected nodes
-	for conn in graph_edit.get_connection_list():
-		var from_ref = graph_edit.get_node_or_null(NodePath(conn["from_node"]))
-		var to_ref = graph_edit.get_node_or_null(NodePath(conn["to_node"]))
-
-		var is_from_selected = from_ref != null and selected_nodes.get(from_ref, false)
-		var is_to_selected = to_ref != null and selected_nodes.get(to_ref, false)
-
-		# Skip if any of the connected nodes are 'inputfile' or 'outputfile'
-		if (from_ref != null and (from_ref.get_meta("command") == "inputfile" or from_ref.get_meta("command") == "outputfile")) or (to_ref != null and (to_ref.get_meta("command") == "inputfile" or to_ref.get_meta("command") == "outputfile")):
-			continue
-
-		if is_from_selected and is_to_selected:
-			# Store connection as dictionary
-			var conn_data = {
-				"from_node": conn["from_node"],
-				"from_port": conn["from_port"],
-				"to_node": conn["to_node"],
-				"to_port": conn["to_port"]
-			}
-			copied_connections.append(conn_data)
-
-func paste_copied_nodes():
-	if copied_nodes_data.is_empty():
-		return
-
-	var graph_edit = get_node("GraphEdit")
-	var name_map = {}
-	var pasted_nodes = []
-
-	# Step 1: Find topmost and bottommost Y of copied nodes
-	var min_y = INF
-	var max_y = -INF
-	for node_data in copied_nodes_data:
-		var y = node_data["offset"].y
-		min_y = min(min_y, y)
-		max_y = max(max_y, y)
-
-	# Step 2: Decide where to paste the group
-	var base_y_offset = max_y + 350  # Pasting below the lowest node
-
-	# Step 3: Paste nodes, preserving vertical layout
-	for node_data in copied_nodes_data:
-		var original_node = graph_edit.get_node_or_null(NodePath(node_data["name"]))
-		if not original_node:
-			continue
-
-		var new_node = original_node.duplicate()
-		new_node.name = node_data["name"] + "_copy_" + str(randi() % 10000)
-
-		var relative_y = node_data["offset"].y - min_y
-		new_node.position_offset = Vector2(
-			node_data["offset"].x,
-			base_y_offset + relative_y
-		)
-		
-
-		# Restore sliders
-		for child in new_node.get_children():
-			if child.name in node_data["slider_values"]:
-				child.value = node_data["slider_values"][child.name]
-
-		graph_edit.add_child(new_node, true)
-		new_node.connect("open_help", Callable(open_help, "show_help_for_node"))
-		_register_inputs_in_node(new_node) #link sliders for changes tracking
-		_register_node_movement() # link nodes for changes tracking
-		name_map[node_data["name"]] = new_node.name
-		pasted_nodes.append(new_node)
-
-
-	# Step 4: Reconnect new nodes
-	for conn_data in copied_connections:
-		var new_from = name_map.get(conn_data["from_node"], null)
-		var new_to = name_map.get(conn_data["to_node"], null)
-
-		if new_from and new_to:
-			graph_edit.connect_node(new_from, conn_data["from_port"], new_to, conn_data["to_port"])
-
-	# Step 5: Select pasted nodes
-	for pasted_node in pasted_nodes:
-		graph_edit.set_selected(pasted_node)
-		selected_nodes[pasted_node] = true
-	
-	changesmade = true
-	
-	# Remove node with UndoRedo
-	undo_redo.create_action("Paste Nodes")
-	for pasted_node in pasted_nodes:
-		undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(pasted_node))
-		undo_redo.add_undo_method(Callable(pasted_node, "queue_free"))
-		undo_redo.add_undo_method(Callable(self, "remove_connections_to_node").bind(pasted_node))
-		undo_redo.add_undo_method(Callable(self, "_track_changes"))
-	undo_redo.commit_action()
-	
-
-#functions for tracking changes for save state detection
-func _register_inputs_in_node(node: Node):
-	#tracks input to nodes sliders and codeedit to track if patch is saved
-	# Track Sliders
-	for slider in node.find_children("*", "HSlider", true, false):
-		# Create a Callable to the correct method
-		var callable = Callable(self, "_on_any_slider_changed")
-		# Check if it's already connected, and connect if not
-		if not slider.is_connected("value_changed", callable):
-			slider.connect("value_changed", callable)
-	
-	for slider in node.find_children("*", "VBoxContainer", true, false):
-		# Also connect to meta_changed if the slider has that signal
-		if slider.has_signal("meta_changed"):
-			var meta_callable = Callable(self, "_on_any_slider_meta_changed")
-			if not slider.is_connected("meta_changed", meta_callable):
-				slider.connect("meta_changed", meta_callable)
-		
-	# Track CodeEdits
-	for editor in node.find_children("*", "CodeEdit", true, false):
-		var callable = Callable(self, "_on_any_input_changed")
-		if not editor.is_connected("text_changed", callable):
-			editor.connect("text_changed", callable)
-			
-func _on_any_slider_meta_changed():
-	changesmade = true
-	print("Meta changed in slider")
-	
-func _register_node_movement():
-	for graphnode in graph_edit.get_children():
-		if graphnode is GraphNode:
-			var callable = Callable(self, "_on_graphnode_moved")
-			if not graphnode.is_connected("position_offset_changed", callable):
-				graphnode.connect("position_offset_changed", callable)
-
-func _on_graphnode_moved():
-	changesmade = true
-	
-func _on_any_slider_changed(value: float) -> void:
-	changesmade = true
-	
-func _on_any_input_changed():
-	changesmade = true
-
-func _track_changes():
-	changesmade = true
 	
 
 

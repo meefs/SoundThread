@@ -74,4 +74,5 @@ func _on_search_bar_text_changed(new_text: String) -> void:
 	display_items(new_text)
 	
 func _on_item_selected(key: String):
+	self.hide()
 	make_node.emit(key) # send out signal to main patch
