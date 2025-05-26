@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dta7rfalv4uvd"]
 
-[ext_resource type="Script" uid="uid://c7krcoq5poxdn" path="res://scenes/main/audiosettings.gd" id="2_7qbns"]
+[ext_resource type="Script" uid="uid://c7krcoq5poxdn" path="res://scenes/main/scripts/audiosettings.gd" id="2_7qbns"]
 
 [node name="AudioSettings" type="Window"]
 title = "Audio Settings"

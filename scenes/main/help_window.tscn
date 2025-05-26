@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cp5uwxjskqgr7"]
 
-[ext_resource type="Script" uid="uid://bkte84glywsny" path="res://scenes/main/help_window.gd" id="1_ro77y"]
+[ext_resource type="Script" uid="uid://bkte84glywsny" path="res://scenes/main/scripts/help_window.gd" id="1_ro77y"]
 
 [node name="HelpWindow" type="Window"]
 auto_translate_mode = 1

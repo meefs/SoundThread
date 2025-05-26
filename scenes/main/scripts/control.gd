@@ -29,9 +29,6 @@ var save_load
 func _ready() -> void:
 	Nodes.hide()
 	$mainmenu.hide()
-	#$"mainmenu/select_effect/Time Domain".show()
-	#$"mainmenu/select_effect/Time Domain/Distort".show()
-	#$"mainmenu/select_effect/Frequency Domain/Convert".show()
 	$NoLocationPopup.hide()
 	$Console.hide()
 	$NoInputPopup.hide()
@@ -50,10 +47,21 @@ func _ready() -> void:
 	$LoadDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	$LoadDialog.filters = ["*.thd"]
 	
-	#load scripts
+	get_tree().set_auto_accept_quit(false) #disable closing the app with the x and instead handle it internally
+	
+	load_scripts()
+	make_signal_connections()
+	check_user_preferences()
+	hidpi_adjustment()
+	new_patch()
+	check_cdp_location_set()
+	
+func load_scripts():
+	#load and initialise scripts
 	open_help = preload("res://scenes/main/scripts/open_help.gd").new()
 	open_help.init(self)
 	add_child(open_help)
+	
 	run_thread = preload("res://scenes/main/scripts/run_thread.gd").new()
 	run_thread.init(self, $ProgressWindow, $ProgressWindow/ProgressLabel, $ProgressWindow/ProgressBar, $GraphEdit, $Console, $Console/ConsoleOutput)
 	add_child(run_thread)
@@ -64,23 +72,14 @@ func _ready() -> void:
 	save_load.init(self, $GraphEdit, Callable(open_help, "show_help_for_node"), Callable(graph_edit, "_register_node_movement"), Callable(graph_edit, "_register_inputs_in_node"), Callable(self, "link_output"))
 	add_child(save_load)
 
-	
+func make_signal_connections():
 	get_node("SearchMenu").make_node.connect(graph_edit._make_node)
 	get_node("mainmenu").make_node.connect(graph_edit._make_node)
 	get_node("mainmenu").open_help.connect(open_help.show_help_for_node)
 	get_node("Settings").open_cdp_location.connect(show_cdp_location)
 	get_node("Settings").console_on_top.connect(change_console_settings)
 	
-	check_user_preferences()
-	get_tree().set_auto_accept_quit(false) #disable closing the app with the x and instead handle it internally
-	
-	#Check export config for version number and set about menu to current version
-	#Assumes version of mac + linux builds is the same as windows
-	#Requires manual update for alpha and beta builds but once the -beta is removed will be fully automatic so long as version is updated on export
-	var export_config = ConfigFile.new()
-	export_config.load("res://export_presets.cfg")
-	$MenuBar/About.set_item_text(0, "SoundThread v" + export_config.get_value("preset.0.options", "application/product_version", "version unknown") + "-beta") 
-	
+func hidpi_adjustment():
 	#checks if display is hidpi and scales ui accordingly hidpi - 144
 	if DisplayServer.screen_get_dpi(0) >= 144:
 		uiscale = 2.0
@@ -97,11 +96,7 @@ func _ready() -> void:
 		if FileAccess.file_exists(path) and path.get_extension().to_lower() == "thd":
 			save_load.load_graph_edit(path)
 			break
-	
-	
-	new_patch()
-	check_cdp_location_set()
-	
+
 func new_patch():
 	#clear old patch
 	graph_edit.clear_connections()
@@ -134,7 +129,6 @@ func new_patch():
 	link_output()
 	
 	
-
 func link_output():
 	#links various buttons and function in the input nodes - this is called after they are created so that it still works on new and loading files
 	for control in get_tree().get_nodes_in_group("outputnode"): #check all items in outputnode group
@@ -211,11 +205,6 @@ func _on_cdp_location_dialog_canceled() -> void:
 	#cycles around the set location prompt if user cancels the file dialog
 	check_cdp_location_set()
 	
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	#showmenu()
-	pass
-	
 
 func _input(event):
 	if event.is_action_pressed("copy_node"):
@@ -242,8 +231,6 @@ func _input(event):
 	
 
 
-
-
 func simulate_mouse_click():
 	#simulates clicking the middle mouse button in order to hide any visible tooltips
 	var click_pos = get_viewport().get_mouse_position()
@@ -259,9 +246,6 @@ func simulate_mouse_click():
 	up_event.pressed = false
 	up_event.position = click_pos
 	Input.parse_input_event(up_event)
-
-
-	
 
 
 func _run_process() -> void:
