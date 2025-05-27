@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://duy5epq25pj8u"]
+[gd_scene load_steps=6 format=3 uid="uid://duy5epq25pj8u"]
 
 [ext_resource type="PackedScene" uid="uid://csapiqka522fh" path="res://scenes/Nodes/audioplayer.tscn" id="2_b6nw4"]
 [ext_resource type="PackedScene" uid="uid://dya5kxx132fgp" path="res://scenes/Nodes/valueslider.tscn" id="3_b6nw4"]
 [ext_resource type="Script" uid="uid://cdbx1dt3ohqte" path="res://scenes/Nodes/node_logic.gd" id="3_uv17x"]
+[ext_resource type="Script" uid="uid://cy8x5wubj2kr6" path="res://scenes/Nodes/notes_to_hz.gd" id="4_0jqh0"]
+[ext_resource type="FontFile" uid="uid://bfnlymfdfb0e7" path="res://theme/BravuraText_SoundThread.otf" id="5_0jqh0"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -3606,7 +3608,93 @@ layout_mode = 2
 size_flags_vertical = 3
 wrap_mode = 1
 
+[node name="note_to_hz" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1528.0
+offset_top = 31.0
+offset_right = 1911.0
+offset_bottom = 257.0
+tooltip_text = "Converts from a musical note to Hz"
+title = "Convert Note to Hz"
+slot/0/left_enabled = false
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+script = ExtResource("4_0jqh0")
+metadata/command = "note_to_hz"
+metadata/utility = true
+
+[node name="Note" type="ItemList" parent="note_to_hz"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+allow_search = false
+auto_height = true
+item_count = 7
+max_columns = 7
+same_column_width = true
+fixed_column_width = 45
+icon_mode = 0
+item_0/text = "A"
+item_1/text = "B"
+item_2/text = "C"
+item_3/text = "D"
+item_4/text = "E"
+item_5/text = "F"
+item_6/text = "G"
+
+[node name="Accidental" type="ItemList" parent="note_to_hz"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("5_0jqh0")
+theme_override_font_sizes/font_size = 30
+allow_search = false
+auto_height = true
+item_count = 7
+max_columns = 7
+same_column_width = true
+fixed_column_width = 45
+icon_mode = 0
+item_0/text = ""
+item_1/text = ""
+item_2/text = ""
+item_3/text = ""
+item_4/text = ""
+item_5/text = ""
+item_6/text = ""
+
+[node name="FreqOutput" type="CodeEdit" parent="note_to_hz"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 3
+editable = false
+wrap_mode = 1
+
 [connection signal="text_submitted" from="outputfile/FileNameField" to="outputfile" method="_on_file_name_field_text_submitted"]
+[connection signal="item_selected" from="note_to_hz/Note" to="note_to_hz" method="_on_item_list_item_selected"]
+[connection signal="item_selected" from="note_to_hz/Accidental" to="note_to_hz" method="_on_item_list_2_item_selected"]
 
 [editable path="distort_average/VBoxContainer"]
 [editable path="clip_clip_2/VBoxContainer"]

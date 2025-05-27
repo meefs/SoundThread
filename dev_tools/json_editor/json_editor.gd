@@ -2,7 +2,7 @@ extends Control
 
 var node_data = {} #stores json file
 @onready var parameter_container = $HBoxContainer/VBoxContainer2/ScrollContainer/parameter_container
-var json = "res://dev_tools/json_editor/process_help_copy.json"
+var json = "res://scenes/main/process_help.json"
 
 func _ready() -> void:
 	Nodes.hide()
