@@ -79,6 +79,10 @@ text = "Save Changes"
 layout_mode = 2
 text = "Save New"
 
+[node name="DeleteProcess" type="Button" parent="HBoxContainer/VBoxContainer"]
+layout_mode = 2
+text = "Delete Process"
+
 [node name="SortJSON" type="Button" parent="HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Sort JSON"
@@ -192,4 +196,9 @@ layout_mode = 2
 text = "Add a parameter"
 
 [connection signal="text_changed" from="HBoxContainer/VBoxContainer/search/MarginContainer/VBoxContainer/SearchBar" to="." method="_on_search_bar_text_changed"]
+[connection signal="button_down" from="HBoxContainer/VBoxContainer/NewProcess" to="." method="_on_new_process_button_down"]
+[connection signal="button_down" from="HBoxContainer/VBoxContainer/SaveChanges" to="." method="_on_save_changes_button_down"]
+[connection signal="button_down" from="HBoxContainer/VBoxContainer/SaveNew" to="." method="_on_save_new_button_down"]
+[connection signal="button_down" from="HBoxContainer/VBoxContainer/DeleteProcess" to="." method="_on_delete_process_button_down"]
+[connection signal="button_down" from="HBoxContainer/VBoxContainer/SortJSON" to="." method="_on_sort_json_button_down"]
 [connection signal="button_down" from="HBoxContainer/VBoxContainer2/Button" to="." method="_on_button_button_down"]

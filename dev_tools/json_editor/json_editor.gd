@@ -2,17 +2,20 @@ extends Control
 
 var node_data = {} #stores json file
 @onready var parameter_container = $HBoxContainer/VBoxContainer2/ScrollContainer/parameter_container
+var json = "res://dev_tools/json_editor/process_help_copy.json"
 
 func _ready() -> void:
 	Nodes.hide()
 		
 	load_json()
-	fill_search("")
+	
 	
 func load_json():
-	var file = FileAccess.open("res://scenes/main/process_help.json", FileAccess.READ)
+	var file = FileAccess.open(json, FileAccess.READ)
 	if file:
 		node_data = JSON.parse_string(file.get_as_text())
+		
+	fill_search("")
 
 
 func fill_search(filter: String):
@@ -132,13 +135,12 @@ func delete_param(container: VBoxContainer):
 	container.queue_free()
 
 
+
+
 func _on_button_button_down() -> void:
 	var info = node_data["distort_replace"]
 	var parameters = info.get("parameters", {})
 	var parameter = parameters.get("param1", {})
-	
-	print(info)
-	print(parameter)
 	
 	var param_box = VBoxContainer.new()
 	param_box.set_h_size_flags(Control.SIZE_EXPAND_FILL)
@@ -180,6 +182,141 @@ func _on_button_button_down() -> void:
 	margin.add_theme_constant_override("margin_bottom", 5)
 	param_box.add_child(margin)
 	
+
+func save_node(is_new: bool) -> void:
+	var key = $HBoxContainer/VBoxContainer2/HBoxContainer/key.text.strip_edges()
+	if key == "":
+		printerr("Key is empty, cannot save")
+		return
+
+	var info = {
+		"category": $HBoxContainer/VBoxContainer2/HBoxContainer2/category.text,
+		"subcategory": $HBoxContainer/VBoxContainer2/HBoxContainer3/subcategory.text,
+		"title": $HBoxContainer/VBoxContainer2/HBoxContainer4/title.text,
+		"short_description": $HBoxContainer/VBoxContainer2/HBoxContainer5/shortdescription.text,
+		"description": $HBoxContainer/VBoxContainer2/HBoxContainer7/longdescription.text,
+		"stereo": $HBoxContainer/VBoxContainer2/HBoxContainer6/stereo.button_pressed,
+		"parameters": {}
+	}
+
+	for param_box in parameter_container.get_children():
+		var children = param_box.get_children()
+		if children.size() < 2:
+			continue
+
+		var param_data = {}
+		var param_label = children[0] as Label
+		var param_id = "param" + str(parameter_container.get_children().find(param_box) + 1)
+
+		for i in range(1, children.size()):
+			var node = children[i]
+			if node is HBoxContainer and node.get_child_count() >= 2:
+				var field_name = node.get_child(0).text
+				var input_field = node.get_child(1)
+				var field_value
+
+				if input_field is CheckBox:
+					field_value = input_field.button_pressed
+				else:
+					var raw_text = input_field.text
+					if raw_text.is_valid_float():
+						field_value = raw_text.to_float()
+					elif raw_text.is_valid_int():
+						field_value = raw_text.to_int()
+					elif raw_text.to_lower() == "true":
+						field_value = true
+					elif raw_text.to_lower() == "false":
+						field_value = false
+					else:
+						field_value = raw_text
+
+				param_data[field_name] = field_value
+
+		if param_data.size() > 0:
+			info["parameters"][param_id] = param_data
+
+	# Save or update entry
+	node_data[key] = info
+
+	# Write to file
+	var file = FileAccess.open(json, FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(node_data, "\t"))  # pretty print with tab indent
+		file.close()
+
+	fill_search("")  # refresh list
+	$HBoxContainer/VBoxContainer/search/MarginContainer/VBoxContainer/SearchBar.text = ""
 	
 	
+
+
+
+func _on_save_changes_button_down() -> void:
+	save_node(false)
+
+
+func _on_save_new_button_down() -> void:
+	save_node(true)
+
+
+func _on_delete_process_button_down() -> void:
+	var key = $HBoxContainer/VBoxContainer2/HBoxContainer/key.text.strip_edges()
+	if key == "":
+		printerr("No key entered – cannot delete.")
+		return
 	
+	if not node_data.has(key):
+		printerr("Key '%s' not found in JSON." % key)
+		return
+
+	# Remove entry from the dictionary
+	node_data.erase(key)
+
+	# Save updated JSON to file
+	var file = FileAccess.open(json, FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(node_data, "\t"))  # pretty print
+		file.close()
+
+	print("Deleted entry: ", key)
+
+	# refresh the list
+	fill_search("")
+	$HBoxContainer/VBoxContainer/search/MarginContainer/VBoxContainer/SearchBar.text = ""
+	_on_new_process_button_down()
+
+
+
+func _on_new_process_button_down() -> void:
+	$HBoxContainer/VBoxContainer2/HBoxContainer/key.text = ""
+	$HBoxContainer/VBoxContainer2/HBoxContainer2/category.text = ""
+	$HBoxContainer/VBoxContainer2/HBoxContainer3/subcategory.text = ""
+	$HBoxContainer/VBoxContainer2/HBoxContainer4/title.text = ""
+	$HBoxContainer/VBoxContainer2/HBoxContainer5/shortdescription.text = ""
+	$HBoxContainer/VBoxContainer2/HBoxContainer7/longdescription.text = ""
+	$HBoxContainer/VBoxContainer2/HBoxContainer6/stereo.button_pressed = false
+	
+	for child in parameter_container.get_children():
+			child.queue_free()
+	
+
+
+func _on_sort_json_button_down() -> void:
+	var json_to_sort = ProjectSettings.globalize_path(json)
+	var python_script = ProjectSettings.globalize_path("res://dev_tools/helpers/sort_json.py")
+	
+	print(json_to_sort)
+	print(python_script)
+
+	# Run the Python script with the JSON path as an argument
+	var output = []
+	var exit_code = OS.execute("cmd.exe", ["/c", python_script, json_to_sort], output, true)
+
+	# Optionally print the output or check the result
+	print("Exit code: ", exit_code)
+	print("Output:\n", output)
+	
+	fill_search("")  # refresh list
+	$HBoxContainer/VBoxContainer/search/MarginContainer/VBoxContainer/SearchBar.text = ""
+	
+	load_json()
