@@ -37,8 +37,7 @@ func display_items(filter: String):
 		var item = node_data[key]
 		var title = item.get("title", "")
 		
-		#filter out input and output nodes
-		#if title == "Input File" or title == "Output File":
+		#filter out output node
 		if title == "Output File":
 			continue
 		
@@ -59,6 +58,8 @@ func display_items(filter: String):
 		btn.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS #and replace with ...
 		if category.to_lower() == "pvoc": #format node names correctly, only show the category for PVOC
 			btn.text = "%s %s: %s - %s" % [category.to_upper(), subcategory.to_pascal_case(), title, short_desc]
+		elif title.to_lower() == "input file":
+			btn.text = "%s - %s" % [title, short_desc]
 		else:
 			btn.text = "%s: %s - %s" % [subcategory.to_pascal_case(), title, short_desc]
 		btn.connect("pressed", Callable(self, "_on_item_selected").bind(key)) #pass key (process name) when button is pressed

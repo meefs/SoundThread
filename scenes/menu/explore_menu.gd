@@ -26,8 +26,8 @@ func fill_menu():
 		var item = node_data[key]
 		var title = item.get("title", "")
 		
-		#filter out input and output nodes
-		if title == "Input File" or title == "Output File":
+		#filter out output nodes
+		if title == "Output File":
 			continue
 		
 		var category = item.get("category", "")
@@ -114,8 +114,8 @@ func fill_search(filter: String):
 		var item = node_data[key]
 		var title = item.get("title", "")
 		
-		#filter out input and output nodes
-		if title == "Input File" or title == "Output File":
+		#filter out output node
+		if title == "Output File":
 			continue
 		
 		var category = item.get("category", "")
