@@ -550,16 +550,12 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 
 	# Get the command name from metadata or default to node name
 	var command_name = str(node.get_meta("command"))
-	#command_name = command_name.replace("_", " ")
 	command_name = command_name.split("_", true, 1)
-	print(command_name)
 	var command = "%s/%s" %[control_script.cdpprogs_location, command_name[0]]
-	print(command)
 	var args = command_name[1].split("_", true, 1)
-	print(args)
 	args.append(current_infile)
 	args.append(output_file)
-	print(args)
+
 	# Start building the command line windows
 	var line = "%s/%s \"%s\" \"%s\" " % [control_script.cdpprogs_location, command_name, current_infile, output_file]
 	#mac
@@ -638,78 +634,6 @@ func write_breakfile(points: Array, path: String):
 	else:
 		print("Failed to open file for writing.")
 
-func run_command(command: String, args: Array) -> String:
-	var is_windows = OS.get_name() == "Windows"
-
-	console_output.append_text(command + " " + " ".join(args) + "\n")
-	console_output.scroll_to_line(console_output.get_line_count() - 1)
-	await get_tree().process_frame
-	
-	if is_windows:
-		#exit_code = OS.execute("cmd.exe", ["/C", command], output, true, false)
-		args.insert(0, command)
-		args.insert(0, "/C")
-		process_info = OS.execute_with_pipe("cmd.exe", args, false)
-	else:
-		process_info = OS.execute_with_pipe(command, args, false)
-	# Check if the process was successfully started
-	if !process_info.has("pid"):
-		print("Failed to start process.")
-		return ""
-	
-	process_running = true
-	
-	# Start monitoring the process output and status
-	return await monitor_process(process_info["pid"], process_info["stdio"], process_info["stderr"])
-
-func monitor_process(pid: int, stdout: FileAccess, stderr: FileAccess) -> String:
-	var output := ""
-	
-	while OS.is_process_running(pid):
-		await get_tree().process_frame
-		
-		while stdout.get_position() < stdout.get_length():
-			var line = stdout.get_line()
-			output += line
-			console_output.append_text(line + "\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-		while stderr.get_position() < stderr.get_length():
-			var line = stderr.get_line()
-			output += line
-			console_output.append_text(line + "\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-	
-	var exit_code = OS.get_process_exit_code(pid)
-	if exit_code == 0:
-		if output.contains("ERROR:"): #checks if CDP reported an error but passed exit code 0 anyway
-			console_output.append_text("[color=#9c2828][b]Processes failed[/b][/color]\n\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-			process_successful = false
-			if process_cancelled == false:
-				progress_window.hide()
-				if !console_window.visible:
-					console_window.popup_centered()
-		else:
-			console_output.append_text("[color=#638382]Processes ran successfully[/color]\n\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-	else:
-		console_output.append_text("[color=#9c2828][b]Processes failed with exit code: %d[/b][/color]\n" % exit_code + "\n")
-		console_output.scroll_to_line(console_output.get_line_count() - 1)
-		process_successful = false
-		if process_cancelled == false:
-			progress_window.hide()
-			if !console_window.visible:
-				console_window.popup_centered()
-		if output.contains("as an internal or external command"): #check for cdprogs location error on windows
-			console_output.append_text("[color=#9c2828][b]Please make sure your cdprogs folder is set to the correct location in the Settings menu. The default location is C:\\CDPR8\\_cdp\\_cdprogs[/b][/color]\n\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-		if output.contains("command not found"): #check for cdprogs location error on unix systems
-			console_output.append_text("[color=#9c2828][b]Please make sure your cdprogs folder is set to the correct location in the Settings menu. The default location is ~/cdpr8/_cdp/_cdprogs[/b][/color]\n\n")
-			console_output.scroll_to_line(console_output.get_line_count() - 1)
-			
-	process_running = false
-	return output
-
 func _on_kill_process_button_down() -> void:
 	if process_running and process_info.has("pid"):
 		progress_window.hide()
@@ -784,3 +708,74 @@ func log_console(text: String, update: bool) -> void:
 	console_output.scroll_to_line(console_output.get_line_count() - 1)
 	if update == true:
 		await get_tree().process_frame  # Optional: ensure UI updates
+
+func run_command(command: String, args: Array) -> String:
+	var is_windows = OS.get_name() == "Windows"
+
+	console_output.append_text(command + " " + " ".join(args) + "\n")
+	console_output.scroll_to_line(console_output.get_line_count() - 1)
+	await get_tree().process_frame
+	
+	if is_windows and (command == "del" or command == "ren"): #checks if the command is a windows system command and runs it through cmd.exe
+		args.insert(0, command)
+		args.insert(0, "/C")
+		process_info = OS.execute_with_pipe("cmd.exe", args, false)
+	else:
+		process_info = OS.execute_with_pipe(command, args, false)
+	# Check if the process was successfully started
+	if !process_info.has("pid"):
+		print("Failed to start process.")
+		return ""
+	
+	process_running = true
+	
+	# Start monitoring the process output and status
+	return await monitor_process(process_info["pid"], process_info["stdio"], process_info["stderr"])
+
+func monitor_process(pid: int, stdout: FileAccess, stderr: FileAccess) -> String:
+	var output := ""
+	
+	while OS.is_process_running(pid):
+		await get_tree().process_frame
+		
+		while stdout.get_position() < stdout.get_length():
+			var line = stdout.get_line()
+			output += line
+			console_output.append_text(line + "\n")
+			console_output.scroll_to_line(console_output.get_line_count() - 1)
+		while stderr.get_position() < stderr.get_length():
+			var line = stderr.get_line()
+			output += line
+			console_output.append_text(line + "\n")
+			console_output.scroll_to_line(console_output.get_line_count() - 1)
+	
+	var exit_code = OS.get_process_exit_code(pid)
+	if exit_code == 0:
+		if output.contains("ERROR:"): #checks if CDP reported an error but passed exit code 0 anyway
+			console_output.append_text("[color=#9c2828][b]Processes failed[/b][/color]\n\n")
+			console_output.scroll_to_line(console_output.get_line_count() - 1)
+			process_successful = false
+			if process_cancelled == false:
+				progress_window.hide()
+				if !console_window.visible:
+					console_window.popup_centered()
+		else:
+			console_output.append_text("[color=#638382]Processes ran successfully[/color]\n\n")
+			console_output.scroll_to_line(console_output.get_line_count() - 1)
+	else:
+		console_output.append_text("[color=#9c2828][b]Processes failed with exit code: %d[/b][/color]\n" % exit_code + "\n")
+		console_output.scroll_to_line(console_output.get_line_count() - 1)
+		process_successful = false
+		if process_cancelled == false:
+			progress_window.hide()
+			if !console_window.visible:
+				console_window.popup_centered()
+		if output.contains("as an internal or external command"): #check for cdprogs location error on windows
+			console_output.append_text("[color=#9c2828][b]Please make sure your cdprogs folder is set to the correct location in the Settings menu. The default location is C:\\CDPR8\\_cdp\\_cdprogs[/b][/color]\n\n")
+			console_output.scroll_to_line(console_output.get_line_count() - 1)
+		if output.contains("command not found"): #check for cdprogs location error on unix systems
+			console_output.append_text("[color=#9c2828][b]Please make sure your cdprogs folder is set to the correct location in the Settings menu. The default location is ~/cdpr8/_cdp/_cdprogs[/b][/color]\n\n")
+			console_output.scroll_to_line(console_output.get_line_count() - 1)
+			
+	process_running = false
+	return output
