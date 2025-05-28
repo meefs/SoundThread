@@ -11,6 +11,7 @@ var process_successful #tracks if the last run process was successful
 var process_info = {} #tracks the data of the currently running process
 var process_running := false #tracks if a process is currently running
 var process_cancelled = false #checks if the currently running process has been cancelled
+var final_output_dir
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -67,6 +68,7 @@ func run_thread_with_branches():
 		await get_tree().process_frame  # Let UI update
 		
 	# Step 1: Gather nodes from the GraphEdit
+	var trimcount = 0 # used for tracking the number of trims on input files for progress bar
 	for child in graph_edit.get_children():
 		if child is GraphNode:
 			var includenode = true
@@ -110,12 +112,12 @@ func run_thread_with_branches():
 				graph[name] = []
 				reverse_graph[name] = []
 				indegree[name] = 0  # Start with zero incoming edges
+				if child.get_meta("command") == "inputfile" and child.get_node("AudioPlayer").get_meta("trimfile"):
+					trimcount += 1
 	#do calculations for progress bar
 	var progress_step
-	if Global.trim_infile == true:
-		progress_step = 100 / (graph.size() + 4)
-	else:
-		progress_step = 100 / (graph.size() + 3)
+	progress_step = 100 / (graph.size() + 3 + trimcount)
+
 	
 
 	# Step 2: Build graph relationships from connections
@@ -458,7 +460,7 @@ func run_thread_with_branches():
 	# If multiple outputs go to the outputfile node, merge them
 	if final_outputs.size() > 1:
 		var runmerge = await merge_many_files(process_count, final_outputs)
-		control_script.final_output_dir = runmerge[0]
+		final_output_dir = runmerge[0]
 		var converted_files = runmerge[1]
 		
 		if control_script.delete_intermediate_outputs:
@@ -469,7 +471,7 @@ func run_thread_with_branches():
 	# Only one output, no merge needed
 	elif final_outputs.size() == 1:
 		var single_output = final_outputs[0]
-		control_script.final_output_dir = single_output
+		final_output_dir = single_output
 		intermediate_files.erase(single_output)
 	progress_bar.value += progress_step
 	# CLEANUP: Delete intermediate files after processing and rename final output
@@ -497,16 +499,16 @@ func run_thread_with_branches():
 		await get_tree().process_frame
 		
 	var final_filename = "%s.wav" % Global.outfile
-	var final_output_dir_fixed_path = control_script.final_output_dir
+	var final_output_dir_fixed_path = final_output_dir
 	if is_windows:
 		final_output_dir_fixed_path = final_output_dir_fixed_path.replace("/", "\\")
 		await run_command(rename_cmd, [final_output_dir_fixed_path, final_filename.get_file()])
 	else:
 		await run_command(rename_cmd, [final_output_dir_fixed_path, "%s.wav" % Global.outfile])
-	control_script.final_output_dir = Global.outfile + ".wav"
+	final_output_dir = Global.outfile + ".wav"
 	
-	control_script.output_audio_player.play_outfile(control_script.final_output_dir)
-	control_script.outfile = control_script.final_output_dir
+	control_script.output_audio_player.play_outfile(final_output_dir)
+	Global.cdpoutput = final_output_dir
 	progress_bar.value = 100.0
 	var interface_settings = ConfigHandler.load_interface_settings() #checks if close console is enabled and closes console on a success
 	progress_window.hide()
@@ -548,8 +550,9 @@ func merge_many_files(process_count: int, input_files: Array) -> Array:
 	
 	#Check if all sample rates are the same
 	if sample_rates.all(func(v): return v == sample_rates[0]):
-		print("sample rates are the same")
+		pass
 	else:
+		log_console("Different sample rates found, upsampling files to match highest current sample rate before mixing.", true)
 		#if not find the highest sample rate
 		var highest_sample_rate = sample_rates.max()
 		var index = 0
@@ -578,6 +581,7 @@ func merge_many_files(process_count: int, input_files: Array) -> Array:
 
 	# STEP 2: Convert mono to stereo if there is a mix
 	if mono_files.size() > 0 and stereo_files.size() > 0:
+		log_console("Mix of mono and stereo files found, interleaving mono files to stereo before mixing.", true)
 		for mono_file in mono_files:
 			var stereo_file = "%s_stereo.wav" % mono_file.get_basename()
 			await run_command(control_script.cdpprogs_location + "/submix", ["interleave", mono_file, mono_file, stereo_file])
@@ -593,6 +597,7 @@ func merge_many_files(process_count: int, input_files: Array) -> Array:
 		inputs_to_merge = input_files.duplicate()
 
 	# STEP 3: Merge all input files (converted or original)
+	log_console("Mixing files to combined input.", true)
 	var quoted_inputs := []
 	for f in inputs_to_merge:
 		quoted_inputs.append(f)

@@ -21,12 +21,11 @@ func _ready():
 	file_dialog.connect("file_selected", Callable(self, "_on_file_selected"))
 	audio_player.connect("finished", Callable(self, "_on_audio_finished"))
 	
-	if get_meta("loadenable") == true:
-		$RecycleButton.hide()
-		$LoadButton.show()
-	else:
+	if get_meta("loadenable") == false:
+		$PlayButton.position.x = $LoadButton.position.x
+		$PlayButton.size.x = $Panel.size.x
 		$LoadButton.hide()
-		$RecycleButton.show()
+		$RecycleButton.hide()
 	
 	$WavError.hide()
 	
@@ -59,10 +58,6 @@ func _on_load_button_button_down() -> void:
 
 func _on_file_selected(path: String):
 	audio_player.stream = AudioStreamWAV.load_from_file(path)
-	Global.infile_stereo = audio_player.stream.stereo
-	#if audio_player.stream.stereo == true:
-		##audio_player.stream = null
-		##$WavError.show()
 	voice_preview_generator.generate_preview(audio_player.stream)
 	set_meta("inputfile", path)
 	reset_playback()
@@ -88,16 +83,11 @@ func play_outfile(path: String):
 	reset_playback()
 
 	
-func recycle_outfile(path: String):
-	audio_player.stream = AudioStreamWAV.load_from_file(path)
-	Global.infile_stereo = audio_player.stream.stereo
-	#if audio_player.stream.stereo == true:
-		##audio_player.stream = null
-		##$WavError.show()
-	voice_preview_generator.generate_preview(audio_player.stream)
-	Global.infile = path
-	print("Infile set: " + Global.infile)
-	reset_playback()
+func recycle_outfile():
+	print("recycle pressed")
+	print(Global.cdpoutput)
+	if Global.cdpoutput != "no_file":
+		_on_file_selected(Global.cdpoutput)
 
 
 func _on_play_button_button_down() -> void:
