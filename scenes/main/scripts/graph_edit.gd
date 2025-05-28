@@ -148,7 +148,7 @@ func copy_selected_nodes():
 	for node in get_children():
 		# Check if the node is selected and not an 'inputfile' or 'outputfile'
 		if node is GraphNode and selected_nodes.get(node, false):
-			if node.get_meta("command") == "inputfile" or node.get_meta("command") == "outputfile":
+			if node.get_meta("command") == "outputfile":
 				continue  # Skip these nodes
 
 			var node_data = {

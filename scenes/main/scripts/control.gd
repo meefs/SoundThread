@@ -251,7 +251,7 @@ func simulate_mouse_click():
 func _run_process() -> void:
 	#check if any of the inputfile nodes don't have files loaded
 	for node in graph_edit.get_children():
-		if node.get_meta("command") == "inputfile" and node.get_node("AudioPlayer").get_meta("inputfile") == "none":
+		if node.get_meta("command") == "inputfile" and node.get_node("AudioPlayer").has_meta("inputfile") == false:
 			$NoInputPopup.popup_centered()
 			return
 	#check if the reuse folder toggle is set and a folder has been previously chosen

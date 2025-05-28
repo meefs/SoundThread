@@ -36,7 +36,6 @@ func _ready():
 	voice_preview_generator.texture_ready.connect(_on_texture_ready)
 	
 	#setup meta to say the player is empty and no trim points have been set
-	set_meta("inputfile", "none")
 	set_meta("trimfile", false)
 
 #func _on_files_dropped(files):

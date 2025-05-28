@@ -57,6 +57,10 @@ func run_thread_with_branches():
 		log_console("[color=#9c2828][b]Error: Valid Thread not found[/b][/color]", true)
 		log_console("Threads must contain at least one processing node and a valid path from the Input File to the Output File.", true)
 		await get_tree().process_frame  # Let UI update
+		if progress_window.visible:
+			progress_window.hide()
+		if !console_window.visible:
+			console_window.popup_centered()
 		return
 	else:
 		log_console("[color=#638382][b]Valid Thread found[/b][/color]", true)
@@ -190,18 +194,19 @@ func run_thread_with_branches():
 					return
 				else:
 					progress_label.text = "Trimming input audio"
-				await run_command(control_script.cdpprogs_location + "/sfedit", ["cut", "1", loadedfile, "%s_trimmed.wav" % Global.outfile, str(start), str(end)])
+				await run_command(control_script.cdpprogs_location + "/sfedit", ["cut", "1", loadedfile, "%s_%d_input_trim.wav" % [Global.outfile, process_count], str(start), str(end)])
 				
-				output_files[node_name] =  Global.outfile + "_trimmed.wav"
+				output_files[node_name] =  "%s_%d_input_trim.wav" % [Global.outfile, process_count]
 				
 				# Mark trimmed file for cleanup if needed
 				if control_script.delete_intermediate_outputs:
-					intermediate_files.append(Global.outfile + "_trimmed.wav")
+					intermediate_files.append("%s_%d_input_trim.wav" % [Global.outfile, process_count])
 				progress_bar.value += progress_step
 			else:
 				#if trim not enabled pass the loaded file
 				output_files[node_name] =  loadedfile
-			
+				
+			process_count += 1
 		else:
 			# Build the command for the current node's audio processing
 			var slider_data = _get_slider_values_ordered(node)
@@ -665,10 +670,11 @@ func _on_kill_process_button_down() -> void:
 
 	
 func path_exists_through_all_nodes() -> bool:
+	print("checking path")
 	var all_nodes = {}
 	var graph = {}
 
-	var input_node_name = ""
+	var input_node_names = []
 	var output_node_name = ""
 
 	# Gather all relevant nodes
@@ -679,19 +685,15 @@ func path_exists_through_all_nodes() -> bool:
 
 			var command = child.get_meta("command")
 			if command == "inputfile":
-				input_node_name = name
+				input_node_names.append(name)
 			elif command == "outputfile":
 				output_node_name = name
 
 			# Skip utility nodes, include others
 			if command in ["inputfile", "outputfile"] or not child.has_meta("utility"):
 				graph[name] = []
-
-	# Ensure both input and output were found
-	if input_node_name == "" or output_node_name == "":
-		print("Input or output node not found!")
-		return false
-
+	print(input_node_names)
+	print(output_node_name)
 	# Add edges to graph from the connection list
 	var connection_list = graph_edit.get_connection_list()
 	for conn in connection_list:
@@ -700,28 +702,29 @@ func path_exists_through_all_nodes() -> bool:
 		if graph.has(from):
 			graph[from].append(to)
 
-	# BFS traversal to check path and depth
-	var visited = {}
-	var queue = [ { "node": input_node_name, "depth": 0 } ]
-	var has_intermediate = false
+	# BFS from each input node
+	for input_node_name in input_node_names:
+		var visited = {}
+		var queue = [{ "node": input_node_name, "depth": 0 }]
 
-	while queue.size() > 0:
-		var current = queue.pop_front()
-		var current_node = current["node"]
-		var depth = current["depth"]
+		while queue.size() > 0:
+			var current = queue.pop_front()
+			var current_node = current["node"]
+			var depth = current["depth"]
 
-		if current_node in visited:
-			continue
-		visited[current_node] = true
+			if current_node in visited:
+				continue
+			visited[current_node] = true
 
-		if current_node == output_node_name and depth >= 2:
-			has_intermediate = true
+			if current_node == output_node_name and depth >= 2:
+				return true  # Found a valid path from this input node
 
-		if graph.has(current_node):
-			for neighbor in graph[current_node]:
-				queue.append({ "node": neighbor, "depth": depth + 1 })
+			if graph.has(current_node):
+				for neighbor in graph[current_node]:
+					queue.append({ "node": neighbor, "depth": depth + 1 })
 
-	return has_intermediate
+	# If no path from any input node to output node was found
+	return false
 	
 func log_console(text: String, update: bool) -> void:
 	console_output.append_text(text + "\n \n")
