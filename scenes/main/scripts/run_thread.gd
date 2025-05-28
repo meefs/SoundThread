@@ -68,7 +68,7 @@ func run_thread_with_branches():
 		await get_tree().process_frame  # Let UI update
 		
 	# Step 1: Gather nodes from the GraphEdit
-	var trimcount = 0 # used for tracking the number of trims on input files for progress bar
+	var inputcount = 0 # used for tracking the number of input nodes and trims on input files for progress bar
 	for child in graph_edit.get_children():
 		if child is GraphNode:
 			var includenode = true
@@ -112,11 +112,13 @@ func run_thread_with_branches():
 				graph[name] = []
 				reverse_graph[name] = []
 				indegree[name] = 0  # Start with zero incoming edges
-				if child.get_meta("command") == "inputfile" and child.get_node("AudioPlayer").get_meta("trimfile"):
-					trimcount += 1
+				if child.get_meta("command") == "inputfile":
+					inputcount -= 1
+					if child.get_node("AudioPlayer").get_meta("trimfile"):
+						inputcount += 1
 	#do calculations for progress bar
 	var progress_step
-	progress_step = 100 / (graph.size() + 3 + trimcount)
+	progress_step = 100 / (graph.size() + 3 + inputcount)
 
 	
 
@@ -561,7 +563,7 @@ func merge_many_files(process_count: int, input_files: Array) -> Array:
 			#check if sample rate of current file is less than the highest sample rate
 			if sample_rates[index] < highest_sample_rate:
 				#up sample it to the highest sample rate if so
-				var upsample_output = Global.outfile + "_" + f.get_file().get_slice(".wav", 0) + "_" + str(highest_sample_rate) + ".wav"
+				var upsample_output = Global.outfile + "_" + str(process_count) + f.get_file().get_slice(".wav", 0) + "_" + str(highest_sample_rate) + ".wav"
 				await run_command(control_script.cdpprogs_location + "/housekeep", ["respec", "1", f, upsample_output, str(highest_sample_rate)])
 				#replace the file in the input_file index with the new upsampled file
 				input_files[index] = upsample_output
@@ -583,7 +585,8 @@ func merge_many_files(process_count: int, input_files: Array) -> Array:
 	if mono_files.size() > 0 and stereo_files.size() > 0:
 		log_console("Mix of mono and stereo files found, interleaving mono files to stereo before mixing.", true)
 		for mono_file in mono_files:
-			var stereo_file = "%s_stereo.wav" % mono_file.get_basename()
+			var stereo_file = Global.outfile + "_" + str(process_count) + mono_file.get_file().get_slice(".wav", 0) + "_stereo.wav"
+			#var stereo_file = "%s_stereo.wav" % mono_file.get_basename()
 			await run_command(control_script.cdpprogs_location + "/submix", ["interleave", mono_file, mono_file, stereo_file])
 			if process_successful == false:
 				log_console("Failed to interleave mono file: %s" % mono_file, true)
