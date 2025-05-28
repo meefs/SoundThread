@@ -34,6 +34,10 @@ func _ready():
 	voice_preview_generator = preload("res://addons/audio_preview/voice_preview_generator.tscn").instantiate()
 	add_child(voice_preview_generator)
 	voice_preview_generator.texture_ready.connect(_on_texture_ready)
+	
+	#setup meta to say the player is empty and no trim points have been set
+	set_meta("inputfile", "none")
+	set_meta("trimfile", false)
 
 #func _on_files_dropped(files):
 	#if files[0].get_extension() == "wav" or files[0].get_extension() == "WAV":
@@ -61,8 +65,9 @@ func _on_file_selected(path: String):
 		##audio_player.stream = null
 		##$WavError.show()
 	voice_preview_generator.generate_preview(audio_player.stream)
-	Global.infile = path
-	print("Infile set: " + Global.infile)
+	set_meta("inputfile", path)
+	#Global.infile = path
+	#print("Infile set: " + Global.infile)
 	reset_playback()
 	
 func reset_playback():
@@ -71,7 +76,8 @@ func reset_playback():
 	$PlayButton.text = "Play"
 	$Timer.stop()
 	if get_meta("loadenable") == true:
-		Global.trim_infile = false
+		set_meta("timefile", false)
+		#Global.trim_infile = false
 	
 	
 func play_outfile(path: String):
@@ -187,17 +193,18 @@ func _on_button_button_down() -> void:
 func _on_button_button_up() -> void:
 	rect_focus = false
 	if get_meta("loadenable") == true:
-		print("got meta")
 		if $LoopRegion.size.x > 0:
-			Global.trim_infile = true
+			set_meta("trimfile", true)
+			#Global.trim_infile = true
 			var length = $AudioStreamPlayer.stream.get_length()
 			var pixel_to_time = length / 399
-			Global.infile_start = pixel_to_time * $LoopRegion.position.x
-			Global.infile_stop = Global.infile_start + (pixel_to_time * $LoopRegion.size.x)
-			print(Global.trim_infile)
-			print(Global.infile_start)
-			print(Global.infile_stop)
+			var start = pixel_to_time * $LoopRegion.position.x
+			var end = start + (pixel_to_time * $LoopRegion.size.x)
+			set_meta("trimpoints", [start, end])
+			#Global.infile_start = pixel_to_time * $LoopRegion.position.x
+			#Global.infile_stop = Global.infile_start + (pixel_to_time * $LoopRegion.size.x)
 		else:
-			Global.trim_infile = false
-			print(Global.trim_infile)
+			set_meta("trimfile", false)
+			#Global.trim_infile = false
+
 	

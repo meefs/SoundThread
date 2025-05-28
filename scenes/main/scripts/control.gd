@@ -249,13 +249,16 @@ func simulate_mouse_click():
 
 
 func _run_process() -> void:
-	if Global.infile == "no_file":
-		$NoInputPopup.popup_centered()
+	#check if any of the inputfile nodes don't have files loaded
+	for node in graph_edit.get_children():
+		if node.get_meta("command") == "inputfile" and node.get_node("AudioPlayer").get_meta("inputfile") == "none":
+			$NoInputPopup.popup_centered()
+			return
+	#check if the reuse folder toggle is set and a folder has been previously chosen
+	if foldertoggle.button_pressed == true and lastoutputfolder != "none":
+		_on_file_dialog_dir_selected(lastoutputfolder)
 	else:
-		if foldertoggle.button_pressed == true and lastoutputfolder != "none":
-			_on_file_dialog_dir_selected(lastoutputfolder)
-		else:
-			$FileDialog.show()
+		$FileDialog.show()
 			
 
 func _on_file_dialog_dir_selected(dir: String) -> void:

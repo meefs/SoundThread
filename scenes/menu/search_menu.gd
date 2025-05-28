@@ -38,7 +38,8 @@ func display_items(filter: String):
 		var title = item.get("title", "")
 		
 		#filter out input and output nodes
-		if title == "Input File" or title == "Output File":
+		#if title == "Input File" or title == "Output File":
+		if title == "Output File":
 			continue
 		
 		var category = item.get("category", "")
