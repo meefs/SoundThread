@@ -42,7 +42,6 @@ slot/1/right_icon = null
 slot/1/draw_stylebox = true
 script = ExtResource("3_uv17x")
 metadata/command = "inputfile"
-metadata/utility = true
 
 [node name="Control" type="Control" parent="inputfile"]
 layout_mode = 2

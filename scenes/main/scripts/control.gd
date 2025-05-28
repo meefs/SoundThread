@@ -6,11 +6,9 @@ var effect_position = Vector2(40,40) #tracks mouse position for node placement o
 var cdpprogs_location #stores the cdp programs location from user prefs for easy access
 var delete_intermediate_outputs # tracks state of delete intermediate outputs toggle
 @onready var console_output: RichTextLabel = $Console/ConsoleOutput
-var final_output_dir
 var undo_redo := UndoRedo.new() 
 var output_audio_player #tracks the node that is the current output player for linking
 var input_audio_player #tracks node that is the current input player for linking
-var outfile = "no file" #tracks dir of output file from cdp process
 var currentfile = "none" #tracks dir of currently loaded file for saving
 var changesmade = false #tracks if user has made changes to the currently loaded save file
 var savestate # tracks what the user is trying to do when savechangespopup is called
@@ -124,7 +122,6 @@ func new_patch():
 	graph_edit._register_node_movement() #link nodes for tracking position changes for changes tracking
 	
 	changesmade = false #so it stops trying to save unchanged empty files
-	Global.infile = "no_file" #resets input to stop processes running with old files
 	get_window().title = "SoundThread"
 	link_output()
 	
@@ -137,8 +134,8 @@ func link_output():
 			control.button_pressed = true
 		elif control.get_meta("outputfunction") == "runprocess": #link runprocess button
 			control.button_down.connect(_run_process)
-		elif control.get_meta("outputfunction") == "recycle": #link recycle button
-			control.button_down.connect(_recycle_outfile)
+		#elif control.get_meta("outputfunction") == "recycle": #link recycle button
+			#control.button_down.connect(_recycle_outfile)
 		elif control.get_meta("outputfunction") == "audioplayer": #link output audio player
 			output_audio_player = control
 		elif control.get_meta("outputfunction") == "filename":
@@ -150,10 +147,10 @@ func link_output():
 		elif control.get_meta("outputfunction") == "openfolder":
 			control.button_down.connect(_open_output_folder)
 
-	for control in get_tree().get_nodes_in_group("inputnode"):
-		if control.get_meta("inputfunction") == "audioplayer": #link input for recycle function
-			print("input player found")
-			input_audio_player = control
+	#for control in get_tree().get_nodes_in_group("inputnode"):
+		#if control.get_meta("inputfunction") == "audioplayer": #link input for recycle function
+			#print("input player found")
+			#input_audio_player = control
 
 func check_user_preferences():
 	var interface_settings = ConfigHandler.load_interface_settings()
@@ -249,13 +246,16 @@ func simulate_mouse_click():
 
 
 func _run_process() -> void:
-	if Global.infile == "no_file":
-		$NoInputPopup.popup_centered()
+	#check if any of the inputfile nodes don't have files loaded
+	for node in graph_edit.get_children():
+		if node.get_meta("command") == "inputfile" and node.get_node("AudioPlayer").has_meta("inputfile") == false:
+			$NoInputPopup.popup_centered()
+			return
+	#check if the reuse folder toggle is set and a folder has been previously chosen
+	if foldertoggle.button_pressed == true and lastoutputfolder != "none":
+		_on_file_dialog_dir_selected(lastoutputfolder)
 	else:
-		if foldertoggle.button_pressed == true and lastoutputfolder != "none":
-			_on_file_dialog_dir_selected(lastoutputfolder)
-		else:
-			$FileDialog.show()
+		$FileDialog.show()
 			
 
 func _on_file_dialog_dir_selected(dir: String) -> void:
@@ -465,9 +465,9 @@ func _on_help_button_index_pressed(index: int) -> void:
 		12:
 			OS.shell_open("https://github.com/j-p-higgins/SoundThread/issues")
 
-func _recycle_outfile():
-	if outfile != "no file":
-		input_audio_player.recycle_outfile(outfile)
+#func _recycle_outfile():
+	#if outfile != "no file":
+		#input_audio_player.recycle_outfile(outfile)
 
 
 

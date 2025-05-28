@@ -11,6 +11,7 @@ var process_successful #tracks if the last run process was successful
 var process_info = {} #tracks the data of the currently running process
 var process_running := false #tracks if a process is currently running
 var process_cancelled = false #checks if the currently running process has been cancelled
+var final_output_dir
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -57,26 +58,68 @@ func run_thread_with_branches():
 		log_console("[color=#9c2828][b]Error: Valid Thread not found[/b][/color]", true)
 		log_console("Threads must contain at least one processing node and a valid path from the Input File to the Output File.", true)
 		await get_tree().process_frame  # Let UI update
+		if progress_window.visible:
+			progress_window.hide()
+		if !console_window.visible:
+			console_window.popup_centered()
 		return
 	else:
 		log_console("[color=#638382][b]Valid Thread found[/b][/color]", true)
 		await get_tree().process_frame  # Let UI update
 		
 	# Step 1: Gather nodes from the GraphEdit
+	var inputcount = 0 # used for tracking the number of input nodes and trims on input files for progress bar
 	for child in graph_edit.get_children():
 		if child is GraphNode:
+			var includenode = true
 			var name = str(child.name)
 			all_nodes[name] = child
-			if not child.has_meta("utility"):
+			if child.has_meta("utility"):
+				includenode = false
+			else:
+				#check if node has inputs
+				if child.get_input_port_count() > 0:
+					#if it does scan through those inputs
+					for i in range(child.get_input_port_count()):
+						#check if it can find any valid connections
+						var connected = false
+						for conn in connections:
+							if conn["to_node"] == name and conn["to_port"] == i:
+								connected = true
+								break
+						#if no valid connections are found break the for loop to skip checking other inputs and set include to false
+						if connected == false:
+							log_console(name + " input is not connected, skipping node.", true)
+							includenode = false
+							break
+				#check if node has outputs
+				if child.get_output_port_count() > 0:
+					#if it does scan through those outputs
+					for i in range(child.get_output_port_count()):
+						#check if it can find any valid connections
+						var connected = false
+						for conn in connections:
+							if conn["from_node"] == name and conn["to_port"] == i:
+								connected = true
+								break
+						#if no valid connections are found break the for loop to skip checking other inputs and set include to false
+						if connected == false:
+							log_console(name + " output is not connected, skipping node.", true)
+							includenode = false
+							break
+								
+			if includenode == true:
 				graph[name] = []
 				reverse_graph[name] = []
 				indegree[name] = 0  # Start with zero incoming edges
+				if child.get_meta("command") == "inputfile":
+					inputcount -= 1
+					if child.get_node("AudioPlayer").get_meta("trimfile"):
+						inputcount += 1
 	#do calculations for progress bar
 	var progress_step
-	if Global.trim_infile == true:
-		progress_step = 100 / (graph.size() + 4)
-	else:
-		progress_step = 100 / (graph.size() + 3)
+	progress_step = 100 / (graph.size() + 3 + inputcount)
+
 	
 
 	# Step 2: Build graph relationships from connections
@@ -125,25 +168,7 @@ func run_thread_with_branches():
 	var output_files = {}
 	var process_count = 0
 
-	# Start with the original input file
-	var starting_infile = Global.infile
-	
-	
-	#If trim is enabled trim input audio
-	if Global.trim_infile == true:
-		if process_cancelled:
-			progress_label.text = "Thread Stopped"
-			log_console("[b]Thread Stopped[/b]", true)
-			return
-		else:
-			progress_label.text = "Trimming input audio"
-		await run_command(control_script.cdpprogs_location + "/sfedit", ["cut", "1", starting_infile, "%s_trimmed.wav" % Global.outfile, str(Global.infile_start), str(Global.infile_stop)])
-		starting_infile = Global.outfile + "_trimmed.wav"
-		# Mark trimmed file for cleanup if needed
-		if control_script.delete_intermediate_outputs:
-			intermediate_files.append(Global.outfile + "_trimmed.wav")
-		progress_bar.value += progress_step
-	var current_infile = starting_infile
+	var current_infile
 
 	# Iterate over the processing nodes in topological order
 	for node_name in sorted:
@@ -181,47 +206,53 @@ func run_thread_with_branches():
 
 		## If no input, use the original input file
 		else:
-			current_infile = starting_infile
-
-		# Build the command for the current node's audio processing
-		var slider_data = _get_slider_values_ordered(node)
+			#if no input i need to skip the node
+			pass
 		
-		if node.get_slot_type_right(0) == 1: #detect if process outputs pvoc data
-			if typeof(current_infile) == TYPE_ARRAY:
-				#check if infile is an array meaning that the last pvoc process was run in dual mono mode
-				# Process left and right seperately
-				var pvoc_stereo_files = []
-				
-				for infile in current_infile:
-					var makeprocess = await make_process(node, process_count, infile, slider_data)
-					# run the command
-					await run_command(makeprocess[0], makeprocess[3])
-					await get_tree().process_frame
-					var output_file = makeprocess[1]
-					pvoc_stereo_files.append(output_file)
-					
-					# Mark file for cleanup if needed
-					if control_script.delete_intermediate_outputs:
-						for file in makeprocess[2]:
-							breakfiles.append(file)
-						intermediate_files.append(output_file)
-
-					process_count += 1
-					
-				output_files[node_name] = pvoc_stereo_files
-			else:
-				var input_stereo = await is_stereo(current_infile)
-				if input_stereo == true: 
-					#audio file is stereo and needs to be split for pvoc processing
-					var pvoc_stereo_files = []
-					##Split stereo to c1/c2
-					await run_command(control_script.cdpprogs_location + "/housekeep",["chans", "2", current_infile])
+		if node.get_meta("command") == "inputfile":
+			#get the inputfile from the nodes meta
+			var loadedfile = node.get_node("AudioPlayer").get_meta("inputfile")
+			#get wether trim has been enabled
+			var trimfile = node.get_node("AudioPlayer").get_meta("trimfile")
 			
+			#if trim is enabled trim the file
+			if trimfile == true:
+				#get the start and end points
+				var start = node.get_node("AudioPlayer").get_meta("trimpoints")[0]
+				var end = node.get_node("AudioPlayer").get_meta("trimpoints")[1]
+				
+				if process_cancelled:
+					#exit out of process if cancelled
+					progress_label.text = "Thread Stopped"
+					log_console("[b]Thread Stopped[/b]", true)
+					return
+				else:
+					progress_label.text = "Trimming input audio"
+				await run_command(control_script.cdpprogs_location + "/sfedit", ["cut", "1", loadedfile, "%s_%d_input_trim.wav" % [Global.outfile, process_count], str(start), str(end)])
+				
+				output_files[node_name] =  "%s_%d_input_trim.wav" % [Global.outfile, process_count]
+				
+				# Mark trimmed file for cleanup if needed
+				if control_script.delete_intermediate_outputs:
+					intermediate_files.append("%s_%d_input_trim.wav" % [Global.outfile, process_count])
+				progress_bar.value += progress_step
+			else:
+				#if trim not enabled pass the loaded file
+				output_files[node_name] =  loadedfile
+				
+			process_count += 1
+		else:
+			# Build the command for the current node's audio processing
+			var slider_data = _get_slider_values_ordered(node)
+			
+			if node.get_slot_type_right(0) == 1: #detect if process outputs pvoc data
+				if typeof(current_infile) == TYPE_ARRAY:
+					#check if infile is an array meaning that the last pvoc process was run in dual mono mode
 					# Process left and right seperately
-					for channel in ["c1", "c2"]:
-						var dual_mono_file = current_infile.get_basename() + "_%s.wav" % channel
-						
-						var makeprocess = await make_process(node, process_count, dual_mono_file, slider_data)
+					var pvoc_stereo_files = []
+					
+					for infile in current_infile:
+						var makeprocess = await make_process(node, process_count, infile, slider_data)
 						# run the command
 						await run_command(makeprocess[0], makeprocess[3])
 						await get_tree().process_frame
@@ -233,98 +264,19 @@ func run_thread_with_branches():
 							for file in makeprocess[2]:
 								breakfiles.append(file)
 							intermediate_files.append(output_file)
-						
-						#Delete c1 and c2 because they can be in the wrong folder and if the same infile is used more than once
-						#with this stereo process CDP will throw errors in the console even though its fine
-						if is_windows:
-							dual_mono_file = dual_mono_file.replace("/", "\\")
-						await run_command(delete_cmd, [dual_mono_file])
+
 						process_count += 1
 						
-						# Store output file path for this node
 					output_files[node_name] = pvoc_stereo_files
-				else: 
-					#input file is mono run through process
-					var makeprocess = await make_process(node, process_count, current_infile, slider_data)
-					# run the command
-					await run_command(makeprocess[0], makeprocess[3])
-					await get_tree().process_frame
-					var output_file = makeprocess[1]
-
-					# Store output file path for this node
-					output_files[node_name] = output_file
-
-					# Mark file for cleanup if needed
-					if control_script.delete_intermediate_outputs:
-						for file in makeprocess[2]:
-							breakfiles.append(file)
-						intermediate_files.append(output_file)
-
-		# Increase the process step count
-			process_count += 1
-			
-		else: 
-			#Process outputs audio
-			#check if this is the last pvoc process in a stereo processing chain
-			if node.get_meta("command") == "pvoc_synth" and typeof(current_infile) == TYPE_ARRAY:
-			
-				#check if infile is an array meaning that the last pvoc process was run in dual mono mode
-				# Process left and right seperately
-				var pvoc_stereo_files = []
-				
-				for infile in current_infile:
-					var makeprocess = await make_process(node, process_count, infile, slider_data)
-					# run the command
-					await run_command(makeprocess[0], makeprocess[3])
-					await get_tree().process_frame
-					var output_file = makeprocess[1]
-					pvoc_stereo_files.append(output_file)
-					
-					# Mark file for cleanup if needed
-					if control_script.delete_intermediate_outputs:
-						for file in makeprocess[2]:
-							breakfiles.append(file)
-						intermediate_files.append(output_file)
-
-					process_count += 1
-					
-					
-				#interleave left and right
-				var output_file = Global.outfile.get_basename() + str(process_count) + "_interleaved.wav"
-				await run_command(control_script.cdpprogs_location + "/submix", ["interleave", pvoc_stereo_files[0], pvoc_stereo_files[1], output_file])
-				# Store output file path for this node
-				output_files[node_name] = output_file
-				
-				# Mark file for cleanup if needed
-				if control_script.delete_intermediate_outputs:
-					intermediate_files.append(output_file)
-
-			else:
-				#Detect if input file is mono or stereo
-				var input_stereo = await is_stereo(current_infile)
-				if input_stereo == true:
-					if node.get_meta("stereo_input") == true: #audio file is stereo and process is stereo, run file through process
-						var makeprocess = await make_process(node, process_count, current_infile, slider_data)
-						# run the command
-						await run_command(makeprocess[0], makeprocess[3])
-						await get_tree().process_frame
-						var output_file = makeprocess[1]
-						
-						# Store output file path for this node
-						output_files[node_name] = output_file
-
-						# Mark file for cleanup if needed
-						if control_script.delete_intermediate_outputs:
-							for file in makeprocess[2]:
-								breakfiles.append(file)
-							intermediate_files.append(output_file)
-
-					else: #audio file is stereo and process is mono, split stereo, process and recombine
+				else:
+					var input_stereo = await is_stereo(current_infile)
+					if input_stereo == true: 
+						#audio file is stereo and needs to be split for pvoc processing
+						var pvoc_stereo_files = []
 						##Split stereo to c1/c2
 						await run_command(control_script.cdpprogs_location + "/housekeep",["chans", "2", current_infile])
 				
 						# Process left and right seperately
-						var dual_mono_output = []
 						for channel in ["c1", "c2"]:
 							var dual_mono_file = current_infile.get_basename() + "_%s.wav" % channel
 							
@@ -333,7 +285,7 @@ func run_thread_with_branches():
 							await run_command(makeprocess[0], makeprocess[3])
 							await get_tree().process_frame
 							var output_file = makeprocess[1]
-							dual_mono_output.append(output_file)
+							pvoc_stereo_files.append(output_file)
 							
 							# Mark file for cleanup if needed
 							if control_script.delete_intermediate_outputs:
@@ -347,38 +299,145 @@ func run_thread_with_branches():
 								dual_mono_file = dual_mono_file.replace("/", "\\")
 							await run_command(delete_cmd, [dual_mono_file])
 							process_count += 1
-						
-						
-						var output_file = Global.outfile.get_basename() + str(process_count) + "_interleaved.wav"
-						await run_command(control_script.cdpprogs_location + "/submix", ["interleave", dual_mono_output[0], dual_mono_output[1], output_file])
-						
+							
+							# Store output file path for this node
+						output_files[node_name] = pvoc_stereo_files
+					else: 
+						#input file is mono run through process
+						var makeprocess = await make_process(node, process_count, current_infile, slider_data)
+						# run the command
+						await run_command(makeprocess[0], makeprocess[3])
+						await get_tree().process_frame
+						var output_file = makeprocess[1]
+
 						# Store output file path for this node
 						output_files[node_name] = output_file
 
 						# Mark file for cleanup if needed
 						if control_script.delete_intermediate_outputs:
+							for file in makeprocess[2]:
+								breakfiles.append(file)
 							intermediate_files.append(output_file)
 
-				else: #audio file is mono, run through the process
-					var makeprocess = await make_process(node, process_count, current_infile, slider_data)
-					# run the command
-					await run_command(makeprocess[0], makeprocess[3])
-					await get_tree().process_frame
-					var output_file = makeprocess[1]
+			# Increase the process step count
+				process_count += 1
+				
+			else: 
+				#Process outputs audio
+				#check if this is the last pvoc process in a stereo processing chain
+				if node.get_meta("command") == "pvoc_synth" and typeof(current_infile) == TYPE_ARRAY:
+				
+					#check if infile is an array meaning that the last pvoc process was run in dual mono mode
+					# Process left and right seperately
+					var pvoc_stereo_files = []
 					
+					for infile in current_infile:
+						var makeprocess = await make_process(node, process_count, infile, slider_data)
+						# run the command
+						await run_command(makeprocess[0], makeprocess[3])
+						await get_tree().process_frame
+						var output_file = makeprocess[1]
+						pvoc_stereo_files.append(output_file)
+						
+						# Mark file for cleanup if needed
+						if control_script.delete_intermediate_outputs:
+							for file in makeprocess[2]:
+								breakfiles.append(file)
+							intermediate_files.append(output_file)
 
+						process_count += 1
+						
+						
+					#interleave left and right
+					var output_file = Global.outfile.get_basename() + str(process_count) + "_interleaved.wav"
+					await run_command(control_script.cdpprogs_location + "/submix", ["interleave", pvoc_stereo_files[0], pvoc_stereo_files[1], output_file])
 					# Store output file path for this node
 					output_files[node_name] = output_file
-
+					
 					# Mark file for cleanup if needed
 					if control_script.delete_intermediate_outputs:
-						for file in makeprocess[2]:
-							breakfiles.append(file)
 						intermediate_files.append(output_file)
 
-			# Increase the process step count
-			process_count += 1
-		progress_bar.value += progress_step
+				else:
+					#Detect if input file is mono or stereo
+					var input_stereo = await is_stereo(current_infile)
+					if input_stereo == true:
+						if node.get_meta("stereo_input") == true: #audio file is stereo and process is stereo, run file through process
+							var makeprocess = await make_process(node, process_count, current_infile, slider_data)
+							# run the command
+							await run_command(makeprocess[0], makeprocess[3])
+							await get_tree().process_frame
+							var output_file = makeprocess[1]
+							
+							# Store output file path for this node
+							output_files[node_name] = output_file
+
+							# Mark file for cleanup if needed
+							if control_script.delete_intermediate_outputs:
+								for file in makeprocess[2]:
+									breakfiles.append(file)
+								intermediate_files.append(output_file)
+
+						else: #audio file is stereo and process is mono, split stereo, process and recombine
+							##Split stereo to c1/c2
+							await run_command(control_script.cdpprogs_location + "/housekeep",["chans", "2", current_infile])
+					
+							# Process left and right seperately
+							var dual_mono_output = []
+							for channel in ["c1", "c2"]:
+								var dual_mono_file = current_infile.get_basename() + "_%s.wav" % channel
+								
+								var makeprocess = await make_process(node, process_count, dual_mono_file, slider_data)
+								# run the command
+								await run_command(makeprocess[0], makeprocess[3])
+								await get_tree().process_frame
+								var output_file = makeprocess[1]
+								dual_mono_output.append(output_file)
+								
+								# Mark file for cleanup if needed
+								if control_script.delete_intermediate_outputs:
+									for file in makeprocess[2]:
+										breakfiles.append(file)
+									intermediate_files.append(output_file)
+								
+								#Delete c1 and c2 because they can be in the wrong folder and if the same infile is used more than once
+								#with this stereo process CDP will throw errors in the console even though its fine
+								if is_windows:
+									dual_mono_file = dual_mono_file.replace("/", "\\")
+								await run_command(delete_cmd, [dual_mono_file])
+								process_count += 1
+							
+							
+							var output_file = Global.outfile.get_basename() + str(process_count) + "_interleaved.wav"
+							await run_command(control_script.cdpprogs_location + "/submix", ["interleave", dual_mono_output[0], dual_mono_output[1], output_file])
+							
+							# Store output file path for this node
+							output_files[node_name] = output_file
+
+							# Mark file for cleanup if needed
+							if control_script.delete_intermediate_outputs:
+								intermediate_files.append(output_file)
+
+					else: #audio file is mono, run through the process
+						var makeprocess = await make_process(node, process_count, current_infile, slider_data)
+						# run the command
+						await run_command(makeprocess[0], makeprocess[3])
+						await get_tree().process_frame
+						var output_file = makeprocess[1]
+						
+
+						# Store output file path for this node
+						output_files[node_name] = output_file
+
+						# Mark file for cleanup if needed
+						if control_script.delete_intermediate_outputs:
+							for file in makeprocess[2]:
+								breakfiles.append(file)
+							intermediate_files.append(output_file)
+
+				# Increase the process step count
+				process_count += 1
+			progress_bar.value += progress_step
 	# FINAL OUTPUT STAGE
 
 	# Collect all nodes that are connected to the outputfile node
@@ -403,7 +462,7 @@ func run_thread_with_branches():
 	# If multiple outputs go to the outputfile node, merge them
 	if final_outputs.size() > 1:
 		var runmerge = await merge_many_files(process_count, final_outputs)
-		control_script.final_output_dir = runmerge[0]
+		final_output_dir = runmerge[0]
 		var converted_files = runmerge[1]
 		
 		if control_script.delete_intermediate_outputs:
@@ -414,7 +473,7 @@ func run_thread_with_branches():
 	# Only one output, no merge needed
 	elif final_outputs.size() == 1:
 		var single_output = final_outputs[0]
-		control_script.final_output_dir = single_output
+		final_output_dir = single_output
 		intermediate_files.erase(single_output)
 	progress_bar.value += progress_step
 	# CLEANUP: Delete intermediate files after processing and rename final output
@@ -442,16 +501,16 @@ func run_thread_with_branches():
 		await get_tree().process_frame
 		
 	var final_filename = "%s.wav" % Global.outfile
-	var final_output_dir_fixed_path = control_script.final_output_dir
+	var final_output_dir_fixed_path = final_output_dir
 	if is_windows:
 		final_output_dir_fixed_path = final_output_dir_fixed_path.replace("/", "\\")
 		await run_command(rename_cmd, [final_output_dir_fixed_path, final_filename.get_file()])
 	else:
 		await run_command(rename_cmd, [final_output_dir_fixed_path, "%s.wav" % Global.outfile])
-	control_script.final_output_dir = Global.outfile + ".wav"
+	final_output_dir = Global.outfile + ".wav"
 	
-	control_script.output_audio_player.play_outfile(control_script.final_output_dir)
-	control_script.outfile = control_script.final_output_dir
+	control_script.output_audio_player.play_outfile(final_output_dir)
+	Global.cdpoutput = final_output_dir
 	progress_bar.value = 100.0
 	var interface_settings = ConfigHandler.load_interface_settings() #checks if close console is enabled and closes console on a success
 	progress_window.hide()
@@ -471,16 +530,48 @@ func is_stereo(file: String) -> bool:
 	else:
 		log_console("[color=#9c2828]Error: Only mono and stereo files are supported[/color]", true)
 		return false
+		
+func get_samplerate(file: String) -> int:
+	var output = await run_command(control_script.cdpprogs_location + "/sfprops", ["-r", file])
+	output = int(output.strip_edges())
+	return output
 
 func merge_many_files(process_count: int, input_files: Array) -> Array:
 	var merge_output = "%s_merge_%d.wav" % [Global.outfile.get_basename(), process_count]
-	var converted_files := []  # Track any mono->stereo converted files
+	var converted_files := []  # Track any mono->stereo converted files or upsampled files
 	var inputs_to_merge := []  # Files to be used in the final merge
 
 	var mono_files := []
 	var stereo_files := []
+	var sample_rates := []
+	
+	#Get all sample rates
+	for f in input_files:
+		var samplerate = await get_samplerate(f)
+		sample_rates.append(samplerate)
+	
+	#Check if all sample rates are the same
+	if sample_rates.all(func(v): return v == sample_rates[0]):
+		pass
+	else:
+		log_console("Different sample rates found, upsampling files to match highest current sample rate before mixing.", true)
+		#if not find the highest sample rate
+		var highest_sample_rate = sample_rates.max()
+		var index = 0
+		#move through all input files and compare match their index to the sample_rate array
+		for f in input_files:
+			#check if sample rate of current file is less than the highest sample rate
+			if sample_rates[index] < highest_sample_rate:
+				#up sample it to the highest sample rate if so
+				var upsample_output = Global.outfile + "_" + str(process_count) + f.get_file().get_slice(".wav", 0) + "_" + str(highest_sample_rate) + ".wav"
+				await run_command(control_script.cdpprogs_location + "/housekeep", ["respec", "1", f, upsample_output, str(highest_sample_rate)])
+				#replace the file in the input_file index with the new upsampled file
+				input_files[index] = upsample_output
+				converted_files.append(upsample_output)
+				
+			index += 1
 
-	# STEP 1: Check each file's channel count
+	# Check each file's channel count
 	for f in input_files:
 		var stereo = await is_stereo(f)
 		if stereo == false:
@@ -488,11 +579,14 @@ func merge_many_files(process_count: int, input_files: Array) -> Array:
 		elif stereo == true:
 			stereo_files.append(f)
 
+			
 
 	# STEP 2: Convert mono to stereo if there is a mix
 	if mono_files.size() > 0 and stereo_files.size() > 0:
+		log_console("Mix of mono and stereo files found, interleaving mono files to stereo before mixing.", true)
 		for mono_file in mono_files:
-			var stereo_file = "%s_stereo.wav" % mono_file.get_basename()
+			var stereo_file = Global.outfile + "_" + str(process_count) + mono_file.get_file().get_slice(".wav", 0) + "_stereo.wav"
+			#var stereo_file = "%s_stereo.wav" % mono_file.get_basename()
 			await run_command(control_script.cdpprogs_location + "/submix", ["interleave", mono_file, mono_file, stereo_file])
 			if process_successful == false:
 				log_console("Failed to interleave mono file: %s" % mono_file, true)
@@ -506,6 +600,7 @@ func merge_many_files(process_count: int, input_files: Array) -> Array:
 		inputs_to_merge = input_files.duplicate()
 
 	# STEP 3: Merge all input files (converted or original)
+	log_console("Mixing files to combined input.", true)
 	var quoted_inputs := []
 	for f in inputs_to_merge:
 		quoted_inputs.append(f)
@@ -648,7 +743,7 @@ func path_exists_through_all_nodes() -> bool:
 	var all_nodes = {}
 	var graph = {}
 
-	var input_node_name = ""
+	var input_node_names = []
 	var output_node_name = ""
 
 	# Gather all relevant nodes
@@ -659,19 +754,13 @@ func path_exists_through_all_nodes() -> bool:
 
 			var command = child.get_meta("command")
 			if command == "inputfile":
-				input_node_name = name
+				input_node_names.append(name)
 			elif command == "outputfile":
 				output_node_name = name
 
 			# Skip utility nodes, include others
 			if command in ["inputfile", "outputfile"] or not child.has_meta("utility"):
 				graph[name] = []
-
-	# Ensure both input and output were found
-	if input_node_name == "" or output_node_name == "":
-		print("Input or output node not found!")
-		return false
-
 	# Add edges to graph from the connection list
 	var connection_list = graph_edit.get_connection_list()
 	for conn in connection_list:
@@ -680,28 +769,29 @@ func path_exists_through_all_nodes() -> bool:
 		if graph.has(from):
 			graph[from].append(to)
 
-	# BFS traversal to check path and depth
-	var visited = {}
-	var queue = [ { "node": input_node_name, "depth": 0 } ]
-	var has_intermediate = false
+	# BFS from each input node
+	for input_node_name in input_node_names:
+		var visited = {}
+		var queue = [{ "node": input_node_name, "depth": 0 }]
 
-	while queue.size() > 0:
-		var current = queue.pop_front()
-		var current_node = current["node"]
-		var depth = current["depth"]
+		while queue.size() > 0:
+			var current = queue.pop_front()
+			var current_node = current["node"]
+			var depth = current["depth"]
 
-		if current_node in visited:
-			continue
-		visited[current_node] = true
+			if current_node in visited:
+				continue
+			visited[current_node] = true
 
-		if current_node == output_node_name and depth >= 2:
-			has_intermediate = true
+			if current_node == output_node_name and depth >= 2:
+				return true  # Found a valid path from this input node
 
-		if graph.has(current_node):
-			for neighbor in graph[current_node]:
-				queue.append({ "node": neighbor, "depth": depth + 1 })
+			if graph.has(current_node):
+				for neighbor in graph[current_node]:
+					queue.append({ "node": neighbor, "depth": depth + 1 })
 
-	return has_intermediate
+	# If no path from any input node to output node was found
+	return false
 	
 func log_console(text: String, update: bool) -> void:
 	console_output.append_text(text + "\n \n")
