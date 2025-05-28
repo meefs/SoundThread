@@ -65,8 +65,6 @@ func _on_file_selected(path: String):
 		##$WavError.show()
 	voice_preview_generator.generate_preview(audio_player.stream)
 	set_meta("inputfile", path)
-	#Global.infile = path
-	#print("Infile set: " + Global.infile)
 	reset_playback()
 	
 func reset_playback():
@@ -76,7 +74,6 @@ func reset_playback():
 	$Timer.stop()
 	if get_meta("loadenable") == true:
 		set_meta("timefile", false)
-		#Global.trim_infile = false
 	
 	
 func play_outfile(path: String):
@@ -194,16 +191,10 @@ func _on_button_button_up() -> void:
 	if get_meta("loadenable") == true:
 		if $LoopRegion.size.x > 0:
 			set_meta("trimfile", true)
-			#Global.trim_infile = true
 			var length = $AudioStreamPlayer.stream.get_length()
 			var pixel_to_time = length / 399
 			var start = pixel_to_time * $LoopRegion.position.x
 			var end = start + (pixel_to_time * $LoopRegion.size.x)
 			set_meta("trimpoints", [start, end])
-			#Global.infile_start = pixel_to_time * $LoopRegion.position.x
-			#Global.infile_stop = Global.infile_start + (pixel_to_time * $LoopRegion.size.x)
 		else:
 			set_meta("trimfile", false)
-			#Global.trim_infile = false
-
-	

@@ -69,9 +69,44 @@ func run_thread_with_branches():
 	# Step 1: Gather nodes from the GraphEdit
 	for child in graph_edit.get_children():
 		if child is GraphNode:
+			var includenode = true
 			var name = str(child.name)
 			all_nodes[name] = child
-			if not child.has_meta("utility"):
+			if child.has_meta("utility"):
+				includenode = false
+			else:
+				#check if node has inputs
+				if child.get_input_port_count() > 0:
+					#if it does scan through those inputs
+					for i in range(child.get_input_port_count()):
+						#check if it can find any valid connections
+						var connected = false
+						for conn in connections:
+							if conn["to_node"] == name and conn["to_port"] == i:
+								connected = true
+								break
+						#if no valid connections are found break the for loop to skip checking other inputs and set include to false
+						if connected == false:
+							log_console(name + " input is not connected, skipping node.", true)
+							includenode = false
+							break
+				#check if node has outputs
+				if child.get_output_port_count() > 0:
+					#if it does scan through those outputs
+					for i in range(child.get_output_port_count()):
+						#check if it can find any valid connections
+						var connected = false
+						for conn in connections:
+							if conn["from_node"] == name and conn["to_port"] == i:
+								connected = true
+								break
+						#if no valid connections are found break the for loop to skip checking other inputs and set include to false
+						if connected == false:
+							log_console(name + " output is not connected, skipping node.", true)
+							includenode = false
+							break
+								
+			if includenode == true:
 				graph[name] = []
 				reverse_graph[name] = []
 				indegree[name] = 0  # Start with zero incoming edges
@@ -129,13 +164,7 @@ func run_thread_with_branches():
 	var output_files = {}
 	var process_count = 0
 
-	# Start with the original input file
-	var starting_infile = Global.infile
-	
-	
-	#If trim is enabled trim input audio
-	
-	var current_infile = starting_infile
+	var current_infile
 
 	# Iterate over the processing nodes in topological order
 	for node_name in sorted:
@@ -173,7 +202,8 @@ func run_thread_with_branches():
 
 		## If no input, use the original input file
 		else:
-			current_infile = starting_infile
+			#if no input i need to skip the node
+			pass
 		
 		if node.get_meta("command") == "inputfile":
 			#get the inputfile from the nodes meta
@@ -496,16 +526,47 @@ func is_stereo(file: String) -> bool:
 	else:
 		log_console("[color=#9c2828]Error: Only mono and stereo files are supported[/color]", true)
 		return false
+		
+func get_samplerate(file: String) -> int:
+	var output = await run_command(control_script.cdpprogs_location + "/sfprops", ["-r", file])
+	output = int(output.strip_edges())
+	return output
 
 func merge_many_files(process_count: int, input_files: Array) -> Array:
 	var merge_output = "%s_merge_%d.wav" % [Global.outfile.get_basename(), process_count]
-	var converted_files := []  # Track any mono->stereo converted files
+	var converted_files := []  # Track any mono->stereo converted files or upsampled files
 	var inputs_to_merge := []  # Files to be used in the final merge
 
 	var mono_files := []
 	var stereo_files := []
+	var sample_rates := []
+	
+	#Get all sample rates
+	for f in input_files:
+		var samplerate = await get_samplerate(f)
+		sample_rates.append(samplerate)
+	
+	#Check if all sample rates are the same
+	if sample_rates.all(func(v): return v == sample_rates[0]):
+		print("sample rates are the same")
+	else:
+		#if not find the highest sample rate
+		var highest_sample_rate = sample_rates.max()
+		var index = 0
+		#move through all input files and compare match their index to the sample_rate array
+		for f in input_files:
+			#check if sample rate of current file is less than the highest sample rate
+			if sample_rates[index] < highest_sample_rate:
+				#up sample it to the highest sample rate if so
+				var upsample_output = Global.outfile + "_" + f.get_file().get_slice(".wav", 0) + "_" + str(highest_sample_rate) + ".wav"
+				await run_command(control_script.cdpprogs_location + "/housekeep", ["respec", "1", f, upsample_output, str(highest_sample_rate)])
+				#replace the file in the input_file index with the new upsampled file
+				input_files[index] = upsample_output
+				converted_files.append(upsample_output)
+				
+			index += 1
 
-	# STEP 1: Check each file's channel count
+	# Check each file's channel count
 	for f in input_files:
 		var stereo = await is_stereo(f)
 		if stereo == false:
@@ -513,6 +574,7 @@ func merge_many_files(process_count: int, input_files: Array) -> Array:
 		elif stereo == true:
 			stereo_files.append(f)
 
+			
 
 	# STEP 2: Convert mono to stereo if there is a mix
 	if mono_files.size() > 0 and stereo_files.size() > 0:
@@ -670,7 +732,6 @@ func _on_kill_process_button_down() -> void:
 
 	
 func path_exists_through_all_nodes() -> bool:
-	print("checking path")
 	var all_nodes = {}
 	var graph = {}
 
@@ -692,8 +753,6 @@ func path_exists_through_all_nodes() -> bool:
 			# Skip utility nodes, include others
 			if command in ["inputfile", "outputfile"] or not child.has_meta("utility"):
 				graph[name] = []
-	print(input_node_names)
-	print(output_node_name)
 	# Add edges to graph from the connection list
 	var connection_list = graph_edit.get_connection_list()
 	for conn in connection_list:
