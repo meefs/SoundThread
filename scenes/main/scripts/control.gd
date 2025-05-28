@@ -336,12 +336,22 @@ func _on_file_button_index_pressed(index: int) -> void:
 			else:
 				new_patch()
 				currentfile = "none" #reset current file to none for save tracking
+			
+			print("new patch, changes made =")
+			print(changesmade)
+			print("current file =")
+			print(currentfile)
 		1:
 			if currentfile == "none":
 				savestate = "saveas"
 				$SaveDialog.popup_centered()
 			else:
 				save_load.save_graph_edit(currentfile)
+			
+			print("save pressed, changes made =")
+			print(changesmade)
+			print("current file =")
+			print(currentfile)
 		2:
 			savestate = "saveas"
 			$SaveDialog.popup_centered()
@@ -368,6 +378,8 @@ func _on_save_dialog_file_selected(path: String) -> void:
 	elif savestate == "quit":
 		await get_tree().create_timer(0.25).timeout #little pause so that it feels like it actually saved even though it did
 		get_tree().quit()
+	elif savestate == "saveas":
+		currentfile = path
 		
 	savestate = "none" #reset save state, not really needed but feels good
 
