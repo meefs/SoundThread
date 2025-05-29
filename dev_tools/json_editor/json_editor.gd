@@ -79,6 +79,8 @@ func edit_node(key: String):
 		$HBoxContainer/VBoxContainer2/HBoxContainer5/shortdescription.text = info.get("short_description", "")
 		$HBoxContainer/VBoxContainer2/HBoxContainer7/longdescription.text = info.get("description", "")
 		$HBoxContainer/VBoxContainer2/HBoxContainer6/stereo.button_pressed = bool(info.get("stereo"))
+		$HBoxContainer/VBoxContainer2/HBoxContainer9/inputtype.text = str(info.get("inputtype", ""))
+		$HBoxContainer/VBoxContainer2/HBoxContainer11/outputtype.text = str(info.get("outputtype", ""))
 		
 		for child in parameter_container.get_children():
 			child.queue_free()
@@ -196,6 +198,8 @@ func save_node(is_new: bool) -> void:
 		"short_description": $HBoxContainer/VBoxContainer2/HBoxContainer5/shortdescription.text,
 		"description": $HBoxContainer/VBoxContainer2/HBoxContainer7/longdescription.text,
 		"stereo": $HBoxContainer/VBoxContainer2/HBoxContainer6/stereo.button_pressed,
+		"inputtype": $HBoxContainer/VBoxContainer2/HBoxContainer9/inputtype.text,
+		"outputtype": $HBoxContainer/VBoxContainer2/HBoxContainer11/outputtype.text,
 		"parameters": {}
 	}
 

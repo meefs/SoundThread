@@ -2,6 +2,8 @@
   "distort_average": {
 	"category": "time",
 	"description": "Performs a mathematical averaging of the set number of cycle counts. The effect is more akin to a loss of resolution than the blurring which might be expected. Values below 10 retain some semblance of the original, while values of 100 create a kind of 'sample hold' effect.\n\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Cycle Count",
@@ -27,6 +29,8 @@
   "distort_reform_6": {
 	"category": "time",
 	"description": "This process reads each wavecycle and replaces it with a short square pulse of a random length of the same amplitude. This produces a rough, rattle like timbre.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {},
 	"short_description": "Replaces wavecycles with short pulses",
 	"stereo": false,
@@ -36,6 +40,8 @@
   "clip_clip_2": {
 	"category": "time",
 	"description": "Cuts the top and bottom off of a wavecycle. Unlike conventional clipping that only cuts off parts of the signal that exceeds a set threshold, Clip Fraction looks at each cycle of the sound and cuts off a set fraction of that wavecycle. This produces a clipping effect that is uniform across the entire signal and maintains the dynamic range of the original. The lower you set the value, the more distorted the sound will be.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Fraction",
@@ -61,6 +67,8 @@
   "distort_divide": {
 	"category": "time",
 	"description": "Takes a wavecycle and divides its frequency, pitch shifting it down and making it slower. This longer wavecycle replaces the next few wavecycles keeping the length of the file the same. This produces a rough pitch shift effect with added distortion artifacts. Works best with division values less than 4, at high division values the sound file may be too low to hear.\n\nThis process is the opposite of Distort: Multiply.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Divider",
@@ -86,6 +94,8 @@
   "distort_fractal": {
 	"category": "time",
 	"description": "Takes a wavecycle and divides its length and makes shorter and higher copies that equal the divided length. It then takes these copies and superimposes them over the original wavecycle. The higher the scaling the shorter each copy will be and the more copies will be layered over the original. The loudness control works like a mix between the original and the copies of the wavecycle. Produces a sheen of distortion over the original sound.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Scaling",
@@ -126,6 +136,8 @@
   "distort_interpolate": {
 	"category": "time",
 	"description": "Takes a wavecycle and repeats it based on the multiplier. On each repetition the wavecycle is morphed slightly in shape so that it morphs into the shape of the next wavecycle in the file. This adds a modulatory quality to the output, successive wavecycles glissando and bend as they flow into one another.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Multiplier",
@@ -151,6 +163,8 @@
   "distort_multiply": {
 	"category": "time",
 	"description": "Takes each wavecycle and multiplies its frequency making it higher and shorter. It then repeats this wavecycle to fill the length of the original keeping the output file the same length. This produces a distorted pitching up of the sound. \n\nThis process is the opposite of Distort: Divide.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Multiplier",
@@ -176,6 +190,8 @@
   "quirk_quirk_1": {
 	"category": "time",
 	"description": "Introduces distortion into a signal by raising sample values to a power. Values less than 1 tend to flatten the tops of the waveform, while values greater than 1 narrow the waveform shape, creating a thinner, raspier sound.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Power Factor",
@@ -201,6 +217,8 @@
   "distort_replace": {
 	"category": "time",
 	"description": "Looks at a set number of wavecycles and finds the loudest one and repeats it to replace all other wavecycles. The repeated wavecycle is repeated at its original frequency and amplitude. This produces a sample and hold like effect.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Cycle Count",
@@ -226,6 +244,8 @@
   "distort_reform_2": {
 	"category": "time",
 	"description": "This process reads each wavecycle and replaces it with a square waveform of the same length and amplitude. This produces a similar but considerably harsher effect to Distort: Clip Fraction.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {},
 	"short_description": "Replaces wavecycles with square shaped wavecycles",
 	"stereo": false,
@@ -235,6 +255,8 @@
   "distort_reform_4": {
 	"category": "time",
 	"description": "This process reads each wavecycle and replaces it with a triangle waveform of the same length and amplitude. This effect of this process is quite dependent on the input material. If applied to noisy and distorted sounds this will producing a smoothing or filtering like effect. On sounds with few harmonics - e.g. sine waves - it will add additional harmonics producing a gentle distortion.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {},
 	"short_description": "Replaces wavecycles with triangle shaped wavecycles",
 	"stereo": false,
@@ -244,6 +266,8 @@
   "extend_drunk_1": {
 	"category": "time",
 	"description": "Starting at the Location in the input file this process takes a segment and repeats it. When the next clock tick occurs, the process will step to another segment and start repeating that. The distance in the file that each step can be is set by the Maximum Step and the amount of the file that it is possible for the process to explore either side of the original Location is set by the Ambitus. \n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Minimum Output Duration",
@@ -329,6 +353,8 @@
   "extend_loop_1": {
 	"category": "time",
 	"description": "Joins together, end-to-end, a series of segments taken from the file. This process will continue until the end of the file is reached. Note, with very long loop lengths and very short steps this may make [b]very[/b] long files.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Start",
@@ -384,6 +410,8 @@
   "extend_scramble_1": {
 	"category": "time",
 	"description": "Cuts out segments at random from the full duration of the file and splices them end to end. Randomises the length of each chunk to be between the minimum and maximum. With small maximum chunks this will produce a granular synthesis like effect, with large chunks it will create new phrases in the material.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Minimum Chunk Length",
@@ -439,6 +467,8 @@
   "extend_zigzag_1": {
 	"category": "time",
 	"description": "Unlike the other extend processes this process also plays segments of the sound file backwards. This results in a smoother transition between jumps creating an output that slips and slides through its length.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Start Point",
@@ -509,6 +539,8 @@
   "filter_bank_1": {
 	"category": "time",
 	"description": "This process takes the frequency of the lowest band and create filters up to the value of the highest band tuned to the harmonic series. Scatter applies some randomisation of these values moving the sound from something very harmonic to something more bell like in tone. The makeup gain provides a way of adding a boost to the filtered signal, you may need to adjust this if clipping occurs. Note, Q can be automated although doing this does sometimes produce temperamental results.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Q",
@@ -594,6 +626,8 @@
   "filter_bank_5": {
 	"category": "time",
 	"description": "This process takes the number of filters and spaces them equally in Hz between the lowest and highest bands. Scatter applies some randomisation of these values. The makeup gain provides a way of adding a boost to the filtered signal, you may need to adjust this if clipping occurs. Note, Q can be automated although doing this does sometimes produce temperamental results. Unlike Filter Bank: Pitched Intervals this will produce a more discordant sound as the frequencies will not align to uniform harmonic intervals.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Q",
@@ -694,6 +728,8 @@
   "filter_lohi_1": {
 	"category": "time",
 	"description": "The low-pass filter lets through all of the sound below pass-band and attenuates the frequencies higher than pass-band, ending at stop-band.\n\nThe high-pass filter lets through all of the sound above pass-band and attenuates the frequencies lower than pass-band, ending at stop-band.\n\nSetting the Pass-band lower than the stop-band creates a low-pass filter. Setting the Pass-band higher than the stop-band creates a high-pass filter.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Rolloff",
@@ -749,6 +785,8 @@
   "filter_bank_2": {
 	"category": "time",
 	"description": "This process takes the frequency of the lowest band and create filters up to the value of the highest band tuned to odd harmonics of the harmonic series. Scatter applies some randomisation of these values moving the sound from something very harmonic to something more bell like in tone. The makeup gain provides a way of adding a boost to the filtered signal, you may need to adjust this if clipping occurs. Note, Q can be automated although doing this does sometimes produce temperamental results.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Q",
@@ -834,6 +872,8 @@
   "filter_bank_6": {
 	"category": "time",
 	"description": "This process takes the number of filters and spaces them equally in semitones between the lowest and highest bands. Scatter applies some randomisation of these values moving the sound from something very harmonic to something more bell like in tone. The makeup gain provides a way of adding a boost to the filtered signal, you may need to adjust this if clipping occurs. Note, Q can be automated although doing this does sometimes produce temperamental results. Unlike Filter Bank: Linear this will produce a more consonant sound as the frequencies will align to uniform harmonic intervals.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Q",
@@ -934,6 +974,8 @@
   "modify_brassage_6": {
 	"category": "time",
 	"description": "This process moves through the file from start to end at the speed set by scan speed. How linearly it moves through the file is set by the Search Range and Jitter. \n\nAs it moves through the file it cuts out small chunks - called grains - of the file and plays those back. The length of those grains and how they fade in and out is set by the Grain Size, Attack and Decay. The pitch of the grains is set by Pitch Shift. \n\nHow many grains play back is set by the Density, densities less than 1 will create gaps between grains, densities higher than 1 will cause grains to overlap and merge. \n\nFinally the sound can be panned from left to right with Panning and the Overalll level of the sound can be adjusted with Amplitude. \n\nThis process works particularly well when automation is applied to many parameters to make it shift and change over time. \n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Scan Speed",
@@ -1094,6 +1136,8 @@
   "modify_brassage_5": {
 	"category": "time",
 	"description": "Moves through the sound from start to end and cuts it into grains. The density control sets how many of these grains are played back. A density of 1 will sound close to the original file, less than 1 will introduce gaps between grains, and values greater than one will smooth out the sound and introduce doubling.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Density",
@@ -1119,6 +1163,8 @@
   "modify_brassage_1": {
 	"category": "time",
 	"description": "Cuts the sound file into grains and speeds them up or slows them down to change their pitch. By repeating/omitting grains it retains the original speed. At high increases in pitch this will create a metallic sound, with high decreases in pitch the sound will lose detail.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Pitch Shift",
@@ -1144,6 +1190,8 @@
   "modify_brassage_4": {
 	"category": "time",
 	"description": "Moves through the file from start to end and reorders the grains within the set timeframe of range. Small range values will retain some of the original shape of the sound, large range values will result in a very jumbled sound.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Grainsize",
@@ -1184,6 +1232,8 @@
   "modify_brassage_2": {
 	"category": "time",
 	"description": "Cuts the sound file into grains and repeats omits grains to adjust the speed of the sound. At high decreases in speed this will create a metallic sound, with high increases in speed the sound will lose detail.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Speed",
@@ -1209,6 +1259,8 @@
   "modify_speed_5": {
 	"category": "time",
 	"description": "Creates a glissando effect by gradually speeding up or slowing down the file. Once the target time in the sound is reached it will continue sliding up or down to the end of the sound. 0.5 = half speed and 1 octave lower, 2 = double speed and 1 octave higher. Note: for more control over speed over time you can automate the Speed process instead. \n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Transposition Ratio",
@@ -1249,6 +1301,8 @@
   "silend_silend_1": {
 	"category": "time",
 	"description": "Adds silence at the end of the sound, very useful  before processes which add long tails such as resonant filters and bluring. Can also be used with scramble processes to add silences into the scramble. \n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Length of Silence",
@@ -1274,6 +1328,8 @@
   "modify_loudness_1": {
 	"category": "time",
 	"description": "Adjusts the gain of a sound making it louder and quieter. Less than 1 is quieter, more than 1 is louder. Useful for adjusting the level of a sound before a process to avoid clipping and for blending parallel processing in your thread (see Help > Tips > Wet/Dry Mix for more). \n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Gain",
@@ -1299,6 +1355,8 @@
   "modify_radical_1": {
 	"category": "time",
 	"description": "Makes the sound play backwards. Particularly useful before processes like Stack to create interesting attack and decays.\n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {},
 	"short_description": "Reverses a sound",
 	"stereo": true,
@@ -1308,6 +1366,8 @@
   "modify_speed_2": {
 	"category": "time",
 	"description": "Plays the sound faster or slower to adjust its speed and pitch. -12 semitones is half speed; +12 semitones is double speed. \n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Semitones",
@@ -1333,6 +1393,8 @@
   "modify_stack": {
 	"category": "time",
 	"description": "This process takes the sound and makes numerous copies of it, set by the number of layers. Each copy is sped up or slowed down by the transposition amount multiplied  by its layer number - -12 semitones = half speed, +12 semitones = double speed. These layers are then stacks on top of each other to create a denser sound. The attack offset is used to line up the layers so that their attacks all line up, adjust this to the point in the input where you want all the sounds to line up. The output duration allows you to trim off the end of the sound as with negative transposition and many layers the output can get very long. \n",
+	"inputtype": "[0]",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Transposition",
@@ -1433,6 +1495,8 @@
   "pvoc_anal_1": {
 	"category": "pvoc",
 	"description": "This is process is used to analyse a sound and convert it from the time domain to the frequency domain. This allows for processes in the PVOC processes menu to be used to manipulate the sound. Once you are done processing in the frequency domain you can convert it back to audio again using Resynthesise. See Help > Tutorials > PVOC for more.\n",
+	"inputtype": "[0]",
+	"outputtype": "[1]",
 	"parameters": {},
 	"short_description": "Convert a sound from the time domain to the frequency domain",
 	"stereo": false,
@@ -1442,6 +1506,8 @@
   "pvoc_synth": {
 	"category": "pvoc",
 	"description": "This is process is used to take the analysis of a sound file and resynthesise it back into the time domain. This should be used after you are done processing in the frequency domain to convert back to audio. See Help > Tutorials > PVOC for more. \n",
+	"inputtype": "[1]",
+	"outputtype": "[0]",
 	"parameters": {},
 	"short_description": "Convert a sound from the frequency domain to the time domain",
 	"stereo": false,
@@ -1451,6 +1517,8 @@
   "focus_accu": {
 	"category": "pvoc",
 	"description": "Frequencies are sustained into subsequent windows. The Overalll effect is one of sustaining, but one which also makes the spectrum more complex.\n\nThe Glissandos parameter produces glissandos within the spectrum of the sound. Very effective slow glissandos are produced when Glissandos is near 0, e.g., -0.9 or 0.1. At 0.5, there are several glissandos, at 1, they are fairly fast, and at 10 it becomes a wash.\n",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Decay",
@@ -1491,6 +1559,8 @@
   "blur_blur": {
 	"category": "pvoc",
 	"description": "This process 'blurs' detail in the time dimension by interpolating between the spectral envelope values of the start and end windows blurring windows. Note that it is not interpolating continuously over all the windows in between, just between the data in the start and end windows. The Overalll result is somewhat affected by just how different the data is in these two windows. The interpolation process produces a 'straight line' (linear) scale of values between the start and end points.\n",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Blurring",
@@ -1516,6 +1586,8 @@
   "blur_chorus_5": {
 	"category": "pvoc",
 	"description": "This process attempts to achieve a chorusing effect by randomising the amplitude and frequency values of the partials. If very large amplitude values are used, the sound will turn to noise. The chorusing effect itself is achieved by values just a little above 1. Values of 2 or 3 begin to create a granular effect, and values of 10, 100 and 1000 create more and more noise.\n",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Amplitude Randomise",
@@ -1556,6 +1628,8 @@
   "spec_gain": {
 	"category": "pvoc",
 	"description": "This process is very similar to the time domain Gain process, it adjusts how loud the signal is, however this process operates on signals that are in the frequency domain. This is useful for adjusting signals that may clip when converted back to the time domain.\n",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Gain",
@@ -1581,6 +1655,8 @@
   "strange_invert_1": {
 	"category": "pvoc",
 	"description": "Inverts the spectral envelope, relative to the Overalll spectral envelope. This means that the energy associated with the highest frequency bands is transferred to the lowest ones and vice versa. As the lowest partials in many sounds have the greatest amplitude and the highest ones the least, the result is typically a much brighter timbre.\n",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
 	"parameters": {},
 	"short_description": "Invert the spectral envelope",
 	"stereo": false,
@@ -1590,6 +1666,8 @@
   "spectstr_stretch": {
 	"category": "pvoc",
 	"description": "Stretches or shrinks the sound over time, without changing frequency. It creates extra time-windows to expand the Overalll time-base of the sound, without a change of frequency. When using large stretch values you will make very long sound files, and this process may take some time to run.\n\nD-Ratio and D-Random allow you to randomise some of the channels in the sound to create internal variation and different timbres. Small amounts of this will blur the sound slightly and on long stretches help the sound feel less static. With large amounts of randomisation, the texture of the sound starts to feel granular.\n",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Stretch Multiplier",
@@ -1645,6 +1723,8 @@
   "blur_scatter": {
 	"category": "pvoc",
 	"description": "This function throws away a specified proportion of the analysis data in each window at random. This produces a result similar to the Trace process however, unlike Trace the material kept by Thin Randomly may or may not include prominent parts of the sound.\n",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Amount Kept",
@@ -1670,6 +1750,8 @@
   "hilite_trace_1": {
 	"category": "pvoc",
 	"description": "Looks for and retains only the N loudest partials in the analysis data on a window-by-window basis. This reduces the data in the spectral dimension and produces an aural 'trace' of the original sound.\n\nWith non-'noisy' sources it is necessary to reduce the number of channels quite considerably to make any appreciable aural change to the source sound. Even the 10 loudest channels will retain a surprising amount of the original sound. The flip side of this is that Trace can be used to 'clean' a sound, if a certain amount of data loss is not a problem. \n\nThis works well with Blur after it to create a smeared simplified version of the sound.\n",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Amount Kept",
@@ -1695,6 +1777,8 @@
   "strange_waver_1": {
 	"category": "pvoc",
 	"description": "Introduces an oscillation towards and away from inharmonicness in the spectrum of a sound. The program moves towards inharmonicness by means of the stretch factor. \n",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Vibrato Frequency",
@@ -1750,6 +1834,8 @@
   "inputfile": {
 	"category": "utility",
 	"description": "SoundThread only supports mono and stereo .wav files.\n\nClicking and dragging on the sound file viewer will let you select a section of audio to play.\n\nIf audio is selected in Input File when you run the thread, SoundThread will automatically cut out that section and process only that.\n\nClicking on the sound file viewer while audio is playing will allow you to jump around the file to listen to different sections.\n",
+	"inputtype": "",
+	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
 		"paramname": "Load File",
@@ -1772,6 +1858,8 @@
   "outputfile": {
 	"category": "utility",
 	"description": "The name inputted in File Name will be appended with the current date and time so that you don't need to input a new file name each time.\n\nSoundThread can create a lot of files as each node in the thread can create multiple files. Turning on Delete Intermediate Files will delete everything but the main output file. \n\nClicking and dragging on the sound file viewer will let you select a section of audio to play. Clicking on the sound file viewer while audio is playing will allow you to jump around the file to listen to different sections.\n",
+	"inputtype": "[0]",
+	"outputtype": "",
 	"parameters": {
 	  "param1": {
 		"paramname": "File Name",
@@ -1823,6 +1911,8 @@
   "note_to_hz": {
 	"category": "utility",
 	"description": "Utility for quickly getting frequencies, values are truncated to two decimal places so are not entirely accurate. Particularly useful for tuning filters and filterbanks. Note, you can highlight and copy a frequency and then paste that into the value for the slider.\n",
+	"inputtype": "",
+	"outputtype": "",
 	"parameters": {
 	  "param1": {
 		"paramname": "Note",
@@ -1862,7 +1952,9 @@
   },
   "notes": {
 	"category": "utility",
-	"description": "Doesn't do anything other than giving you a space to take notes. You can right click in the text box to copy and paste and use special characters like emojis 😊.\n",
+	"description": "Doesn't do anything other than giving you a space to take notes. You can right click in the text box to copy and paste and use special characters like emojis \u00c3\u00b0\u00c5\u00b8\u00cb\u0153\u00c5\u00a0.\n",
+	"inputtype": "",
+	"outputtype": "",
 	"parameters": {},
 	"short_description": "A box for taking notes",
 	"stereo": false,
