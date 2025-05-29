@@ -115,52 +115,57 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			graphnode.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom)
 			graphnode.name = command
 			
-			
-			for param_key in parameters.keys():
-				var param_data = parameters[param_key]
-				if param_data.get("uitype", "") == "hslider":
-					#instance the slider scene
-					var slider = valueslider.instantiate()
-					
-					#get slider text
-					var slider_label = param_data.get("paramname", "")
-					var slider_tooltip  = param_data.get("paramdescription", "")
-					
-					#get slider properties
-					var brk = param_data.get("automatable", false)
-					var time = param_data.get("time", false)
-					var min = param_data.get("min", false)
-					var max = param_data.get("max", false)
-					var flag = param_data.get("flag", "")
-					var minrange = param_data.get("minrange", 0)
-					var maxrange = param_data.get("maxrange", 10)
-					var step = param_data.get("step", 0.01)
-					var value = param_data.get("value", 1)
-					var exponential = param_data.get("exponential", false)
-					
-					#set labels and tooltips
-					slider.get_node("SliderLabel").text = slider_label
-					if brk == true:
-						slider.get_node("SliderLabel").text += "~"
-					slider.tooltip_text = slider_tooltip
-					slider.get_node("SliderLabel").tooltip_text = slider_tooltip
-					
-					#set meta data
-					var hslider = slider.get_node("HSplitContainer/HSlider")
-					hslider.set_meta("brk", brk)
-					hslider.set_meta("time", time)
-					hslider.set_meta("min", min)
-					hslider.set_meta("max", max)
-					hslider.set_meta("flag", flag)
-					
-					#set slider params
-					hslider.min_value = minrange
-					hslider.max_value = maxrange
-					hslider.step = step
-					hslider.value = value
-					hslider.exp_edit = exponential
-					
-					graphnode.add_child(slider)
+			if parameters.is_empty():
+				var noparams = Label.new()
+				noparams.text = "No adjustable parameters"
+				
+				graphnode.add_child(noparams)
+			else:
+				for param_key in parameters.keys():
+					var param_data = parameters[param_key]
+					if param_data.get("uitype", "") == "hslider":
+						#instance the slider scene
+						var slider = valueslider.instantiate()
+						
+						#get slider text
+						var slider_label = param_data.get("paramname", "")
+						var slider_tooltip  = param_data.get("paramdescription", "")
+						
+						#get slider properties
+						var brk = param_data.get("automatable", false)
+						var time = param_data.get("time", false)
+						var min = param_data.get("min", false)
+						var max = param_data.get("max", false)
+						var flag = param_data.get("flag", "")
+						var minrange = param_data.get("minrange", 0)
+						var maxrange = param_data.get("maxrange", 10)
+						var step = param_data.get("step", 0.01)
+						var value = param_data.get("value", 1)
+						var exponential = param_data.get("exponential", false)
+						
+						#set labels and tooltips
+						slider.get_node("SliderLabel").text = slider_label
+						if brk == true:
+							slider.get_node("SliderLabel").text += "~"
+						slider.tooltip_text = slider_tooltip
+						slider.get_node("SliderLabel").tooltip_text = slider_tooltip
+						
+						#set meta data
+						var hslider = slider.get_node("HSplitContainer/HSlider")
+						hslider.set_meta("brk", brk)
+						hslider.set_meta("time", time)
+						hslider.set_meta("min", min)
+						hslider.set_meta("max", max)
+						hslider.set_meta("flag", flag)
+						
+						#set slider params
+						hslider.min_value = minrange
+						hslider.max_value = maxrange
+						hslider.step = step
+						hslider.value = value
+						hslider.exp_edit = exponential
+						
+						graphnode.add_child(slider)
 			
 			
 			graphnode.set_script(node_logic)
