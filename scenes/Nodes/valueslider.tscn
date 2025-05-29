@@ -9,7 +9,7 @@ offset_right = 270.0
 offset_bottom = 57.0
 script = ExtResource("1_4kxw6")
 
-[node name="Label" type="Label" parent="."]
+[node name="SliderLabel" type="Label" parent="."]
 layout_mode = 2
 text = "Value Name"
 

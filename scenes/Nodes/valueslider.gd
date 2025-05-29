@@ -55,7 +55,7 @@ func _on_line_edit_focus_exited() -> void:
 
 #check for right click
 func _on_h_slider_gui_input(event: InputEvent) -> void:
-	if $HSplitContainer/HSlider.has_meta("brk"): #check if slider can take a break file
+	if $HSplitContainer/HSlider.get_meta("brk"): #check if slider can take a break file
 		if $HSplitContainer/HSlider.has_meta("brk_data"): #check if it already has break data and set menu correctly (used when loading files)
 			$HSplitContainer/HSlider/PopupMenu.set_item_text(0, "Edit Automation")
 			if $HSplitContainer/HSlider/PopupMenu.get_item_count() <= 1: #if it has automation data but no remove button, add it

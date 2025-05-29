@@ -618,14 +618,10 @@ func _get_slider_values_ordered(node: Node) -> Array:
 	for child in node.get_children():
 		if child is Range:
 			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
-			var time
+			var time = child.get_meta("time")
 			var brk_data = []
 			var min_slider = child.min_value
 			var max_slider = child.max_value
-			if child.has_meta("time"):
-				time = child.get_meta("time")
-			else:
-				time = false
 			if child.has_meta("brk_data"):
 				brk_data = child.get_meta("brk_data")
 			results.append([flag, child.value, time, brk_data, min_slider, max_slider])
