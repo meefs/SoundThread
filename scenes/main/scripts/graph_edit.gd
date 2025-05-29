@@ -7,12 +7,21 @@ var multiple_connections
 var selected_nodes = {} #used to track which nodes in the GraphEdit are selected
 var copied_nodes_data = [] #stores node data on ctrl+c
 var copied_connections = [] #stores all connections on ctrl+c
+var node_data = {} #stores json with all nodes in it
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	snapping_enabled = false
 	show_grid = false
 	zoom = 0.9
+	#parse json
+	var file = FileAccess.open("res://scenes/main/process_help.json", FileAccess.READ)
+	if file:
+		var result = JSON.parse_string(file.get_as_text())
+		if typeof(result) == TYPE_DICTIONARY:
+			node_data = result
+		else:
+			push_error("Invalid JSON")
 
 func init(main_node: Node, graphedit: GraphEdit, openhelp: Callable, multipleconnections: Window) -> void:
 	control_script = main_node
@@ -21,24 +30,62 @@ func init(main_node: Node, graphedit: GraphEdit, openhelp: Callable, multiplecon
 	multiple_connections = multipleconnections
 
 func _make_node(command: String):
-	#Find node with matching name to button and create a version of it in the graph edit
-	#and position it close to the origin right click to open the menu
-	var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
-	effect.name = command
-	add_child(effect, true)
-	effect.connect("open_help", open_help)
-	effect.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
-	_register_inputs_in_node(effect) #link sliders for changes tracking
-	_register_node_movement() #link nodes for tracking position changes for changes tracking
+	if node_data.has(command):
+		var node_info = node_data[command]
+		
+		if node_info.get("category", "") == "utility":
+			#Find utility node with matching name and create a version of it in the graph edit
+			#and position it close to the origin right click to open the menu
+			var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
+			effect.name = command
+			add_child(effect, true)
+			effect.connect("open_help", open_help)
+			effect.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
+			_register_inputs_in_node(effect) #link sliders for changes tracking
+			_register_node_movement() #link nodes for tracking position changes for changes tracking
 
-	control_script.changesmade = true
+			control_script.changesmade = true
 
-	# Remove node with UndoRedo
-	control_script.undo_redo.create_action("Add Node")
-	control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
-	control_script.undo_redo.add_undo_method(Callable(effect, "queue_free"))
-	control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-	control_script.undo_redo.commit_action()
+			# Remove node with UndoRedo
+			control_script.undo_redo.create_action("Add Node")
+			control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
+			control_script.undo_redo.add_undo_method(Callable(effect, "queue_free"))
+			control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
+			control_script.undo_redo.commit_action()
+		else:
+			var title = node_info.get("title", "")
+			var shortdescription = node_info.get("short_description", "")
+			var stereo = node_info.get("stereo", false)
+			var inputtype = JSON.parse_string(node_info.get("inputtype", ""))
+			var outputtype = JSON.parse_string(node_info.get("outputtype", ""))
+			var portcount = max(inputtype.size(), outputtype.size())
+
+			
+			var graphnode = GraphNode.new()
+			for i in range(portcount):
+				var control = Control.new()
+				graphnode.add_child(control)
+				
+				var enable_input = i < inputtype.size()
+				var enable_output = i < inputtype.size
+				var input_colour = Color("#ffffff90")
+				var output_colour = Color("#ffffff90")
+				
+				if inputtype[i] == 1:
+					input_colour = Color("#000000b0")
+				if outputtype[i] == 1:
+					output_colour = Color("#000000b0")
+				
+				graphnode.set_slot(i, enable_input, inputtype[i], Color())
+			
+			graphnode.set_meta("command", command)
+			graphnode.set_meta("stereo", stereo)
+			
+			graphnode.title = title
+			graphnode.tooltip_text = shortdescription
+			graphnode.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom)
+			
+			
 	
 
 func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
