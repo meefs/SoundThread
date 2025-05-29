@@ -31,7 +31,7 @@ func init(main_node: Node, graphedit: GraphEdit, openhelp: Callable, multiplecon
 	open_help = openhelp
 	multiple_connections = multipleconnections
 
-func _make_node(command: String):
+func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 	if node_data.has(command):
 		var node_info = node_data[command]
 		
@@ -48,12 +48,15 @@ func _make_node(command: String):
 
 			control_script.changesmade = true
 
-			# Remove node with UndoRedo
-			control_script.undo_redo.create_action("Add Node")
-			control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
-			control_script.undo_redo.add_undo_method(Callable(effect, "queue_free"))
-			control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-			control_script.undo_redo.commit_action()
+			if not skip_undo_redo:
+				# Remove node with UndoRedo
+				control_script.undo_redo.create_action("Add Node")
+				control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
+				control_script.undo_redo.add_undo_method(Callable(effect, "queue_free"))
+				control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
+				control_script.undo_redo.commit_action()
+			
+			return effect
 		else: #auto generate node from json
 			#get the title to display at the top of the node
 			var title 
@@ -102,7 +105,7 @@ func _make_node(command: String):
 					pass
 			#set meta data for the process
 			graphnode.set_meta("command", command)
-			graphnode.set_meta("stereo", stereo)
+			graphnode.set_meta("stereo_input", stereo)
 			
 			#adjust size, position and title of the node
 			graphnode.title = title
@@ -167,13 +170,17 @@ func _make_node(command: String):
 			_register_inputs_in_node(graphnode) #link sliders for changes tracking
 			_register_node_movement() #link nodes for tracking position changes for changes tracking
 			
-			# Remove node with UndoRedo
-			control_script.undo_redo.create_action("Add Node")
-			control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(graphnode))
-			control_script.undo_redo.add_undo_method(Callable(graphnode, "queue_free"))
-			control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-			control_script.undo_redo.commit_action()
+			if not skip_undo_redo:
+				# Remove node with UndoRedo
+				control_script.undo_redo.create_action("Add Node")
+				control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(graphnode))
+				control_script.undo_redo.add_undo_method(Callable(graphnode, "queue_free"))
+				control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
+				control_script.undo_redo.commit_action()
 			
+			return graphnode
+			
+	return null
 	
 
 func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:

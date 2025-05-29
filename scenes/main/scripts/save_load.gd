@@ -99,7 +99,6 @@ func save_graph_edit(path: String):
 	print("thread saved, changes made =")
 	print(control_script.changesmade)
 
-
 func load_graph_edit(path: String):
 	var file = FileAccess.open(path, FileAccess.READ)
 	if file == null:
@@ -124,24 +123,18 @@ func load_graph_edit(path: String):
 
 	await get_tree().process_frame  # Ensure nodes are freed before adding new ones
 
-	var id_to_node = {}  # Map node IDs to new node instances
+	var id_to_node = {}
 
-	# Recreate nodes and store them by ID
+	# Create nodes
 	for node_data in graph_data["nodes"]:
 		var command_name = node_data.get("command", "")
-		var template = Nodes.get_node_or_null(command_name)
-		if not template:
-			print("Template not found for command:", command_name)
+		var new_node = graph_edit._make_node(command_name, true)
+		if new_node == null:
+			print("Failed to create node for command:", command_name)
 			continue
 
-		var new_node: GraphNode = template.duplicate()
 		new_node.name = node_data["name"]
 		new_node.position_offset = Vector2(node_data["offset"]["x"], node_data["offset"]["y"])
-		new_node.set_meta("command", command_name)
-		graph_edit.add_child(new_node)
-		new_node.connect("open_help", open_help)
-		register_movement.call()  # Track node movement changes
-
 		id_to_node[node_data["id"]] = new_node
 
 		# Restore sliders
@@ -176,9 +169,9 @@ func load_graph_edit(path: String):
 			if codeedit and (codeedit is CodeEdit):
 				codeedit.text = node_data["notes"][codeedit_name]
 
-		register_input.call(new_node)  # Track slider changes
+		register_input.call(new_node)
 
-	# Recreate connections by looking up nodes by ID
+	# Recreate connections
 	for conn in graph_data["connections"]:
 		var from_node = id_to_node.get(conn["from_node_id"], null)
 		var to_node = id_to_node.get(conn["to_node_id"], null)
@@ -194,4 +187,5 @@ func load_graph_edit(path: String):
 	link_output.call()
 	print("Graph loaded.")
 	get_window().title = "SoundThread - " + path.get_file().trim_suffix(".thd")
+	
 	
