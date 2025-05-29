@@ -7,12 +7,23 @@ var multiple_connections
 var selected_nodes = {} #used to track which nodes in the GraphEdit are selected
 var copied_nodes_data = [] #stores node data on ctrl+c
 var copied_connections = [] #stores all connections on ctrl+c
+var node_data = {} #stores json with all nodes in it
+var valueslider = preload("res://scenes/Nodes/valueslider.tscn") #slider scene for use in nodes
+var node_logic = preload("res://scenes/Nodes/node_logic.gd") #load the script logic
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	snapping_enabled = false
 	show_grid = false
 	zoom = 0.9
+	#parse json
+	var file = FileAccess.open("res://scenes/main/process_help.json", FileAccess.READ)
+	if file:
+		var result = JSON.parse_string(file.get_as_text())
+		if typeof(result) == TYPE_DICTIONARY:
+			node_data = result
+		else:
+			push_error("Invalid JSON")
 
 func init(main_node: Node, graphedit: GraphEdit, openhelp: Callable, multipleconnections: Window) -> void:
 	control_script = main_node
@@ -20,25 +31,156 @@ func init(main_node: Node, graphedit: GraphEdit, openhelp: Callable, multiplecon
 	open_help = openhelp
 	multiple_connections = multipleconnections
 
-func _make_node(command: String):
-	#Find node with matching name to button and create a version of it in the graph edit
-	#and position it close to the origin right click to open the menu
-	var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
-	effect.name = command
-	add_child(effect, true)
-	effect.connect("open_help", open_help)
-	effect.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
-	_register_inputs_in_node(effect) #link sliders for changes tracking
-	_register_node_movement() #link nodes for tracking position changes for changes tracking
+func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
+	if node_data.has(command):
+		var node_info = node_data[command]
+		
+		if node_info.get("category", "") == "utility":
+			#Find utility node with matching name and create a version of it in the graph edit
+			#and position it close to the origin right click to open the menu
+			var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
+			effect.name = command
+			add_child(effect, true)
+			effect.connect("open_help", open_help)
+			effect.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
+			_register_inputs_in_node(effect) #link sliders for changes tracking
+			_register_node_movement() #link nodes for tracking position changes for changes tracking
 
-	control_script.changesmade = true
+			control_script.changesmade = true
 
-	# Remove node with UndoRedo
-	control_script.undo_redo.create_action("Add Node")
-	control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
-	control_script.undo_redo.add_undo_method(Callable(effect, "queue_free"))
-	control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-	control_script.undo_redo.commit_action()
+			if not skip_undo_redo:
+				# Remove node with UndoRedo
+				control_script.undo_redo.create_action("Add Node")
+				control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
+				control_script.undo_redo.add_undo_method(Callable(effect, "queue_free"))
+				control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
+				control_script.undo_redo.commit_action()
+			
+			return effect
+		else: #auto generate node from json
+			#get the title to display at the top of the node
+			var title 
+			if node_info.get("category", "") == "pvoc":
+				title = "%s: %s" % [node_info.get("category", "").to_upper(), node_info.get("title", "")]
+			else:
+				title = "%s: %s" % [node_info.get("subcategory", "").to_pascal_case(), node_info.get("title", "")]
+			var shortdescription = node_info.get("short_description", "") #for tooltip
+			
+			#get node properties
+			var stereo = node_info.get("stereo", false)
+			var inputs = JSON.parse_string(node_info.get("inputtype", ""))
+			var outputs = JSON.parse_string(node_info.get("outputtype", ""))
+			var portcount = max(inputs.size(), outputs.size())
+			var parameters = node_info.get("parameters", {})
+			
+			var graphnode = GraphNode.new()
+			for i in range(portcount):
+				#add a number of control nodes equal to whatever is higher input or output ports
+				var control = Control.new()
+				graphnode.add_child(control)
+				
+				#check if input or output is enabled
+				var enable_input = i < inputs.size()
+				var enable_output = i < outputs.size()
+				
+				#get the colour of the port for time or pvoc ins/outs
+				var input_colour = Color("#ffffff90")
+				var output_colour = Color("#ffffff90")
+				
+				if enable_input:
+					if inputs[i] == 1:
+						input_colour = Color("#000000b0")
+				if enable_output:
+					if outputs[i] == 1:
+						output_colour = Color("#000000b0")
+				
+				#enable and set ports
+				if enable_input == true and enable_output == false:
+					graphnode.set_slot(i, true, inputs[i], input_colour, false, 0, output_colour)
+				elif enable_input == false and enable_output == true:
+					graphnode.set_slot(i, false, 0, input_colour, true, outputs[i], output_colour)
+				elif enable_input == true and enable_output == true:
+					graphnode.set_slot(i, true, inputs[i], input_colour, true, outputs[i], output_colour)
+				else:
+					pass
+			#set meta data for the process
+			graphnode.set_meta("command", command)
+			graphnode.set_meta("stereo_input", stereo)
+			
+			#adjust size, position and title of the node
+			graphnode.title = title
+			graphnode.tooltip_text = shortdescription
+			graphnode.size.x = 306
+			graphnode.custom_minimum_size.y = 80
+			graphnode.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom)
+			graphnode.name = command
+			
+			
+			for param_key in parameters.keys():
+				var param_data = parameters[param_key]
+				if param_data.get("uitype", "") == "hslider":
+					#instance the slider scene
+					var slider = valueslider.instantiate()
+					
+					#get slider text
+					var slider_label = param_data.get("paramname", "")
+					var slider_tooltip  = param_data.get("paramdescription", "")
+					
+					#get slider properties
+					var brk = param_data.get("automatable", false)
+					var time = param_data.get("time", false)
+					var min = param_data.get("min", false)
+					var max = param_data.get("max", false)
+					var flag = param_data.get("flag", "")
+					var minrange = param_data.get("minrange", 0)
+					var maxrange = param_data.get("maxrange", 10)
+					var step = param_data.get("step", 0.01)
+					var value = param_data.get("value", 1)
+					var exponential = param_data.get("exponential", false)
+					
+					#set labels and tooltips
+					slider.get_node("SliderLabel").text = slider_label
+					if brk == true:
+						slider.get_node("SliderLabel").text += "~"
+					slider.tooltip_text = slider_tooltip
+					slider.get_node("SliderLabel").tooltip_text = slider_tooltip
+					
+					#set meta data
+					var hslider = slider.get_node("HSplitContainer/HSlider")
+					hslider.set_meta("brk", brk)
+					hslider.set_meta("time", time)
+					hslider.set_meta("min", min)
+					hslider.set_meta("max", max)
+					hslider.set_meta("flag", flag)
+					
+					#set slider params
+					hslider.min_value = minrange
+					hslider.max_value = maxrange
+					hslider.step = step
+					hslider.value = value
+					hslider.exp_edit = exponential
+					
+					graphnode.add_child(slider)
+			
+			
+			graphnode.set_script(node_logic)
+			
+			add_child(graphnode, true)
+			graphnode.connect("open_help", open_help)
+			_register_inputs_in_node(graphnode) #link sliders for changes tracking
+			_register_node_movement() #link nodes for tracking position changes for changes tracking
+			
+			if not skip_undo_redo:
+				# Remove node with UndoRedo
+				control_script.undo_redo.create_action("Add Node")
+				control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(graphnode))
+				control_script.undo_redo.add_undo_method(Callable(graphnode, "queue_free"))
+				control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
+				control_script.undo_redo.commit_action()
+			
+			return graphnode
+			
+	return null
 	
 
 func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:

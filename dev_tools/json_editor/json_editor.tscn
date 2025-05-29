@@ -180,6 +180,30 @@ text = "Stereo:"
 [node name="stereo" type="CheckBox" parent="HBoxContainer/VBoxContainer2/HBoxContainer6"]
 layout_mode = 2
 
+[node name="HBoxContainer9" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer9"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Input Type (array):"
+
+[node name="inputtype" type="LineEdit" parent="HBoxContainer/VBoxContainer2/HBoxContainer9"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer11" type="HBoxContainer" parent="HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="HBoxContainer/VBoxContainer2/HBoxContainer11"]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 2
+text = "Output Type (array):"
+
+[node name="outputtype" type="LineEdit" parent="HBoxContainer/VBoxContainer2/HBoxContainer11"]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="ScrollContainer" type="ScrollContainer" parent="HBoxContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2

@@ -16,6 +16,7 @@ func _ready() -> void:
 	btn.tooltip_text = "Open help for " + self.title
 	btn.connect("pressed", Callable(self, "_open_help")) #pass key (process name) when button is pressed
 	titlebar.add_child(btn)
+	
 
 func _get_all_hsliders(node: Node) -> Array:
 	#moves through all children recusively to find nested sliders
@@ -29,8 +30,8 @@ func _get_all_hsliders(node: Node) -> Array:
 
 func _on_slider_value_changed(value: float, changed_slider: HSlider) -> void:
 	#checks if the slider moved has min or max meta data
-	var is_min := changed_slider.has_meta("min")
-	var is_max := changed_slider.has_meta("max")
+	var is_min = changed_slider.get_meta("min")
+	var is_max = changed_slider.get_meta("max")
 	
 	#if not exits function
 	if not is_min and not is_max:
@@ -42,12 +43,12 @@ func _on_slider_value_changed(value: float, changed_slider: HSlider) -> void:
 		if other_slider == changed_slider:
 			continue
 		
-		if is_min and other_slider.has_meta("max"):
+		if is_min and other_slider.get_meta("max"):
 			var max_value: float = other_slider.value
 			if changed_slider.value > max_value - min_gap:
 				changed_slider.value = max_value - min_gap
 		
-		elif is_max and other_slider.has_meta("min"):
+		elif is_max and other_slider.get_meta("min"):
 			var min_value: float = other_slider.value
 			if changed_slider.value < min_value + min_gap:
 				changed_slider.value = min_value + min_gap
