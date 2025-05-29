@@ -1820,6 +1820,46 @@
 	"subcategory": "",
 	"title": "Output File"
   },
+  "note_to_hz": {
+	"category": "utility",
+	"description": "Utility for quickly getting frequencies, values are truncated to two decimal places so are not entirely accurate. Particularly useful for tuning filters and filterbanks. Note, you can highlight and copy a frequency and then paste that into the value for the slider.\n",
+	"parameters": {
+	  "param1": {
+		"paramname": "Note",
+		"paramdescription": "The note to get the frequency of",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": "",
+		"maxrange": "",
+		"step": "",
+		"value": "",
+		"exponential": false,
+		"uitype": ""
+	  },
+	  "param2": {
+		"paramname": "Accidental",
+		"paramdescription": "Sets how sharp or flat the note is in quarter tones",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": "",
+		"maxrange": "",
+		"step": "",
+		"value": "",
+		"exponential": false,
+		"uitype": ""
+	  }
+	},
+	"short_description": "Converts from musical notes to Hz",
+	"stereo": false,
+	"subcategory": "utility",
+	"title": "Convert Note to Hz"
+  },
   "notes": {
 	"category": "utility",
 	"description": "Doesn't do anything other than giving you a space to take notes. You can right click in the text box to copy and paste and use special characters like emojis 😊.\n",

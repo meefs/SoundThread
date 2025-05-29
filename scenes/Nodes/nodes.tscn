@@ -1452,7 +1452,7 @@ text = "Lowest Band"
 [node name="HSlider" parent="filter_bank_1/VBoxContainer3/HSplitContainer" index="0"]
 min_value = 20.0
 max_value = 12000.0
-step = 0.01
+step = 0.001
 value = 55.0
 exp_edit = true
 
@@ -2144,7 +2144,7 @@ max_value = 10.0
 step = 0.01
 value = 0.251
 exp_edit = true
-metadata/brk = false
+metadata/brk = true
 
 [node name="modify_brassage_4" type="GraphNode" parent="."]
 layout_mode = 0
