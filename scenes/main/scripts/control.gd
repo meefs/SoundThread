@@ -18,6 +18,7 @@ var foldertoggle #links to the reuse folder button
 var lastoutputfolder = "none" #tracks last output folder, this can in future be used to replace global.outfile but i cba right now
 var uiscale = 1.0 #tracks scaling for retina screens
 
+
 #scripts
 var open_help
 var run_thread
@@ -117,6 +118,7 @@ func new_patch():
 	effect = Nodes.get_node(NodePath("outputfile")).duplicate()
 	effect.name = "outputfile"
 	get_node("GraphEdit").add_child(effect, true)
+	effect.init() #initialise ui from user prefs
 	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
 	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) / uiscale, 80)
 	graph_edit._register_node_movement() #link nodes for tracking position changes for changes tracking
@@ -131,11 +133,11 @@ func link_output():
 	for control in get_tree().get_nodes_in_group("outputnode"): #check all items in outputnode group
 		if control.get_meta("outputfunction") == "deleteintermediate": #link delete intermediate files toggle to script
 			control.toggled.connect(_toggle_delete)
-			control.button_pressed = true
+			_toggle_delete(control.button_pressed)
+			#control.button_pressed = interface_settings.get("delete_intermediate", true)
+
 		elif control.get_meta("outputfunction") == "runprocess": #link runprocess button
 			control.button_down.connect(_run_process)
-		#elif control.get_meta("outputfunction") == "recycle": #link recycle button
-			#control.button_down.connect(_recycle_outfile)
 		elif control.get_meta("outputfunction") == "audioplayer": #link output audio player
 			output_audio_player = control
 		elif control.get_meta("outputfunction") == "filename":
@@ -143,9 +145,10 @@ func link_output():
 			outfilename = control
 		elif control.get_meta("outputfunction") == "reusefolder":
 			foldertoggle = control
-			foldertoggle.button_pressed = true
+			#foldertoggle.button_pressed = interface_settings.get("reuse_output_folder", true)
 		elif control.get_meta("outputfunction") == "openfolder":
 			control.button_down.connect(_open_output_folder)
+
 
 	#for control in get_tree().get_nodes_in_group("inputnode"):
 		#if control.get_meta("inputfunction") == "audioplayer": #link input for recycle function

@@ -11,6 +11,7 @@ var node_data = {} #stores json with all nodes in it
 var valueslider = preload("res://scenes/Nodes/valueslider.tscn") #slider scene for use in nodes
 var node_logic = preload("res://scenes/Nodes/node_logic.gd") #load the script logic
 
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	snapping_enabled = false
@@ -41,6 +42,8 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
 			effect.name = command
 			add_child(effect, true)
+			if command == "outputfile":
+				effect.init() #initialise ui from user prefs
 			effect.connect("open_help", open_help)
 			effect.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 			_register_inputs_in_node(effect) #link sliders for changes tracking

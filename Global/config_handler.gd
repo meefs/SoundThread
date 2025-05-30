@@ -17,6 +17,9 @@ func _ready():
 	ensure_setting("interface_settings", "console_on_top", true)
 	ensure_setting("interface_settings", "theme", 0)
 	ensure_setting("interface_settings", "theme_custom_colour", "#865699")
+	ensure_setting("interface_settings", "delete_intermediate", true)
+	ensure_setting("interface_settings", "reuse_output_folder", true)
+	ensure_setting("interface_settings", "autoplay", true)
 	ensure_setting("audio_settings", "device", "Default")
 
 	# Only save if we added anything new

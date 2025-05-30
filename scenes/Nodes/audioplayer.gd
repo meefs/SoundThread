@@ -11,6 +11,7 @@ var mouse_pos_x
 #Used for waveform preview
 var voice_preview_generator : Node = null
 var stream : AudioStreamWAV = null
+var autoplay
 
 func _ready():
 	#Setup file dialogue to access system files and only accept wav files
@@ -22,10 +23,14 @@ func _ready():
 	audio_player.connect("finished", Callable(self, "_on_audio_finished"))
 	
 	if get_meta("loadenable") == false:
-		$PlayButton.position.x = $LoadButton.position.x
+		#$PlayButton.size.x = 192
+		#$PlayButton.position.x = 208
 		$PlayButton.size.x = $Panel.size.x
+		$PlayButton.position.x = $LoadButton.position.x
 		$LoadButton.hide()
 		$RecycleButton.hide()
+	#else:
+		#$Autoplay.hide()
 	
 	$WavError.hide()
 	
@@ -81,6 +86,8 @@ func play_outfile(path: String):
 		return
 	voice_preview_generator.generate_preview(audio_player.stream)
 	reset_playback()
+	if autoplay == true:
+		_on_play_button_button_down()
 
 	
 func recycle_outfile():
