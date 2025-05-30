@@ -2781,6 +2781,75 @@
 	"subcategory": "amppitch",
 	"title": "Gain"
   },
+  "repitch_transpose_3": {
+	"category": "pvoc",
+	"description": "This shifts the entire pitch and envelope of the file up or down by a set number of semitones while keeping the duration of the file the same. This produces a different overal tone than shifting pitch with granular processes. ",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "Pitch Shift",
+		"paramdescription": "The amount to change the pitch by in semitones",
+		"automatable": true,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": -24.0,
+		"maxrange": 24.0,
+		"step": 0.01,
+		"value": -12.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Pitch shift a sound in the frequency domain",
+	"stereo": false,
+	"subcategory": "amppitch",
+	"title": "Pitch Shift"
+  },
+  "repitch_transposef_3": {
+	"category": "pvoc",
+	"description": "This shifts the entire pitch of the file up or down by a set number of semitones while keeping spectral envelope and the duration of the file the same. This will produce a pitch shift while retaining some of the original timbre of the sound.",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "Formant Bands",
+		"paramdescription": "The number of bands to use when detecting formant envelope",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "-p",
+		"minrange": 1.0,
+		"maxrange": 12.0,
+		"step": 1.0,
+		"value": 8.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param2": {
+		"paramname": "Pitch Shift",
+		"paramdescription": "The amount to change the pitch by in semitones",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": -24.0,
+		"maxrange": 24.0,
+		"step": 0.01,
+		"value": -12.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Pitch shift a sound in the frequency domain retaining formants",
+	"stereo": false,
+	"subcategory": "amppitch",
+	"title": "Pitch Shift Retaining Formants"
+  },
   "strange_waver_1": {
 	"category": "pvoc",
 	"description": "Introduces an oscillation towards and away from inharmonicness in the spectrum of a sound. The program moves towards inharmonicness by means of the stretch factor. \n",
@@ -2859,6 +2928,48 @@
 	"stereo": false,
 	"subcategory": "convert",
 	"title": "Resynthesise"
+  },
+  "strange_glis_1": {
+	"category": "pvoc",
+	"description": "Extracts the spectral contour of the sound retaining any spectral articulation, such as patterns of speech, but replaces the signal by an endlessly rising (positive values for Glissando Rate) or falling (negative values for Glissando Rate) shepard tone.",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "Formant Bands",
+		"paramdescription": "The number of bands to extract and apply to the shepard tone",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "-p",
+		"minrange": 1.0,
+		"maxrange": 12.0,
+		"step": 1.0,
+		"value": 8.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param2": {
+		"paramname": "Glissando Rate",
+		"paramdescription": "The speed for the shepard tone to rise or fall in semitones per second, positive = rise, negative = fall",
+		"automatable": true,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": -20.0,
+		"maxrange": 20.0,
+		"step": 0.01,
+		"value": 1.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Impose formants on a shepard tone",
+	"stereo": false,
+	"subcategory": "formants",
+	"title": "Shepard Tone"
   },
   "blur_spread": {
 	"category": "pvoc",
@@ -2996,6 +3107,150 @@
 	"stereo": false,
 	"subcategory": "spectrum",
 	"title": "Invert"
+  },
+  "stretch_spectrum_1": {
+	"category": "pvoc",
+	"description": "This process takes all frequencies above the threshold and stretches them upwards. In harmonic sounds this will break the relationship between the harmonics moving it into an inharmonic sound. ",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "Threshold",
+		"paramdescription": "The frequency above which all frequencies are stretched",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 20.0,
+		"maxrange": 20000.0,
+		"step": 0.01,
+		"value": 440.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param2": {
+		"paramname": "Max Stretch",
+		"paramdescription": "The maximum stretch amount to apply to the highest frequencies",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 0.3,
+		"maxrange": 4.0,
+		"step": 0.01,
+		"value": 1.5,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param3": {
+		"paramname": "Stretch Exponent",
+		"paramdescription": "The shape of the stretch across the spectrum",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 0.3,
+		"maxrange": 4.0,
+		"step": 0.01,
+		"value": 1.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param4": {
+		"paramname": "Depth",
+		"paramdescription": "How much stretching actually takes place 0 = no stretch, 1 = full stretch",
+		"automatable": true,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "-d",
+		"minrange": 0.0,
+		"maxrange": 1.0,
+		"step": 0.01,
+		"value": 1.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Stretches all frequencies above a set point upwards",
+	"stereo": false,
+	"subcategory": "spectrum",
+	"title": "Stretch Spectrum Above"
+  },
+  "stretch_spectrum_2": {
+	"category": "pvoc",
+	"description": "This process takes all frequencies below the threshold and stretches them downwards. In harmonic sounds this will break the relationship between the harmonics moving it into an inharmonic sound. ",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "Threshold",
+		"paramdescription": "The frequency below which all frequencies are stretched",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 20.0,
+		"maxrange": 20000.0,
+		"step": 0.01,
+		"value": 440.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param2": {
+		"paramname": "Max Stretch",
+		"paramdescription": "The maximum stretch amount to apply to the lowest frequencies",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 0.3,
+		"maxrange": 4.0,
+		"step": 0.01,
+		"value": 1.5,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param3": {
+		"paramname": "Stretch Exponent",
+		"paramdescription": "The shape of the stretch across the spectrum",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 0.3,
+		"maxrange": 4.0,
+		"step": 0.01,
+		"value": 1.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param4": {
+		"paramname": "Depth",
+		"paramdescription": "How much stretching actually takes place 0 = no stretch, 1 = full stretch",
+		"automatable": true,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "-d",
+		"minrange": 0.0,
+		"maxrange": 1.0,
+		"step": 0.01,
+		"value": 1.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Stretches all frequencies below a set point upwards",
+	"stereo": false,
+	"subcategory": "spectrum",
+	"title": "Stretch Spectrum Below"
   },
   "blur_suppress": {
 	"category": "pvoc",
@@ -3146,6 +3401,48 @@
 	"stereo": false,
 	"subcategory": "time",
 	"title": "Blur"
+  },
+  "spec_magnify": {
+	"category": "pvoc",
+	"description": "This process allows you to pick a single point in time in the sound and output only that moment, drawn out for the amount of time that you specifiy.",
+	"inputtype": "[1]",
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "Time",
+		"paramdescription": "The point in the file in percent to freeze",
+		"automatable": false,
+		"time": true,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 0.0,
+		"maxrange": 100.0,
+		"step": 0.01,
+		"value": 10.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param2": {
+		"paramname": "Output Duration",
+		"paramdescription": "The length of the output file in seconds",
+		"automatable": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 10.0,
+		"maxrange": 480.0,
+		"step": 0.1,
+		"value": 30.0,
+		"exponential": true,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Freeze a single analysis window",
+	"stereo": false,
+	"subcategory": "time",
+	"title": "Freeze"
   },
   "focus_step": {
 	"category": "pvoc",
