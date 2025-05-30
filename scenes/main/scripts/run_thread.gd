@@ -659,6 +659,8 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 	for entry in slider_data:
 		var flag = entry[0]
 		var value = entry[1]
+		#if value == int(value):
+			#value = int(value)
 		var time = entry[2] #checks if slider is a time percentage slider
 		var brk_data = entry[3]
 		var min_slider = entry[4]
@@ -706,7 +708,7 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 				infile_length = float(infile_length.strip_edges())
 				value = infile_length * (value / 100) #calculate percentage time of the input file
 			line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
-			args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value))
+			args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else str(value))
 			
 		slider_count += 1
 	return [command, output_file, cleanup, args]

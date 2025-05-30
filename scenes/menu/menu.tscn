@@ -31,12 +31,11 @@ offset_right = 325.0
 offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 3
+current_tab = 0
 
 [node name="Time Domain" type="TabContainer" parent="Control/select_effect"]
-visible = false
 layout_mode = 2
-current_tab = 4
+current_tab = 3
 metadata/_tab_index = 0
 
 [node name="Distort" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
@@ -139,7 +138,6 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 5
 
 [node name="Granulate" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
@@ -172,6 +170,7 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 5
 
 [node name="Misc" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 4
 
@@ -189,6 +188,28 @@ size_flags_horizontal = 0
 horizontal_scroll_mode = 0
 
 [node name="MiscContainer" type="VBoxContainer" parent="Control/select_effect/Time Domain/Misc/MarginContainer/ScrollContainer"]
+custom_minimum_size = Vector2(620, 0)
+layout_mode = 2
+
+[node name="Reverb and Delay" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 5
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Time Domain/Reverb and Delay"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Time Domain/Reverb and Delay/MarginContainer"]
+custom_minimum_size = Vector2(620, 425)
+layout_mode = 2
+size_flags_horizontal = 0
+horizontal_scroll_mode = 0
+
+[node name="ReverbContainer" type="VBoxContainer" parent="Control/select_effect/Time Domain/Reverb and Delay/MarginContainer/ScrollContainer"]
 custom_minimum_size = Vector2(620, 0)
 layout_mode = 2
 
@@ -302,6 +323,7 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 5
 
 [node name="Search" type="TabContainer" parent="Control/select_effect"]
+visible = false
 layout_mode = 2
 current_tab = 0
 metadata/_tab_index = 3

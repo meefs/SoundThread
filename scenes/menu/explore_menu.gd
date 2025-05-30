@@ -46,6 +46,8 @@ func fill_menu():
 				container = $"Control/select_effect/Time Domain/Granulate/MarginContainer/ScrollContainer/GranulateContainer"
 			elif subcategory == "misc":
 				container = $"Control/select_effect/Time Domain/Misc/MarginContainer/ScrollContainer/MiscContainer"
+			elif subcategory == "reverb":
+				container = $"Control/select_effect/Time Domain/Reverb and Delay/MarginContainer/ScrollContainer/ReverbContainer"
 			else:
 				continue
 		elif category == "pvoc":
