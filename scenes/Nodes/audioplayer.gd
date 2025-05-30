@@ -84,7 +84,7 @@ func play_outfile(path: String):
 		voice_preview_generator._reset_to_blank()
 		reset_playback()
 		return
-	voice_preview_generator.generate_preview(audio_player.stream)
+	await voice_preview_generator.generate_preview(audio_player.stream)
 	reset_playback()
 	if autoplay == true:
 		_on_play_button_button_down()

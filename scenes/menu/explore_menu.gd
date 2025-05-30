@@ -53,8 +53,14 @@ func fill_menu():
 		elif category == "pvoc":
 			if subcategory == "convert":
 				container = $"Control/select_effect/Frequency Domain/Convert/MarginContainer/ScrollContainer/PVOCConvertContainer"
-			elif subcategory == "process":
-				container = $"Control/select_effect/Frequency Domain/Process/MarginContainer/ScrollContainer/PVOCProcessContainer"
+			elif subcategory == "amppitch":
+				container = $"Control/select_effect/Frequency Domain/Amplitude and Pitch/MarginContainer/ScrollContainer/PVOCAmplitudePitchContainer"
+			elif subcategory == "formants":
+				container = $"Control/select_effect/Frequency Domain/Formants/MarginContainer/ScrollContainer/PVOCFormantsContainer"
+			elif subcategory == "time":
+				container = $"Control/select_effect/Frequency Domain/Time/MarginContainer/ScrollContainer/PVOCTimeContainer"
+			elif subcategory == "spectrum":
+				container = $"Control/select_effect/Frequency Domain/Spectrum/MarginContainer/ScrollContainer/PVOCSpectrumContainer"
 			else:
 				continue
 		elif category == "utility":

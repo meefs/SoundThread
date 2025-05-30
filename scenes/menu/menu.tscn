@@ -31,9 +31,10 @@ offset_right = 325.0
 offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 0
+current_tab = 1
 
 [node name="Time Domain" type="TabContainer" parent="Control/select_effect"]
+visible = false
 layout_mode = 2
 current_tab = 3
 metadata/_tab_index = 0
@@ -214,9 +215,8 @@ custom_minimum_size = Vector2(620, 0)
 layout_mode = 2
 
 [node name="Frequency Domain" type="TabContainer" parent="Control/select_effect"]
-visible = false
 layout_mode = 2
-current_tab = 1
+current_tab = 4
 metadata/_tab_index = 1
 
 [node name="Convert" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
@@ -252,35 +252,134 @@ autowrap_mode = 3
 layout_mode = 2
 theme_override_constants/margin_bottom = 5
 
-[node name="Process" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
+[node name="Amplitude and Pitch" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Process"]
+[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Amplitude and Pitch"]
 layout_mode = 2
 theme_override_constants/margin_left = 15
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 5
 theme_override_constants/margin_bottom = 10
 
-[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Frequency Domain/Amplitude and Pitch/MarginContainer"]
 custom_minimum_size = Vector2(620, 425)
 layout_mode = 2
 size_flags_horizontal = 0
 horizontal_scroll_mode = 0
 
-[node name="PVOCProcessContainer" type="VBoxContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer/ScrollContainer"]
+[node name="PVOCAmplitudePitchContainer" type="VBoxContainer" parent="Control/select_effect/Frequency Domain/Amplitude and Pitch/MarginContainer/ScrollContainer"]
 custom_minimum_size = Vector2(620, 0)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/select_effect/Frequency Domain/Process/MarginContainer/ScrollContainer/PVOCProcessContainer"]
+[node name="Label" type="Label" parent="Control/select_effect/Frequency Domain/Amplitude and Pitch/MarginContainer/ScrollContainer/PVOCAmplitudePitchContainer"]
 custom_minimum_size = Vector2(620, 0)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "These processes operate on frequency domain analysis data and allow for transformations that are often impossible in the time domain. Of all the processes available in the Composers Desktop Project these can often have the largest transformative impact on a sound."
+text = "These processes operate on frequency domain analysis data to alter the loudness and/or pitch of some or all of the sound."
 autowrap_mode = 3
 
-[node name="MarginContainer4" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Process/MarginContainer/ScrollContainer/PVOCProcessContainer"]
+[node name="MarginContainer4" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Amplitude and Pitch/MarginContainer/ScrollContainer/PVOCAmplitudePitchContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="Formants" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Formants"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Frequency Domain/Formants/MarginContainer"]
+custom_minimum_size = Vector2(620, 425)
+layout_mode = 2
+size_flags_horizontal = 0
+horizontal_scroll_mode = 0
+
+[node name="PVOCFormantsContainer" type="VBoxContainer" parent="Control/select_effect/Frequency Domain/Formants/MarginContainer/ScrollContainer"]
+custom_minimum_size = Vector2(620, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/select_effect/Frequency Domain/Formants/MarginContainer/ScrollContainer/PVOCFormantsContainer"]
+custom_minimum_size = Vector2(620, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "These processes operate on frequency domain analysis data to manipulate or add formants to a sound. Formants are prominent peaks in the frequency spectrum that give sounds part of their timbre. They are essential in speech for discerning different vowel sounds."
+autowrap_mode = 3
+
+[node name="MarginContainer4" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Formants/MarginContainer/ScrollContainer/PVOCFormantsContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="Time" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Time"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Frequency Domain/Time/MarginContainer"]
+custom_minimum_size = Vector2(620, 425)
+layout_mode = 2
+size_flags_horizontal = 0
+horizontal_scroll_mode = 0
+
+[node name="PVOCTimeContainer" type="VBoxContainer" parent="Control/select_effect/Frequency Domain/Time/MarginContainer/ScrollContainer"]
+custom_minimum_size = Vector2(620, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/select_effect/Frequency Domain/Time/MarginContainer/ScrollContainer/PVOCTimeContainer"]
+custom_minimum_size = Vector2(620, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "These processes operate on frequency domain analysis data to transform something about how a sound evolves over time."
+autowrap_mode = 3
+
+[node name="MarginContainer4" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Time/MarginContainer/ScrollContainer/PVOCTimeContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="Spectrum" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
+layout_mode = 2
+metadata/_tab_index = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Spectrum"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Frequency Domain/Spectrum/MarginContainer"]
+custom_minimum_size = Vector2(620, 425)
+layout_mode = 2
+size_flags_horizontal = 0
+horizontal_scroll_mode = 0
+
+[node name="PVOCSpectrumContainer" type="VBoxContainer" parent="Control/select_effect/Frequency Domain/Spectrum/MarginContainer/ScrollContainer"]
+custom_minimum_size = Vector2(620, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/select_effect/Frequency Domain/Spectrum/MarginContainer/ScrollContainer/PVOCSpectrumContainer"]
+custom_minimum_size = Vector2(620, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "These processes operate on frequency domain analysis data to alter the spectral content of a sound. This can include removing certain frequencies or adding additional frequencies into the sound."
+autowrap_mode = 3
+
+[node name="MarginContainer4" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Spectrum/MarginContainer/ScrollContainer/PVOCSpectrumContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 5
 
