@@ -204,43 +204,63 @@ func run_thread_with_branches():
 		elif input_files.size() == 1:
 			current_infile = input_files[0]
 
-		## If no input, use the original input file
 		else:
 			#if no input i need to skip the node
 			pass
 		
-		if node.get_meta("command") == "inputfile":
-			#get the inputfile from the nodes meta
-			var loadedfile = node.get_node("AudioPlayer").get_meta("inputfile")
-			#get wether trim has been enabled
-			var trimfile = node.get_node("AudioPlayer").get_meta("trimfile")
-			
-			#if trim is enabled trim the file
-			if trimfile == true:
-				#get the start and end points
-				var start = node.get_node("AudioPlayer").get_meta("trimpoints")[0]
-				var end = node.get_node("AudioPlayer").get_meta("trimpoints")[1]
+		#check if node is some form of input node
+		if node.get_input_port_count() == 0:
+			if node.get_meta("command") == "inputfile":
+				#get the inputfile from the nodes meta
+				var loadedfile = node.get_node("AudioPlayer").get_meta("inputfile")
+				#get wether trim has been enabled
+				var trimfile = node.get_node("AudioPlayer").get_meta("trimfile")
 				
-				if process_cancelled:
-					#exit out of process if cancelled
-					progress_label.text = "Thread Stopped"
-					log_console("[b]Thread Stopped[/b]", true)
-					return
+				#if trim is enabled trim the file
+				if trimfile == true:
+					#get the start and end points
+					var start = node.get_node("AudioPlayer").get_meta("trimpoints")[0]
+					var end = node.get_node("AudioPlayer").get_meta("trimpoints")[1]
+					
+					if process_cancelled:
+						#exit out of process if cancelled
+						progress_label.text = "Thread Stopped"
+						log_console("[b]Thread Stopped[/b]", true)
+						return
+					else:
+						progress_label.text = "Trimming input audio"
+					await run_command(control_script.cdpprogs_location + "/sfedit", ["cut", "1", loadedfile, "%s_%d_input_trim.wav" % [Global.outfile, process_count], str(start), str(end)])
+					
+					output_files[node_name] =  "%s_%d_input_trim.wav" % [Global.outfile, process_count]
+					
+					# Mark trimmed file for cleanup if needed
+					if control_script.delete_intermediate_outputs:
+						intermediate_files.append("%s_%d_input_trim.wav" % [Global.outfile, process_count])
+					progress_bar.value += progress_step
 				else:
-					progress_label.text = "Trimming input audio"
-				await run_command(control_script.cdpprogs_location + "/sfedit", ["cut", "1", loadedfile, "%s_%d_input_trim.wav" % [Global.outfile, process_count], str(start), str(end)])
+					#if trim not enabled pass the loaded file
+					output_files[node_name] =  loadedfile
+					
+				process_count += 1
+			else: #not an audio file must be synthesis
+				var slider_data = _get_slider_values_ordered(node)
+				var makeprocess = await make_process(node, process_count, "none", slider_data)
+				# run the command
+				await run_command(makeprocess[0], makeprocess[3])
+				await get_tree().process_frame
+				var output_file = makeprocess[1]
 				
-				output_files[node_name] =  "%s_%d_input_trim.wav" % [Global.outfile, process_count]
-				
-				# Mark trimmed file for cleanup if needed
+
+				# Store output file path for this node
+				output_files[node_name] = output_file
+
+				# Mark file for cleanup if needed
 				if control_script.delete_intermediate_outputs:
-					intermediate_files.append("%s_%d_input_trim.wav" % [Global.outfile, process_count])
-				progress_bar.value += progress_step
-			else:
-				#if trim not enabled pass the loaded file
-				output_files[node_name] =  loadedfile
-				
-			process_count += 1
+					for file in makeprocess[2]:
+						breakfiles.append(file)
+					intermediate_files.append(output_file)
+					
+				process_count += 1
 		else:
 			# Build the command for the current node's audio processing
 			var slider_data = _get_slider_values_ordered(node)
@@ -644,11 +664,13 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 	command_name = command_name.split("_", true, 1)
 	var command = "%s/%s" %[control_script.cdpprogs_location, command_name[0]]
 	var args = command_name[1].split("_", true, 1)
-	args.append(current_infile)
+	if current_infile != "none":
+		#check if input is none, e.g. synthesis nodes, otherwise append input file to arguments
+		args.append(current_infile)
 	args.append(output_file)
 
-	# Start building the command line windows
-	var line = "%s/%s \"%s\" \"%s\" " % [control_script.cdpprogs_location, command_name, current_infile, output_file]
+	# Start building the command line windows i dont think this is used anymore
+	#var line = "%s/%s \"%s\" \"%s\" " % [control_script.cdpprogs_location, command_name, current_infile, output_file]
 	#mac
 
 	
@@ -698,7 +720,7 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 			write_breakfile(calculated_brk, brk_file_path)
 			
 			#append text file in place of value
-			line += ("\"%s\" " % brk_file_path)
+			#line += ("\"%s\" " % brk_file_path)
 			args.append(brk_file_path)
 			
 			cleanup.append(brk_file_path)
@@ -707,7 +729,7 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 				var infile_length = await run_command(control_script.cdpprogs_location + "/sfprops", ["-d", current_infile])
 				infile_length = float(infile_length.strip_edges())
 				value = infile_length * (value / 100) #calculate percentage time of the input file
-			line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
+			#line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
 			args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else str(value))
 			
 		slider_count += 1
@@ -751,7 +773,8 @@ func path_exists_through_all_nodes() -> bool:
 			all_nodes[name] = child
 
 			var command = child.get_meta("command")
-			if command == "inputfile":
+			var type = command.get_slice("_", 0)
+			if command == "inputfile" or type == "synth":
 				input_node_names.append(name)
 			elif command == "outputfile":
 				output_node_name = name
