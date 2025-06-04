@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://bcs87y7ptx3ke"]
+[gd_scene load_steps=11 format=3 uid="uid://bcs87y7ptx3ke"]
 
 [ext_resource type="Script" uid="uid://bdlfvuljckmu1" path="res://scenes/main/scripts/control.gd" id="1_2f0aq"]
 [ext_resource type="Script" uid="uid://l2yejnjysupr" path="res://scenes/main/scripts/graph_edit.gd" id="2_3ioqo"]
 [ext_resource type="PackedScene" uid="uid://b0wdj8v6o0wq0" path="res://scenes/menu/menu.tscn" id="3_dtf4o"]
 [ext_resource type="Texture2D" uid="uid://cdwux1smquvpi" path="res://theme/images/logo.png" id="4_3ioqo"]
 [ext_resource type="PackedScene" uid="uid://dta7rfalv4uvd" path="res://scenes/main/audio_settings.tscn" id="5_dtf4o"]
+[ext_resource type="Script" uid="uid://cyhaucukdha8a" path="res://scenes/main/scripts/console.gd" id="5_fbaj0"]
 [ext_resource type="Script" uid="uid://wja0lo4nobh1" path="res://scenes/main/scripts/about_menu.gd" id="5_yf4wl"]
 [ext_resource type="Script" uid="uid://dlcbmyu3s2phc" path="res://scenes/menu/search_menu.gd" id="6_fyarh"]
 [ext_resource type="Script" uid="uid://b6r7k326k3vif" path="res://scenes/Nodes/check_for_updates.gd" id="7_1kc3g"]
@@ -190,6 +191,7 @@ size = Vector2i(600, 400)
 visible = false
 unresizable = true
 always_on_top = true
+script = ExtResource("5_fbaj0")
 
 [node name="Panel" type="Panel" parent="Console"]
 offset_left = 10.0
@@ -202,6 +204,8 @@ offset_left = 12.0
 offset_top = 8.0
 offset_right = 588.0
 offset_bottom = 344.0
+focus_mode = 2
+selection_enabled = true
 
 [node name="ConsoleOpenFolder" type="Button" parent="Console"]
 offset_left = 308.0
@@ -216,6 +220,13 @@ offset_top = 352.0
 offset_right = 292.0
 offset_bottom = 393.0
 text = "Stop Running Thread"
+
+[node name="ConsoleRightClick" type="PopupMenu" parent="Console"]
+item_count = 2
+item_0/text = "Select All"
+item_0/id = 0
+item_1/text = "Copy"
+item_1/id = 1
 
 [node name="ColorRect" type="ColorRect" parent="."]
 layout_mode = 1
@@ -438,10 +449,12 @@ offset_bottom = 100.0
 text = "Stop Running Thread"
 
 [connection signal="connection_request" from="GraphEdit" to="GraphEdit" method="_on_connection_request"]
+[connection signal="copy_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_copy_nodes_request"]
 [connection signal="delete_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_delete_nodes_request"]
 [connection signal="disconnection_request" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_disconnection_request"]
 [connection signal="node_deselected" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_node_deselected"]
 [connection signal="node_selected" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_node_selected"]
+[connection signal="paste_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_paste_nodes_request"]
 [connection signal="popup_request" from="GraphEdit" to="." method="_on_graph_edit_popup_request"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="close_requested" from="mainmenu" to="." method="_on_mainmenu_close_requested"]
@@ -454,8 +467,10 @@ text = "Stop Running Thread"
 [connection signal="canceled" from="CdpLocationDialog" to="." method="_on_cdp_location_dialog_canceled"]
 [connection signal="dir_selected" from="CdpLocationDialog" to="." method="_on_cdp_location_dialog_dir_selected"]
 [connection signal="close_requested" from="Console" to="." method="_on_console_close_requested"]
+[connection signal="gui_input" from="Console/ConsoleOutput" to="Console" method="_on_console_output_gui_input"]
 [connection signal="button_down" from="Console/ConsoleOpenFolder" to="." method="_on_console_open_folder_button_down"]
 [connection signal="button_down" from="Console/KillProcess" to="." method="_on_kill_process_button_down"]
+[connection signal="index_pressed" from="Console/ConsoleRightClick" to="Console" method="_on_console_right_click_index_pressed"]
 [connection signal="index_pressed" from="MenuBar/FileButton" to="." method="_on_file_button_index_pressed"]
 [connection signal="index_pressed" from="MenuBar/SettingsButton" to="." method="_on_settings_button_index_pressed"]
 [connection signal="index_pressed" from="MenuBar/HelpButton" to="." method="_on_help_button_index_pressed"]

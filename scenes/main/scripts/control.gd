@@ -207,16 +207,9 @@ func _on_cdp_location_dialog_canceled() -> void:
 	
 
 func _input(event):
-	if event.is_action_pressed("copy_node"):
-		graph_edit.copy_selected_nodes()
-		get_viewport().set_input_as_handled()
-
-	elif event.is_action_pressed("paste_node"):
-		simulate_mouse_click() #hacky fix to stop tooltips getting stuck
+	if event.is_action_pressed("undo"):
+		simulate_mouse_click()
 		await get_tree().process_frame
-		graph_edit.paste_copied_nodes()
-		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("undo"):
 		undo_redo.undo()
 	elif event.is_action_pressed("redo"):
 		undo_redo.redo()

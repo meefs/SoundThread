@@ -454,3 +454,14 @@ func _on_any_input_changed():
 
 func _track_changes():
 	control_script.changesmade = true
+
+
+func _on_copy_nodes_request() -> void:
+	graph_edit.copy_selected_nodes()
+	#get_viewport().set_input_as_handled()
+
+
+func _on_paste_nodes_request() -> void:
+	control_script.simulate_mouse_click() #hacky fix to stop tooltips getting stuck
+	await get_tree().process_frame
+	graph_edit.paste_copied_nodes()
