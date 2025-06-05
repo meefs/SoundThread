@@ -240,18 +240,17 @@ func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
 	control_script.undo_redo.create_action("Delete Nodes (Undo only)")
 	
 	#get the number of inputs in the patch
-	var number_of_inputs = 0
-	for allnodes in get_children():
-		if allnodes.get_meta("command") == "inputfile":
-			number_of_inputs += 1
+	#var number_of_inputs = 0
+	#for allnodes in get_children():
+		#if allnodes.get_meta("command") == "inputfile":
+			#number_of_inputs += 1
 			
 	for node in selected_nodes.keys():
 		if selected_nodes[node]:
 			#check if node is the output or the last input node and do nothing
-			if (number_of_inputs <= 1 and node.get_meta("command") == "inputfile") or node.get_meta("command") == "outputfile":
+			if node.get_meta("command") == "outputfile":
 				pass
 			else:
-				number_of_inputs -= 1
 				# Store duplicate and state for undo
 				var node_data = node.duplicate()
 				var position = node.position_offset
