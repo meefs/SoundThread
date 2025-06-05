@@ -28,9 +28,11 @@ func _on_request_completed(result, response_code, headers, body):
 
 	var latest_version = response.get("tag_name", "")
 	print("Latest GitHub version: ", latest_version)
+	
+	var update_notes = response.get("body", "")
 
 	if _version_is_newer(latest_version, current_version):
-		_show_update_popup(latest_version)
+		_show_update_popup(latest_version, update_notes)
 		
 func _version_is_newer(latest: String, current: String) -> bool:
 	#clean up version tags remove -alpha -beta and v and split the number sup
@@ -58,8 +60,9 @@ func trim_suffix(text: String, suffix: String) -> String:
 		return text.substr(0, text.length() - suffix.length())
 	return text
 	
-func _show_update_popup(new_version: String):
+func _show_update_popup(new_version: String, update_notes: String):
 	$UpdatePopup/Label.text = "A new version of SoundThread (" + new_version + ") is available to download."
+	$UpdatePopup/UpdateNotes.text = "[b]Update Details[/b] \n" + update_notes
 	$UpdatePopup.popup_centered()
 
 func _on_open_audio_settings_button_down() -> void:

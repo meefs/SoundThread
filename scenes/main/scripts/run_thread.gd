@@ -806,8 +806,8 @@ func path_exists_through_all_nodes() -> bool:
 			all_nodes[name] = child
 
 			var command = child.get_meta("command")
-			var type = command.get_slice("_", 0)
-			if command == "inputfile" or type == "synth" or type == "synspline":
+			var input = child.get_meta("input")
+			if input:
 				input_node_names.append(name)
 			elif command == "outputfile":
 				output_node_name = name

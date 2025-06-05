@@ -109,6 +109,10 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			#set meta data for the process
 			graphnode.set_meta("command", command)
 			graphnode.set_meta("stereo_input", stereo)
+			if inputs.size() == 0 and outputs.size() > 0:
+				graphnode.set_meta("input", true)
+			else:
+				graphnode.set_meta("input", false)
 			
 			#adjust size, position and title of the node
 			graphnode.title = title

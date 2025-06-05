@@ -389,7 +389,7 @@ script = ExtResource("7_1kc3g")
 auto_translate_mode = 1
 title = "New Update Available"
 initial_position = 2
-size = Vector2i(379, 100)
+size = Vector2i(379, 300)
 visible = false
 transient = true
 exclusive = true
@@ -408,10 +408,18 @@ autowrap_mode = 2
 
 [node name="OpenAudioSettings" type="Button" parent="CheckForUpdates/UpdatePopup"]
 offset_left = -2.0
-offset_top = 69.0
+offset_top = 270.0
 offset_right = 382.0
-offset_bottom = 100.0
+offset_bottom = 301.0
 text = "Get the update"
+
+[node name="UpdateNotes" type="RichTextLabel" parent="CheckForUpdates/UpdatePopup"]
+offset_left = 6.0
+offset_top = 62.0
+offset_right = 374.0
+offset_bottom = 262.0
+bbcode_enabled = true
+text = "Update details:"
 
 [node name="Settings" parent="." groups=["popup_windows"] instance=ExtResource("8_16l5g")]
 visible = false

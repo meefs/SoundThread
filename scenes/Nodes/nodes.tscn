@@ -42,6 +42,7 @@ slot/1/right_icon = null
 slot/1/draw_stylebox = true
 script = ExtResource("3_uv17x")
 metadata/command = "inputfile"
+metadata/input = true
 
 [node name="Control" type="Control" parent="inputfile"]
 layout_mode = 2
@@ -179,6 +180,7 @@ slot/12/draw_stylebox = true
 script = ExtResource("3_0jqh0")
 metadata/command = "outputfile"
 metadata/utility = true
+metadata/input = false
 
 [node name="Control" type="Control" parent="outputfile"]
 layout_mode = 2
@@ -274,6 +276,7 @@ slot/0/draw_stylebox = true
 script = ExtResource("3_uv17x")
 metadata/command = "notes"
 metadata/utility = true
+metadata/input = false
 
 [node name="CodeEdit" type="CodeEdit" parent="notes"]
 custom_minimum_size = Vector2(0, 10)
@@ -319,6 +322,7 @@ slot/2/draw_stylebox = true
 script = ExtResource("4_0jqh0")
 metadata/command = "note_to_hz"
 metadata/utility = true
+metadata/input = false
 
 [node name="Note" type="ItemList" parent="note_to_hz"]
 layout_mode = 2
