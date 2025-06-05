@@ -137,6 +137,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						#get slider properties
 						var brk = param_data.get("automatable", false)
 						var time = param_data.get("time", false)
+						var outputduration = param_data.get("outputduration", false)
 						var min = param_data.get("min", false)
 						var max = param_data.get("max", false)
 						var flag = param_data.get("flag", "")
@@ -167,6 +168,10 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						hslider.step = step
 						hslider.value = value
 						hslider.exp_edit = exponential
+						
+						#add output duration meta to main if true
+						if outputduration:
+							graphnode.set_meta("outputduration", value)
 						
 						graphnode.add_child(slider)
 			

@@ -13,7 +13,7 @@ CATEGORY_ORDER = ["time", "pvoc", "utility"]
 
 # Define desired parameter field order
 FIELD_ORDER = [
-    "paramname", "paramdescription", "automatable", "time",
+    "paramname", "paramdescription", "automatable", "outputduration", "time",
     "min", "max", "flag", "minrange", "maxrange", "step",
     "value", "exponential", "uitype"
 ]

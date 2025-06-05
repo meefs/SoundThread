@@ -539,17 +539,19 @@ func run_thread_with_branches():
 
 
 func is_stereo(file: String) -> bool:
-	var output = await run_command(control_script.cdpprogs_location + "/sfprops", ["-c", file])
-	output = int(output.strip_edges()) #convert output from cmd to clean int
-	if output == 1:
-		return false
-	elif output == 2:
-		return true
-	elif output == 1026: #ignore pvoc .ana files
-		return false
-	else:
-		log_console("[color=#9c2828]Error: Only mono and stereo files are supported[/color]", true)
-		return false
+	if file != "none":
+		var output = await run_command(control_script.cdpprogs_location + "/sfprops", ["-c", file])
+		output = int(output.strip_edges()) #convert output from cmd to clean int
+		if output == 1:
+			return false
+		elif output == 2:
+			return true
+		elif output == 1026: #ignore pvoc .ana files
+			return false
+		else:
+			log_console("[color=#9c2828]Error: Only mono and stereo files are supported[/color]", true)
+			return false
+	return true
 		
 func get_samplerate(file: String) -> int:
 	var output = await run_command(control_script.cdpprogs_location + "/sfprops", ["-r", file])
@@ -642,9 +644,10 @@ func _get_slider_values_ordered(node: Node) -> Array:
 			var brk_data = []
 			var min_slider = child.min_value
 			var max_slider = child.max_value
+			var exp = child.exp_edit
 			if child.has_meta("brk_data"):
 				brk_data = child.get_meta("brk_data")
-			results.append([flag, child.value, time, brk_data, min_slider, max_slider])
+			results.append([flag, child.value, time, brk_data, min_slider, max_slider, exp])
 		elif child.get_child_count() > 0:
 			var nested := _get_slider_values_ordered(child)
 			results.append_array(nested)
@@ -687,6 +690,7 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 		var brk_data = entry[3]
 		var min_slider = entry[4]
 		var max_slider = entry[5]
+		var exp = entry[6]
 		if brk_data.size() > 0: #if breakpoint data is present on slider
 			#Sort all points by time
 			var sorted_brk_data = []
@@ -696,24 +700,41 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 			var calculated_brk = []
 			
 			#get length of input file in seconds
-			var infile_length = await run_command(control_script.cdpprogs_location + "/sfprops", ["-d", current_infile])
-			infile_length = float(infile_length.strip_edges())
+			var infile_length = 1 #set infile length to dummy value just incase it does get used where it shouldn't to avoid crashes
+			if current_infile != "none":
+				infile_length = await run_command(control_script.cdpprogs_location + "/sfprops", ["-d", current_infile])
+				infile_length = float(infile_length.strip_edges())
 			
 			#scale values from automation window to the right length for file and correct slider values
-			#need to check how time is handled in all files that accept it, zigzag is x = outfile position, y = infile position
-			#if time == true:
-				#for point in sorted_brk_data:
-					#var new_x = infile_length * (point.x / 700) #time
-					#var new_y = infile_length * (remap(point.y, 255, 0, min_slider, max_slider) / 100) #slider value scaled as a percentage of infile time
-					#calculated_brk.append(Vector2(new_x, new_y))
-			#else:
-			for i in range(sorted_brk_data.size()):
-				var point = sorted_brk_data[i]
-				var new_x = infile_length * (point.x / 700) #time
-				if i == sorted_brk_data.size() - 1: #check if this is last automation point
-					new_x = infile_length + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
-				var new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
-				calculated_brk.append(Vector2(new_x, new_y))
+			#if node has an output duration then breakpoint files should be x = outputduration y= slider value else x=input duration, y=value
+			if node.has_meta("outputduration"):
+				for i in range(sorted_brk_data.size()):
+					var point = sorted_brk_data[i]
+					var new_x = float(node.get_meta("outputduration")) * (point.x / 700) #output time
+					if i == sorted_brk_data.size() - 1: #check if this is last automation point
+						new_x = float(node.get_meta("outputduration")) + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
+					var new_y
+					#check if slider is exponential and scale automation
+					if exp:
+						new_y = remap_y_to_log_scale(point.y, 0.0, 255.0, min_slider, max_slider)
+					else:
+						new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
+					if time: #check if this is a time slider and convert to percentage of input file
+						new_y = infile_length * (new_y / 100)
+					calculated_brk.append(Vector2(new_x, new_y))
+			else:
+				for i in range(sorted_brk_data.size()):
+					var point = sorted_brk_data[i]
+					var new_x = infile_length * (point.x / 700) #time
+					if i == sorted_brk_data.size() - 1: #check if this is last automation point
+						new_x = infile_length + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
+					var new_y
+					#check if slider is exponential and scale automation
+					if exp:
+						new_y = remap_y_to_log_scale(point.y, 0.0, 255.0, min_slider, max_slider)
+					else:
+						new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
+					calculated_brk.append(Vector2(new_x, new_y))
 				
 			#make text file
 			var brk_file_path = output_file.get_basename() + "_" + str(slider_count) + ".txt"
@@ -721,6 +742,8 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 			
 			#append text file in place of value
 			#line += ("\"%s\" " % brk_file_path)
+			if flag.begins_with("-"):
+				brk_file_path = flag + brk_file_path
 			args.append(brk_file_path)
 			
 			cleanup.append(brk_file_path)
@@ -735,6 +758,16 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 		slider_count += 1
 	return [command, output_file, cleanup, args]
 	#return [line.strip_edges(), output_file, cleanup]
+
+func remap_y_to_log_scale(y: float, min_y: float, max_y: float, min_val: float, max_val: float) -> float:
+	var t = clamp((y - min_y) / (max_y - min_y), 0.0, 1.0)
+	# Since y goes top-down (0 = top, 255 = bottom), we invert t
+	t = 1.0 - t
+	var log_min = log(min_val) / log(10)
+	var log_max = log(max_val) / log(10)
+	var log_val = lerp(log_min, log_max, t)
+	return pow(10.0, log_val)
+
 
 func sort_points(a, b):
 	return a.x < b.x
