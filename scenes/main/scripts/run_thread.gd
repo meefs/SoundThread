@@ -56,7 +56,7 @@ func run_thread_with_branches():
 	var is_valid = path_exists_through_all_nodes()
 	if is_valid == false:
 		log_console("[color=#9c2828][b]Error: Valid Thread not found[/b][/color]", true)
-		log_console("Threads must contain at least one processing node and a valid path from the Input File to the Output File.", true)
+		log_console("Threads must contain at least one processing node and a valid path from the Input File or Synthesis node to the Output File.", true)
 		await get_tree().process_frame  # Let UI update
 		if progress_window.visible:
 			progress_window.hide()
@@ -807,7 +807,7 @@ func path_exists_through_all_nodes() -> bool:
 
 			var command = child.get_meta("command")
 			var type = command.get_slice("_", 0)
-			if command == "inputfile" or type == "synth":
+			if command == "inputfile" or type == "synth" or type == "synspline":
 				input_node_names.append(name)
 			elif command == "outputfile":
 				output_node_name = name
