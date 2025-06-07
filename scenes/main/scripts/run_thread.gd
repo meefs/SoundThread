@@ -647,8 +647,12 @@ func _get_slider_values_ordered(node: Node) -> Array:
 			var exp = child.exp_edit
 			if child.has_meta("brk_data"):
 				brk_data = child.get_meta("brk_data")
-			results.append([flag, child.value, time, brk_data, min_slider, max_slider, exp])
-		elif child.get_child_count() > 0:
+			results.append(["slider", flag, child.value, time, brk_data, min_slider, max_slider, exp])
+		elif child is CheckButton:
+			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
+			results.append(["checkbutton", flag, child.button_pressed])
+		#call this function recursively to find any nested sliders in scenes
+		if child.get_child_count() > 0:
 			var nested := _get_slider_values_ordered(child)
 			results.append_array(nested)
 	return results
@@ -682,79 +686,86 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 	# Append parameter values from the sliders, include flags if present
 	var slider_count = 0
 	for entry in slider_data:
-		var flag = entry[0]
-		var value = entry[1]
-		#if value == int(value):
-			#value = int(value)
-		var time = entry[2] #checks if slider is a time percentage slider
-		var brk_data = entry[3]
-		var min_slider = entry[4]
-		var max_slider = entry[5]
-		var exp = entry[6]
-		if brk_data.size() > 0: #if breakpoint data is present on slider
-			#Sort all points by time
-			var sorted_brk_data = []
-			sorted_brk_data = brk_data.duplicate()
-			sorted_brk_data.sort_custom(sort_points)
-			
-			var calculated_brk = []
-			
-			#get length of input file in seconds
-			var infile_length = 1 #set infile length to dummy value just incase it does get used where it shouldn't to avoid crashes
-			if current_infile != "none":
-				infile_length = await run_command(control_script.cdpprogs_location + "/sfprops", ["-d", current_infile])
-				infile_length = float(infile_length.strip_edges())
-			
-			#scale values from automation window to the right length for file and correct slider values
-			#if node has an output duration then breakpoint files should be x = outputduration y= slider value else x=input duration, y=value
-			if node.has_meta("outputduration"):
-				for i in range(sorted_brk_data.size()):
-					var point = sorted_brk_data[i]
-					var new_x = float(node.get_meta("outputduration")) * (point.x / 700) #output time
-					if i == sorted_brk_data.size() - 1: #check if this is last automation point
-						new_x = float(node.get_meta("outputduration")) + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
-					var new_y
-					#check if slider is exponential and scale automation
-					if exp:
-						new_y = remap_y_to_log_scale(point.y, 0.0, 255.0, min_slider, max_slider)
-					else:
-						new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
-					if time: #check if this is a time slider and convert to percentage of input file
-						new_y = infile_length * (new_y / 100)
-					calculated_brk.append(Vector2(new_x, new_y))
-			else:
-				for i in range(sorted_brk_data.size()):
-					var point = sorted_brk_data[i]
-					var new_x = infile_length * (point.x / 700) #time
-					if i == sorted_brk_data.size() - 1: #check if this is last automation point
-						new_x = infile_length + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
-					var new_y
-					#check if slider is exponential and scale automation
-					if exp:
-						new_y = remap_y_to_log_scale(point.y, 0.0, 255.0, min_slider, max_slider)
-					else:
-						new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
-					calculated_brk.append(Vector2(new_x, new_y))
+		if entry[0] == "slider":
+			var flag = entry[1]
+			var value = entry[2]
+			#if value == int(value):
+				#value = int(value)
+			var time = entry[3] #checks if slider is a time percentage slider
+			var brk_data = entry[4]
+			var min_slider = entry[5]
+			var max_slider = entry[6]
+			var exp = entry[7]
+			if brk_data.size() > 0: #if breakpoint data is present on slider
+				#Sort all points by time
+				var sorted_brk_data = []
+				sorted_brk_data = brk_data.duplicate()
+				sorted_brk_data.sort_custom(sort_points)
 				
-			#make text file
-			var brk_file_path = output_file.get_basename() + "_" + str(slider_count) + ".txt"
-			write_breakfile(calculated_brk, brk_file_path)
-			
-			#append text file in place of value
-			#line += ("\"%s\" " % brk_file_path)
-			if flag.begins_with("-"):
-				brk_file_path = flag + brk_file_path
-			args.append(brk_file_path)
-			
-			cleanup.append(brk_file_path)
-		else:
-			if time == true:
-				var infile_length = await run_command(control_script.cdpprogs_location + "/sfprops", ["-d", current_infile])
-				infile_length = float(infile_length.strip_edges())
-				value = infile_length * (value / 100) #calculate percentage time of the input file
-			#line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
-			args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else str(value))
-			
+				var calculated_brk = []
+				
+				#get length of input file in seconds
+				var infile_length = 1 #set infile length to dummy value just incase it does get used where it shouldn't to avoid crashes
+				if current_infile != "none":
+					infile_length = await run_command(control_script.cdpprogs_location + "/sfprops", ["-d", current_infile])
+					infile_length = float(infile_length.strip_edges())
+				
+				#scale values from automation window to the right length for file and correct slider values
+				#if node has an output duration then breakpoint files should be x = outputduration y= slider value else x=input duration, y=value
+				if node.has_meta("outputduration"):
+					for i in range(sorted_brk_data.size()):
+						var point = sorted_brk_data[i]
+						var new_x = float(node.get_meta("outputduration")) * (point.x / 700) #output time
+						if i == sorted_brk_data.size() - 1: #check if this is last automation point
+							new_x = float(node.get_meta("outputduration")) + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
+						var new_y
+						#check if slider is exponential and scale automation
+						if exp:
+							new_y = remap_y_to_log_scale(point.y, 0.0, 255.0, min_slider, max_slider)
+						else:
+							new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
+						if time: #check if this is a time slider and convert to percentage of input file
+							new_y = infile_length * (new_y / 100)
+						calculated_brk.append(Vector2(new_x, new_y))
+				else:
+					for i in range(sorted_brk_data.size()):
+						var point = sorted_brk_data[i]
+						var new_x = infile_length * (point.x / 700) #time
+						if i == sorted_brk_data.size() - 1: #check if this is last automation point
+							new_x = infile_length + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
+						var new_y
+						#check if slider is exponential and scale automation
+						if exp:
+							new_y = remap_y_to_log_scale(point.y, 0.0, 255.0, min_slider, max_slider)
+						else:
+							new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
+						calculated_brk.append(Vector2(new_x, new_y))
+					
+				#make text file
+				var brk_file_path = output_file.get_basename() + "_" + str(slider_count) + ".txt"
+				write_breakfile(calculated_brk, brk_file_path)
+				
+				#append text file in place of value
+				#line += ("\"%s\" " % brk_file_path)
+				if flag.begins_with("-"):
+					brk_file_path = flag + brk_file_path
+				args.append(brk_file_path)
+				
+				cleanup.append(brk_file_path)
+			else: #no break file append slider value
+				if time == true:
+					var infile_length = await run_command(control_script.cdpprogs_location + "/sfprops", ["-d", current_infile])
+					infile_length = float(infile_length.strip_edges())
+					value = infile_length * (value / 100) #calculate percentage time of the input file
+				#line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
+				args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else str(value))
+				
+		elif entry[0] == "checkbutton":
+			var flag = entry[1]
+			var value = entry[2]
+			#if button is pressed add the flag to the arguments list
+			if value == true:
+				args.append(flag)
 		slider_count += 1
 	return [command, output_file, cleanup, args]
 	#return [line.strip_edges(), output_file, cleanup]

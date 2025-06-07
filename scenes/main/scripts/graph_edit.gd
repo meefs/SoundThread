@@ -178,6 +178,30 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 							graphnode.set_meta("outputduration", value)
 						
 						graphnode.add_child(slider)
+					
+					elif param_data.get("uitype", "") == "checkbutton":
+						#make a checkbutton
+						var checkbutton = CheckButton.new()
+						
+						#get button text
+						var checkbutton_label = param_data.get("paramname", "")
+						var checkbutton_tooltip  = param_data.get("paramdescription", "")
+						
+						#get checkbutton properties
+						var flag = param_data.get("flag", "")
+						
+						checkbutton.text = checkbutton_label
+						checkbutton.tooltip_text = checkbutton_tooltip
+						
+						var checkbutton_pressed = param_data.get("value", "false")
+						#get button state
+						if str(checkbutton_pressed).to_lower() == "true":
+							checkbutton.button_pressed = true
+							
+						#set checkbutton meta
+						checkbutton.set_meta("flag", flag)
+						
+						graphnode.add_child(checkbutton)
 			
 			
 			graphnode.set_script(node_logic)
