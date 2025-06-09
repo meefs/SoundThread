@@ -53,6 +53,7 @@ func _ready() -> void:
 	check_user_preferences()
 	hidpi_adjustment()
 	new_patch()
+	load_from_filesystem()
 	check_cdp_location_set()
 	
 func load_scripts():
@@ -88,6 +89,7 @@ func hidpi_adjustment():
 			window.size = window.size * uiscale
 			window.content_scale_factor = uiscale
 
+func load_from_filesystem():
 	#checks if user has opened a file from the system file menu and loads it
 	var args = OS.get_cmdline_args()
 	for arg in args:

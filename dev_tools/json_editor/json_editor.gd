@@ -8,8 +8,15 @@ func _ready() -> void:
 	Nodes.hide()
 		
 	load_json()
+	hidpi_adjustment()
 	
-	
+func hidpi_adjustment():
+	#checks if display is hidpi and scales ui accordingly hidpi - 144
+	if DisplayServer.screen_get_dpi(0) >= 144:
+		get_window().content_scale_factor = 2.0
+
+
+
 func load_json():
 	var file = FileAccess.open(json, FileAccess.READ)
 	if file:
@@ -306,6 +313,8 @@ func _on_new_process_button_down() -> void:
 
 
 func _on_sort_json_button_down() -> void:
+	var is_windows = OS.get_name() == "Windows"
+	
 	var json_to_sort = ProjectSettings.globalize_path(json)
 	var python_script = ProjectSettings.globalize_path("res://dev_tools/helpers/sort_json.py")
 	
@@ -314,7 +323,11 @@ func _on_sort_json_button_down() -> void:
 
 	# Run the Python script with the JSON path as an argument
 	var output = []
-	var exit_code = OS.execute("cmd.exe", ["/c", python_script, json_to_sort], output, true)
+	var exit_code
+	if is_windows:
+		exit_code = OS.execute("cmd.exe", ["/c", python_script, json_to_sort], output, true)
+	else:
+		exit_code = OS.execute("python3", [python_script, json_to_sort], output, true)
 
 	# Optionally print the output or check the result
 	print("Exit code: ", exit_code)

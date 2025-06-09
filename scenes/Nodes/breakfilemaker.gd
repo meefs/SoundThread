@@ -12,8 +12,9 @@ func _ready():
 	set_process_unhandled_input(true)
 	# these two are fixed: only Y-movable, not deletable
 	var window = get_window().size
-	points.append(Vector2(0, (window.y / 2) - 22))
-	points.append(Vector2(window.x, (window.y / 2) - 22))
+	var uiscale = get_window().content_scale_factor
+	points.append(Vector2(0, (((window.y / 2) - (22 * uiscale)) / uiscale)))
+	points.append(Vector2(window.x / uiscale, (((window.y / 2) - (22 * uiscale)) / uiscale)))
 	
 
 func _unhandled_input(event):

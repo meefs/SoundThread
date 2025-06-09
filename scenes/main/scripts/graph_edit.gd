@@ -176,6 +176,12 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						#add output duration meta to main if true
 						if outputduration:
 							graphnode.set_meta("outputduration", value)
+							
+						#scale automation window
+						var automationwindow = slider.get_node("BreakFileMaker")
+						if automationwindow.content_scale_factor < control_script.uiscale:
+							automationwindow.size = automationwindow.size * control_script.uiscale
+							automationwindow.content_scale_factor = control_script.uiscale
 						
 						graphnode.add_child(slider)
 					
