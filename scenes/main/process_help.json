@@ -2953,12 +2953,12 @@
 		"min": false,
 		"max": false,
 		"flag": "",
-		"minrange": 48000.0,
-		"maxrange": 96000.0,
-		"step": 48000.0,
-		"value": 48000.0,
+		"minrange": "",
+		"maxrange": "",
+		"step": "[44100, 48000, 88200, 96000]",
+		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "optionbutton"
 	  },
 	  "param10": {
 		"paramname": "Splice Length",
@@ -2997,12 +2997,12 @@
 		"min": false,
 		"max": false,
 		"flag": "",
-		"minrange": 48000.0,
-		"maxrange": 96000.0,
-		"step": 48000.0,
-		"value": 48000.0,
+		"minrange": "",
+		"maxrange": "",
+		"step": "[44100, 48000, 88200, 96000]",
+		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "optionbutton"
 	  },
 	  "param2": {
 		"paramname": "Mono/Stereo",
@@ -3089,12 +3089,12 @@
 		"min": false,
 		"max": false,
 		"flag": "",
-		"minrange": 48000.0,
-		"maxrange": 96000.0,
-		"step": 48000.0,
-		"value": 48000.0,
+		"minrange": "",
+		"maxrange": "",
+		"step": "[44100, 48000, 88200, 96000]",
+		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "optionbutton"
 	  },
 	  "param2": {
 		"paramname": "Output Duration",
@@ -3197,12 +3197,12 @@
 		"min": false,
 		"max": false,
 		"flag": "",
-		"minrange": 48000.0,
-		"maxrange": 96000.0,
-		"step": 48000.0,
-		"value": 48000.0,
+		"minrange": "",
+		"maxrange": "",
+		"step": "[44100, 48000, 88200, 96000]",
+		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "optionbutton"
 	  },
 	  "param2": {
 		"paramname": "Mono/Stereo",
@@ -3289,12 +3289,12 @@
 		"min": false,
 		"max": false,
 		"flag": "",
-		"minrange": 48000.0,
-		"maxrange": 96000.0,
-		"step": 48000.0,
-		"value": 48000.0,
+		"minrange": "",
+		"maxrange": "",
+		"step": "[44100, 48000, 88200, 96000]",
+		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "optionbutton"
 	  },
 	  "param2": {
 		"paramname": "Mono/Stereo",
@@ -3381,12 +3381,12 @@
 		"min": false,
 		"max": false,
 		"flag": "",
-		"minrange": 48000.0,
-		"maxrange": 96000.0,
-		"step": 48000.0,
-		"value": 48000.0,
+		"minrange": "",
+		"maxrange": "",
+		"step": "[44100, 48000, 88200, 96000]",
+		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "optionbutton"
 	  },
 	  "param2": {
 		"paramname": "Mono/Stereo",
@@ -3473,12 +3473,12 @@
 		"min": false,
 		"max": false,
 		"flag": "",
-		"minrange": 48000.0,
-		"maxrange": 96000.0,
-		"step": 48000.0,
-		"value": 48000.0,
+		"minrange": "",
+		"maxrange": "",
+		"step": "[44100, 48000, 88200, 96000]",
+		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "optionbutton"
 	  },
 	  "param2": {
 		"paramname": "Mono/Stereo",

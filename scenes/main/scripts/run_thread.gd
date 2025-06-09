@@ -651,6 +651,10 @@ func _get_slider_values_ordered(node: Node) -> Array:
 		elif child is CheckButton:
 			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
 			results.append(["checkbutton", flag, child.button_pressed])
+		elif child is OptionButton:
+			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
+			var value = child.get_item_text(child.selected)
+			results.append(["optionbutton", flag, value])
 		#call this function recursively to find any nested sliders in scenes
 		if child.get_child_count() > 0:
 			var nested := _get_slider_values_ordered(child)
@@ -745,13 +749,16 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 				var brk_file_path = output_file.get_basename() + "_" + str(slider_count) + ".txt"
 				write_breakfile(calculated_brk, brk_file_path)
 				
+				#add breakfile to cleanup before adding flag
+				cleanup.append(brk_file_path)
+				
 				#append text file in place of value
-				#line += ("\"%s\" " % brk_file_path)
+				#include flag if this param has a flag
 				if flag.begins_with("-"):
 					brk_file_path = flag + brk_file_path
 				args.append(brk_file_path)
 				
-				cleanup.append(brk_file_path)
+				
 			else: #no break file append slider value
 				if time == true:
 					var infile_length = await run_command(control_script.cdpprogs_location + "/sfprops", ["-d", current_infile])
@@ -766,6 +773,12 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 			#if button is pressed add the flag to the arguments list
 			if value == true:
 				args.append(flag)
+				
+		elif entry[0] == "optionbutton":
+			var flag = entry[1]
+			var value = entry[2]
+			args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else str(value))
+			
 		slider_count += 1
 	return [command, output_file, cleanup, args]
 	#return [line.strip_edges(), output_file, cleanup]

@@ -202,6 +202,41 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						checkbutton.set_meta("flag", flag)
 						
 						graphnode.add_child(checkbutton)
+					elif param_data.get("uitype", "") == "optionbutton":
+						#make optionbutton and label
+						var label = Label.new()
+						var optionbutton = OptionButton.new()
+						var margin = MarginContainer.new()
+						
+						#get button text
+						var optionbutton_label = param_data.get("paramname", "")
+						var optionbutton_tooltip  = param_data.get("paramdescription", "")
+						
+						#get optionbutton properties
+						var options = JSON.parse_string(param_data.get("step", ""))
+						var value = param_data.get("value", 1)
+						var flag = param_data.get("flag", "")
+						
+						label.text = optionbutton_label
+						optionbutton.tooltip_text = optionbutton_tooltip
+						
+						#fill option button
+						for option in options:
+							optionbutton.add_item(str(option))
+						
+						
+						#select the given id
+						optionbutton.select(int(value))
+						
+						#set flag meta
+						optionbutton.set_meta("flag", flag)
+						
+						#add margin size for ertical spacing
+						margin.add_theme_constant_override("margin_bottom", 4)
+						
+						graphnode.add_child(label)
+						graphnode.add_child(optionbutton)
+						graphnode.add_child(margin)
 			
 			
 			graphnode.set_script(node_logic)
