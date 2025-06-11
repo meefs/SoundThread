@@ -55,6 +55,8 @@ A number of things are not yet implemented or supported. Not all features of CDP
 
 If you find any bugs or have user interface feature ideas, please raise a ticket in [issues](https://github.com/j-p-higgins/SoundThread/issues). If you would like to request specific CDP processes be added to SoundThread, please comment on [this community discussion](https://github.com/j-p-higgins/SoundThread/discussions/59).
 
+If you would like to test earlier builds and discuss feature ideas you can [join the discord here](https://discord.gg/kWf4v8SCvR).
+
 For a very rough future development timeline check [milestones](https://github.com/j-p-higgins/SoundThread/milestones?sort=due_date&direction=asc).
 
 ## Support SoundThread
