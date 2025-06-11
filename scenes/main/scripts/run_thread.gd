@@ -298,7 +298,7 @@ func run_thread_with_branches():
 				
 						# Process left and right seperately
 						for channel in ["c1", "c2"]:
-							var dual_mono_file = current_infile.get_basename() + "_%s.wav" % channel
+							var dual_mono_file = current_infile.get_basename() + "_%s.%s" % [channel, current_infile.get_extension()]
 							
 							var makeprocess = await make_process(node, process_count, dual_mono_file, slider_data)
 							# run the command
@@ -405,7 +405,7 @@ func run_thread_with_branches():
 							# Process left and right seperately
 							var dual_mono_output = []
 							for channel in ["c1", "c2"]:
-								var dual_mono_file = current_infile.get_basename() + "_%s.wav" % channel
+								var dual_mono_file = current_infile.get_basename() + "_%s.%s" % [channel, current_infile.get_extension()]
 								
 								var makeprocess = await make_process(node, process_count, dual_mono_file, slider_data)
 								# run the command

@@ -205,7 +205,7 @@ theme_override_constants/margin_bottom = 5
 [node name="RunProcess" type="Button" parent="outputfile" groups=["outputnode"]]
 custom_minimum_size = Vector2(0, 43)
 layout_mode = 2
-tooltip_text = "Generates the batch file and runs the CDP commands in the thread."
+tooltip_text = "Runs the CDP commands in the thread."
 text = "Run Thread"
 metadata/outputfunction = "runprocess"
 
