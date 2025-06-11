@@ -817,58 +817,50 @@ func _on_kill_process_button_down() -> void:
 
 	
 func path_exists_through_all_nodes() -> bool:
-	var all_nodes = {}
 	var graph = {}
-
 	var input_node_names = []
 	var output_node_name = ""
 
-	# Gather all relevant nodes
+	# Gather nodes and build empty graph
 	for child in graph_edit.get_children():
 		if child is GraphNode:
 			var name = str(child.name)
-			all_nodes[name] = child
-
 			var command = child.get_meta("command")
 			var input = child.get_meta("input")
+
 			if input:
 				input_node_names.append(name)
 			elif command == "outputfile":
 				output_node_name = name
 
-			# Skip utility nodes, include others
-			if command in ["inputfile", "outputfile"] or not child.has_meta("utility"):
-				graph[name] = []
-	# Add edges to graph from the connection list
-	var connection_list = graph_edit.get_connection_list()
-	for conn in connection_list:
+			graph[name] = []  # Initialize adjacency list
+
+	# Add connections (edges)
+	for conn in graph_edit.get_connection_list():
 		var from = str(conn["from_node"])
 		var to = str(conn["to_node"])
 		if graph.has(from):
 			graph[from].append(to)
 
-	# BFS from each input node
-	for input_node_name in input_node_names:
+	# BFS to check if any input node reaches the output
+	for input_node in input_node_names:
 		var visited = {}
-		var queue = [{ "node": input_node_name, "depth": 0 }]
+		var queue = [input_node]
 
 		while queue.size() > 0:
 			var current = queue.pop_front()
-			var current_node = current["node"]
-			var depth = current["depth"]
 
-			if current_node in visited:
+			if current == output_node_name:
+				return true  # Path found
+
+			if current in visited:
 				continue
-			visited[current_node] = true
+			visited[current] = true
 
-			if current_node == output_node_name and depth >= 2:
-				return true  # Found a valid path from this input node
+			for neighbor in graph.get(current, []):
+				queue.append(neighbor)
 
-			if graph.has(current_node):
-				for neighbor in graph[current_node]:
-					queue.append({ "node": neighbor, "depth": depth + 1 })
-
-	# If no path from any input node to output node was found
+	# No path from any input node to output
 	return false
 	
 func log_console(text: String, update: bool) -> void:

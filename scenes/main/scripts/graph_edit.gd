@@ -267,6 +267,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 
 func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
 	var to_graph_node = get_node(NodePath(to_node))
+	var from_graph_node = get_node(NodePath(from_node))
 
 	# Get the type of the input port using GraphNode's built-in method
 	var port_type = to_graph_node.get_input_port_type(to_port)
@@ -284,6 +285,9 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 					if interface_settings.disable_pvoc_warning == false:
 						multiple_connections.popup_centered()
 					return
+					
+	if from_graph_node.get_meta("command") == "inputfile" and to_graph_node.get_meta("command") == "outputfile":
+		return
 
 	# If no conflict, allow the connection
 	connect_node(from_node, from_port, to_node, to_port)
