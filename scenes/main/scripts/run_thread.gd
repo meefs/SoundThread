@@ -763,7 +763,11 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 				if time == true:
 					var infile_length = await run_command(control_script.cdpprogs_location + "/sfprops", ["-d", current_infile])
 					infile_length = float(infile_length.strip_edges())
-					value = infile_length * (value / 100) #calculate percentage time of the input file
+					if value == 100:
+						#if slider is set to 100% default to a millisecond before the end of the file to stop cdp moaning about rounding errors
+						value = infile_length - 0.01
+					else:
+						value = infile_length * (value / 100) #calculate percentage time of the input file
 				#line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
 				args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else str(value))
 				
