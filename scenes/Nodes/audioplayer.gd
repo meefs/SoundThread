@@ -62,7 +62,9 @@ func _on_load_button_button_down() -> void:
 	file_dialog.popup_centered()
 
 func _on_file_selected(path: String):
-	audio_player.stream = AudioStreamWAV.load_from_file(path)
+	audio_player.stream = AudioStreamWAV.load_from_file(path, {
+		"compress/mode" = 0,
+		"edit/loop_mode" = 1})
 	voice_preview_generator.generate_preview(audio_player.stream)
 	set_meta("inputfile", path)
 	reset_playback()
@@ -78,7 +80,9 @@ func reset_playback():
 	
 func play_outfile(path: String):
 	outfile_path = path
-	audio_player.stream = AudioStreamWAV.load_from_file(path)
+	audio_player.stream = AudioStreamWAV.load_from_file(path, {
+		"compress/mode" = 0,
+		"edit/loop_mode" = 1})
 	print(audio_player.stream)
 	if audio_player.stream == null:
 		voice_preview_generator._reset_to_blank()
