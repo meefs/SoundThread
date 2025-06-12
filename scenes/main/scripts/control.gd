@@ -199,9 +199,39 @@ func _on_ok_button_button_down() -> void:
 	$CdpLocationDialog.show()
 
 func _on_cdp_location_dialog_dir_selected(dir: String) -> void:
-	#saves default location for cdp programs in config file
-	ConfigHandler.save_cdpprogs_settings(dir)
-	cdpprogs_location = dir
+	var is_windows = OS.get_name() == "Windows"
+	var cdprogs_correct
+	
+	#check if the selected folder contains the distort program
+	if is_windows:
+		cdprogs_correct = FileAccess.file_exists(dir + "/distort.exe")
+	else:
+		cdprogs_correct = FileAccess.file_exists(dir + "/distort")
+	
+	
+	if cdprogs_correct:
+		#if this location does seem to contain cdp programs
+		#saves default location for cdp programs in config file
+		ConfigHandler.save_cdpprogs_settings(dir)
+		cdpprogs_location = dir
+		print("cdprogs found at " + cdpprogs_location)
+	else:
+		#if it doesn't seem to contain the programs then try and extrapolate the correct folder from the one selected
+		var selected_folder = dir.get_slice("/", (dir.get_slice_count("/") - 1))
+		print(selected_folder)
+		if selected_folder.to_lower() == "cdpr8":
+			print("cdpr8 selected")
+			dir = dir + "/_cdp/_cdprogs"
+			#run this function recursively to check if the programs do exist
+			_on_cdp_location_dialog_dir_selected(dir)
+		elif selected_folder.to_lower() == "_cdp":
+			print("_cdp selected")
+			dir = dir + "/_cdprogs"
+			#run this function recursively to check if the programs do exist
+			_on_cdp_location_dialog_dir_selected(dir)
+		else:
+			#can't find them
+			print("this doesn't look right")
 
 func _on_cdp_location_dialog_canceled() -> void:
 	#cycles around the set location prompt if user cancels the file dialog
