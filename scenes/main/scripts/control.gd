@@ -17,6 +17,7 @@ var outfilename #links to the user name for outputfile field
 var foldertoggle #links to the reuse folder button
 var lastoutputfolder = "none" #tracks last output folder, this can in future be used to replace global.outfile but i cba right now
 var uiscale = 1.0 #tracks scaling for retina screens
+var use_anyway #used to store the folder selected for cdprogs when it appears the wrong folder is selected but the user wants to use it anyway
 
 
 #scripts
@@ -37,6 +38,7 @@ func _ready() -> void:
 	$SearchMenu.hide()
 	$Settings.hide()
 	$ProgressWindow.hide()
+	$WrongFolderPopup.hide()
 	
 	$SaveDialog.access = FileDialog.ACCESS_FILESYSTEM
 	$SaveDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
@@ -202,7 +204,7 @@ func _on_cdp_location_dialog_dir_selected(dir: String) -> void:
 	var is_windows = OS.get_name() == "Windows"
 	var cdprogs_correct
 	
-	#check if the selected folder contains the distort program
+	#check if the selected folder contains the hilite program as it has a reasonably unique name and will indicate that the CDP processes do exist in that folder
 	if is_windows:
 		cdprogs_correct = FileAccess.file_exists(dir + "/distort.exe")
 	else:
@@ -214,29 +216,35 @@ func _on_cdp_location_dialog_dir_selected(dir: String) -> void:
 		#saves default location for cdp programs in config file
 		ConfigHandler.save_cdpprogs_settings(dir)
 		cdpprogs_location = dir
-		print("cdprogs found at " + cdpprogs_location)
 	else:
 		#if it doesn't seem to contain the programs then try and extrapolate the correct folder from the one selected
 		var selected_folder = dir.get_slice("/", (dir.get_slice_count("/") - 1))
 		print(selected_folder)
 		if selected_folder.to_lower() == "cdpr8":
-			print("cdpr8 selected")
 			dir = dir + "/_cdp/_cdprogs"
 			#run this function recursively to check if the programs do exist
 			_on_cdp_location_dialog_dir_selected(dir)
 		elif selected_folder.to_lower() == "_cdp":
-			print("_cdp selected")
 			dir = dir + "/_cdprogs"
 			#run this function recursively to check if the programs do exist
 			_on_cdp_location_dialog_dir_selected(dir)
 		else:
 			#can't find them
-			print("this doesn't look right")
+			use_anyway = dir
+			$WrongFolderPopup.popup_centered()
 
 func _on_cdp_location_dialog_canceled() -> void:
 	#cycles around the set location prompt if user cancels the file dialog
 	check_cdp_location_set()
 	
+func _on_select_folder_button_button_down() -> void:
+	$WrongFolderPopup.hide()
+	_on_ok_button_button_down()
+
+func _on_use_anyway_button_button_down() -> void:
+	$WrongFolderPopup.hide()
+	ConfigHandler.save_cdpprogs_settings(use_anyway)
+	cdpprogs_location = use_anyway
 
 func _input(event):
 	if event.is_action_pressed("undo"):
