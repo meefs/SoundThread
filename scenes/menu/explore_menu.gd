@@ -120,6 +120,9 @@ func fill_search(filter: String):
 	var container = $"Control/select_effect/Search/Search for a process in SoundThread/MarginContainer/VBoxContainer/ScrollContainer/ItemContainer"
 	for child in container.get_children():
 		child.queue_free()
+		
+	var filters = filter.to_lower().split(" ", false)
+	
 	for key in node_data.keys():
 		var item = node_data[key]
 		var title = item.get("title", "")
@@ -131,11 +134,20 @@ func fill_search(filter: String):
 		var category = item.get("category", "")
 		var subcategory = item.get("subcategory", "")
 		var short_desc = item.get("short_description", "")
+		var command = key.replace("_", " ")
+		
+		# Combine all searchable text into one lowercase string
+		var searchable_text = "%s %s %s %s %s" % [title, short_desc, category, subcategory, key]
+		searchable_text = searchable_text.to_lower()
 		
 		# If filter is not empty, skip non-matches populate all other buttons
 		if filter != "":
-			var filter_lc = filter.to_lower()
-			if not (filter_lc in title.to_lower() or filter_lc in short_desc.to_lower() or filter_lc in category.to_lower() or filter_lc in subcategory.to_lower()):
+			var match_all_words = true
+			for word in filters:
+				if word != "" and not searchable_text.findn(word) != -1:
+					match_all_words = false
+					break
+			if not match_all_words:
 				continue
 		
 		

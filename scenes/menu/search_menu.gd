@@ -47,9 +47,11 @@ func display_items(filter: String):
 		var category = item.get("category", "")
 		var subcategory = item.get("subcategory", "")
 		var short_desc = item.get("short_description", "")
+		var command = key.replace("_", " ")
+		
 		
 		# Combine all searchable text into one lowercase string
-		var searchable_text = "%s %s %s %s" % [title, short_desc, category, subcategory]
+		var searchable_text = "%s %s %s %s %s" % [title, short_desc, category, subcategory, key]
 		searchable_text = searchable_text.to_lower()
 		
 		# If filter is not empty, skip non-matches populate all other buttons
