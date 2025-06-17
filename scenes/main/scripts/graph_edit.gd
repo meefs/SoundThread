@@ -243,6 +243,8 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						graphnode.add_child(label)
 						graphnode.add_child(optionbutton)
 						graphnode.add_child(margin)
+				
+				control_script.changesmade = true
 			
 			
 			graphnode.set_script(node_logic)

@@ -361,7 +361,7 @@ use_native_dialog = true
 auto_translate_mode = 1
 title = "No Input Selected"
 initial_position = 2
-size = Vector2i(350, 100)
+size = Vector2i(351, 100)
 visible = false
 transient = true
 exclusive = true
@@ -380,18 +380,24 @@ vertical_alignment = 1
 autowrap_mode = 2
 
 [node name="SaveChanges" type="Button" parent="SaveChangesPopup"]
-offset_left = -1.0
 offset_top = 70.0
-offset_right = 175.0
-offset_bottom = 101.0
+offset_right = 117.0
+offset_bottom = 100.0
 text = "Save"
 
 [node name="DontSaveChanges" type="Button" parent="SaveChangesPopup"]
-offset_left = 175.0
+offset_left = 117.0
+offset_top = 70.0
+offset_right = 234.0
+offset_bottom = 100.0
+text = "Don't Save"
+
+[node name="CancelChanges" type="Button" parent="SaveChangesPopup"]
+offset_left = 234.0
 offset_top = 70.0
 offset_right = 351.0
-offset_bottom = 101.0
-text = "Don't Save"
+offset_bottom = 100.0
+text = "Cancel"
 
 [node name="AudioSettings" parent="." groups=["popup_windows"] instance=ExtResource("5_dtf4o")]
 visible = false
@@ -528,6 +534,7 @@ text = "Stop Running Thread"
 [connection signal="file_selected" from="LoadDialog" to="." method="_on_load_dialog_file_selected"]
 [connection signal="button_down" from="SaveChangesPopup/SaveChanges" to="." method="_on_save_changes_button_down"]
 [connection signal="button_down" from="SaveChangesPopup/DontSaveChanges" to="." method="_on_dont_save_changes_button_down"]
+[connection signal="button_down" from="SaveChangesPopup/CancelChanges" to="." method="_on_cancel_changes_button_down"]
 [connection signal="close_requested" from="AudioSettings" to="." method="_on_audio_settings_close_requested"]
 [connection signal="about_to_popup" from="SearchMenu" to="SearchMenu" method="_on_about_to_popup"]
 [connection signal="editing_toggled" from="SearchMenu/VBoxContainer/SearchBar" to="SearchMenu" method="_on_search_bar_editing_toggled"]

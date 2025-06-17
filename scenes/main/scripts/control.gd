@@ -39,6 +39,7 @@ func _ready() -> void:
 	$Settings.hide()
 	$ProgressWindow.hide()
 	$WrongFolderPopup.hide()
+	$SaveChangesPopup.hide()
 	
 	$SaveDialog.access = FileDialog.ACCESS_FILESYSTEM
 	$SaveDialog.file_mode = FileDialog.FILE_MODE_SAVE_FILE
@@ -544,6 +545,10 @@ func _on_dont_save_changes_button_down() -> void:
 	elif savestate == "quit":
 		get_tree().quit()
 	
+	savestate = "none"
+	
+func _on_cancel_changes_button_down() -> void:
+	$SaveChangesPopup.hide()
 	savestate = "none"
 	
 func _notification(what):
