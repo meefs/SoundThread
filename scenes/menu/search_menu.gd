@@ -78,7 +78,7 @@ func display_items(filter: String):
 		#apply custom focus theme for keyboard naviagation
 		var theme := Theme.new()
 		var style_focus := StyleBoxFlat.new()
-		style_focus.bg_color = Color.hex(0xffffff6a)
+		style_focus.bg_color = Color.hex(0xffffff4a)
 		theme.set_stylebox("focus", "Button", style_focus)
 		btn.theme = theme
 		
@@ -114,7 +114,7 @@ func _on_search_bar_editing_toggled(toggled_on: bool) -> void:
 		if button and button is Button:
 			var base_stylebox = button.get_theme_stylebox("normal", "Button")
 			var new_stylebox = base_stylebox.duplicate()
-			new_stylebox.bg_color = Color.hex(0xffffff6a)
+			new_stylebox.bg_color = Color.hex(0xffffff4a)
 			button.add_theme_stylebox_override("normal", new_stylebox)
 			#skip this button on tab navigation
 			button.focus_mode = Control.FOCUS_CLICK
