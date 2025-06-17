@@ -313,46 +313,41 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
 	control_script.undo_redo.create_action("Delete Nodes (Undo only)")
-	
-	#get the number of inputs in the patch
-	#var number_of_inputs = 0
-	#for allnodes in get_children():
-		#if allnodes.get_meta("command") == "inputfile":
-			#number_of_inputs += 1
 			
 	for node in selected_nodes.keys():
-		if selected_nodes[node]:
-			#check if node is the output or the last input node and do nothing
-			if node.get_meta("command") == "outputfile":
-				pass
-			else:
-				# Store duplicate and state for undo
-				var node_data = node.duplicate()
-				var position = node.position_offset
+		if is_instance_valid(node) and selected_nodes[node]:
+			if selected_nodes[node]:
+				#check if node is the output or the last input node and do nothing
+				if node.get_meta("command") == "outputfile":
+					pass
+				else:
+					# Store duplicate and state for undo
+					var node_data = node.duplicate()
+					var position = node.position_offset
 
-				# Store all connections for undo
-				var conns = []
-				for con in get_connection_list():
-					if con["to_node"] == node.name or con["from_node"] == node.name:
-						conns.append(con)
+					# Store all connections for undo
+					var conns = []
+					for con in get_connection_list():
+						if con["to_node"] == node.name or con["from_node"] == node.name:
+							conns.append(con)
 
-				# Delete
-				remove_connections_to_node(node)
-				node.queue_free()
-				control_script.changesmade = true
+					# Delete
+					remove_connections_to_node(node)
+					node.queue_free()
+					control_script.changesmade = true
 
-				# Register undo restore
-				control_script.undo_redo.add_undo_method(Callable(self, "add_child").bind(node_data, true))
-				control_script.undo_redo.add_undo_method(Callable(node_data, "set_position_offset").bind(position))
-				for con in conns:
-					control_script.undo_redo.add_undo_method(Callable(self, "connect_node").bind(
-						con["from_node"], con["from_port"],
-						con["to_node"], con["to_port"]
-					))
-				control_script.undo_redo.add_undo_method(Callable(self, "set_node_selected").bind(node_data, true))
-				control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-				control_script.undo_redo.add_undo_method(Callable(self, "_register_inputs_in_node").bind(node_data)) #link sliders for changes tracking
-				control_script.undo_redo.add_undo_method(Callable(self, "_register_node_movement")) # link nodes for changes tracking
+					# Register undo restore
+					control_script.undo_redo.add_undo_method(Callable(self, "add_child").bind(node_data, true))
+					control_script.undo_redo.add_undo_method(Callable(node_data, "set_position_offset").bind(position))
+					for con in conns:
+						control_script.undo_redo.add_undo_method(Callable(self, "connect_node").bind(
+							con["from_node"], con["from_port"],
+							con["to_node"], con["to_port"]
+						))
+					control_script.undo_redo.add_undo_method(Callable(self, "set_node_selected").bind(node_data, true))
+					control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
+					control_script.undo_redo.add_undo_method(Callable(self, "_register_inputs_in_node").bind(node_data)) #link sliders for changes tracking
+					control_script.undo_redo.add_undo_method(Callable(self, "_register_node_movement")) # link nodes for changes tracking
 
 	# Clear selection
 	selected_nodes = {}
