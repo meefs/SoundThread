@@ -530,6 +530,7 @@ text = "Stop Running Thread"
 [connection signal="button_down" from="SaveChangesPopup/DontSaveChanges" to="." method="_on_dont_save_changes_button_down"]
 [connection signal="close_requested" from="AudioSettings" to="." method="_on_audio_settings_close_requested"]
 [connection signal="about_to_popup" from="SearchMenu" to="SearchMenu" method="_on_about_to_popup"]
+[connection signal="editing_toggled" from="SearchMenu/VBoxContainer/SearchBar" to="SearchMenu" method="_on_search_bar_editing_toggled"]
 [connection signal="text_changed" from="SearchMenu/VBoxContainer/SearchBar" to="SearchMenu" method="_on_search_bar_text_changed"]
 [connection signal="text_submitted" from="SearchMenu/VBoxContainer/SearchBar" to="SearchMenu" method="_on_search_bar_text_submitted"]
 [connection signal="close_requested" from="CheckForUpdates/UpdatePopup" to="CheckForUpdates" method="_on_update_popup_close_requested"]

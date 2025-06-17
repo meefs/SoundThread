@@ -182,10 +182,10 @@
 		"max": false,
 		"flag": "",
 		"minrange": 2.0,
-		"maxrange": 20000.0,
+		"maxrange": 64.0,
 		"step": 1.0,
 		"value": 2.0,
-		"exponential": true,
+		"exponential": false,
 		"uitype": "hslider"
 	  },
 	  "param2": {
