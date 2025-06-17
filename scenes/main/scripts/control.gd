@@ -261,6 +261,9 @@ func _input(event):
 			save_load.save_graph_edit(currentfile)
 	elif event.is_action_pressed("open_explore"):
 		open_explore()
+	elif event.is_action_pressed("search"):
+		var pos = graph_edit.get_local_mouse_position()
+		_on_graph_edit_popup_request(pos)
 	
 
 

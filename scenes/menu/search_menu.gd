@@ -33,6 +33,9 @@ func display_items(filter: String):
 	# Remove all existing items from the VBoxContainer
 	for child in item_container.get_children():
 		child.queue_free()
+		
+	var filters = filter.to_lower().split(" ", false)
+	
 	for key in node_data.keys():
 		var item = node_data[key]
 		var title = item.get("title", "")
@@ -45,10 +48,18 @@ func display_items(filter: String):
 		var subcategory = item.get("subcategory", "")
 		var short_desc = item.get("short_description", "")
 		
+		# Combine all searchable text into one lowercase string
+		var searchable_text = "%s %s %s %s" % [title, short_desc, category, subcategory]
+		searchable_text = searchable_text.to_lower()
+		
 		# If filter is not empty, skip non-matches populate all other buttons
 		if filter != "":
-			var filter_lc = filter.to_lower()
-			if not (filter_lc in title.to_lower() or filter_lc in short_desc.to_lower() or filter_lc in category.to_lower() or filter_lc in subcategory.to_lower()):
+			var match_all_words = true
+			for word in filters:
+				if word != "" and not searchable_text.findn(word) != -1:
+					match_all_words = false
+					break
+			if not match_all_words:
 				continue
 		
 		var btn = Button.new()
@@ -63,6 +74,14 @@ func display_items(filter: String):
 		else:
 			btn.text = "%s: %s - %s" % [subcategory.to_pascal_case(), title, short_desc]
 		btn.connect("pressed", Callable(self, "_on_item_selected").bind(key)) #pass key (process name) when button is pressed
+		
+		#apply custom focus theme for keyboard naviagation
+		var theme := Theme.new()
+		var style_focus := StyleBoxFlat.new()
+		style_focus.bg_color = Color.hex(0xffffff6a)
+		theme.set_stylebox("focus", "Button", style_focus)
+		btn.theme = theme
+		
 		item_container.add_child(btn)
 	
 	#resize menu within certain bounds #50
@@ -78,3 +97,8 @@ func _on_search_bar_text_changed(new_text: String) -> void:
 func _on_item_selected(key: String):
 	self.hide()
 	make_node.emit(key) # send out signal to main patch
+
+func _on_search_bar_text_submitted(new_text: String) -> void:
+	var button = item_container.get_child(0)
+	if button and button is Button:
+		button.emit_signal("pressed")
