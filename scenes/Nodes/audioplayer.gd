@@ -4,14 +4,17 @@ extends Control
 @onready var file_dialog = $FileDialog
 @onready var waveform_display = $WaveformPreview
 var outfile_path = "not_loaded"
-#signal recycle_outfile_trigger
+
 var rect_focus = false
 var mouse_pos_x
 
 #Used for waveform preview
 var voice_preview_generator : Node = null
 var stream : AudioStreamWAV = null
+
 var autoplay
+
+signal setnodetitle
 
 func _ready():
 	#Setup file dialogue to access system files and only accept wav files
@@ -66,6 +69,12 @@ func _on_file_selected(path: String):
 		"compress/mode" = 0,
 		"edit/loop_mode" = 1})
 	voice_preview_generator.generate_preview(audio_player.stream)
+	if audio_player.stream != null:
+		var length = convert_length(audio_player.stream.get_length())
+		$EndLabel.text = length
+		setnodetitle.emit(path.get_file())
+	else:
+		$EndLabel.text = "00:00.00"
 	set_meta("inputfile", path)
 	reset_playback()
 	
@@ -89,6 +98,11 @@ func play_outfile(path: String):
 		reset_playback()
 		return
 	await voice_preview_generator.generate_preview(audio_player.stream)
+	if audio_player.stream != null:
+		var length = convert_length(audio_player.stream.get_length())
+		$EndLabel.text = length
+	else:
+		$EndLabel.text = "00:00.00"
 	reset_playback()
 	if autoplay == true:
 		_on_play_button_button_down()
@@ -195,7 +209,32 @@ func _on_button_button_up() -> void:
 			var length = $AudioStreamPlayer.stream.get_length()
 			var pixel_to_time = length / 399
 			var start = pixel_to_time * $LoopRegion.position.x
+			var starttime = convert_length(start)
+			$StartLabel.text = starttime
 			var end = start + (pixel_to_time * $LoopRegion.size.x)
+			var endtime = convert_length(end)
+			$EndLabel.text = endtime
 			set_meta("trimpoints", [start, end])
 		else:
 			set_meta("trimfile", false)
+			$StartLabel.text = "00:00.00"
+			var end = convert_length($AudioStreamPlayer.stream.get_length())
+			$EndLabel.text = end
+			
+
+func convert_length(reportedseconds: float) -> String:
+	var converted_length = reportedseconds
+	var hours
+	var minutes
+	var seconds = int(reportedseconds) % 60
+	seconds = seconds + (reportedseconds - int(reportedseconds))
+	
+	if reportedseconds > 3600:
+		hours = reportedseconds / 3600
+		minutes = (int(reportedseconds) % 3600) / 60
+		converted_length = "%.0f:%02.0f:%05.2f" % [hours, minutes, seconds, 0.01]
+	else:
+		minutes = int((int(reportedseconds) % 3600) / 60)
+		converted_length = "%02.0f:%05.2f" % [minutes, seconds]
+	
+	return converted_length

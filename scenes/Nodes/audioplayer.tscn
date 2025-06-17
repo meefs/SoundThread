@@ -9,7 +9,7 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = -880.0
-offset_bottom = -568.0
+offset_bottom = -544.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_yprak")
@@ -18,7 +18,7 @@ metadata/loadenable = false
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 0
 offset_right = 400.0
-offset_bottom = 96.0
+offset_bottom = 120.0
 
 [node name="Label" type="Label" parent="."]
 visible = false
@@ -35,17 +35,17 @@ use_native_dialog = true
 
 [node name="LoadButton" type="Button" parent="."]
 layout_mode = 0
-offset_top = 104.0
+offset_top = 128.0
 offset_right = 128.0
-offset_bottom = 147.0
+offset_bottom = 171.0
 text = "Load File"
 
 [node name="RecycleButton" type="Button" parent="." groups=["outputnode"]]
 layout_mode = 0
 offset_left = 272.0
-offset_top = 104.0
+offset_top = 128.0
 offset_right = 400.0
-offset_bottom = 147.0
+offset_bottom = 171.0
 tooltip_text = "Copies your output file back to your input for further processing."
 text = "Reuse Output"
 metadata/outputfunction = "recycle"
@@ -53,9 +53,9 @@ metadata/outputfunction = "recycle"
 [node name="PlayButton" type="Button" parent="."]
 layout_mode = 0
 offset_left = 136.0
-offset_top = 104.0
+offset_top = 128.0
 offset_right = 264.0
-offset_bottom = 147.0
+offset_bottom = 171.0
 text = "Play"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
@@ -111,6 +111,23 @@ offset_bottom = 96.0
 flat = true
 
 [node name="Timer" type="Timer" parent="."]
+
+[node name="StartLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 5.0
+offset_top = 97.0
+offset_right = 149.0
+offset_bottom = 116.0
+text = "00:00.00"
+
+[node name="EndLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 250.0
+offset_top = 97.0
+offset_right = 394.0
+offset_bottom = 116.0
+text = "00:00.00"
+horizontal_alignment = 2
 
 [connection signal="button_down" from="LoadButton" to="." method="_on_load_button_button_down"]
 [connection signal="button_down" from="RecycleButton" to="." method="recycle_outfile"]

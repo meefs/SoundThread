@@ -265,6 +265,18 @@ func _input(event):
 	elif event.is_action_pressed("search"):
 		var pos = graph_edit.get_local_mouse_position()
 		_on_graph_edit_popup_request(pos)
+	elif event.is_action_pressed("run_thread"):
+		_run_process()
+	elif event.is_action_pressed("new"):
+		if changesmade == true:
+			savestate = "newfile"
+			$SaveChangesPopup.popup_centered()
+		else:
+			new_patch()
+			currentfile = "none" #reset current file to none for save tracking
+	elif event.is_action_pressed("save_as"):
+		savestate = "saveas"
+		$SaveDialog.popup_centered()
 	
 
 
@@ -377,10 +389,6 @@ func _on_file_button_index_pressed(index: int) -> void:
 				new_patch()
 				currentfile = "none" #reset current file to none for save tracking
 			
-			print("new patch, changes made =")
-			print(changesmade)
-			print("current file =")
-			print(currentfile)
 		1:
 			if currentfile == "none":
 				savestate = "saveas"

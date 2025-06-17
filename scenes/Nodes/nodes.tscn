@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://duy5epq25pj8u"]
+[gd_scene load_steps=7 format=3 uid="uid://duy5epq25pj8u"]
 
+[ext_resource type="Script" uid="uid://bifsyv5gxrddm" path="res://scenes/Nodes/inputfile.gd" id="1_8x08j"]
 [ext_resource type="PackedScene" uid="uid://csapiqka522fh" path="res://scenes/Nodes/audioplayer.tscn" id="2_b6nw4"]
 [ext_resource type="Script" uid="uid://cqwwhjwatkghf" path="res://scenes/Nodes/outputfile.gd" id="3_0jqh0"]
 [ext_resource type="Script" uid="uid://cdbx1dt3ohqte" path="res://scenes/Nodes/node_logic.gd" id="3_uv17x"]
@@ -19,7 +20,7 @@ layout_mode = 0
 offset_left = 21.0
 offset_top = 6.0
 offset_right = 449.0
-offset_bottom = 212.0
+offset_bottom = 236.0
 tooltip_text = "Stores your input file to be processed. Supports mono and stereo .wav files."
 title = "Input File"
 slot/0/left_enabled = false
@@ -40,7 +41,7 @@ slot/1/right_type = 0
 slot/1/right_color = Color(1, 1, 1, 1)
 slot/1/right_icon = null
 slot/1/draw_stylebox = true
-script = ExtResource("3_uv17x")
+script = ExtResource("1_8x08j")
 metadata/command = "inputfile"
 metadata/input = true
 
@@ -57,7 +58,7 @@ layout_mode = 0
 offset_left = 523.0
 offset_top = 6.0
 offset_right = 954.0
-offset_bottom = 495.0
+offset_bottom = 519.0
 tooltip_text = "Handles everything to do with audio output. "
 title = "Output File"
 slot/0/left_enabled = true
