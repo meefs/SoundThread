@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://duy5epq25pj8u"]
+[gd_scene load_steps=8 format=3 uid="uid://duy5epq25pj8u"]
 
 [ext_resource type="Script" uid="uid://bifsyv5gxrddm" path="res://scenes/Nodes/inputfile.gd" id="1_8x08j"]
 [ext_resource type="PackedScene" uid="uid://csapiqka522fh" path="res://scenes/Nodes/audioplayer.tscn" id="2_b6nw4"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" uid="uid://cdbx1dt3ohqte" path="res://scenes/Nodes/node_logic.gd" id="3_uv17x"]
 [ext_resource type="Script" uid="uid://cy8x5wubj2kr6" path="res://scenes/Nodes/notes_to_hz.gd" id="4_0jqh0"]
 [ext_resource type="FontFile" uid="uid://bfnlymfdfb0e7" path="res://theme/BravuraText_SoundThread.otf" id="5_0jqh0"]
+[ext_resource type="Script" uid="uid://cuk68115uw1ge" path="res://scenes/Nodes/convert_time.gd" id="7_w2x51"]
 
 [node name="Control" type="Control"]
 layout_mode = 3
@@ -370,9 +371,196 @@ size_flags_vertical = 3
 editable = false
 wrap_mode = 1
 
+[node name="convert_time" type="GraphNode" parent="."]
+layout_mode = 0
+offset_left = 1982.0
+offset_top = 34.0
+offset_right = 2365.0
+offset_bottom = 293.0
+tooltip_text = "Converts between various units of time"
+title = "Convert Time Units"
+slot/0/left_enabled = false
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+script = ExtResource("7_w2x51")
+metadata/command = "convert_time"
+metadata/utility = true
+metadata/input = false
+
+[node name="VBoxContainer" type="VBoxContainer" parent="convert_time"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="convert_time/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Milliseconds"
+
+[node name="MsEdit" type="LineEdit" parent="convert_time/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The length of time in ms"
+
+[node name="MarginContainer5" type="MarginContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="convert_time/VBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Seconds"
+
+[node name="SEdit" type="LineEdit" parent="convert_time/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The length of time in seconds"
+
+[node name="MarginContainer4" type="MarginContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="convert_time/VBoxContainer/HBoxContainer7"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "1/4 Notes"
+
+[node name="CrotchetEdit" type="LineEdit" parent="convert_time/VBoxContainer/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The length of time as a number of 1/4 notes at the given BPM"
+
+[node name="Label2" type="Label" parent="convert_time/VBoxContainer/HBoxContainer7"]
+layout_mode = 2
+text = "at"
+
+[node name="BPMEdit" type="LineEdit" parent="convert_time/VBoxContainer/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The BPM to calculate 1/4 notes at"
+
+[node name="MarginContainer6" type="MarginContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="convert_time/VBoxContainer/HBoxContainer3"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Hertz"
+
+[node name="HzEdit" type="LineEdit" parent="convert_time/VBoxContainer/HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The length of time in Hz"
+
+[node name="MarginContainer3" type="MarginContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="convert_time/VBoxContainer/HBoxContainer4"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "MIDI Note"
+
+[node name="MIDIEdit" type="LineEdit" parent="convert_time/VBoxContainer/HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The length of time as a MIDI note number"
+
+[node name="MarginContainer2" type="MarginContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="convert_time/VBoxContainer/HBoxContainer5"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "Samples"
+
+[node name="SampleNoEdit" type="LineEdit" parent="convert_time/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The length of time as a number of samples at the given sample rate"
+
+[node name="Label2" type="Label" parent="convert_time/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+text = "at"
+
+[node name="SampleRateEdit" type="LineEdit" parent="convert_time/VBoxContainer/HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The sample rate to calculate samples at"
+
+[node name="MarginContainer" type="MarginContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 2
+
+[node name="HBoxContainer6" type="HBoxContainer" parent="convert_time/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="convert_time/VBoxContainer/HBoxContainer6"]
+custom_minimum_size = Vector2(120, 0)
+layout_mode = 2
+text = "% of Time (s)"
+
+[node name="PercentEdit" type="LineEdit" parent="convert_time/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The length of time as a percentage of the given time in seconds"
+
+[node name="Label3" type="Label" parent="convert_time/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+text = "of"
+
+[node name="LengthEdit" type="LineEdit" parent="convert_time/VBoxContainer/HBoxContainer6"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "The length of time in seconds to a percentage of"
+
 [connection signal="text_submitted" from="outputfile/FileNameField" to="outputfile" method="_on_file_name_field_text_submitted"]
 [connection signal="toggled" from="outputfile/DeleteIntermediateFilesToggle" to="outputfile" method="_on_delete_intermediate_files_toggle_toggled"]
 [connection signal="toggled" from="outputfile/ReuseFolderToggle" to="outputfile" method="_on_reuse_folder_toggle_toggled"]
 [connection signal="toggled" from="outputfile/HBoxContainer/Autoplay" to="outputfile" method="_on_autoplay_toggled"]
 [connection signal="item_selected" from="note_to_hz/Note" to="note_to_hz" method="_on_item_list_item_selected"]
 [connection signal="item_selected" from="note_to_hz/Accidental" to="note_to_hz" method="_on_item_list_2_item_selected"]
+[connection signal="focus_exited" from="convert_time/VBoxContainer/HBoxContainer/MsEdit" to="convert_time" method="_on_ms_edit_focus_exited"]
+[connection signal="text_submitted" from="convert_time/VBoxContainer/HBoxContainer/MsEdit" to="convert_time" method="_on_ms_edit_text_submitted"]
+[connection signal="focus_exited" from="convert_time/VBoxContainer/HBoxContainer2/SEdit" to="convert_time" method="_on_s_edit_focus_exited"]
+[connection signal="text_submitted" from="convert_time/VBoxContainer/HBoxContainer2/SEdit" to="convert_time" method="_on_s_edit_text_submitted"]
+[connection signal="focus_exited" from="convert_time/VBoxContainer/HBoxContainer7/CrotchetEdit" to="convert_time" method="_on_crotchet_edit_focus_exited"]
+[connection signal="text_submitted" from="convert_time/VBoxContainer/HBoxContainer7/CrotchetEdit" to="convert_time" method="_on_crotchet_edit_text_submitted"]
+[connection signal="focus_exited" from="convert_time/VBoxContainer/HBoxContainer7/BPMEdit" to="convert_time" method="_on_bpm_edit_focus_exited"]
+[connection signal="text_submitted" from="convert_time/VBoxContainer/HBoxContainer7/BPMEdit" to="convert_time" method="_on_bpm_edit_text_submitted"]
+[connection signal="focus_exited" from="convert_time/VBoxContainer/HBoxContainer3/HzEdit" to="convert_time" method="_on_hz_edit_focus_exited"]
+[connection signal="text_submitted" from="convert_time/VBoxContainer/HBoxContainer3/HzEdit" to="convert_time" method="_on_hz_edit_text_submitted"]
+[connection signal="focus_exited" from="convert_time/VBoxContainer/HBoxContainer4/MIDIEdit" to="convert_time" method="_on_midi_edit_focus_exited"]
+[connection signal="text_submitted" from="convert_time/VBoxContainer/HBoxContainer4/MIDIEdit" to="convert_time" method="_on_midi_edit_text_submitted"]
+[connection signal="focus_exited" from="convert_time/VBoxContainer/HBoxContainer5/SampleNoEdit" to="convert_time" method="_on_sample_no_edit_focus_exited"]
+[connection signal="text_submitted" from="convert_time/VBoxContainer/HBoxContainer5/SampleNoEdit" to="convert_time" method="_on_sample_no_edit_text_submitted"]
+[connection signal="focus_exited" from="convert_time/VBoxContainer/HBoxContainer5/SampleRateEdit" to="convert_time" method="_on_sample_rate_edit_focus_exited"]
+[connection signal="text_submitted" from="convert_time/VBoxContainer/HBoxContainer5/SampleRateEdit" to="convert_time" method="_on_sample_rate_edit_text_submitted"]
+[connection signal="focus_exited" from="convert_time/VBoxContainer/HBoxContainer6/PercentEdit" to="convert_time" method="_on_percent_edit_focus_exited"]
+[connection signal="text_submitted" from="convert_time/VBoxContainer/HBoxContainer6/PercentEdit" to="convert_time" method="_on_percent_edit_text_submitted"]
+[connection signal="focus_exited" from="convert_time/VBoxContainer/HBoxContainer6/LengthEdit" to="convert_time" method="_on_length_edit_focus_exited"]
+[connection signal="text_submitted" from="convert_time/VBoxContainer/HBoxContainer6/LengthEdit" to="convert_time" method="_on_length_edit_text_submitted"]
