@@ -5205,6 +5205,17 @@
 	"subcategory": "",
 	"title": "Output File"
   },
+  "calculator": {
+	"category": "utility",
+	"description": "This is a basic calculator for quick maths, it can be used in conjunction with other convert nodes to quickly work out parameter values.\n",
+	"inputtype": "",
+	"outputtype": "",
+	"parameters": {},
+	"short_description": "A simple calculator for quick maths",
+	"stereo": false,
+	"subcategory": "utility",
+	"title": "Calculator"
+  },
   "note_to_hz": {
 	"category": "utility",
 	"description": "Utility for quickly getting frequencies, values are truncated to two decimal places so are not entirely accurate. Particularly useful for tuning filters and filterbanks. Note, you can highlight and copy a frequency and then paste that into the value for the slider.\n",
