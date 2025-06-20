@@ -138,6 +138,9 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						var slider_label = param_data.get("paramname", "")
 						var slider_tooltip  = param_data.get("paramdescription", "")
 						
+						#name slider
+						slider.name = slider_label.replace(" ", "")
+						
 						#get slider properties
 						var brk = param_data.get("automatable", false)
 						var time = param_data.get("time", false)
@@ -193,6 +196,9 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						var checkbutton_label = param_data.get("paramname", "")
 						var checkbutton_tooltip  = param_data.get("paramdescription", "")
 						
+						#name checkbutton
+						checkbutton.name = checkbutton_label.replace(" ", "")
+						
 						#get checkbutton properties
 						var flag = param_data.get("flag", "")
 						
@@ -217,6 +223,9 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						#get button text
 						var optionbutton_label = param_data.get("paramname", "")
 						var optionbutton_tooltip  = param_data.get("paramdescription", "")
+						
+						#name optionbutton
+						optionbutton.name = optionbutton_label.replace(" ", "")
 						
 						#get optionbutton properties
 						var options = JSON.parse_string(param_data.get("step", ""))

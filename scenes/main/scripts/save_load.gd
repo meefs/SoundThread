@@ -44,7 +44,9 @@ func save_graph_edit(path: String):
 				"command": node.get_meta("command"),
 				"offset": { "x": offset.x, "y": offset.y },
 				"slider_values": {},
-				"notes": {}
+				"notes": {},
+				"checkbutton_states": {},
+				"optionbutton_values": {}
 			}
 
 			# Save slider values and metadata
@@ -63,7 +65,15 @@ func save_graph_edit(path: String):
 			# Save notes from CodeEdit children
 			for child in node.find_children("*", "CodeEdit", true, false):
 				node_data["notes"][child.name] = child.text
-
+			
+			#save checkbutton states
+			for child in node.find_children("*", "CheckButton", true, false):
+				node_data["checkbutton_states"][child.name] = child.button_pressed
+			
+			#save optionbutton states
+			for child in node.find_children("*", "OptionButton", true, false):
+				node_data["optionbutton_values"][child.name] = child.selected
+				
 			node_data_list.append(node_data)
 			node_id += 1
 
@@ -168,6 +178,18 @@ func load_graph_edit(path: String):
 			var codeedit = new_node.find_child(codeedit_name, true, false)
 			if codeedit and (codeedit is CodeEdit):
 				codeedit.text = node_data["notes"][codeedit_name]
+				
+		# Restore check buttons
+		for checkbutton_name in node_data["checkbutton_states"]:
+			var checkbutton = new_node.find_child(checkbutton_name, true, false)
+			if checkbutton and (checkbutton is CheckButton):
+				checkbutton.button_pressed = node_data["checkbutton_states"][checkbutton_name]
+					
+		# Restore option buttons
+		for optionbutton_name in node_data["optionbutton_values"]:
+			var optionbutton = new_node.find_child(optionbutton_name, true, false)
+			if optionbutton and (optionbutton is OptionButton):
+				optionbutton.selected = node_data["optionbutton_values"][optionbutton_name]
 
 		register_input.call(new_node)
 
