@@ -88,8 +88,8 @@ func display_items(filter: String):
 	
 	#resize menu within certain bounds #50
 	await get_tree().process_frame
-	if DisplayServer.screen_get_scale() > 1:
-		self.size.y = min((item_container.size.y * DisplayServer.screen_get_scale()) + search_bar.size.y + 50, 410 * DisplayServer.screen_get_scale()) #i think this will scale for retina screens but might be wrong
+	if DisplayServer.screen_get_dpi(0) >= 144:
+		self.size.y = min((item_container.size.y + search_bar.size.y + 12) * 2, 820) #i think this will scale for retina screens but might be wrong
 	else:
 		self.size.y = min(item_container.size.y + search_bar.size.y + 12, 410)
 	
