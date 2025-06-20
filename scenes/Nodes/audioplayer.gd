@@ -78,6 +78,10 @@ func _on_file_selected(path: String):
 	set_meta("inputfile", path)
 	reset_playback()
 	
+	#output signal that the input has loaded and it is safe to continue with running thread
+	#Used for preview nodes in run_thread to avoid deleting the input file before it is done loading
+	
+	
 func reset_playback():
 	$LoopRegion.size.x = 0
 	$Playhead.position.x = 0

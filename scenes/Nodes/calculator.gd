@@ -1,7 +1,8 @@
 extends GraphNode
 
-var calulated = false
+var calculated = false
 var expression = ""
+var lastresult = 0.0
 signal open_help
 
 func _ready() -> void:
@@ -39,17 +40,28 @@ func _open_help():
 	open_help.emit(self.get_meta("command"), self.title)
 	
 func calculate(button: Button):
-	print("button pressed")
 	var label = button.text
 	var value = button.get_meta("calc")
-	print(label)
-	print(value)
+	
+	if calculated == true:
+		$Screen.text = ""
+		expression = ""
+		calculated = false
+		if value in ["+", "-", "*", "/"]:
+			$Screen.text += str(lastresult)
+			expression += str(lastresult)
+			
 	
 	if value == "clear":
 		$Screen.text = ""
 	elif value == "del":
 		$Screen.text = $Screen.text.substr(0, $Screen.text.length() - 1)
 	elif value == "=":
-		pass
+		var expr = Expression.new()
+		expr.parse(expression)
+		lastresult = expr.execute()
+		$Screen.text += "\n= " + str(lastresult)
+		calculated = true
 	else:
 		$Screen.text += label
+		expression += value

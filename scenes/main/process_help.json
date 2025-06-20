@@ -5394,5 +5394,16 @@
 	"stereo": false,
 	"subcategory": "utility",
 	"title": "Notes"
+  },
+  "preview": {
+	"category": "utility",
+	"description": "Connect this node to a point in your thread to preview the output file at that point. Note many of these in a thread may cause lag with long input files.\n",
+	"inputtype": "",
+	"outputtype": "",
+	"parameters": {},
+	"short_description": "Connect inside thread to preview output at that point",
+	"stereo": false,
+	"subcategory": "utility",
+	"title": "Preview"
   }
 }

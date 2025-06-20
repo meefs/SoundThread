@@ -377,7 +377,11 @@ func run_thread_with_branches():
 					# Mark file for cleanup if needed
 					if control_script.delete_intermediate_outputs:
 						intermediate_files.append(output_file)
-
+				elif node.get_meta("command") == "preview":
+					var preview_audioplayer = node.get_child(1)
+					preview_audioplayer._on_file_selected(current_infile)
+					if current_infile in intermediate_files:
+						intermediate_files.erase(current_infile)
 				else:
 					#Detect if input file is mono or stereo
 					var input_stereo = await is_stereo(current_infile)
