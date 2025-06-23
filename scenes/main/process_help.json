@@ -4476,6 +4476,34 @@
     "subcategory": "pitch",
     "title": "Randomise Partials"
   },
+  "pitch_tune_1": {
+    "category": "pvoc",
+    "description": "This process takes a set frequency and tunes all partials in the input sound to that frequency or harmonics of that frequency. The final sound is a very natural sounding resonance based on the specified frequency. carrying the spectral articulation of the original sound. The process works best on unpitched, pitch-unspecific, or noisy materials, but can be applied to any sound. ",
+    "inputtype": "[1]",
+    "outputtype": "[1]",
+    "parameters": {
+      "param1": {
+        "paramname": "Frequency",
+        "paramdescription": "The frequency in Hz to tune all partials to",
+        "automatable": false,
+        "outputduration": false,
+        "time": false,
+        "min": false,
+        "max": false,
+        "flag": "",
+        "minrange": 20.0,
+        "maxrange": 20000.0,
+        "step": 0.01,
+        "value": 440.0,
+        "exponential": true,
+        "uitype": "hslider"
+      }
+    },
+    "short_description": "Tunes the spectrum to a specified frequency",
+    "stereo": false,
+    "subcategory": "pitch",
+    "title": "Tune"
+  },
   "strange_waver_1": {
     "category": "pvoc",
     "description": "Introduces an oscillation towards and away from inharmonicness in the spectrum of a sound. The program moves towards inharmonicness by means of the stretch factor. \n",
@@ -4535,6 +4563,34 @@
     "stereo": false,
     "subcategory": "pitch",
     "title": "Waver"
+  },
+  "blur_avrg": {
+    "category": "pvoc",
+    "description": "This function take the energy (loudness) information of a frequency channel and averages it between adjacent frequency channels. This resuls in high energy points being spread vertically across the frequency spectrum introducing noise and roughening the sound.",
+    "inputtype": "[1]",
+    "outputtype": "[1]",
+    "parameters": {
+      "param1": {
+        "paramname": "Channels",
+        "paramdescription": "Number of adjacent channels to average together",
+        "automatable": true,
+        "outputduration": false,
+        "time": false,
+        "min": false,
+        "max": false,
+        "flag": "",
+        "minrange": 1.0,
+        "maxrange": 200.0,
+        "step": 1.0,
+        "value": 6.0,
+        "exponential": true,
+        "uitype": "hslider"
+      }
+    },
+    "short_description": "Average spectral energy across adjacent channels",
+    "stereo": false,
+    "subcategory": "spectrum",
+    "title": "Average"
   },
   "blur_spread": {
     "category": "pvoc",
@@ -4678,6 +4734,94 @@
     "stereo": false,
     "subcategory": "spectrum",
     "title": "Invert"
+  },
+  "blur_noise": {
+    "category": "pvoc",
+    "description": "This process enables one to move a sound source towards pure noise, by making the data in every channel – most of which is actually low level noise – equally loud. Setting noise amount to 1 will reduce all sounds to a very similar noise signal that follows the dynamic envelope of the original sound.",
+    "inputtype": "[1]",
+    "outputtype": "[1]",
+    "parameters": {
+      "param1": {
+        "paramname": "Noise Amount",
+        "paramdescription": "The amount of noise to add into the spectrum",
+        "automatable": true,
+        "outputduration": false,
+        "time": false,
+        "min": false,
+        "max": false,
+        "flag": "",
+        "minrange": 0.0,
+        "maxrange": 1.0,
+        "step": 0.01,
+        "value": 0.5,
+        "exponential": false,
+        "uitype": "hslider"
+      }
+    },
+    "short_description": "Make all frequency channels equally loud increasing noise",
+    "stereo": false,
+    "subcategory": "spectrum",
+    "title": "Noise"
+  },
+  "specfold_specfold_3": {
+    "category": "pvoc",
+    "description": "This process randomises the spectrum of a sound within a set range. This will result in the harmonic relationship between partials being removed and in pitched material this will move it towards a bell like tone. With the lowest channel set higher than 0 some of the original sounds fundamental frequencies will remain allowing you to only randomise the overtones in the sound.\n",
+    "inputtype": "[1]",
+    "outputtype": "[1]",
+    "parameters": {
+      "param1": {
+        "paramname": "Lowest Frequency Channel",
+        "paramdescription": "The lowest frequency channel to process",
+        "automatable": false,
+        "outputduration": false,
+        "time": false,
+        "min": false,
+        "max": false,
+        "flag": "",
+        "minrange": 1.0,
+        "maxrange": 256.0,
+        "step": 1.0,
+        "value": 20.0,
+        "exponential": false,
+        "uitype": "hslider"
+      },
+      "param2": {
+        "paramname": "Channels to process",
+        "paramdescription": "The number of channels above the lowest to randomise",
+        "automatable": false,
+        "outputduration": false,
+        "time": false,
+        "min": false,
+        "max": false,
+        "flag": "",
+        "minrange": 4.0,
+        "maxrange": 256.0,
+        "step": 1.0,
+        "value": 256.0,
+        "exponential": false,
+        "uitype": "hslider"
+      },
+      "param3": {
+        "paramname": "Seed",
+        "paramdescription": "Sets a specific randomisation of channels, the same seed with the same settings will produce the same randomisation",
+        "automatable": false,
+        "outputduration": false,
+        "time": false,
+        "min": false,
+        "max": false,
+        "flag": "",
+        "minrange": 1.0,
+        "maxrange": 64.0,
+        "step": 1.0,
+        "value": 1.0,
+        "exponential": false,
+        "uitype": "hslider"
+      }
+    },
+    "short_description": "Randomise the spectrum",
+    "stereo": false,
+    "subcategory": "spectrum",
+    "title": "Randomise"
   },
   "stretch_spectrum_1": {
     "category": "pvoc",
@@ -4986,6 +5130,66 @@
     "stereo": false,
     "subcategory": "time",
     "title": "Blur"
+  },
+  "blur_drunk": {
+    "category": "pvoc",
+    "description": "This process is similar to the Extend: Drunk functions however, unlike the extend processes this process moves through analysis windows. This can result in a much smoother extension of the sound as windows are overlapped. The process moves from the start point jumping forwards and backwards randomly between windows. The amount it can move by is limited by the range setting. If range is small, the output will tend to linger around the start-point in the file, progressing very slowly away from it in an arbitrary direction. This results in a mix of time-stretching and slow wandering through the source. If range is large, the drunken walk tends to leap about wildly in the file, scrambling the source sound. ",
+    "inputtype": "[1]",
+    "outputtype": "[1]",
+    "parameters": {
+      "param1": {
+        "paramname": "Range",
+        "paramdescription": "The maximum number of windows to move on each step",
+        "automatable": false,
+        "outputduration": false,
+        "time": false,
+        "min": false,
+        "max": false,
+        "flag": "",
+        "minrange": 1.0,
+        "maxrange": 64.0,
+        "step": 1.0,
+        "value": 10.0,
+        "exponential": false,
+        "uitype": "hslider"
+      },
+      "param2": {
+        "paramname": "Start",
+        "paramdescription": "The point in the file to begin the drunk walk in percent",
+        "automatable": false,
+        "outputduration": false,
+        "time": true,
+        "min": false,
+        "max": false,
+        "flag": "",
+        "minrange": 0.0,
+        "maxrange": 100.0,
+        "step": 0.01,
+        "value": 0.0,
+        "exponential": false,
+        "uitype": "hslider"
+      },
+      "param3": {
+        "paramname": "Output Duration",
+        "paramdescription": "The length of the ouput file in seconds",
+        "automatable": false,
+        "outputduration": false,
+        "time": false,
+        "min": false,
+        "max": false,
+        "flag": "",
+        "minrange": 1.0,
+        "maxrange": 600.0,
+        "step": 0.01,
+        "value": 60.0,
+        "exponential": false,
+        "uitype": "hslider"
+      }
+    },
+    "short_description": "Extend by drunken walk through analysis windows",
+    "stereo": false,
+    "subcategory": "time",
+    "title": "Drunk"
   },
   "spec_magnify": {
     "category": "pvoc",
