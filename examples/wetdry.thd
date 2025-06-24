@@ -33,6 +33,9 @@
 	],
 	"nodes": [
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "inputfile",
 			"id": 1,
 			"name": "inputfile",
@@ -43,8 +46,12 @@
 				"x": 20.0,
 				"y": 80.0
 			},
+			"optionbutton_values": {
+				"@OptionButton@5996": 1,
+				"@OptionButton@6037": 0
+			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@2389/@MarginContainer@2429/Tree/@Popup@2415/@VBoxContainer@2416/@HSlider@2424": {
+				"AudioPlayer/FileDialog/@VBoxContainer@5984/@MarginContainer@6024/Tree/@Popup@6010/@VBoxContainer@6011/@HSlider@6019": {
 					"editable": true,
 					"meta": {
 
@@ -54,6 +61,11 @@
 			}
 		},
 		{
+			"checkbutton_states": {
+				"Autoplay": true,
+				"DeleteIntermediateFilesToggle": true,
+				"ReuseFolderToggle": true
+			},
 			"command": "outputfile",
 			"id": 2,
 			"name": "outputfile",
@@ -64,8 +76,12 @@
 				"x": 1440.0,
 				"y": 80.0
 			},
+			"optionbutton_values": {
+				"@OptionButton@6105": 1,
+				"@OptionButton@6146": 0
+			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@2498/@MarginContainer@2538/Tree/@Popup@2524/@VBoxContainer@2525/@HSlider@2533": {
+				"AudioPlayer/FileDialog/@VBoxContainer@6093/@MarginContainer@6133/Tree/@Popup@6119/@VBoxContainer@6120/@HSlider@6128": {
 					"editable": true,
 					"meta": {
 
@@ -75,6 +91,9 @@
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "modify_brassage_1",
 			"id": 3,
 			"name": "modify_brassage_1",
@@ -85,17 +104,27 @@
 				"x": 608.888916015625,
 				"y": 83.3333358764648
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": {
+				"PitchShift/HSplitContainer/HSlider": {
 					"editable": true,
 					"meta": {
-						"brk": true
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
 					},
-					"value": 12.0
+					"value": -12.0
 				}
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "modify_loudness_1",
 			"id": 4,
 			"name": "modify_loudness_1",
@@ -106,17 +135,27 @@
 				"x": 973.333374023438,
 				"y": 83.3333358764648
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": {
+				"Gain/HSplitContainer/HSlider": {
 					"editable": true,
 					"meta": {
-						"brk": true
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
 					},
-					"value": 0.5
+					"value": 1.0
 				}
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "modify_loudness_1",
 			"id": 5,
 			"name": "modify_loudness_2",
@@ -124,17 +163,45 @@
 
 			},
 			"offset": {
-				"x": 965.555603027344,
-				"y": 286.666687011719
+				"x": 971.111145019531,
+				"y": 260.0
+			},
+			"optionbutton_values": {
+
 			},
 			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": {
+				"Gain/HSplitContainer/HSlider": {
 					"editable": true,
 					"meta": {
-						"brk": true
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
 					},
-					"value": 1.0
+					"value": 0.5
 				}
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "notes",
+			"id": 6,
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "Many processes in CDP do not have a way to mix between the original dry signal and the wet processed signal.\n\nHowever, by using Gain nodes it is possible to mix between these as well as mix other aspects of your thread."
+			},
+			"offset": {
+				"x": 952.222229003906,
+				"y": 481.111114501953
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+
 			}
 		}
 	]

@@ -179,17 +179,19 @@ func load_graph_edit(path: String):
 			if codeedit and (codeedit is CodeEdit):
 				codeedit.text = node_data["notes"][codeedit_name]
 				
-		# Restore check buttons
-		for checkbutton_name in node_data["checkbutton_states"]:
-			var checkbutton = new_node.find_child(checkbutton_name, true, false)
-			if checkbutton and (checkbutton is CheckButton):
-				checkbutton.button_pressed = node_data["checkbutton_states"][checkbutton_name]
+		# Restore check buttons if this exists in the file (if statement is to stop crashes when opening old save files)
+		if node_data.has("checkbutton_states"):
+			for checkbutton_name in node_data["checkbutton_states"]:
+				var checkbutton = new_node.find_child(checkbutton_name, true, false)
+				if checkbutton and (checkbutton is CheckButton):
+					checkbutton.button_pressed = node_data["checkbutton_states"][checkbutton_name]
 					
-		# Restore option buttons
-		for optionbutton_name in node_data["optionbutton_values"]:
-			var optionbutton = new_node.find_child(optionbutton_name, true, false)
-			if optionbutton and (optionbutton is OptionButton):
-				optionbutton.selected = node_data["optionbutton_values"][optionbutton_name]
+		# Restore option buttons if this exists in the file (if statement is to stop crashes when opening old save files)
+		if node_data.has("optionbutton_values"):
+			for optionbutton_name in node_data["optionbutton_values"]:
+				var optionbutton = new_node.find_child(optionbutton_name, true, false)
+				if optionbutton and (optionbutton is OptionButton):
+					optionbutton.selected = node_data["optionbutton_values"][optionbutton_name]
 
 		register_input.call(new_node)
 

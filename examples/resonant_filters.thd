@@ -27,6 +27,9 @@
 	],
 	"nodes": [
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "inputfile",
 			"id": 1,
 			"name": "inputfile",
@@ -37,8 +40,12 @@
 				"x": 20.0,
 				"y": 80.0
 			},
+			"optionbutton_values": {
+				"@OptionButton@7122": 1,
+				"@OptionButton@7163": 0
+			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1675/@MarginContainer@1715/Tree/@Popup@1701/@VBoxContainer@1702/@HSlider@1710": {
+				"AudioPlayer/FileDialog/@VBoxContainer@7110/@MarginContainer@7150/Tree/@Popup@7136/@VBoxContainer@7137/@HSlider@7145": {
 					"editable": true,
 					"meta": {
 
@@ -48,6 +55,9 @@
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "modify_brassage_5",
 			"id": 2,
 			"name": "modify_brassage_5",
@@ -58,17 +68,27 @@
 				"x": 519.111083984375,
 				"y": 80.0
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": {
+				"Density/HSplitContainer/HSlider": {
 					"editable": true,
 					"meta": {
-						"brk": true
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
 					},
-					"value": 0.23
+					"value": 0.6
 				}
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "silend_silend_1",
 			"id": 3,
 			"name": "silend_silend_1",
@@ -79,17 +99,27 @@
 				"x": 890.666687011719,
 				"y": 80.0
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": {
+				"LengthofSilence/HSplitContainer/HSlider": {
 					"editable": true,
 					"meta": {
-
+						"brk": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
 					},
-					"value": 30.28
+					"value": 15.0
 				}
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "filter_bank_6",
 			"id": 4,
 			"name": "filter_bank_6",
@@ -100,52 +130,84 @@
 				"x": 1256.66674804688,
 				"y": 80.0
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": {
+				"HighestBand/HSplitContainer/HSlider": {
 					"editable": true,
 					"meta": {
-						"brk": true
-					},
-					"value": 5353.44
-				},
-				"VBoxContainer2/HSplitContainer/HSlider": {
-					"editable": true,
-					"meta": {
-
-					},
-					"value": 1.5
-				},
-				"VBoxContainer3/HSplitContainer/HSlider": {
-					"editable": true,
-					"meta": {
-
-					},
-					"value": 110.0
-				},
-				"VBoxContainer4/HSplitContainer/HSlider": {
-					"editable": true,
-					"meta": {
-
+						"brk": false,
+						"flag": "",
+						"max": true,
+						"min": false,
+						"time": false
 					},
 					"value": 12000.0
 				},
-				"VBoxContainer5/HSplitContainer/HSlider": {
+				"LowestBand/HSplitContainer/HSlider": {
 					"editable": true,
 					"meta": {
-
+						"brk": false,
+						"flag": "",
+						"max": false,
+						"min": true,
+						"time": false
 					},
-					"value": 7.0
+					"value": 110.0
 				},
-				"VBoxContainer6/HSplitContainer/HSlider": {
+				"MakeupGain/HSplitContainer/HSlider": {
 					"editable": true,
 					"meta": {
-						"flag": "-s"
+						"brk": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 1.5
+				},
+				"Q/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 400.0
+				},
+				"Scatter/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": false,
+						"flag": "-s",
+						"max": false,
+						"min": false,
+						"time": false
 					},
 					"value": 0.0
+				},
+				"Semitones/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 7.0
 				}
 			}
 		},
 		{
+			"checkbutton_states": {
+				"Autoplay": true,
+				"DeleteIntermediateFilesToggle": true,
+				"ReuseFolderToggle": true
+			},
 			"command": "outputfile",
 			"id": 5,
 			"name": "outputfile",
@@ -156,8 +218,12 @@
 				"x": 1624.88879394531,
 				"y": 80.0
 			},
+			"optionbutton_values": {
+				"@OptionButton@7291": 1,
+				"@OptionButton@7332": 0
+			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1784/@MarginContainer@1824/Tree/@Popup@1810/@VBoxContainer@1811/@HSlider@1819": {
+				"AudioPlayer/FileDialog/@VBoxContainer@7279/@MarginContainer@7319/Tree/@Popup@7305/@VBoxContainer@7306/@HSlider@7314": {
 					"editable": true,
 					"meta": {
 
@@ -167,23 +233,11 @@
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "notes",
 			"id": 6,
-			"name": "notes2",
-			"notes": {
-				"CodeEdit": "Resonant filters and other processes that add durational elements onto a sound (such as PVOC: Blur) can often get their tails cut off during the process. Using Append Silence we can add some silence onto our sound before processing by the filter to allow some room for the tail to decay. "
-			},
-			"offset": {
-				"x": 994.444458007813,
-				"y": 534.444458007813
-			},
-			"slider_values": {
-
-			}
-		},
-		{
-			"command": "notes",
-			"id": 7,
 			"name": "notes",
 			"notes": {
 				"CodeEdit": "Applying a low density granular process before a resonant filter can help the sound ping and activate the filter making it rhythmic and percussive rather than a constant drone."
@@ -191,6 +245,30 @@
 			"offset": {
 				"x": 494.444458007813,
 				"y": 524.444458007813
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "notes",
+			"id": 7,
+			"name": "notes2",
+			"notes": {
+				"CodeEdit": "Resonant filters and other processes that add durational elements onto a sound (such as PVOC: Blur) can often get their tails cut off during the process. Using Append Silence we can add some silence onto our sound before processing by the filter to allow some room for the tail to decay. "
+			},
+			"offset": {
+				"x": 992.222229003906,
+				"y": 525.555541992188
+			},
+			"optionbutton_values": {
+
 			},
 			"slider_values": {
 

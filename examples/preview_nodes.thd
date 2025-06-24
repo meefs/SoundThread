@@ -1,0 +1,236 @@
+{
+	"connections": [
+		{
+			"from_node_id": 1,
+			"from_port": 0,
+			"to_node_id": 2,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 4,
+			"from_port": 0,
+			"to_node_id": 5,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 2,
+			"from_port": 0,
+			"to_node_id": 6,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 2,
+			"from_port": 0,
+			"to_node_id": 3,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 3,
+			"from_port": 0,
+			"to_node_id": 4,
+			"to_port": 0
+		}
+	],
+	"nodes": [
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "inputfile",
+			"id": 1,
+			"name": "inputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 20.0,
+				"y": 80.0
+			},
+			"optionbutton_values": {
+				"@OptionButton@11575": 1,
+				"@OptionButton@11616": 0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@11563/@MarginContainer@11603/Tree/@Popup@11589/@VBoxContainer@11590/@HSlider@11598": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "modify_brassage_2",
+			"id": 2,
+			"name": "modify_brassage_2",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 507.222259521484,
+				"y": 79.444450378418
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+				"Speed/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 0.5
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "modify_brassage_1",
+			"id": 3,
+			"name": "modify_brassage_1",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 877.555541992188,
+				"y": 78.2222366333008
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+				"PitchShift/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 12.0
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "distort_delete_2",
+			"id": 4,
+			"name": "distort_delete_2",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1245.44458007813,
+				"y": 78.2222290039063
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+				"CycleCount/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 4.0
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+				"Autoplay": true,
+				"DeleteIntermediateFilesToggle": true,
+				"ReuseFolderToggle": true
+			},
+			"command": "outputfile",
+			"id": 5,
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1612.33337402344,
+				"y": 77.5555572509766
+			},
+			"optionbutton_values": {
+				"@OptionButton@11684": 1,
+				"@OptionButton@11725": 0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@11672/@MarginContainer@11712/Tree/@Popup@11698/@VBoxContainer@11699/@HSlider@11707": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "preview",
+			"id": 6,
+			"name": "preview",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1002.22229003906,
+				"y": 347.111145019531
+			},
+			"optionbutton_values": {
+				"@OptionButton@12106": 1,
+				"@OptionButton@12147": 0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@12094/@MarginContainer@12134/Tree/@Popup@12120/@VBoxContainer@12121/@HSlider@12129": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "notes",
+			"id": 7,
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "Preview nodes can be connected anywhere in a thread. When the thread is run it will allow you to hear the audio at that point in the thread.\n\nFiles loaded into a Preview node will be excluded from \"Delete Intermediate Files\".\n\nNote: including many of these in a thread may introduce some lag."
+			},
+			"offset": {
+				"x": 488.888885498047,
+				"y": 347.111145019531
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+
+			}
+		}
+	]
+}

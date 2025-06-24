@@ -1,0 +1,267 @@
+{
+	"connections": [
+		{
+			"from_node_id": 5,
+			"from_port": 0,
+			"to_node_id": 3,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 3,
+			"from_port": 0,
+			"to_node_id": 1,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 2,
+			"from_port": 0,
+			"to_node_id": 4,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 4,
+			"from_port": 0,
+			"to_node_id": 1,
+			"to_port": 0
+		}
+	],
+	"nodes": [
+		{
+			"checkbutton_states": {
+				"Autoplay": true,
+				"DeleteIntermediateFilesToggle": true,
+				"ReuseFolderToggle": true
+			},
+			"command": "outputfile",
+			"id": 1,
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1608.88891601563,
+				"y": 114.444450378418
+			},
+			"optionbutton_values": {
+				"@OptionButton@7546": 1,
+				"@OptionButton@7587": 0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@7534/@MarginContainer@7574/Tree/@Popup@7560/@VBoxContainer@7561/@HSlider@7569": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "inputfile",
+			"id": 2,
+			"name": "inputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 506.666687011719,
+				"y": 575.555541992188
+			},
+			"optionbutton_values": {
+				"@OptionButton@9155": 1,
+				"@OptionButton@9196": 0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@9143/@MarginContainer@9183/Tree/@Popup@9169/@VBoxContainer@9170/@HSlider@9178": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "modify_loudness_1",
+			"id": 3,
+			"name": "modify_loudness_1",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1017.77783203125,
+				"y": 116.66667175293
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+				"Gain/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 0.12
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "modify_brassage_5",
+			"id": 4,
+			"name": "modify_brassage_5",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1016.66668701172,
+				"y": 575.555541992188
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+				"Density/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 0.6
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "synspline_synspline",
+			"id": 5,
+			"name": "synspline_synspline",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 503.333343505859,
+				"y": 116.66667175293
+			},
+			"optionbutton_values": {
+				"SampleRate": 0
+			},
+			"slider_values": {
+				"Frequency/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 60.0
+				},
+				"MorphSpeed/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 24.0
+				},
+				"OutputDuration/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 30.0
+				},
+				"Seed/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 0.0
+				},
+				"SplineCount/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 4.0
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "notes",
+			"id": 6,
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "You can have multiple input nodes in one thread including both synthesis and Input File nodes.\n\nInput File nodes require a process in between them and the Output File. Synthesis nodes can be connected to the Output File directly."
+			},
+			"offset": {
+				"x": 68.8888931274414,
+				"y": 110.0
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
+			"command": "notes",
+			"id": 7,
+			"name": "notes2",
+			"notes": {
+				"CodeEdit": "You can make additional Input File nodes by searching for \"Input\" in the search menu or by opening the explore menu (ctrl/cmd + E) and going to Utilities."
+			},
+			"offset": {
+				"x": 74.4444427490234,
+				"y": 574.444458007813
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+
+			}
+		}
+	]
+}

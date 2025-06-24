@@ -1,49 +1,31 @@
 {
 	"connections": [
 		{
-			"from_node_id": 2,
-			"from_port": 0,
-			"to_node_id": 1,
-			"to_port": 0
-		},
-		{
 			"from_node_id": 1,
 			"from_port": 0,
-			"to_node_id": 6,
+			"to_node_id": 4,
 			"to_port": 0
 		},
 		{
-			"from_node_id": 6,
+			"from_node_id": 4,
 			"from_port": 0,
-			"to_node_id": 3,
+			"to_node_id": 5,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 5,
+			"from_port": 0,
+			"to_node_id": 6,
 			"to_port": 0
 		}
 	],
 	"nodes": [
 		{
-			"command": "modify_speed_2",
-			"id": 1,
-			"name": "modify_speed_2",
-			"notes": {
+			"checkbutton_states": {
 
 			},
-			"offset": {
-				"x": 591.5556640625,
-				"y": 80.6666870117188
-			},
-			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": {
-					"editable": true,
-					"meta": {
-						"brk": true
-					},
-					"value": 0.0
-				}
-			}
-		},
-		{
 			"command": "inputfile",
-			"id": 2,
+			"id": 1,
 			"name": "inputfile",
 			"notes": {
 
@@ -52,8 +34,12 @@
 				"x": 110.444465637207,
 				"y": 80.0
 			},
+			"optionbutton_values": {
+				"@OptionButton@4895": 1,
+				"@OptionButton@4936": 0
+			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@5578/@MarginContainer@5618/Tree/@Popup@5604/@VBoxContainer@5605/@HSlider@5613": {
+				"AudioPlayer/FileDialog/@VBoxContainer@4883/@MarginContainer@4923/Tree/@Popup@4909/@VBoxContainer@4910/@HSlider@4918": {
 					"editable": true,
 					"meta": {
 
@@ -63,29 +49,11 @@
 			}
 		},
 		{
-			"command": "outputfile",
-			"id": 3,
-			"name": "outputfile",
-			"notes": {
+			"checkbutton_states": {
 
 			},
-			"offset": {
-				"x": 1353.22216796875,
-				"y": 81.2222213745117
-			},
-			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@5687/@MarginContainer@5727/Tree/@Popup@5713/@VBoxContainer@5714/@HSlider@5722": {
-					"editable": true,
-					"meta": {
-
-					},
-					"value": 0.0
-				}
-			}
-		},
-		{
 			"command": "notes",
-			"id": 4,
+			"id": 2,
 			"name": "notes2",
 			"notes": {
 				"CodeEdit": "When automation is applied the slider will lock and its value cannot be changed.\n\nAutomation can be edited or removed by right clicking on a locked slider.\n\nGrainsize~ already has some automation applied, right click it to edit the automation."
@@ -94,13 +62,19 @@
 				"x": 924.000183105469,
 				"y": 451.000091552734
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
 
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "notes",
-			"id": 5,
+			"id": 3,
 			"name": "notes",
 			"notes": {
 				"CodeEdit": "Parametes with a tilde (~) next to their name can have automation applied to them to change their value over time.\n\nRight click on the Semitones~ slider to apply automation to that parameter.\n\nIn the automation window, automation timings (% of input file) are on the x axis and the value change is on the y axis. "
@@ -109,44 +83,122 @@
 				"x": 515.777954101563,
 				"y": 452.222320556641
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
 
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
+			"command": "modify_speed_2",
+			"id": 4,
+			"name": "modify_speed_2",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 591.5556640625,
+				"y": 79.5555725097656
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+				"Semitones/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": -12.0
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+
+			},
 			"command": "modify_brassage_4",
-			"id": 6,
+			"id": 5,
 			"name": "modify_brassage_4",
 			"notes": {
 
 			},
 			"offset": {
 				"x": 957.000244140625,
-				"y": 80.6666870117188
+				"y": 79.5555725097656
+			},
+			"optionbutton_values": {
+
 			},
 			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": {
+				"Grainsize/HSplitContainer/HSlider": {
 					"editable": false,
 					"meta": {
 						"brk": true,
 						"brk_data": [
-							"(0.0, 231.0)",
+							"(0.0, 105.0)",
 							"(700.0, 128.0)",
-							"(123.0, 253.0)",
-							"(170.0, 105.0)",
-							"(342.0, 251.0)",
-							"(552.0, 250.0)"
-						]
+							"(77.0, 212.0)",
+							"(171.0, 246.0)",
+							"(405.0, 163.0)",
+							"(585.0, 243.0)",
+							"(313.0, 236.0)"
+						],
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
 					},
 					"value": 10.0
 				},
-				"VBoxContainer2/HSplitContainer/HSlider": {
+				"Range/HSplitContainer/HSlider": {
 					"editable": true,
 					"meta": {
 						"brk": true,
-						"flag": "-r"
+						"flag": "-r",
+						"max": false,
+						"min": false,
+						"time": false
 					},
 					"value": 2500.0
+				}
+			}
+		},
+		{
+			"checkbutton_states": {
+				"Autoplay": true,
+				"DeleteIntermediateFilesToggle": true,
+				"ReuseFolderToggle": true
+			},
+			"command": "outputfile",
+			"id": 6,
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1353.22216796875,
+				"y": 79.0
+			},
+			"optionbutton_values": {
+				"@OptionButton@5004": 1,
+				"@OptionButton@5045": 0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@4992/@MarginContainer@5032/Tree/@Popup@5018/@VBoxContainer@5019/@HSlider@5027": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
 				}
 			}
 		}

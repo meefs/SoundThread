@@ -15,6 +15,9 @@
 	],
 	"nodes": [
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "distort_multiply",
 			"id": 1,
 			"name": "distort_multiply",
@@ -25,17 +28,29 @@
 				"x": 595.555541992188,
 				"y": 88.8888931274414
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": {
+				"Multiplier/HSplitContainer/HSlider": {
 					"editable": true,
 					"meta": {
-						"brk": true
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
 					},
 					"value": 3.0
 				}
 			}
 		},
 		{
+			"checkbutton_states": {
+				"Autoplay": true,
+				"DeleteIntermediateFilesToggle": true,
+				"ReuseFolderToggle": true
+			},
 			"command": "outputfile",
 			"id": 2,
 			"name": "outputfile",
@@ -46,8 +61,12 @@
 				"x": 967.77783203125,
 				"y": 88.8888931274414
 			},
+			"optionbutton_values": {
+				"@OptionButton@5755": 1,
+				"@OptionButton@5796": 0
+			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@2083/@MarginContainer@2123/Tree/@Popup@2109/@VBoxContainer@2110/@HSlider@2118": {
+				"AudioPlayer/FileDialog/@VBoxContainer@5743/@MarginContainer@5783/Tree/@Popup@5769/@VBoxContainer@5770/@HSlider@5778": {
 					"editable": true,
 					"meta": {
 
@@ -57,6 +76,9 @@
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "inputfile",
 			"id": 3,
 			"name": "inputfile",
@@ -67,8 +89,12 @@
 				"x": 111.111114501953,
 				"y": 88.8888931274414
 			},
+			"optionbutton_values": {
+				"@OptionButton@5864": 1,
+				"@OptionButton@5905": 0
+			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1974/@MarginContainer@2014/Tree/@Popup@2000/@VBoxContainer@2001/@HSlider@2009": {
+				"AudioPlayer/FileDialog/@VBoxContainer@5852/@MarginContainer@5892/Tree/@Popup@5878/@VBoxContainer@5879/@HSlider@5887": {
 					"editable": true,
 					"meta": {
 
@@ -78,6 +104,9 @@
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "notes",
 			"id": 4,
 			"name": "notes",
@@ -88,11 +117,17 @@
 				"x": 117.777778625488,
 				"y": 368.888885498047
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
 
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "notes",
 			"id": 5,
 			"name": "notes2",
@@ -102,6 +137,9 @@
 			"offset": {
 				"x": 542.222229003906,
 				"y": 367.777801513672
+			},
+			"optionbutton_values": {
+
 			},
 			"slider_values": {
 

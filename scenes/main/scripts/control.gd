@@ -489,8 +489,24 @@ func _on_help_button_index_pressed(index: int) -> void:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				save_load.load_graph_edit("res://examples/trimming.thd")
 		7:
-			pass
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/multiple_inputs.thd"
+				$SaveChangesPopup.popup_centered()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				save_load.load_graph_edit("res://examples/multiple_inputs.thd")
 		8:
+			if changesmade == true:
+				savestate = "helpfile"
+				helpfile = "res://examples/preview_nodes.thd"
+				$SaveChangesPopup.popup_centered()
+			else:
+				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+				save_load.load_graph_edit("res://examples/preview_nodes.thd")
+		9:
+			pass
+		10:
 			if changesmade == true:
 				savestate = "helpfile"
 				helpfile = "res://examples/wetdry.thd"
@@ -498,7 +514,7 @@ func _on_help_button_index_pressed(index: int) -> void:
 			else:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				save_load.load_graph_edit("res://examples/wetdry.thd")
-		9:
+		11:
 			if changesmade == true:
 				savestate = "helpfile"
 				helpfile = "res://examples/resonant_filters.thd"
@@ -506,11 +522,11 @@ func _on_help_button_index_pressed(index: int) -> void:
 			else:
 				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 				save_load.load_graph_edit("res://examples/resonant_filters.thd")
-		10:
-			pass
-		11:
-			OS.shell_open("https://www.composersdesktop.com/docs/html/ccdpndex.htm")
 		12:
+			pass
+		13:
+			OS.shell_open("https://www.composersdesktop.com/docs/html/ccdpndex.htm")
+		14:
 			OS.shell_open("https://github.com/j-p-higgins/SoundThread/issues")
 
 #func _recycle_outfile():

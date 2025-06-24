@@ -2,6 +2,9 @@
 	"connections": [],
 	"nodes": [
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "notes",
 			"id": 1,
 			"name": "notes2",
@@ -12,11 +15,17 @@
 				"x": 530.0,
 				"y": 595.555541992188
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
 
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "notes",
 			"id": 2,
 			"name": "notes3",
@@ -27,26 +36,38 @@
 				"x": 992.22216796875,
 				"y": 596.666687011719
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
 
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "notes",
 			"id": 3,
 			"name": "notes",
 			"notes": {
-				"CodeEdit": "Welcome to SoundThread!\n\nTo get started, load a sound file into \"Input File\"\n\nIt supports a mono or stereo .wav file."
+				"CodeEdit": "Welcome to SoundThread!\n\nTo get started, load a sound file into \"Input File\"\n\nIt supports a mono or stereo .wav files."
 			},
 			"offset": {
 				"x": 70.0,
 				"y": 596.666687011719
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
 
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "notes",
 			"id": 4,
 			"name": "notes4",
@@ -57,11 +78,19 @@
 				"x": 1461.0654296875,
 				"y": 593.270690917969
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
 
 			}
 		},
 		{
+			"checkbutton_states": {
+				"Autoplay": true,
+				"DeleteIntermediateFilesToggle": true,
+				"ReuseFolderToggle": true
+			},
 			"command": "outputfile",
 			"id": 5,
 			"name": "outputfile",
@@ -72,8 +101,12 @@
 				"x": 1415.55541992188,
 				"y": 72.2222290039063
 			},
+			"optionbutton_values": {
+				"@OptionButton@2925": 1,
+				"@OptionButton@2966": 0
+			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1711/@MarginContainer@1751/Tree/@Popup@1737/@VBoxContainer@1738/@HSlider@1746": {
+				"AudioPlayer/FileDialog/@VBoxContainer@2913/@MarginContainer@2953/Tree/@Popup@2939/@VBoxContainer@2940/@HSlider@2948": {
 					"editable": true,
 					"meta": {
 
@@ -83,6 +116,9 @@
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "inputfile",
 			"id": 6,
 			"name": "inputfile",
@@ -93,8 +129,12 @@
 				"x": 55.5555572509766,
 				"y": 67.7777786254883
 			},
+			"optionbutton_values": {
+				"@OptionButton@3034": 1,
+				"@OptionButton@3075": 0
+			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@1820/@MarginContainer@1860/Tree/@Popup@1846/@VBoxContainer@1847/@HSlider@1855": {
+				"AudioPlayer/FileDialog/@VBoxContainer@3022/@MarginContainer@3062/Tree/@Popup@3048/@VBoxContainer@3049/@HSlider@3057": {
 					"editable": true,
 					"meta": {
 
@@ -104,6 +144,9 @@
 			}
 		},
 		{
+			"checkbutton_states": {
+
+			},
 			"command": "distort_average",
 			"id": 7,
 			"name": "distort_average",
@@ -114,13 +157,20 @@
 				"x": 778.888916015625,
 				"y": 66.6666641235352
 			},
+			"optionbutton_values": {
+
+			},
 			"slider_values": {
-				"VBoxContainer/HSplitContainer/HSlider": {
+				"CycleCount/HSplitContainer/HSlider": {
 					"editable": true,
 					"meta": {
-						"brk": true
+						"brk": true,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
 					},
-					"value": 18.0
+					"value": 5.0
 				}
 			}
 		}
