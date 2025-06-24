@@ -35,7 +35,7 @@ current_tab = 0
 
 [node name="Time Domain" type="TabContainer" parent="Control/select_effect"]
 layout_mode = 2
-current_tab = 6
+current_tab = 5
 metadata/_tab_index = 0
 
 [node name="Distort" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
@@ -192,8 +192,14 @@ horizontal_scroll_mode = 0
 custom_minimum_size = Vector2(620, 0)
 layout_mode = 2
 
+[node name="Label" type="Label" parent="Control/select_effect/Time Domain/Misc/MarginContainer/ScrollContainer/MiscContainer"]
+custom_minimum_size = Vector2(620, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "These time domain processes do not fit neatly into other categories. Many of these are utilities for editing a soundfile however, several are also transformation processes that manipulate the audio in unique ways."
+autowrap_mode = 3
+
 [node name="Reverb and Delay" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
-visible = false
 layout_mode = 2
 metadata/_tab_index = 5
 
@@ -214,7 +220,15 @@ horizontal_scroll_mode = 0
 custom_minimum_size = Vector2(620, 0)
 layout_mode = 2
 
+[node name="Label" type="Label" parent="Control/select_effect/Time Domain/Reverb and Delay/MarginContainer/ScrollContainer/ReverbContainer"]
+custom_minimum_size = Vector2(620, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "These processes apply simple time-based effects to the sound such as reverb and delay. These are commonly used to emulate or give the impression of an acoustic space on a sound."
+autowrap_mode = 3
+
 [node name="Synthesis" type="VBoxContainer" parent="Control/select_effect/Time Domain"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 6
 
