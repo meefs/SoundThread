@@ -106,8 +106,6 @@ func save_graph_edit(path: String):
 	control_script.changesmade = false
 	get_window().title = "SoundThread - " + path.get_file().trim_suffix(".thd")
 	
-	print("thread saved, changes made =")
-	print(control_script.changesmade)
 
 func load_graph_edit(path: String):
 	var file = FileAccess.open(path, FileAccess.READ)
@@ -211,5 +209,7 @@ func load_graph_edit(path: String):
 	link_output.call()
 	print("Graph loaded.")
 	get_window().title = "SoundThread - " + path.get_file().trim_suffix(".thd")
+	
+	control_script.changesmade = false
 	
 	
