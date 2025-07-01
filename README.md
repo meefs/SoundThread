@@ -27,13 +27,7 @@ You can find [video installation instructions for Windows and Mac here](https://
 SoundThread is currently in Beta and as such there are some bugs, missing features and limitations. However, it is mostly very stable and has enough implemented already to be a powerful sound design tool.
 ### Currently implemented features:
 - Node based patching system with support for patching parallel processes and mixing outputs
-- A selection of popular CDP time domain and frequency domain processes:
-  - [Distort](https://www.composersdesktop.com/docs/html/ccdpndex.htm#DISTORT) - Average, Clip, Click (Reform), Divide, Fractal, Interpolate, Multiply, Power Factor (Quirk), Replace, Square (Reform), and Triangle (Reform)
-  - [Extend](https://www.composersdesktop.com/docs/html/ccdpndex.htm#EXTEND) -  Drunk, Loop, Scramble, and Zigzag
-  - [Filter](https://www.composersdesktop.com/docs/html/ccdpndex.htm#FILTER) - Low Pass/High Pass, Filter Bank Harmonic Series, Filter Bank Odd, Filter Bank Linear Spacing, and Filter Bank Pitched Intervals
-  - [Granulate (Brassage)](https://www.composersdesktop.com/docs/html/cgromody.htm#BRASSAGE) - Brassage, Granulate, Pitch Shift, Scramble, and Time Stretch
-  - Misc - Accelerate/Decelerate, Append Silence, Gain, Reverse, Stack, and Varispeed
-  - [PVOC](https://www.composersdesktop.com/docs/html/cspecndx.htm) - Analysis/Resynthesis, Accumulate, Blur, Chorus, Gain, Invert, Stretch, Scatter, Trace (hilite), and Waver
+- A selection of over 100 popular CDP time domain and frequency domain processes:
 - Automation of values using automatically generated [Breakpoint Files](https://www.composersdesktop.com/docs/html//filestxt.htm#BREAKPOINTFILES) based on drawn in automation data
 - Windows, Mac and Linux builds
 - Accepts stereo or mono input files (splits and merges files as needed to run the full processing Thread)
