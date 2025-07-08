@@ -36,6 +36,7 @@ text = "0.0"
 alignment = 2
 max_length = 5
 flat = true
+select_all_on_focus = true
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 2
