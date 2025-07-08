@@ -54,8 +54,15 @@ func calculate(button: Button):
 	
 	if value == "clear":
 		$Screen.text = ""
+		expression = ""
 	elif value == "del":
 		$Screen.text = $Screen.text.substr(0, $Screen.text.length() - 1)
+		if expression.right(1) == "/":
+			#remove the whole stupid hack for division
+			expression = expression.left(expression.length() - 5)
+		else:
+			#just remove the last character
+			expression = expression.left(expression.length() - 1)
 	elif value == "=":
 		var expr = Expression.new()
 		expr.parse(expression)
@@ -64,4 +71,8 @@ func calculate(button: Button):
 		calculated = true
 	else:
 		$Screen.text += label
-		expression += value
+		if value == "/":
+			#absolutely stupid hack to make it do float division
+			expression += "*1.0/"
+		else:
+			expression += value
