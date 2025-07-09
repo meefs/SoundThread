@@ -80,6 +80,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			for i in range(portcount):
 				#add a number of control nodes equal to whatever is higher input or output ports
 				var control = Control.new()
+				control.custom_minimum_size.y = 20
 				graphnode.add_child(control)
 				
 				#check if input or output is enabled

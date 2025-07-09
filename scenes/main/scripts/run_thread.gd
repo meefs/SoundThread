@@ -99,7 +99,7 @@ func run_thread_with_branches():
 						#check if it can find any valid connections
 						var connected = false
 						for conn in connections:
-							if conn["from_node"] == name and conn["to_port"] == i:
+							if conn["from_node"] == name and conn["from_port"] == i:
 								connected = true
 								break
 						#if no valid connections are found break the for loop to skip checking other inputs and set include to false
@@ -180,33 +180,47 @@ func run_thread_with_branches():
 		else:
 			progress_label.text = "Running process: " + node.get_title()
 		# Find upstream nodes connected to the current node
-		var inputs = reverse_graph[node_name]
-		var input_files = []
-		for input_node in inputs:
-			input_files.append(output_files[input_node])
+		# Build an array of all inlet connections
+		var input_connections := []
+		for conn in connections:
+			if conn["to_node"] == node_name:
+				input_connections.append(conn)
+		input_connections.sort_custom(func(a, b): return a["to_port"] < b["to_port"])
+		
+		#build a dictionary with all inputs sorted by inlet number
+		var inlet_inputs = {}
 
-		# Merge inputs if this node has more than one input
-		if input_files.size() > 1:
-			# Prepare final merge output file name
-			var runmerge = await merge_many_files(process_count, input_files)
-			var merge_output = runmerge[0]
-			var converted_files = runmerge[1]
+		for conn in input_connections:
+			var inlet_idx = conn["to_port"]
+			var upstream_node = conn["from_node"]
+			if output_files.has(upstream_node):
+				if not inlet_inputs.has(inlet_idx):
+					inlet_inputs[inlet_idx] = []
+				inlet_inputs[inlet_idx].append(output_files[upstream_node])
 
-			# Track the output and intermediate files
-			current_infile = merge_output
-			
-			if control_script.delete_intermediate_outputs:
-				intermediate_files.append(merge_output)
-				for f in converted_files:
-					intermediate_files.append(f)
+		# Merge inputs if inlet has more than one input and build infile dictionary
+		var current_infiles = {} #dictionary to store input files by inlet number
 
-		# If only one input, use that
-		elif input_files.size() == 1:
-			current_infile = input_files[0]
+		for inlet_idx in inlet_inputs.keys():
+			var files = inlet_inputs[inlet_idx]
+			if files.size() > 1: #if more than one file mix them together
+				var runmerge = await merge_many_files(process_count, files)
+				var merge_output = runmerge[0] #mixed output file name
+				var converted_files = runmerge[1] #intermediate files created from merge
 
-		else:
-			#if no input i need to skip the node
-			pass
+				current_infiles[inlet_idx] = merge_output #input filename added to dictionary sorted by inlet number
+				
+				#add intermediate files to delete list if toggled
+				if control_script.delete_intermediate_outputs:
+					intermediate_files.append(merge_output)
+					for f in converted_files:
+						intermediate_files.append(f)
+			elif files.size() == 1:
+				current_infiles[inlet_idx] = files[0] #only one file, do not merge add to dictionary
+
+			else:
+				#if no input i need to skip the node
+				pass
 		
 		#check if node is some form of input node
 		if node.get_input_port_count() == 0:
@@ -244,7 +258,7 @@ func run_thread_with_branches():
 				process_count += 1
 			else: #not an audio file must be synthesis
 				var slider_data = _get_slider_values_ordered(node)
-				var makeprocess = await make_process(node, process_count, "none", slider_data)
+				var makeprocess = await make_process(node, process_count, [], slider_data)
 				# run the command
 				await run_command(makeprocess[0], makeprocess[3])
 				await get_tree().process_frame
@@ -384,9 +398,11 @@ func run_thread_with_branches():
 						intermediate_files.erase(current_infile)
 				else:
 					#Detect if input file is mono or stereo
-					var input_stereo = await is_stereo(current_infile)
+					#var input_stereo = await is_stereo(current_infile)
+					var input_stereo = true #bypassing stereo check just for testing need to reimplement
 					if input_stereo == true:
 						if node.get_meta("stereo_input") == true: #audio file is stereo and process is stereo, run file through process
+							current_infile = current_infiles.values()
 							var makeprocess = await make_process(node, process_count, current_infile, slider_data)
 							# run the command
 							await run_command(makeprocess[0], makeprocess[3])
@@ -667,7 +683,7 @@ func _get_slider_values_ordered(node: Node) -> Array:
 
 
 
-func make_process(node: Node, process_count: int, current_infile: String, slider_data: Array) -> Array:
+func make_process(node: Node, process_count: int, current_infile: Array, slider_data: Array) -> Array:
 	# Determine output extension: .wav or .ana based on the node's slot type
 	var extension = ".wav" if node.get_slot_type_right(0) == 0 else ".ana"
 
@@ -679,9 +695,10 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 	command_name = command_name.split("_", true, 1)
 	var command = "%s/%s" %[control_script.cdpprogs_location, command_name[0]]
 	var args = command_name[1].split("_", true, 1)
-	if current_infile != "none":
-		#check if input is none, e.g. synthesis nodes, otherwise append input file to arguments
-		args.append(current_infile)
+	if current_infile.size() > 0:
+		#check if input is empty, e.g. synthesis nodes, otherwise append input file to arguments
+		for file in current_infile:
+			args.append(file)
 	args.append(output_file)
 
 	# Start building the command line windows i dont think this is used anymore
@@ -714,7 +731,7 @@ func make_process(node: Node, process_count: int, current_infile: String, slider
 				
 				#get length of input file in seconds
 				var infile_length = 1 #set infile length to dummy value just incase it does get used where it shouldn't to avoid crashes
-				if current_infile != "none":
+				if current_infile.size() > 0:
 					infile_length = await run_command(control_script.cdpprogs_location + "/sfprops", ["-d", current_infile])
 					infile_length = float(infile_length.strip_edges())
 				

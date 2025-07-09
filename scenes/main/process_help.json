@@ -2463,6 +2463,17 @@
 	"subcategory": "misc",
 	"title": "Append Silence"
   },
+  "modify_radical_6": {
+	"category": "time",
+	"description": "This process takes two inputs and multiples them together using a four-quadrant multiplier. Unlike amplitude modulation this allows the bipoloar mulitplier to go negative, inverting the input sounds phase. In sound terms this will produce two sounds layered together, the sum of input and modulator frequencies and the difference between the input and modulator frequencies and the carrier will dissapear. ",
+	"inputtype": "[0, 0]",
+	"outputtype": "[0]",
+	"parameters": {},
+	"short_description": "Multiply two sounds together",
+	"stereo": true,
+	"subcategory": "misc",
+	"title": "Cross Modulation"
+  },
   "housekeep_extract_4": {
 	"category": "time",
 	"description": "This process is intended for removing DC offset from a soundfile. You can specify how much the signal should be moved away from the 0 crossing line. It can also be used to deliberately add a DC offset into the sound file before further processing. For processes in the Distort catagory this will allow for an asymetrical application of their processing providing different timbres. Note, working this way is not how the processes are intended to be used and may produce errors on runtime and unpredictable results. Playing signals with significant DC bias in them is not good for the longterm health of your loudspeakers. If you do deliberately add a DC offset, you should run the process in the opposite direction after you are done processing to remove the DC bias. ",
