@@ -168,7 +168,7 @@ func run_thread_with_branches():
 	var output_files = {}
 	var process_count = 0
 
-	var current_infile
+	#var current_infile
 
 	# Iterate over the processing nodes in topological order
 	for node_name in sorted:
@@ -421,8 +421,8 @@ func run_thread_with_branches():
 					var input_stereo = true #bypassing stereo check just for testing need to reimplement
 					if input_stereo == true:
 						if node.get_meta("stereo_input") == true: #audio file is stereo and process is stereo, run file through process
-							current_infile = current_infiles.values()
-							var makeprocess = await make_process(node, process_count, current_infile, slider_data)
+							#current_infile = current_infiles.values()
+							var makeprocess = await make_process(node, process_count, current_infiles.values(), slider_data)
 							# run the command
 							await run_command(makeprocess[0], makeprocess[3])
 							await get_tree().process_frame
@@ -439,7 +439,9 @@ func run_thread_with_branches():
 
 						else: #audio file is stereo and process is mono, split stereo, process and recombine
 							##Split stereo to c1/c2
-							await run_command(control_script.cdpprogs_location + "/housekeep",["chans", "2", current_infile])
+							var split_files = await stereo_split_and_process(current_infiles.values())
+							
+							
 					
 							# Process left and right seperately
 							var dual_mono_output = []
@@ -576,7 +578,28 @@ func run_thread_with_branches():
 	if interface_settings.auto_close_console and process_successful == true:
 		console_window.hide()
 
-
+func stereo_split_and_process(files: Array, node: Node, process_count: int, slider_data: Array) -> Array:
+	var dual_mono_output:= []
+	var left:= []
+	var right:= []
+	
+	for file in files:
+		await run_command(control_script.cdpprogs_location + "/housekeep",["chans", "2", file])
+		left.append(file.get_basename() + "_%s.%s" % ["c1", file.get_extension()])
+		right.append(file.get_basename() + "_%s.%s" % ["c2", file.get_extension()])
+	
+	#loop through the left and right arrays and make and run the process for each of them
+	for channel in [left, right]:
+		var makeprocess = await make_process(node, process_count, channel, slider_data)
+		# run the command
+		await run_command(makeprocess[0], makeprocess[3])
+		await get_tree().process_frame
+		var output_file = makeprocess[1]
+		dual_mono_output.append(output_file)
+		
+	#return the two output files and the split files for deletion
+	return [dual_mono_output, left, right]
+	
 func is_stereo(file: String) -> bool:
 	if file != "none":
 		var output = await run_command(control_script.cdpprogs_location + "/sfprops", ["-c", file])
