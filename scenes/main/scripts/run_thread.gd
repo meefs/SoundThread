@@ -168,7 +168,7 @@ func run_thread_with_branches():
 	var output_files = {}
 	var process_count = 0
 
-	#var current_infile
+	var current_infile
 
 	# Iterate over the processing nodes in topological order
 	for node_name in sorted:
@@ -439,34 +439,26 @@ func run_thread_with_branches():
 
 						else: #audio file is stereo and process is mono, split stereo, process and recombine
 							##Split stereo to c1/c2
-							var split_files = await stereo_split_and_process(current_infiles.values())
+							var split_files = await stereo_split_and_process(current_infiles.values(), node, process_count, slider_data)
+							var dual_mono_output = split_files[0]
+								
+							# Mark file for cleanup if needed
+							if control_script.delete_intermediate_outputs:
+								for file in split_files[1]:
+									breakfiles.append(file)
+								for file in dual_mono_output:
+									intermediate_files.append(file)
 							
-							
-					
-							# Process left and right seperately
-							var dual_mono_output = []
-							for channel in ["c1", "c2"]:
-								var dual_mono_file = current_infile.get_basename() + "_%s.%s" % [channel, current_infile.get_extension()]
-								
-								var makeprocess = await make_process(node, process_count, dual_mono_file, slider_data)
-								# run the command
-								await run_command(makeprocess[0], makeprocess[3])
-								await get_tree().process_frame
-								var output_file = makeprocess[1]
-								dual_mono_output.append(output_file)
-								
-								# Mark file for cleanup if needed
-								if control_script.delete_intermediate_outputs:
-									for file in makeprocess[2]:
-										breakfiles.append(file)
-									intermediate_files.append(output_file)
-								
-								#Delete c1 and c2 because they can be in the wrong folder and if the same infile is used more than once
-								#with this stereo process CDP will throw errors in the console even though its fine
+							#Delete c1 and c2 because they can be in the wrong folder and if the same infile is used more than once
+							#with this stereo process CDP will throw errors in the console even though its fine
+							var files_to_delete = split_files[2] + split_files[3]
+							for file in files_to_delete:
 								if is_windows:
-									dual_mono_file = dual_mono_file.replace("/", "\\")
-								await run_command(delete_cmd, [dual_mono_file])
-								process_count += 1
+									file = file.replace("/", "\\")
+								await run_command(delete_cmd, [file])
+							
+							#advance process count to match the advancement in the stereo_split_and_process function
+							process_count += 1
 							
 							
 							var output_file = Global.outfile.get_basename() + str(process_count) + "_interleaved.wav"
@@ -582,6 +574,7 @@ func stereo_split_and_process(files: Array, node: Node, process_count: int, slid
 	var dual_mono_output:= []
 	var left:= []
 	var right:= []
+	var intermediate_files:= []
 	
 	for file in files:
 		await run_command(control_script.cdpprogs_location + "/housekeep",["chans", "2", file])
@@ -596,9 +589,14 @@ func stereo_split_and_process(files: Array, node: Node, process_count: int, slid
 		await get_tree().process_frame
 		var output_file = makeprocess[1]
 		dual_mono_output.append(output_file)
+		for file in makeprocess[2]:
+			intermediate_files.append(file)
 		
-	#return the two output files and the split files for deletion
-	return [dual_mono_output, left, right]
+		#advance process count to maintain unique file names
+		process_count += 1
+		
+	#return the two output files, any breakfiles generated and the split files for deletion
+	return [dual_mono_output, intermediate_files, left, right]
 	
 func is_stereo(file: String) -> bool:
 	if file != "none":
