@@ -217,10 +217,29 @@ func run_thread_with_branches():
 						intermediate_files.append(f)
 			elif files.size() == 1:
 				current_infiles[inlet_idx] = files[0] #only one file, do not merge add to dictionary
-
-			else:
-				#if no input i need to skip the node
-				pass
+		
+		#if the dictionary has more than one entry there is more than one inlet and files need to be matched
+		if current_infiles.size() > 1:
+			#check all files in dictionary have the same sample rate and channel count and fix if not
+			var all_files = current_infiles.values()
+			
+			var match_sample_rate = await match_file_sample_rates(0, process_count, all_files)
+			var match_channels = await match_file_channels(0, process_count, match_sample_rate[0])
+			var matched_files = match_channels[0]
+			
+			#add intermediate files
+			if control_script.delete_intermediate_outputs:
+				for f in match_sample_rate[1]:
+					intermediate_files.append(f)
+				for f in match_channels[1]:
+					intermediate_files.append(f)
+			
+			#replace files in dictionary with matched files
+			var idx = 0
+			for key in current_infiles.keys():
+				current_infiles[key] = matched_files[idx]
+				idx += 1
+		
 		
 		#check if node is some form of input node
 		if node.get_input_port_count() == 0:
