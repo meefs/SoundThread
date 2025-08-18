@@ -219,7 +219,7 @@ func run_thread_with_branches():
 				current_infiles[inlet_idx] = files[0] #only one file, do not merge add to dictionary
 		
 		#if the dictionary has more than one entry there is more than one inlet and files need to be matched
-		if current_infiles.size() > 1:
+		if current_infiles.size() > 1 and node.get_slot_type_left(0) == 0:
 			#check all files in dictionary have the same sample rate and channel count and fix if not
 			var all_files = current_infiles.values()
 			
@@ -417,8 +417,8 @@ func run_thread_with_branches():
 						intermediate_files.erase(current_infile)
 				else:
 					#Detect if input file is mono or stereo
-					#var input_stereo = await is_stereo(current_infile)
-					var input_stereo = true #bypassing stereo check just for testing need to reimplement
+					var input_stereo = await is_stereo(current_infiles.values()[0])
+					#var input_stereo = true #bypassing stereo check just for testing need to reimplement
 					if input_stereo == true:
 						if node.get_meta("stereo_input") == true: #audio file is stereo and process is stereo, run file through process
 							#current_infile = current_infiles.values()
@@ -472,7 +472,7 @@ func run_thread_with_branches():
 								intermediate_files.append(output_file)
 
 					else: #audio file is mono, run through the process
-						var makeprocess = await make_process(node, process_count, current_infile, slider_data)
+						var makeprocess = await make_process(node, process_count, current_infiles.values(), slider_data)
 						# run the command
 						await run_command(makeprocess[0], makeprocess[3])
 						await get_tree().process_frame
