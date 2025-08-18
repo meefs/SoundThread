@@ -204,7 +204,7 @@ func run_thread_with_branches():
 		for inlet_idx in inlet_inputs.keys():
 			var files = inlet_inputs[inlet_idx]
 			if files.size() > 1: #if more than one file mix them together
-				var runmerge = await merge_many_files(process_count, files)
+				var runmerge = await merge_many_files(inlet_idx, process_count, files)
 				var merge_output = runmerge[0] #mixed output file name
 				var converted_files = runmerge[1] #intermediate files created from merge
 
@@ -501,7 +501,7 @@ func run_thread_with_branches():
 
 	# If multiple outputs go to the outputfile node, merge them
 	if final_outputs.size() > 1:
-		var runmerge = await merge_many_files(process_count, final_outputs)
+		var runmerge = await merge_many_files(0, process_count, final_outputs)
 		final_output_dir = runmerge[0]
 		var converted_files = runmerge[1]
 		
@@ -578,41 +578,18 @@ func get_samplerate(file: String) -> int:
 	output = int(output.strip_edges())
 	return output
 
-func merge_many_files(process_count: int, input_files: Array) -> Array:
-	var merge_output = "%s_merge_%d.wav" % [Global.outfile.get_basename(), process_count]
-	var converted_files := []  # Track any mono->stereo converted files or upsampled files
+func merge_many_files(inlet_id: int, process_count: int, input_files: Array) -> Array:
+	var merge_output = "%s_merge_%d_%d.wav" % [Global.outfile.get_basename(), inlet_id, process_count]
 	var inputs_to_merge := []  # Files to be used in the final merge
 
+	var converted_files := []  # Track any mono->stereo converted files or upsampled files
 	var mono_files := []
 	var stereo_files := []
-	var sample_rates := []
 	
-	#Get all sample rates
-	for f in input_files:
-		var samplerate = await get_samplerate(f)
-		sample_rates.append(samplerate)
+	var match_sample_rates = await match_file_sample_rates(inlet_id, process_count, input_files)
+	input_files = match_sample_rates[0]
+	converted_files = match_sample_rates[1]
 	
-	#Check if all sample rates are the same
-	if sample_rates.all(func(v): return v == sample_rates[0]):
-		pass
-	else:
-		log_console("Different sample rates found, upsampling files to match highest current sample rate before mixing.", true)
-		#if not find the highest sample rate
-		var highest_sample_rate = sample_rates.max()
-		var index = 0
-		#move through all input files and compare match their index to the sample_rate array
-		for f in input_files:
-			#check if sample rate of current file is less than the highest sample rate
-			if sample_rates[index] < highest_sample_rate:
-				#up sample it to the highest sample rate if so
-				var upsample_output = Global.outfile + "_" + str(process_count) + f.get_file().get_slice(".wav", 0) + "_" + str(highest_sample_rate) + ".wav"
-				await run_command(control_script.cdpprogs_location + "/housekeep", ["respec", "1", f, upsample_output, str(highest_sample_rate)])
-				#replace the file in the input_file index with the new upsampled file
-				input_files[index] = upsample_output
-				converted_files.append(upsample_output)
-				
-			index += 1
-
 	# Check each file's channel count
 	for f in input_files:
 		var stereo = await is_stereo(f)
@@ -654,6 +631,41 @@ func merge_many_files(process_count: int, input_files: Array) -> Array:
 		log_console("Failed to to merge files to" + merge_output, true)
 	
 	return [merge_output, converted_files]
+
+func match_file_sample_rates(inlet_id: int, process_count: int, input_files: Array) -> Array:
+	var sample_rates := []
+	var converted_files := []
+	
+	#Get all sample rates
+	for f in input_files:
+		var samplerate = await get_samplerate(f)
+		sample_rates.append(samplerate)
+	
+	#Check if all sample rates are the same
+	if sample_rates.all(func(v): return v == sample_rates[0]):
+		pass
+	else:
+		log_console("Different sample rates found, upsampling files to match highest current sample rate before processing.", true)
+		#if not find the highest sample rate
+		var highest_sample_rate = sample_rates.max()
+		var index = 0
+		#move through all input files and compare match their index to the sample_rate array
+		for f in input_files:
+			#check if sample rate of current file is less than the highest sample rate
+			if sample_rates[index] < highest_sample_rate:
+				#up sample it to the highest sample rate if so
+				var upsample_output = Global.outfile + "_" + str(inlet_id) + "_" + str(process_count) + f.get_file().get_slice(".wav", 0) + "_" + str(highest_sample_rate) + ".wav"
+				await run_command(control_script.cdpprogs_location + "/housekeep", ["respec", "1", f, upsample_output, str(highest_sample_rate)])
+				#replace the file in the input_file index with the new upsampled file
+				input_files[index] = upsample_output
+				converted_files.append(upsample_output)
+				
+			index += 1
+	return [input_files, converted_files]
+	
+func match_file_channels(input_files: Array) -> Array:
+	return input_files
+	
 
 func _get_slider_values_ordered(node: Node) -> Array:
 	var results := []
