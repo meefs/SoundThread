@@ -580,53 +580,26 @@ func get_samplerate(file: String) -> int:
 
 func merge_many_files(inlet_id: int, process_count: int, input_files: Array) -> Array:
 	var merge_output = "%s_merge_%d_%d.wav" % [Global.outfile.get_basename(), inlet_id, process_count]
-	var inputs_to_merge := []  # Files to be used in the final merge
-
 	var converted_files := []  # Track any mono->stereo converted files or upsampled files
-	var mono_files := []
-	var stereo_files := []
+
 	
+	#check if sample rates of files to be mixed differ and upsample as required
 	var match_sample_rates = await match_file_sample_rates(inlet_id, process_count, input_files)
 	input_files = match_sample_rates[0]
 	converted_files = match_sample_rates[1]
 	
-	# Check each file's channel count
-	for f in input_files:
-		var stereo = await is_stereo(f)
-		if stereo == false:
-			mono_files.append(f)
-		elif stereo == true:
-			stereo_files.append(f)
+	#check if there are a mix of mono and stereo files and interleave mono files if required
+	var match_channels = await match_file_channels(inlet_id, process_count, input_files)
+	input_files = match_channels[0]
+	converted_files += match_channels[1]
 
-			
-
-	# STEP 2: Convert mono to stereo if there is a mix
-	if mono_files.size() > 0 and stereo_files.size() > 0:
-		log_console("Mix of mono and stereo files found, interleaving mono files to stereo before mixing.", true)
-		for mono_file in mono_files:
-			var stereo_file = Global.outfile + "_" + str(process_count) + mono_file.get_file().get_slice(".wav", 0) + "_stereo.wav"
-			#var stereo_file = "%s_stereo.wav" % mono_file.get_basename()
-			await run_command(control_script.cdpprogs_location + "/submix", ["interleave", mono_file, mono_file, stereo_file])
-			if process_successful == false:
-				log_console("Failed to interleave mono file: %s" % mono_file, true)
-			else:
-				converted_files.append(stereo_file)
-				inputs_to_merge.append(stereo_file)
-		# Add existing stereo files
-		inputs_to_merge += stereo_files
-	else:
-		# All mono or all stereo — use input_files directly
-		inputs_to_merge = input_files.duplicate()
-
-	# STEP 3: Merge all input files (converted or original)
+	# Merge all input files (converted or original)
 	log_console("Mixing files to combined input.", true)
-	var quoted_inputs := []
-	for f in inputs_to_merge:
-		quoted_inputs.append(f)
-	quoted_inputs.insert(0, "mergemany")
-	quoted_inputs.append(merge_output)
-	await run_command(control_script.cdpprogs_location + "/submix", quoted_inputs)
-
+	var command := ["mergemany"]
+	command += input_files
+	command.append(merge_output)
+	await run_command(control_script.cdpprogs_location + "/submix", command)
+	
 	if process_successful == false:
 		log_console("Failed to to merge files to" + merge_output, true)
 	
@@ -663,8 +636,31 @@ func match_file_sample_rates(inlet_id: int, process_count: int, input_files: Arr
 			index += 1
 	return [input_files, converted_files]
 	
-func match_file_channels(input_files: Array) -> Array:
-	return input_files
+func match_file_channels(inlet_id: int, process_count: int, input_files: Array) -> Array:
+	var converted_files := []
+	var channel_counts := []
+	
+	# Check each file's channel count and build channel count array
+	for f in input_files:
+		var stereo = await is_stereo(f)
+		channel_counts.append(stereo)
+
+	# Check if there is a mix of mono and stereo files
+	if channel_counts.has(true) and channel_counts.has(false):
+		log_console("Mix of mono and stereo files found, interleaving mono files to stereo before mixing.", true)
+		var index = 0
+		for f in input_files:
+			if channel_counts[index] == false: #file is mono
+				var stereo_file = Global.outfile + "_" + str(inlet_id) + "_" + str(process_count) + f.get_file().get_slice(".wav", 0) + "_stereo.wav"
+				await run_command(control_script.cdpprogs_location + "/submix", ["interleave", f, f, stereo_file])
+				if process_successful == false:
+					log_console("Failed to interleave mono file: %s" % f, true)
+				else:
+					converted_files.append(stereo_file)
+					input_files[index] = stereo_file
+			index += 1
+
+	return [input_files, converted_files]
 	
 
 func _get_slider_values_ordered(node: Node) -> Array:
