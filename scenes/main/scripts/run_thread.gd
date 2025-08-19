@@ -219,6 +219,7 @@ func run_thread_with_branches():
 				current_infiles[inlet_idx] = files[0] #only one file, do not merge add to dictionary
 		
 		#if the dictionary has more than one entry there is more than one inlet and files need to be matched
+		#however this should only be done to nodes with audio files rather than pvoc nodes
 		if current_infiles.size() > 1 and node.get_slot_type_left(0) == 0:
 			#check all files in dictionary have the same sample rate and channel count and fix if not
 			var all_files = current_infiles.values()
@@ -322,7 +323,7 @@ func run_thread_with_branches():
 						
 					output_files[node_name] = pvoc_stereo_files
 				else:
-					var input_stereo = await is_stereo(current_infile)
+					var input_stereo = await is_stereo(current_infiles.values()[0])
 					if input_stereo == true: 
 						#audio file is stereo and needs to be split for pvoc processing
 						var pvoc_stereo_files = []
@@ -357,7 +358,7 @@ func run_thread_with_branches():
 						output_files[node_name] = pvoc_stereo_files
 					else: 
 						#input file is mono run through process
-						var makeprocess = await make_process(node, process_count, current_infile, slider_data)
+						var makeprocess = await make_process(node, process_count, current_infiles.values(), slider_data)
 						# run the command
 						await run_command(makeprocess[0], makeprocess[3])
 						await get_tree().process_frame

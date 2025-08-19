@@ -3952,6 +3952,66 @@
 	"subcategory": "convert",
 	"title": "Resynthesise"
   },
+  "formants_vocode": {
+	"category": "pvoc",
+	"description": "This process takes the spectral envelope of the second inlet and imposes it over the sound in the first inlet. This allows you to create a blend of the two sounds where the timbre of the first inlet will take on the shape and emphasis of the second.",
+	"inputtype": "[1, 1]",
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "Formant Bands",
+		"paramdescription": "The number of frequency bands to identify and impose on the sound",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "-p",
+		"minrange": 1.0,
+		"maxrange": 12.0,
+		"step": 1.0,
+		"value": 8.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param2": {
+		"paramname": "High Pass Cutoff",
+		"paramdescription": "Removes all frequencies below this point (in Hz)",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": true,
+		"max": false,
+		"flag": "-l",
+		"minrange": 5.0,
+		"maxrange": 20000.0,
+		"step": 0.01,
+		"value": 5.0,
+		"exponential": true,
+		"uitype": "hslider"
+	  },
+	  "param3": {
+		"paramname": "Low Pass Cutoff",
+		"paramdescription": "Removes all frequencies above this point (in Hz)",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": true,
+		"flag": "-h",
+		"minrange": 5.0,
+		"maxrange": 20000.0,
+		"step": 0.01,
+		"value": 20000.0,
+		"exponential": true,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Impose the formants of one sound onto another",
+	"stereo": false,
+	"subcategory": "formants",
+	"title": "Formant Vocode"
+  },
   "strange_glis_2": {
 	"category": "pvoc",
 	"description": "Extracts the spectral contour of the sound retaining any spectral articulation, such as patterns of speech, but replaces the signal by rising (positive values for Glissando Rate) or falling (negative values for Glissando Rate) inharmonic glissandos.",
