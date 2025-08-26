@@ -48,6 +48,11 @@ func run_thread_with_branches():
 	var reverse_graph = {}  # reverse adjacency list (for input lookup)
 	var indegree = {}       # used for topological sort
 	var all_nodes = {}      # map of node name -> GraphNode reference
+	
+	#store input nodes for sample rate and stereo matching
+	var input_nodes = []
+	var intermediate_files = [] # Files to delete later
+	var breakfiles = [] #breakfiles to delete later
 
 	log_console("Mapping thread.", true)
 	await get_tree().process_frame  # Let UI update
@@ -114,13 +119,23 @@ func run_thread_with_branches():
 				indegree[name] = 0  # Start with zero incoming edges
 				if child.get_meta("command") == "inputfile":
 					inputcount -= 1
+					input_nodes.append(child)
 					if child.get_node("AudioPlayer").get_meta("trimfile"):
 						inputcount += 1
 	#do calculations for progress bar
 	var progress_step
 	progress_step = 100 / (graph.size() + 3 + inputcount)
 
-	
+	#check if input file sample rates and channel count match
+	if input_nodes.size() > 1:
+		var match_sample_rates = await match_input_file_sample_rates(input_nodes)
+		var stereo = []
+		if control_script.delete_intermediate_outputs:
+			for f in match_sample_rates:
+				intermediate_files.append(f)
+		
+
+		
 
 	# Step 2: Build graph relationships from connections
 	if process_cancelled:
@@ -160,9 +175,6 @@ func run_thread_with_branches():
 		return
 	progress_bar.value = progress_step
 	# Step 4: Start processing audio
-	var batch_lines = []        # Holds all batch file commands
-	var intermediate_files = [] # Files to delete later
-	var breakfiles = [] #breakfiles to delete later
 
 	# Dictionary to keep track of each node's output file
 	var output_files = {}
@@ -245,8 +257,12 @@ func run_thread_with_branches():
 		#check if node is some form of input node
 		if node.get_input_port_count() == 0:
 			if node.get_meta("command") == "inputfile":
+				var loadedfile
 				#get the inputfile from the nodes meta
-				var loadedfile = node.get_node("AudioPlayer").get_meta("inputfile")
+				if node.get_node("AudioPlayer").get_meta("upsampled"):
+					loadedfile = node.get_node("AudioPlayer").get_meta("upsampled_file")
+				else:
+					loadedfile = node.get_node("AudioPlayer").get_meta("inputfile")
 				#get wether trim has been enabled
 				var trimfile = node.get_node("AudioPlayer").get_meta("trimfile")
 				
@@ -530,7 +546,7 @@ func run_thread_with_branches():
 		final_output_dir = single_output
 		intermediate_files.erase(single_output)
 	progress_bar.value += progress_step
-	# CLEANUP: Delete intermediate files after processing and rename final output
+	# CLEANUP: Delete intermediate files after processing, rename final output and reset upsampling meta
 	if process_cancelled:
 		progress_label.text = "Thread Stopped"
 		log_console("[b]Thread Stopped[/b]", true)
@@ -553,6 +569,7 @@ func run_thread_with_branches():
 			fixed_path = fixed_path.replace("/", "\\")
 		await run_command(delete_cmd, [fixed_path])
 		await get_tree().process_frame
+		
 		
 	var final_filename = "%s.wav" % Global.outfile
 	var final_output_dir_fixed_path = final_output_dir
@@ -645,7 +662,45 @@ func merge_many_files(inlet_id: int, process_count: int, input_files: Array) -> 
 		log_console("Failed to to merge files to" + merge_output, true)
 	
 	return [merge_output, converted_files]
+	
+func match_input_file_sample_rates(input_nodes: Array) -> Array:
+	var sample_rates := []
+	var input_files := [] #used to track input files so that the same file is not upsampled more than once should it be loaded into more than one input node
+	var converted_files := []
+	
+	for node in input_nodes:
+		#get the sample rate from the meta and add to an array
+		sample_rates.append(node.get_node("AudioPlayer").get_meta("sample_rate"))
+		#set upsampled meta to false to allow for repeat runs of thread
+		node.get_node("AudioPlayer").set_meta("upsampled", false)
+	
+	#Check if all sample rates are the same
+	if sample_rates.all(func(v): return v == sample_rates[0]):
+		pass
+	else:
+		#if not find the highest sample rate
+		var highest_sample_rate = sample_rates.max()
+		log_console("Different sample rates found in input files, upsampling files to match highest sample rate /(" + str(highest_sample_rate) + "kHz/) before processing.", true)
+		#move through all input files and compare match their index to the sample_rate array
+		for node in input_nodes:
+			#check if sample rate of current node is less than the highest sample rate
+			if node.get_node("AudioPlayer").get_meta("sample_rate") < highest_sample_rate:
+				var input_file = node.get_node("AudioPlayer").get_meta("inputfile")
+				#up sample it to the highest sample rate if so
+				var upsample_output = Global.outfile + "_" + input_file.get_file().get_slice(".wav", 0) + "_" + str(highest_sample_rate) + ".wav"
+				#check if file has previously been upsampled and if not upsample it
+				if !input_files.has(input_file):
+					input_files.append(input_file)
+					await run_command(control_script.cdpprogs_location + "/housekeep", ["respec", "1", input_file, upsample_output, str(highest_sample_rate)])
+					#add to converted files for cleanup if needed
+					converted_files.append(upsample_output)
+				node.get_node("AudioPlayer").set_meta("upsampled", true)
+				node.get_node("AudioPlayer").set_meta("upsampled_file", upsample_output)
+				
+	return converted_files
 
+
+#need to remove this function as not needed
 func match_file_sample_rates(inlet_id: int, process_count: int, input_files: Array) -> Array:
 	var sample_rates := []
 	var converted_files := []

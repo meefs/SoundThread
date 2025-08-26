@@ -76,6 +76,9 @@ func _on_file_selected(path: String):
 	else:
 		$EndLabel.text = "00:00.00"
 	set_meta("inputfile", path)
+	set_meta("sample_rate", audio_player.stream.get_mix_rate())
+	set_meta("stereo", audio_player.stream.is_stereo())
+	set_meta("upsampled", false)
 	reset_playback()
 	
 	#output signal that the input has loaded and it is safe to continue with running thread
