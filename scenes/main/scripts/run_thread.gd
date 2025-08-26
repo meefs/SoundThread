@@ -51,6 +51,8 @@ func run_thread_with_branches():
 	
 	#store input nodes for sample rate and stereo matching
 	var input_nodes = []
+	var nodes_with_sample_rates = []
+	var processing_sample_rate = 0 #sample rate that processing is being done at after input file is normalised, if this stays at 0 only synthesis exists in thread and highest value from that should be used
 	var intermediate_files = [] # Files to delete later
 	var breakfiles = [] #breakfiles to delete later
 
@@ -122,6 +124,9 @@ func run_thread_with_branches():
 					input_nodes.append(child)
 					if child.get_node("AudioPlayer").get_meta("trimfile"):
 						inputcount += 1
+				#check if node has internal sample rate, e.g. synthesis nodes and add to array for checking if this is set correctly
+				if child.has_meta("node_sets_sample_rate"):
+					nodes_with_sample_rates.append(child)
 	#do calculations for progress bar
 	var progress_step
 	progress_step = 100 / (graph.size() + 3 + inputcount)
@@ -131,10 +136,46 @@ func run_thread_with_branches():
 		var match_sample_rates = await match_input_file_sample_rates(input_nodes)
 		var stereo = []
 		if control_script.delete_intermediate_outputs:
-			for f in match_sample_rates:
+			for f in match_sample_rates[0]:
 				intermediate_files.append(f)
+		processing_sample_rate = match_sample_rates[1]
+	elif input_nodes.size() == 1:
+		processing_sample_rate = input_nodes[0].get_node("AudioPlayer").get_meta("sample_rate")
 		
-
+	#check if the sample rate of synthesis nodes match and if they match any files in the input file nodes
+	if (nodes_with_sample_rates.size() > 0 and input_nodes.size() > 0) or nodes_with_sample_rates.size() > 1:
+		var sythesis_sample_rates = []
+		var highest_synthesis_sample_rate
+		var final_synthesis_sample_rate
+		var change_synthesis_sample_rate
+		
+		for node in nodes_with_sample_rates:
+			#get the sample rate from the meta and add to an array
+			var sample_rate_option_button = node.get_node("samplerate")
+			sythesis_sample_rates.append(int(sample_rate_option_button.get_item_text(sample_rate_option_button.selected)))
+		
+		#Check if all sample rates are the same
+		if sythesis_sample_rates.all(func(v): return v == sythesis_sample_rates[0]):
+			highest_synthesis_sample_rate = sythesis_sample_rates[0]
+			if processing_sample_rate != 0 and processing_sample_rate != highest_synthesis_sample_rate:
+				change_synthesis_sample_rate = true
+				final_synthesis_sample_rate = processing_sample_rate
+		else:
+			#if not find the highest sample rate
+			change_synthesis_sample_rate = true
+			highest_synthesis_sample_rate = sythesis_sample_rates.max()
+			if processing_sample_rate != 0 and processing_sample_rate != highest_synthesis_sample_rate:
+				final_synthesis_sample_rate = processing_sample_rate
+			else:
+				final_synthesis_sample_rate = highest_synthesis_sample_rate
+		
+		if change_synthesis_sample_rate:
+			log_console("Sample rate in synthesis nodes do not match the rest of the thread. Adjusting values to " + str(final_synthesis_sample_rate) + "kHz", true)
+			for node in nodes_with_sample_rates:
+				#get the sample rate from the meta and add to an array
+				node.get_node("samplerate").set_meta("adjusted_sample_rate", true)
+				node.get_node("samplerate").set_meta("new_sample_rate", final_synthesis_sample_rate)
+			
 		
 
 	# Step 2: Build graph relationships from connections
@@ -667,6 +708,7 @@ func match_input_file_sample_rates(input_nodes: Array) -> Array:
 	var sample_rates := []
 	var input_files := [] #used to track input files so that the same file is not upsampled more than once should it be loaded into more than one input node
 	var converted_files := []
+	var highest_sample_rate
 	
 	for node in input_nodes:
 		#get the sample rate from the meta and add to an array
@@ -676,11 +718,12 @@ func match_input_file_sample_rates(input_nodes: Array) -> Array:
 	
 	#Check if all sample rates are the same
 	if sample_rates.all(func(v): return v == sample_rates[0]):
+		highest_sample_rate = sample_rates[0]
 		pass
 	else:
 		#if not find the highest sample rate
-		var highest_sample_rate = sample_rates.max()
-		log_console("Different sample rates found in input files, upsampling files to match highest sample rate /(" + str(highest_sample_rate) + "kHz/) before processing.", true)
+		highest_sample_rate = sample_rates.max()
+		log_console("Different sample rates found in input files, upsampling files to match highest sample rate (" + str(highest_sample_rate) + "kHz) before processing.", true)
 		#move through all input files and compare match their index to the sample_rate array
 		for node in input_nodes:
 			#check if sample rate of current node is less than the highest sample rate
@@ -697,7 +740,7 @@ func match_input_file_sample_rates(input_nodes: Array) -> Array:
 				node.get_node("AudioPlayer").set_meta("upsampled", true)
 				node.get_node("AudioPlayer").set_meta("upsampled_file", upsample_output)
 				
-	return converted_files
+	return [converted_files, highest_sample_rate]
 
 
 #need to remove this function as not needed
@@ -778,6 +821,10 @@ func _get_slider_values_ordered(node: Node) -> Array:
 		elif child is OptionButton:
 			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
 			var value = child.get_item_text(child.selected)
+			#check if there has been a sample rate mismatch in the thread and adjust the this parameter to match the threads sample rate
+			if child.has_meta("adjusted_sample_rate") and child.get_meta("adjusted_sample_rate"):
+				value = str(child.get_meta("new_sample_rate"))
+				child.set_meta("adjusted_sample_rate", false)
 			results.append(["optionbutton", flag, value])
 		#call this function recursively to find any nested sliders in scenes
 		if child.get_child_count() > 0:

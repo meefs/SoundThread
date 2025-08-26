@@ -226,7 +226,11 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						var optionbutton_tooltip  = param_data.get("paramdescription", "")
 						
 						#name optionbutton
-						optionbutton.name = optionbutton_label.replace(" ", "")
+						optionbutton.name = optionbutton_label.replace(" ", "").to_lower()
+						
+						#add meta flag if this is a sample rate selector for running thread sample rate checks
+						if optionbutton.name == "samplerate":
+							graphnode.set_meta("node_sets_sample_rate", true)
 						
 						#get optionbutton properties
 						var options = JSON.parse_string(param_data.get("step", ""))
