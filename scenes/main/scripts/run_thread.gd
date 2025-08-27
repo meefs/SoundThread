@@ -53,7 +53,7 @@ func run_thread_with_branches():
 	var input_nodes = []
 	var nodes_with_sample_rates = []
 	var processing_sample_rate = 0 #sample rate that processing is being done at after input file is normalised, if this stays at 0 only synthesis exists in thread and highest value from that should be used
-	var processing_bit_depth = 0
+	var processing_bit_depth = 1 #stores the file type and bit-depth in the format used by the copysfx cdp function 1: 16-bit 2: 32-bit int 3: 32-bit float 4: 24-bit
 	var intermediate_files = [] # Files to delete later
 	var breakfiles = [] #breakfiles to delete later
 
@@ -143,7 +143,8 @@ func run_thread_with_branches():
 		processing_bit_depth = match_input_files[2]
 	elif input_nodes.size() == 1:
 		processing_sample_rate = input_nodes[0].get_node("AudioPlayer").get_meta("sample_rate")
-		processing_bit_depth = get_soundfile_properties(input_nodes[0].get_node("AudioPlayer").get_meta("inputfile"))[3]
+		var soundfile_properties = get_soundfile_properties(input_nodes[0].get_node("AudioPlayer").get_meta("inputfile"))
+		processing_bit_depth = classify_format(soundfile_properties[0], soundfile_properties[3])
 	
 	
 	#check if the sample rate of synthesis nodes match and if they match any files in the input file nodes
@@ -174,7 +175,7 @@ func run_thread_with_branches():
 				final_synthesis_sample_rate = highest_synthesis_sample_rate
 		
 		if change_synthesis_sample_rate:
-			log_console("Sample rate in synthesis nodes do not match the rest of the thread. Adjusting values to " + str(final_synthesis_sample_rate) + "kHz", true)
+			log_console("Sample rate in synthesis nodes do not match the rest of the thread. Adjusting values to " + str(final_synthesis_sample_rate) + "Hz", true)
 			for node in nodes_with_sample_rates:
 				#get the sample rate from the meta and add to an array
 				node.get_node("samplerate").set_meta("adjusted_sample_rate", true)
@@ -342,9 +343,19 @@ func run_thread_with_branches():
 				await get_tree().process_frame
 				var output_file = makeprocess[1]
 				
-
-				# Store output file path for this node
-				output_files[node_name] = output_file
+				#check if bitdepth matches other files in thread and convert if needed
+				var soundfile_properties = get_soundfile_properties(output_file)
+				if processing_bit_depth != classify_format(soundfile_properties[0], soundfile_properties[3]):
+					var bit_convert_output = output_file.get_basename() + "_bit_depth_convert.wav"
+					await run_command(control_script.cdpprogs_location + "/copysfx", ["-h0", "-s" + str(processing_bit_depth), output_file, bit_convert_output])
+					#store converted output file path for this node
+					output_files[node_name] = bit_convert_output
+					#mark for cleanup if needed
+					if control_script.delete_intermediate_outputs:
+						intermediate_files.append(bit_convert_output)
+				else:
+					# Store original output file path for this node
+					output_files[node_name] = output_file
 
 				# Mark file for cleanup if needed
 				if control_script.delete_intermediate_outputs:
@@ -760,7 +771,7 @@ func match_input_file_sample_rates_and_bit_depths(input_nodes: Array) -> Array:
 	else:
 		#if not find the highest sample rate
 		highest_sample_rate = sample_rates.max()
-		log_console("Different sample rates found in input files, upsampling files to match highest sample rate (" + str(highest_sample_rate) + "kHz) before processing.", true)
+		log_console("Different sample rates found in input files, upsampling files to match highest sample rate (" + str(highest_sample_rate) + "Hz) before processing.", true)
 		#move through all input files and compare match their index to the sample_rate array
 		for node in input_nodes:
 			#check if sample rate of current node is less than the highest sample rate
