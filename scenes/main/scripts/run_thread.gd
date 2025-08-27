@@ -32,6 +32,8 @@ func init(main_node: Node, progresswindow: Window, progresslabel: Label, progres
 func run_thread_with_branches():
 	process_cancelled = false
 	process_successful = true
+	progress_bar.value = 0
+	progress_label.text = "Initialising Inputs"
 	# Detect platform: Determine if the OS is Windows
 	var is_windows := OS.get_name() == "Windows"
 	
@@ -226,7 +228,7 @@ func run_thread_with_branches():
 	var output_files = {}
 	var process_count = 0
 
-	var current_infile
+	#var current_infile
 
 	# Iterate over the processing nodes in topological order
 	for node_name in sorted:
@@ -295,7 +297,6 @@ func run_thread_with_branches():
 			for key in current_infiles.keys():
 				current_infiles[key] = matched_files[idx]
 				idx += 1
-		
 		
 		#check if node is some form of input node
 		if node.get_input_port_count() == 0:
@@ -369,26 +370,18 @@ func run_thread_with_branches():
 			var slider_data = _get_slider_values_ordered(node)
 			
 			if node.get_slot_type_right(0) == 1: #detect if process outputs pvoc data
-				if typeof(current_infile) == TYPE_ARRAY:
-					#check if infile is an array meaning that the last pvoc process was run in dual mono mode
-					# Process left and right seperately
-					var pvoc_stereo_files = []
-					
-					for infile in current_infile:
-						var makeprocess = await make_process(node, process_count, infile, slider_data)
-						# run the command
-						await run_command(makeprocess[0], makeprocess[3])
-						await get_tree().process_frame
-						var output_file = makeprocess[1]
-						pvoc_stereo_files.append(output_file)
-						
-						# Mark file for cleanup if needed
-						if control_script.delete_intermediate_outputs:
-							for file in makeprocess[2]:
-								breakfiles.append(file)
-							intermediate_files.append(output_file)
-
-						process_count += 1
+				if is_pvoc_stereo(current_infiles): #check if infiles contain an array meaning at least one input pvoc process has be processed in dual mono mode
+					var split_files = await process_dual_mono_pvoc(current_infiles, node, process_count, slider_data)
+					var pvoc_stereo_files = split_files[0]
+								
+					# Mark file for cleanup if needed
+					if control_script.delete_intermediate_outputs:
+						for file in split_files[1]:
+							breakfiles.append(file)
+						for file in pvoc_stereo_files:
+							intermediate_files.append(file)
+							
+					process_count += 1
 						
 					output_files[node_name] = pvoc_stereo_files
 				else:
@@ -396,35 +389,32 @@ func run_thread_with_branches():
 					if input_stereo == true: 
 						#audio file is stereo and needs to be split for pvoc processing
 						var pvoc_stereo_files = []
-						##Split stereo to c1/c2
-						await run_command(control_script.cdpprogs_location + "/housekeep",["chans", "2", current_infile])
-				
-						# Process left and right seperately
-						for channel in ["c1", "c2"]:
-							var dual_mono_file = current_infile.get_basename() + "_%s.%s" % [channel, current_infile.get_extension()]
+
+						##Split stereo to c1/c2 and process
+						var split_files = await stereo_split_and_process(current_infiles.values(), node, process_count, slider_data)
+						pvoc_stereo_files = split_files[0]
 							
-							var makeprocess = await make_process(node, process_count, dual_mono_file, slider_data)
-							# run the command
-							await run_command(makeprocess[0], makeprocess[3])
-							await get_tree().process_frame
-							var output_file = makeprocess[1]
-							pvoc_stereo_files.append(output_file)
-							
-							# Mark file for cleanup if needed
-							if control_script.delete_intermediate_outputs:
-								for file in makeprocess[2]:
-									breakfiles.append(file)
-								intermediate_files.append(output_file)
-							
-							#Delete c1 and c2 because they can be in the wrong folder and if the same infile is used more than once
-							#with this stereo process CDP will throw errors in the console even though its fine
+						# Mark file for cleanup if needed
+						if control_script.delete_intermediate_outputs:
+							for file in split_files[1]:
+								breakfiles.append(file)
+							for file in pvoc_stereo_files:
+								intermediate_files.append(file)
+						
+						#Delete c1 and c2 because they can be in the wrong folder and if the same infile is used more than once
+						#with this stereo process CDP will throw errors in the console even though its fine
+						var files_to_delete = split_files[2] + split_files[3]
+						for file in files_to_delete:
 							if is_windows:
-								dual_mono_file = dual_mono_file.replace("/", "\\")
-							await run_command(delete_cmd, [dual_mono_file])
-							process_count += 1
-							
-							# Store output file path for this node
+								file = file.replace("/", "\\")
+							await run_command(delete_cmd, [file])
+						
+						#advance process count to match the advancement in the stereo_split_and_process function
+						process_count += 1
+						
+						# Store output file path for this node
 						output_files[node_name] = pvoc_stereo_files
+						
 					else: 
 						#input file is mono run through process
 						var makeprocess = await make_process(node, process_count, current_infiles.values(), slider_data)
@@ -447,28 +437,19 @@ func run_thread_with_branches():
 				
 			else: 
 				#Process outputs audio
-				#check if this is the last pvoc process in a stereo processing chain
-				if node.get_meta("command") == "pvoc_synth" and typeof(current_infile) == TYPE_ARRAY:
-				
-					#check if infile is an array meaning that the last pvoc process was run in dual mono mode
-					# Process left and right seperately
-					var pvoc_stereo_files = []
-					
-					for infile in current_infile:
-						var makeprocess = await make_process(node, process_count, infile, slider_data)
-						# run the command
-						await run_command(makeprocess[0], makeprocess[3])
-						await get_tree().process_frame
-						var output_file = makeprocess[1]
-						pvoc_stereo_files.append(output_file)
-						
-						# Mark file for cleanup if needed
-						if control_script.delete_intermediate_outputs:
-							for file in makeprocess[2]:
-								breakfiles.append(file)
-							intermediate_files.append(output_file)
-
-						process_count += 1
+				#check if this is the last pvoc process in a stereo processing chain and check if infile is an array meaning that the last pvoc process was run in dual mono mode
+				if node.get_meta("command") == "pvoc_synth" and is_pvoc_stereo(current_infiles):
+					var split_files = await process_dual_mono_pvoc(current_infiles, node, process_count, slider_data)
+					var pvoc_stereo_files = split_files[0]
+								
+					# Mark file for cleanup if needed
+					if control_script.delete_intermediate_outputs:
+						for file in split_files[1]:
+							breakfiles.append(file)
+						for file in pvoc_stereo_files:
+							intermediate_files.append(file)
+							
+					process_count += 1
 						
 						
 					#interleave left and right
@@ -482,9 +463,10 @@ func run_thread_with_branches():
 						intermediate_files.append(output_file)
 				elif node.get_meta("command") == "preview":
 					var preview_audioplayer = node.get_child(1)
-					preview_audioplayer._on_file_selected(current_infile)
-					if current_infile in intermediate_files:
-						intermediate_files.erase(current_infile)
+					var preview_file = current_infiles.values()[0]
+					preview_audioplayer._on_file_selected(preview_file)
+					if preview_file in intermediate_files:
+						intermediate_files.erase(preview_file)
 				else:
 					#Detect if input file is mono or stereo
 					var input_stereo = await is_stereo(current_infiles.values()[0])
@@ -508,7 +490,7 @@ func run_thread_with_branches():
 								intermediate_files.append(output_file)
 
 						else: #audio file is stereo and process is mono, split stereo, process and recombine
-							##Split stereo to c1/c2
+							##Split stereo to c1/c2 and process
 							var split_files = await stereo_split_and_process(current_infiles.values(), node, process_count, slider_data)
 							var dual_mono_output = split_files[0]
 								
@@ -638,6 +620,8 @@ func run_thread_with_branches():
 	progress_bar.value = 100.0
 	var interface_settings = ConfigHandler.load_interface_settings() #checks if close console is enabled and closes console on a success
 	progress_window.hide()
+	progress_bar.value = 0
+	progress_label.text = ""
 	if interface_settings.auto_close_console and process_successful == true:
 		console_window.hide()
 
@@ -669,12 +653,46 @@ func stereo_split_and_process(files: Array, node: Node, process_count: int, slid
 	#return the two output files, any breakfiles generated and the split files for deletion
 	return [dual_mono_output, intermediate_files, left, right]
 	
+func process_dual_mono_pvoc(current_infiles: Dictionary, node: Node, process_count: int, slider_data: Array) -> Array:
+	match_pvoc_channels(current_infiles) #normalise dictionary to ensure that all entries are dual mono (any mono only processes are duplicated to both left and right)
+	
+	var infiles_left = []
+	var infiles_right = []
+	var pvoc_stereo_files = []
+	var intermediate_files = []
+	
+	# extract left and right infiles from dictionary
+	for value in current_infiles.values():
+		infiles_left.append(value[0])
+		infiles_right.append(value[1])
+		
+	for infiles in [infiles_left, infiles_right]:
+		var makeprocess = await make_process(node, process_count, infiles, slider_data)
+		# run the command
+		await run_command(makeprocess[0], makeprocess[3])
+		await get_tree().process_frame
+		var output_file = makeprocess[1]
+		pvoc_stereo_files.append(output_file)
+		for file in makeprocess[2]:
+			intermediate_files.append(file)
+		
+		#advance process count to maintain unique file names
+		process_count += 1
+		
+	return [pvoc_stereo_files, intermediate_files]
+	
 func is_stereo(file: String) -> bool:
 	var soundfile_properties = get_soundfile_properties(file)
 	if soundfile_properties[1] == 2:
 		return true
 	else:
 		return false
+
+func is_pvoc_stereo(current_infiles: Dictionary) -> bool:
+	for value in current_infiles.values():
+		if value is Array:
+			return true
+	return false
 
 func get_soundfile_properties(file: String) -> Array:
 	var format
@@ -684,6 +702,9 @@ func get_soundfile_properties(file: String) -> Array:
 	
 	#open the audio file
 	var f = FileAccess.open(file, FileAccess.READ)
+	if f == null:
+		log_console("Could not find file: " + file, true)
+		return [0, 0, 0, 0]  # couldn't open
 	
 	#Skip the RIFF header (12 bytes: "RIFF", file size, "WAVE")
 	f.seek(12)
@@ -716,7 +737,8 @@ func get_soundfile_properties(file: String) -> Array:
 		f.seek(f.get_position() + chunk_size)
 	
 	f.close()
-	return [-1] #no fmt chunk found, invalid wav file
+	log_console("No valid fmt chunk found in wav file, unable to establish, format, channel count, samplerate or bit-depth", true)
+	return [0, 0, 0, 0] #no fmt chunk found, invalid wav file
 		
 #func get_samplerate(file: String) -> int:
 	#var output = await run_command(control_script.cdpprogs_location + "/sfprops", ["-r", file])
@@ -898,7 +920,13 @@ func match_file_channels(inlet_id: int, process_count: int, input_files: Array) 
 
 	return [input_files, converted_files]
 	
-
+func match_pvoc_channels(dict: Dictionary) -> void:
+	#work through dictionary of files and make all entries dual arrays for stereo pvoc processing
+	for key in dict.keys():
+		var value = dict[key]
+		if value is String:
+			dict[key] = [value, value]
+			
 func _get_slider_values_ordered(node: Node) -> Array:
 	var results := []
 	for child in node.get_children():
@@ -1077,7 +1105,7 @@ func write_breakfile(points: Array, path: String):
 			file.store_string(line)
 		file.close()
 	else:
-		print("Failed to open file for writing.")
+		log_console("Failed to open file to write breakfile", true)
 
 func _on_kill_process_button_down() -> void:
 	if process_running and process_info.has("pid"):
@@ -1085,7 +1113,6 @@ func _on_kill_process_button_down() -> void:
 		# Terminate the process by PID
 		OS.kill(process_info["pid"])
 		process_running = false
-		print("Process cancelled.")
 		process_cancelled = true
 
 	
@@ -1157,7 +1184,7 @@ func run_command(command: String, args: Array) -> String:
 		process_info = OS.execute_with_pipe(command, args, false)
 	# Check if the process was successfully started
 	if !process_info.has("pid"):
-		print("Failed to start process.")
+		log_console("Failed to start process]", true)
 		return ""
 	
 	process_running = true
