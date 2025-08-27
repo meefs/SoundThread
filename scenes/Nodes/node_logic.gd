@@ -17,6 +17,11 @@ func _ready() -> void:
 	btn.connect("pressed", Callable(self, "_open_help")) #pass key (process name) when button is pressed
 	titlebar.add_child(btn)
 	
+	if self.has_node("addremoveinlets"):
+		var addremove = self.get_node("addremoveinlets")
+		addremove.add_inlet.connect(add_inlet_to_node)
+		addremove.remove_inlet.connect(remove_inlet_from_node)
+	
 
 func _get_all_hsliders(node: Node) -> Array:
 	#moves through all children recusively to find nested sliders
@@ -60,3 +65,28 @@ func _on_slider_value_changed(value: float, changed_slider: HSlider) -> void:
 
 func _open_help():
 	open_help.emit(self.get_meta("command"), self.title)
+
+func add_inlet_to_node():
+	var inlet_count = self.get_input_port_count()
+	var child_count = self.get_child_count()
+	
+	if child_count < inlet_count + 1:
+		var control = Control.new()
+		control.custom_minimum_size.y = 57
+		control.set_meta("dummynode", true)
+		add_child(control)
+		move_child(get_node("addremoveinlets"), get_child_count() - 1)
+	
+	set_slot(inlet_count, true, get_input_port_type(0), get_input_port_color(0), false, 0, get_input_port_color(0))
+	
+func remove_inlet_from_node():
+	var inlet_count = self.get_input_port_count()
+	var child_count = self.get_child_count()
+	
+	set_slot(inlet_count - 1, false, get_input_port_type(0), get_input_port_color(0), false, 0, get_input_port_color(0))
+	
+	if get_child(child_count - 2).has_meta("dummynode"):
+		get_child(child_count - 2).queue_free()
+		await get_tree().process_frame
+		update_minimum_size()
+		size.y = get_combined_minimum_size().y

@@ -2612,6 +2612,35 @@
 	"subcategory": "misc",
 	"title": "Invert Polarity"
   },
+  "sfedit_join": {
+	"category": "time",
+	"description": "This process takes each the sound at the first inlet and appends the sound on the second inlet to the end of the file. This is repeated for all subsequent inlets.\n",
+	"inputtype": "[0, 0]",
+	"outputisstereo": false,
+	"outputtype": "[0]",
+	"parameters": {
+	  "param1": {
+		"paramname": "",
+		"paramdescription": "",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 2.0,
+		"maxrange": -1.0,
+		"step": "",
+		"value": "",
+		"exponential": false,
+		"uitype": "addremoveinlets"
+	  }
+	},
+	"short_description": "Append multiple sounds end to end",
+	"stereo": true,
+	"subcategory": "misc",
+	"title": "Join"
+  },
   "sfedit_excise_1": {
 	"category": "time",
 	"description": "Unlike the trim function, this process removes the selected segment of audio out of the audio file keeping only the audio that is outside of the start and end points. Once it has removed the segment of audio it puts the start and end of the file together to close the gap. ",

@@ -9,6 +9,7 @@ var copied_nodes_data = [] #stores node data on ctrl+c
 var copied_connections = [] #stores all connections on ctrl+c
 var node_data = {} #stores json with all nodes in it
 var valueslider = preload("res://scenes/Nodes/valueslider.tscn") #slider scene for use in nodes
+var addremoveinlets = preload("res://scenes/Nodes/addremoveinlets.tscn") #add remove inlets scene for use in nodes
 var node_logic = preload("res://scenes/Nodes/node_logic.gd") #load the script logic
 
 
@@ -226,12 +227,25 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						#set flag meta
 						optionbutton.set_meta("flag", flag)
 						
-						#add margin size for ertical spacing
+						#add margin size for vertical spacing
 						margin.add_theme_constant_override("margin_bottom", 4)
 						
 						graphnode.add_child(label)
 						graphnode.add_child(optionbutton)
 						graphnode.add_child(margin)
+					elif param_data.get("uitype", "") == "addremoveinlets":
+						var addremove = addremoveinlets.instantiate()
+						addremove.name = "addremoveinlets"
+						
+						#get parameters
+						var minrange = param_data.get("minrange", 0)
+						var maxrange = param_data.get("maxrange", 10)
+						
+						#set meta
+						addremove.set_meta("min", minrange)
+						addremove.set_meta("max", maxrange)
+						
+						graphnode.add_child(addremove)
 				
 				control_script.changesmade = true
 			
@@ -241,6 +255,8 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 				var control = Control.new()
 				control.custom_minimum_size.y = 57
 				graphnode.add_child(control)
+				if graphnode.has_node("addremoveinlets"):
+					graphnode.move_child(graphnode.get_node("addremoveinlets"), graphnode.get_child_count() - 1)
 			
 			#add ports
 			for i in range(portcount):
