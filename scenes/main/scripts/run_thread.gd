@@ -53,6 +53,7 @@ func run_thread_with_branches():
 	var input_nodes = []
 	var nodes_with_sample_rates = []
 	var processing_sample_rate = 0 #sample rate that processing is being done at after input file is normalised, if this stays at 0 only synthesis exists in thread and highest value from that should be used
+	var processing_bit_depth = 0
 	var intermediate_files = [] # Files to delete later
 	var breakfiles = [] #breakfiles to delete later
 
@@ -131,18 +132,20 @@ func run_thread_with_branches():
 	var progress_step
 	progress_step = 100 / (graph.size() + 3 + inputcount)
 
-	#check if input file sample rates match
+	#check if input file sample rates and bit depths match
 	if input_nodes.size() > 1:
-		var match_sample_rates = await match_input_file_sample_rates(input_nodes)
+		var match_input_files = await match_input_file_sample_rates_and_bit_depths(input_nodes)
 		var stereo = []
 		if control_script.delete_intermediate_outputs:
-			for f in match_sample_rates[0]:
+			for f in match_input_files[0]:
 				intermediate_files.append(f)
-		processing_sample_rate = match_sample_rates[1]
+		processing_sample_rate = match_input_files[1]
+		processing_bit_depth = match_input_files[2]
 	elif input_nodes.size() == 1:
 		processing_sample_rate = input_nodes[0].get_node("AudioPlayer").get_meta("sample_rate")
-		
-		
+		processing_bit_depth = get_soundfile_properties(input_nodes[0].get_node("AudioPlayer").get_meta("inputfile"))[3]
+	
+	
 	#check if the sample rate of synthesis nodes match and if they match any files in the input file nodes
 	if (nodes_with_sample_rates.size() > 0 and input_nodes.size() > 0) or nodes_with_sample_rates.size() > 1:
 		var sythesis_sample_rates = []
@@ -704,10 +707,10 @@ func get_soundfile_properties(file: String) -> Array:
 	f.close()
 	return [-1] #no fmt chunk found, invalid wav file
 		
-func get_samplerate(file: String) -> int:
-	var output = await run_command(control_script.cdpprogs_location + "/sfprops", ["-r", file])
-	output = int(output.strip_edges())
-	return output
+#func get_samplerate(file: String) -> int:
+	#var output = await run_command(control_script.cdpprogs_location + "/sfprops", ["-r", file])
+	#output = int(output.strip_edges())
+	#return output
 
 func merge_many_files(inlet_id: int, process_count: int, input_files: Array) -> Array:
 	var merge_output = "%s_merge_%d_%d.wav" % [Global.outfile.get_basename(), inlet_id, process_count]
@@ -730,15 +733,23 @@ func merge_many_files(inlet_id: int, process_count: int, input_files: Array) -> 
 	
 	return [merge_output, converted_files]
 	
-func match_input_file_sample_rates(input_nodes: Array) -> Array:
+func match_input_file_sample_rates_and_bit_depths(input_nodes: Array) -> Array:
 	var sample_rates := []
 	var input_files := [] #used to track input files so that the same file is not upsampled more than once should it be loaded into more than one input node
 	var converted_files := []
 	var highest_sample_rate
+	var bit_depths:= []
+	var file_types:= []
+	var highest_bit_depth
+	var int_float
+	var final_format
 	
+	#get the sample rate, bit depth and file type (int/float) for each file and add to arrays
 	for node in input_nodes:
-		#get the sample rate from the meta and add to an array
-		sample_rates.append(node.get_node("AudioPlayer").get_meta("sample_rate"))
+		var soundfile_props = get_soundfile_properties(node.get_node("AudioPlayer").get_meta("inputfile"))
+		file_types.append(soundfile_props[0])
+		sample_rates.append(soundfile_props[2])
+		bit_depths.append(soundfile_props[3])
 		#set upsampled meta to false to allow for repeat runs of thread
 		node.get_node("AudioPlayer").set_meta("upsampled", false)
 	
@@ -766,8 +777,57 @@ func match_input_file_sample_rates(input_nodes: Array) -> Array:
 				node.get_node("AudioPlayer").set_meta("upsampled", true)
 				node.get_node("AudioPlayer").set_meta("upsampled_file", upsample_output)
 				
-	return [converted_files, highest_sample_rate]
+	input_files = [] #clear input files array for reuse with bitdepths
+	
+	#check if all file types and bit-depths are the same
+	if file_types.all(func(v): return v == sample_rates[0]) and bit_depths.all(func(v): return v == sample_rates[0]):
+		highest_bit_depth = bit_depths[0]
+		int_float = file_types[0]
+		#convert this to the value cdp uses in copysfx for potential use with synthesis nodes later
+		final_format = classify_format(int_float, highest_bit_depth)
+	else:
+		highest_bit_depth = bit_depths.max()
+		int_float = file_types.max()
+		#convert this to the value cdp needs to convert file types using copysfx
+		final_format = classify_format(int_float, highest_bit_depth)
+		log_console("Different bit-depths found in input files, converting files to match highest bit-depth (" + str(highest_bit_depth) + "-bit) before processing.", true)
+		#move through all input file nodes and compare them to the highest bit depth and file type
+		var index = 0
+		for node in input_nodes:
+			if classify_format(file_types[index], bit_depths[index]) != final_format:
+				var input_file
+				#check if input file has already been upsampled and respec that file instead
+				if node.get_node("AudioPlayer").get_meta("upsampled") == true:
+					input_file = node.get_node("AudioPlayer").get_meta("upsampled_file")
+				else:
+					input_file = node.get_node("AudioPlayer").get_meta("inputfile")
+				#build unique output name
+				var bit_convert_output = Global.outfile + "_" + input_file.get_file().get_slice(".wav", 0) + "_" + str(highest_bit_depth) + "-bit" + ".wav"
+				#check if this file has already been respeced (two input nodes with the same file loaded for some reason)
+				if !input_files.has(input_file):
+					input_files.append(input_file)
+					await run_command(control_script.cdpprogs_location + "/copysfx", ["-h0", "-s" + str(final_format), input_file, bit_convert_output])
+					#add to converted files for cleanup if needed
+					converted_files.append(bit_convert_output)
+				node.get_node("AudioPlayer").set_meta("upsampled", true)
+				node.get_node("AudioPlayer").set_meta("upsampled_file", bit_convert_output)
+			index += 1
+	
+	return [converted_files, highest_sample_rate, final_format]
 
+func classify_format(file_type: int, bit_depth: int) -> int:
+	#takes the bitdepth and file type (int/float) of a wav file and outputs a number that can be used by the cdp process copysfx to respec a files bit-depth
+	match [file_type, bit_depth]:
+		[1, 16]:
+			return 1
+		[1, 32]:
+			return 2
+		[3, 32]:
+			return 3
+		[1, 24]:
+			return 4
+		_:
+			return -1
 
 #need to remove this function as not needed
 #func match_file_sample_rates(inlet_id: int, process_count: int, input_files: Array) -> Array:
