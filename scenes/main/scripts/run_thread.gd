@@ -125,13 +125,13 @@ func run_thread_with_branches():
 					if child.get_node("AudioPlayer").get_meta("trimfile"):
 						inputcount += 1
 				#check if node has internal sample rate, e.g. synthesis nodes and add to array for checking if this is set correctly
-				if child.has_meta("node_sets_sample_rate"):
+				if child.has_meta("node_sets_sample_rate") and child.get_meta("node_sets_sample_rate") == true:
 					nodes_with_sample_rates.append(child)
 	#do calculations for progress bar
 	var progress_step
 	progress_step = 100 / (graph.size() + 3 + inputcount)
 
-	#check if input file sample rates and channel count match
+	#check if input file sample rates match
 	if input_nodes.size() > 1:
 		var match_sample_rates = await match_input_file_sample_rates(input_nodes)
 		var stereo = []
@@ -141,6 +141,7 @@ func run_thread_with_branches():
 		processing_sample_rate = match_sample_rates[1]
 	elif input_nodes.size() == 1:
 		processing_sample_rate = input_nodes[0].get_node("AudioPlayer").get_meta("sample_rate")
+		
 		
 	#check if the sample rate of synthesis nodes match and if they match any files in the input file nodes
 	if (nodes_with_sample_rates.size() > 0 and input_nodes.size() > 0) or nodes_with_sample_rates.size() > 1:
@@ -277,14 +278,11 @@ func run_thread_with_branches():
 			#check all files in dictionary have the same sample rate and channel count and fix if not
 			var all_files = current_infiles.values()
 			
-			var match_sample_rate = await match_file_sample_rates(0, process_count, all_files)
-			var match_channels = await match_file_channels(0, process_count, match_sample_rate[0])
+			var match_channels = await match_file_channels(0, process_count, all_files)
 			var matched_files = match_channels[0]
 			
 			#add intermediate files
 			if control_script.delete_intermediate_outputs:
-				for f in match_sample_rate[1]:
-					intermediate_files.append(f)
 				for f in match_channels[1]:
 					intermediate_files.append(f)
 			
@@ -658,19 +656,53 @@ func stereo_split_and_process(files: Array, node: Node, process_count: int, slid
 	return [dual_mono_output, intermediate_files, left, right]
 	
 func is_stereo(file: String) -> bool:
-	if file != "none":
-		var output = await run_command(control_script.cdpprogs_location + "/sfprops", ["-c", file])
-		output = int(output.strip_edges()) #convert output from cmd to clean int
-		if output == 1:
-			return false
-		elif output == 2:
-			return true
-		elif output == 1026: #ignore pvoc .ana files
-			return false
-		else:
-			log_console("[color=#9c2828]Error: Only mono and stereo files are supported[/color]", true)
-			return false
-	return true
+	var soundfile_properties = get_soundfile_properties(file)
+	if soundfile_properties[1] == 2:
+		return true
+	else:
+		return false
+
+func get_soundfile_properties(file: String) -> Array:
+	var format
+	var channels
+	var samplerate
+	var bitdepth
+	
+	#open the audio file
+	var f = FileAccess.open(file, FileAccess.READ)
+	
+	#Skip the RIFF header (12 bytes: "RIFF", file size, "WAVE")
+	f.seek(12)
+	
+	#read through file until end of file if needed
+	while not f.eof_reached():
+		#read the 4 byte chunk id to identify what this chunk is
+		var chunk_id = f.get_buffer(4).get_string_from_ascii() 
+		#read how big this chunk is so it can be skipped if not the fmt chunk
+		var chunk_size = f.get_32()
+		
+		if chunk_id == "fmt ":
+			#found the format chunk
+			#fmt chunk layout:
+			#  - 2 bytes: Audio format (1 = PCM, 3 = IEEE float, etc.)
+			#  - 2 bytes: Number of channels (1 = mono, 2 = stereo, ...)
+			#  - 4 bytes: Sample rate
+			#  - 4 bytes: Byte rate
+			#  - 2 bytes: Block align
+			#  - 2 bytes: Bits per sample
+			format = f.get_16() #format 2 bytes: 1 = int PCM, 3 = float
+			channels = f.get_16() #num of channels 2 bytes
+			samplerate = f.get_32() #sample rate 4 bytes
+			f.seek(f.get_position() + 6)
+			bitdepth = f.get_16() #bitdepth 2 bytes
+			f.close()
+			
+			return [format, channels, samplerate, bitdepth]
+		# otherwise skip this chunk and continue
+		f.seek(f.get_position() + chunk_size)
+	
+	f.close()
+	return [-1] #no fmt chunk found, invalid wav file
 		
 func get_samplerate(file: String) -> int:
 	var output = await run_command(control_script.cdpprogs_location + "/sfprops", ["-r", file])
@@ -680,12 +712,6 @@ func get_samplerate(file: String) -> int:
 func merge_many_files(inlet_id: int, process_count: int, input_files: Array) -> Array:
 	var merge_output = "%s_merge_%d_%d.wav" % [Global.outfile.get_basename(), inlet_id, process_count]
 	var converted_files := []  # Track any mono->stereo converted files or upsampled files
-
-	
-	#check if sample rates of files to be mixed differ and upsample as required
-	var match_sample_rates = await match_file_sample_rates(inlet_id, process_count, input_files)
-	input_files = match_sample_rates[0]
-	converted_files = match_sample_rates[1]
 	
 	#check if there are a mix of mono and stereo files and interleave mono files if required
 	var match_channels = await match_file_channels(inlet_id, process_count, input_files)
@@ -744,36 +770,36 @@ func match_input_file_sample_rates(input_nodes: Array) -> Array:
 
 
 #need to remove this function as not needed
-func match_file_sample_rates(inlet_id: int, process_count: int, input_files: Array) -> Array:
-	var sample_rates := []
-	var converted_files := []
-	
-	#Get all sample rates
-	for f in input_files:
-		var samplerate = await get_samplerate(f)
-		sample_rates.append(samplerate)
-	
-	#Check if all sample rates are the same
-	if sample_rates.all(func(v): return v == sample_rates[0]):
-		pass
-	else:
-		log_console("Different sample rates found, upsampling files to match highest current sample rate before processing.", true)
-		#if not find the highest sample rate
-		var highest_sample_rate = sample_rates.max()
-		var index = 0
-		#move through all input files and compare match their index to the sample_rate array
-		for f in input_files:
-			#check if sample rate of current file is less than the highest sample rate
-			if sample_rates[index] < highest_sample_rate:
-				#up sample it to the highest sample rate if so
-				var upsample_output = Global.outfile + "_" + str(inlet_id) + "_" + str(process_count) + f.get_file().get_slice(".wav", 0) + "_" + str(highest_sample_rate) + ".wav"
-				await run_command(control_script.cdpprogs_location + "/housekeep", ["respec", "1", f, upsample_output, str(highest_sample_rate)])
-				#replace the file in the input_file index with the new upsampled file
-				input_files[index] = upsample_output
-				converted_files.append(upsample_output)
-				
-			index += 1
-	return [input_files, converted_files]
+#func match_file_sample_rates(inlet_id: int, process_count: int, input_files: Array) -> Array:
+	#var sample_rates := []
+	#var converted_files := []
+	#
+	##Get all sample rates
+	#for f in input_files:
+		#var samplerate = await get_samplerate(f)
+		#sample_rates.append(samplerate)
+	#
+	##Check if all sample rates are the same
+	#if sample_rates.all(func(v): return v == sample_rates[0]):
+		#pass
+	#else:
+		#log_console("Different sample rates found, upsampling files to match highest current sample rate before processing.", true)
+		##if not find the highest sample rate
+		#var highest_sample_rate = sample_rates.max()
+		#var index = 0
+		##move through all input files and compare match their index to the sample_rate array
+		#for f in input_files:
+			##check if sample rate of current file is less than the highest sample rate
+			#if sample_rates[index] < highest_sample_rate:
+				##up sample it to the highest sample rate if so
+				#var upsample_output = Global.outfile + "_" + str(inlet_id) + "_" + str(process_count) + f.get_file().get_slice(".wav", 0) + "_" + str(highest_sample_rate) + ".wav"
+				#await run_command(control_script.cdpprogs_location + "/housekeep", ["respec", "1", f, upsample_output, str(highest_sample_rate)])
+				##replace the file in the input_file index with the new upsampled file
+				#input_files[index] = upsample_output
+				#converted_files.append(upsample_output)
+				#
+			#index += 1
+	#return [input_files, converted_files]
 	
 func match_file_channels(inlet_id: int, process_count: int, input_files: Array) -> Array:
 	var converted_files := []
