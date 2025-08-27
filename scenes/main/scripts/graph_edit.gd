@@ -78,36 +78,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			var parameters = node_info.get("parameters", {})
 			
 			var graphnode = GraphNode.new()
-			for i in range(portcount):
-				#add a number of control nodes equal to whatever is higher input or output ports
-				var control = Control.new()
-				control.custom_minimum_size.y = 20
-				graphnode.add_child(control)
-				
-				#check if input or output is enabled
-				var enable_input = i < inputs.size()
-				var enable_output = i < outputs.size()
-				
-				#get the colour of the port for time or pvoc ins/outs
-				var input_colour = Color("#ffffff90")
-				var output_colour = Color("#ffffff90")
-				
-				if enable_input:
-					if inputs[i] == 1:
-						input_colour = Color("#000000b0")
-				if enable_output:
-					if outputs[i] == 1:
-						output_colour = Color("#000000b0")
-				
-				#enable and set ports
-				if enable_input == true and enable_output == false:
-					graphnode.set_slot(i, true, inputs[i], input_colour, false, 0, output_colour)
-				elif enable_input == false and enable_output == true:
-					graphnode.set_slot(i, false, 0, input_colour, true, outputs[i], output_colour)
-				elif enable_input == true and enable_output == true:
-					graphnode.set_slot(i, true, inputs[i], input_colour, true, outputs[i], output_colour)
-				else:
-					pass
+			
 			#set meta data for the process
 			graphnode.set_meta("command", command)
 			graphnode.set_meta("stereo_input", stereo)
@@ -128,6 +99,8 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			if parameters.is_empty():
 				var noparams = Label.new()
 				noparams.text = "No adjustable parameters"
+				noparams.custom_minimum_size.y = 57
+				noparams.vertical_alignment = 1
 				
 				graphnode.add_child(noparams)
 			else:
@@ -262,6 +235,39 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 				
 				control_script.changesmade = true
 			
+			#add control nodes if number of child nodes is lower than the number of inlets or outlets
+			for i in range(portcount - graphnode.get_child_count()):
+				#add a number of control nodes equal to whatever is higher input or output ports
+				var control = Control.new()
+				control.custom_minimum_size.y = 57
+				graphnode.add_child(control)
+			
+			#add ports
+			for i in range(portcount):
+				#check if input or output is enabled
+				var enable_input = i < inputs.size()
+				var enable_output = i < outputs.size()
+				
+				#get the colour of the port for time or pvoc ins/outs
+				var input_colour = Color("#ffffff90")
+				var output_colour = Color("#ffffff90")
+				
+				if enable_input:
+					if inputs[i] == 1:
+						input_colour = Color("#000000b0")
+				if enable_output:
+					if outputs[i] == 1:
+						output_colour = Color("#000000b0")
+				
+				#enable and set ports
+				if enable_input == true and enable_output == false:
+					graphnode.set_slot(i, true, inputs[i], input_colour, false, 0, output_colour)
+				elif enable_input == false and enable_output == true:
+					graphnode.set_slot(i, false, 0, input_colour, true, outputs[i], output_colour)
+				elif enable_input == true and enable_output == true:
+					graphnode.set_slot(i, true, inputs[i], input_colour, true, outputs[i], output_colour)
+				else:
+					pass
 			
 			graphnode.set_script(node_logic)
 			
