@@ -238,12 +238,14 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						addremove.name = "addremoveinlets"
 						
 						#get parameters
-						var minrange = param_data.get("minrange", 0)
-						var maxrange = param_data.get("maxrange", 10)
+						var min_inlets = param_data.get("minrange", 0)
+						var max_inlets = param_data.get("maxrange", 10)
+						var default_inlets = param_data.get("value", 1)
 						
 						#set meta
-						addremove.set_meta("min", minrange)
-						addremove.set_meta("max", maxrange)
+						addremove.set_meta("min", min_inlets)
+						addremove.set_meta("max", max_inlets)
+						addremove.set_meta("default", default_inlets)
 						
 						graphnode.add_child(addremove)
 				

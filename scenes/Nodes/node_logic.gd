@@ -68,27 +68,39 @@ func _open_help():
 	open_help.emit(self.get_meta("command"), self.title)
 
 func add_inlet_to_node():
+	#called when the + button is pressed on an addremoveinlets node in the graphnode
 	var inlet_count = self.get_input_port_count()
 	var child_count = self.get_child_count()
 	
+	#check if the number of children is less than the new inlet count
 	if child_count < inlet_count + 1:
+		#if so add a new control node for the inlet to connect to
 		var control = Control.new()
 		control.custom_minimum_size.y = 57
+		#give it this meta so it can be found and removed later if needed
 		control.set_meta("dummynode", true)
 		add_child(control)
+		#move the ui for adding/removing inlets to the bottom of the node
 		move_child(get_node("addremoveinlets"), get_child_count() - 1)
 	
+	#add the inlet using the same parameters as the first inlet
 	set_slot(inlet_count, true, get_input_port_type(0), get_input_port_color(0), false, 0, get_input_port_color(0))
 	
 func remove_inlet_from_node():
 	var inlet_count = self.get_input_port_count()
 	var child_count = self.get_child_count()
 	
+	#emit a signal to the graphedit script to remove any connections to this inlet
 	inlet_removed.emit(self.get_name(), child_count - 1)
+	#remove the inlet note inlet idx starts at 0 hence inlet_count -1
 	set_slot(inlet_count - 1, false, get_input_port_type(0), get_input_port_color(0), false, 0, get_input_port_color(0))
 	
+	#check if a dummy control node has been added to make this inlet -2 because bottom node is the ui for adding removing inlets and idx starts at 0
 	if get_child(child_count - 2).has_meta("dummynode"):
+		#remove the dummy node
 		get_child(child_count - 2).queue_free()
+		#wait a frame for it to be removed
 		await get_tree().process_frame
+		#update the size of the graphnode to shrink to fit smaller ui
 		update_minimum_size()
 		size.y = get_combined_minimum_size().y

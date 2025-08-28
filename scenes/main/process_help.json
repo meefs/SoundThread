@@ -2620,8 +2620,8 @@
 	"outputtype": "[0]",
 	"parameters": {
 	  "param1": {
-		"paramname": "",
-		"paramdescription": "",
+		"paramname": "Add/Remove Inlets",
+		"paramdescription": "Adds or removes inlets on the node to allow for more input files",
 		"automatable": false,
 		"outputduration": false,
 		"time": false,
@@ -2631,7 +2631,7 @@
 		"minrange": 2.0,
 		"maxrange": -1.0,
 		"step": "",
-		"value": "",
+		"value": 2.0,
 		"exponential": false,
 		"uitype": "addremoveinlets"
 	  }
