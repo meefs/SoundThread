@@ -34,4 +34,4 @@ Found in the "About" menu
 Add any other context about the problem here.
 
 **Console Output**
-If applicable, paste the output from the console where the error occurred here
+If applicable, paste the full output from the console after the error has occured here
