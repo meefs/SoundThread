@@ -183,8 +183,6 @@ func run_thread_with_branches():
 				node.get_node("samplerate").set_meta("adjusted_sample_rate", true)
 				node.get_node("samplerate").set_meta("new_sample_rate", final_synthesis_sample_rate)
 			
-		
-
 	# Step 2: Build graph relationships from connections
 	if process_cancelled:
 		progress_label.text = "Thread Stopped"
@@ -203,8 +201,7 @@ func run_thread_with_branches():
 	# check for loops
 	var has_cycle := detect_cycles(graph, {})  # pass loop_nodes list later
 	if has_cycle:
-		log_console("[color=#9c2828][b]Error: Thread not valid[/b][/color]", true)
-		log_console("Threads cannot contain loops (except loop-iterator nodes).", true)
+		log_console("[color=#9c2828][b]Error: Thread not valid, Threads cannot contain loops.[/b][/color]", true)
 		if progress_window.visible:
 			progress_window.hide()
 		if !console_window.visible:
@@ -1126,13 +1123,12 @@ func _on_kill_process_button_down() -> void:
 		process_running = false
 		process_cancelled = true
 
-	
 func path_exists_through_all_nodes() -> bool:
 	var graph = {}
 	var input_node_names = []
 	var output_node_name = ""
 
-	# Gather nodes and build empty graph
+	# Gather nodes and initialize adjacency list
 	for child in graph_edit.get_children():
 		if child is GraphNode:
 			var name = str(child.name)
@@ -1144,35 +1140,121 @@ func path_exists_through_all_nodes() -> bool:
 			elif command == "outputfile":
 				output_node_name = name
 
-			graph[name] = []  # Initialize adjacency list
+			graph[name] = []
 
-	# Add connections (edges)
+	# Add edges
 	for conn in graph_edit.get_connection_list():
-		var from = str(conn["from_node"])
-		var to = str(conn["to_node"])
-		if graph.has(from):
-			graph[from].append(to)
+		var from_node = str(conn["from_node"])
+		var to_node = str(conn["to_node"])
+		if graph.has(from_node):
+			graph[from_node].append(to_node)
 
-	# BFS to check if any input node reaches the output
+	# BFS from each input node
 	for input_node in input_node_names:
-		var visited = {}
-		var queue = [input_node]
-
+		var queue = [[input_node]]  # store paths, not just nodes
 		while queue.size() > 0:
-			var current = queue.pop_front()
+			var path = queue.pop_front()
+			var current = path[-1]
 
 			if current == output_node_name:
-				return true  # Path found
-
-			if current in visited:
-				continue
-			visited[current] = true
+				# Candidate path found; validate multi-inlets
+				if validate_path_inlets(path, graph, input_node_names):
+					return true  # fully valid path found
 
 			for neighbor in graph.get(current, []):
-				queue.append(neighbor)
+				if neighbor in path:
+					continue  # avoid cycles
+				var new_path = path.duplicate()
+				new_path.append(neighbor)
+				queue.append(new_path)
 
-	# No path from any input node to output
 	return false
+
+
+# Validate all nodes along a candidate path for multi-inlets
+func validate_path_inlets(path: Array, graph: Dictionary, input_node_names: Array) -> bool:
+	for node_name in path:
+		var child = graph_edit.get_node(node_name)
+		var input_count = child.get_input_port_count()
+		if input_count <= 1:
+			continue  # single-inlet nodes are trivially valid
+
+		# Check each inlet
+		for i in range(input_count):
+			var inlet_valid = false
+			for conn in graph_edit.get_connection_list():
+				if str(conn["to_node"]) == node_name and conn["to_port"] == i:
+					var src_node = str(conn["from_node"])
+					if path_has_input(src_node, graph, input_node_names):
+						inlet_valid = true
+						break
+			if not inlet_valid:
+				return false  # this inlet cannot reach any input
+	return true
+
+
+# Step backwards from a node to see if a path exists to any input node
+func path_has_input(current: String, graph: Dictionary, input_node_names: Array, visited: Dictionary = {}) -> bool:
+	if current in input_node_names:
+		return true
+	if current in visited:
+		return false
+	visited[current] = true
+
+	# Check all nodes that lead to current
+	for conn in graph_edit.get_connection_list():
+		if str(conn["to_node"]) == current:
+			var src_node = str(conn["from_node"])
+			if path_has_input(src_node, graph, input_node_names, visited.duplicate()):
+				return true
+	return false
+
+#func path_exists_through_all_nodes() -> bool:
+	#var graph = {}
+	#var input_node_names = []
+	#var output_node_name = ""
+#
+	## Gather nodes and build empty graph
+	#for child in graph_edit.get_children():
+		#if child is GraphNode:
+			#var name = str(child.name)
+			#var command = child.get_meta("command")
+			#var input = child.get_meta("input")
+#
+			#if input:
+				#input_node_names.append(name)
+			#elif command == "outputfile":
+				#output_node_name = name
+#
+			#graph[name] = []  # Initialize adjacency list
+#
+	## Add connections (edges)
+	#for conn in graph_edit.get_connection_list():
+		#var from = str(conn["from_node"])
+		#var to = str(conn["to_node"])
+		#if graph.has(from):
+			#graph[from].append(to)
+#
+	## BFS to check if any input node reaches the output
+	#for input_node in input_node_names:
+		#var visited = {}
+		#var queue = [input_node]
+#
+		#while queue.size() > 0:
+			#var current = queue.pop_front()
+#
+			#if current == output_node_name:
+				#return true  # Path found
+#
+			#if current in visited:
+				#continue
+			#visited[current] = true
+#
+			#for neighbor in graph.get(current, []):
+				#queue.append(neighbor)
+#
+	## No path from any input node to output
+	#return false
 	
 func log_console(text: String, update: bool) -> void:
 	console_output.append_text(text + "\n \n")
