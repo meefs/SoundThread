@@ -17,6 +17,8 @@ func _ready() -> void:
 	btn.tooltip_text = "Open help for " + self.title
 	btn.connect("pressed", Callable(self, "_open_help")) #pass key (process name) when button is pressed
 	titlebar.add_child(btn)
+	await get_tree().process_frame
+	reset_size()
 	
 	if self.has_node("addremoveinlets"):
 		var addremove = self.get_node("addremoveinlets")
