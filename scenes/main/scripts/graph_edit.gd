@@ -97,9 +97,14 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			graphnode.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom)
 			graphnode.name = command
 			
+			#add one small control node to the top of the node to aline first inlet to top
+			var first_inlet = Control.new()
+			graphnode.add_child(first_inlet)
+			
 			if parameters.is_empty():
 				var noparams = Label.new()
 				noparams.text = "No adjustable parameters"
+				noparams.custom_minimum_size.x = 270
 				noparams.custom_minimum_size.y = 57
 				noparams.vertical_alignment = 1
 				

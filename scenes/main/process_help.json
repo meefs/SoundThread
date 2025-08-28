@@ -4026,33 +4026,67 @@
 	"subcategory": "amplitude",
 	"title": "Gain"
   },
-  "pvoc_anal_1": {
+  "combine_cross": {
 	"category": "pvoc",
-	"description": "This is process is used to analyse a sound and convert it from the time domain to the frequency domain. This allows for processes in the PVOC processes menu to be used to manipulate the sound. Once you are done processing in the frequency domain you can convert it back to audio again using Resynthesise. See Help > Tutorials > PVOC for more.\n",
-	"inputtype": "[0]",
+	"description": "This process replaces the spectral amplitude analysis of the sound on the first inlet with the those of the sound on the second inlet. The weighting slider allows you to adjust how much of the original amplitude envelope should be retained, allowing you to subtly introduce elements or the second or to morph them over time by automating this parameter.",
+	"inputtype": "[1, 1]",
 	"outputisstereo": false,
 	"outputtype": "[1]",
-	"parameters": {},
-	"short_description": "Convert a sound from the time domain to the frequency domain",
+	"parameters": {
+	  "param1": {
+		"paramname": "Weighting",
+		"paramdescription": "The balance between the original sound and the replaced amplitudes",
+		"automatable": true,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "-i",
+		"minrange": 0.0,
+		"maxrange": 1.0,
+		"step": 0.01,
+		"value": 1.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Replace first sound's spectral amplitude with the second's",
 	"stereo": false,
-	"subcategory": "convert",
-	"title": "Analyse"
+	"subcategory": "combine",
+	"title": "Cross"
   },
-  "pvoc_synth": {
+  "combine_diff": {
 	"category": "pvoc",
-	"description": "This is process is used to take the analysis of a sound file and resynthesise it back into the time domain. This should be used after you are done processing in the frequency domain to convert back to audio. See Help > Tutorials > PVOC for more. \n",
-	"inputtype": "[1]",
+	"description": "This process takes the two input sounds and subtracts the amplitude of second from the first.",
+	"inputtype": "[1, 1]",
 	"outputisstereo": false,
-	"outputtype": "[0]",
-	"parameters": {},
-	"short_description": "Convert a sound from the frequency domain to the time domain",
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "Amount",
+		"paramdescription": "The amount to subtract the second from the first, 1 = most, 0 = least",
+		"automatable": true,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "-c",
+		"minrange": 0.0,
+		"maxrange": 1.0,
+		"step": 0.01,
+		"value": 1.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Subtract second sound's amplitude from the first",
 	"stereo": false,
-	"subcategory": "convert",
-	"title": "Resynthesise"
+	"subcategory": "combine",
+	"title": "Difference"
   },
   "formants_vocode": {
 	"category": "pvoc",
-	"description": "This process takes the spectral envelope of the second inlet and imposes it over the sound in the first inlet. This allows you to create a blend of the two sounds where the timbre of the first inlet will take on the shape and emphasis of the second.",
+	"description": "This process takes an analysis of the formants (the dynamic envelope of the most prominent frequencies) from the second inlet and imposes it over the sound in the first inlet. This allows you to create a blend of the two sounds where the timbre of the first inlet will take on the shape and emphasis of the second.",
 	"inputtype": "[1, 1]",
 	"outputisstereo": false,
 	"outputtype": "[1]",
@@ -4108,8 +4142,225 @@
 	},
 	"short_description": "Impose the formants of one sound onto another",
 	"stereo": false,
-	"subcategory": "formants",
+	"subcategory": "combine",
 	"title": "Formant Vocode"
+  },
+  "combine_interleave": {
+	"category": "pvoc",
+	"description": "This process interleaves windows from each input file. The number of windows is set by the chunk size. At low values the sounds will begin to merge together, at high values recognisable chunks from each sound will become audible. ",
+	"inputtype": "[1, 1]",
+	"outputisstereo": false,
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "Chunk Size",
+		"paramdescription": "The number of windows to include in each chunk",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 1.0,
+		"maxrange": 20.0,
+		"step": 1.0,
+		"value": 1.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param2": {
+		"paramname": "Add/Remove Inlets",
+		"paramdescription": "Add more inlets to allow for more input files",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 2.0,
+		"maxrange": -1.0,
+		"step": "",
+		"value": 2.0,
+		"exponential": false,
+		"uitype": "addremoveinlets"
+	  }
+	},
+	"short_description": "Combine alternating chunks of multiple inputs",
+	"stereo": false,
+	"subcategory": "combine",
+	"title": "Interleave"
+  },
+  "combine_max": {
+	"category": "pvoc",
+	"description": "This process goes through all the input sounds and for each channel in the analysis it retains only the single loudest spectral component among all the input files in each window. This produces an effect similar to mixing the sounds together but with some spectral morphing and interaction between them. This generally works best with sounds that have similar dynamic but varied spectral content.",
+	"inputtype": "[1, 1]",
+	"outputisstereo": false,
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "Add/Remove Inlets",
+		"paramdescription": "Add more inlets to allow for more input files",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 2.0,
+		"maxrange": -1.0,
+		"step": "",
+		"value": 2.0,
+		"exponential": false,
+		"uitype": "addremoveinlets"
+	  }
+	},
+	"short_description": "Keep the loudest elements in each channel and window",
+	"stereo": false,
+	"subcategory": "combine",
+	"title": "Max"
+  },
+  "combine_mean_1": {
+	"category": "pvoc",
+	"description": "This process takes both the amplitude and the pitch of two sounds and averages them together to create a new sound. Depending on how similar the two sounds are this may result in a subtle morphing or a complete transformation of the sound.",
+	"inputtype": "[1, 1]",
+	"outputisstereo": false,
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "High Pass",
+		"paramdescription": "Sets the lowest frequency to be averaged in Hz",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": true,
+		"max": false,
+		"flag": "-l",
+		"minrange": 20.0,
+		"maxrange": 20000.0,
+		"step": 0.01,
+		"value": 20.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param2": {
+		"paramname": "Low Pass",
+		"paramdescription": "Sets the highest frequency to be averaged in Hz",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": true,
+		"flag": "-h",
+		"minrange": 20.0,
+		"maxrange": 20000.0,
+		"step": 0.01,
+		"value": 20000.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Average the amplitude and pitch of two sounds",
+	"stereo": false,
+	"subcategory": "combine",
+	"title": "Mean"
+  },
+  "combine_mean_3": {
+	"category": "pvoc",
+	"description": "This process takes the pitch of two sounds and average it together to create a new sound. Unlike the Mean process this process does not average amplitude, instead it uses the amplitude of the sound in the first inlet to shape the overal envelope. Depending on how similar the two sounds are this may result in a subtle morphing or a complete transformation of the sound.",
+	"inputtype": "[1, 1]",
+	"outputisstereo": false,
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "High Pass",
+		"paramdescription": "Sets the lowest frequency to be averaged in Hz",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": true,
+		"max": false,
+		"flag": "-l",
+		"minrange": 20.0,
+		"maxrange": 20000.0,
+		"step": 0.01,
+		"value": 20.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param2": {
+		"paramname": "Low Pass",
+		"paramdescription": "Sets the highest frequency to be averaged in Hz",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": true,
+		"flag": "-h",
+		"minrange": 20.0,
+		"maxrange": 20000.0,
+		"step": 0.01,
+		"value": 20000.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Average the pitch of two sounds keeping the amplitude of the first",
+	"stereo": false,
+	"subcategory": "combine",
+	"title": "Mean Pitch"
+  },
+  "combine_sum": {
+	"category": "pvoc",
+	"description": "This process takes the amplitude levels in each channel of the two input sounds and where they differ, it adds this difference to the first. This does not just affect how loud the sound is but also merges elements of the timbres of the two sounds together. ",
+	"inputtype": "[1, 1]",
+	"outputisstereo": false,
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "Amount",
+		"paramdescription": "The amount of the second sound to add to the first, 1 = most, 0 = least",
+		"automatable": true,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "-c",
+		"minrange": 0.0,
+		"maxrange": 1.0,
+		"step": 0.01,
+		"value": 1.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Add the difference in amplitude between two sounds",
+	"stereo": false,
+	"subcategory": "combine",
+	"title": "Sum"
+  },
+  "pvoc_anal_1": {
+	"category": "pvoc",
+	"description": "This is process is used to analyse a sound and convert it from the time domain to the frequency domain. This allows for processes in the PVOC processes menu to be used to manipulate the sound. Once you are done processing in the frequency domain you can convert it back to audio again using Resynthesise. See Help > Tutorials > PVOC for more.\n",
+	"inputtype": "[0]",
+	"outputisstereo": false,
+	"outputtype": "[1]",
+	"parameters": {},
+	"short_description": "Convert a sound from the time domain to the frequency domain",
+	"stereo": false,
+	"subcategory": "convert",
+	"title": "Analyse"
+  },
+  "pvoc_synth": {
+	"category": "pvoc",
+	"description": "This is process is used to take the analysis of a sound file and resynthesise it back into the time domain. This should be used after you are done processing in the frequency domain to convert back to audio. See Help > Tutorials > PVOC for more. \n",
+	"inputtype": "[1]",
+	"outputisstereo": false,
+	"outputtype": "[0]",
+	"parameters": {},
+	"short_description": "Convert a sound from the frequency domain to the time domain",
+	"stereo": false,
+	"subcategory": "convert",
+	"title": "Resynthesise"
   },
   "strange_glis_2": {
 	"category": "pvoc",
