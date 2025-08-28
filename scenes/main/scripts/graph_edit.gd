@@ -289,6 +289,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			
 			add_child(graphnode, true)
 			graphnode.connect("open_help", open_help)
+			graphnode.connect("inlet_removed", Callable(self, "on_inlet_removed"))
 			_register_inputs_in_node(graphnode) #link sliders for changes tracking
 			_register_node_movement() #link nodes for tracking position changes for changes tracking
 			
@@ -577,3 +578,9 @@ func _on_paste_nodes_request() -> void:
 	control_script.simulate_mouse_click() #hacky fix to stop tooltips getting stuck
 	await get_tree().process_frame
 	graph_edit.paste_copied_nodes()
+
+func on_inlet_removed(node_name: StringName, port_index: int):
+	var connections = get_connection_list()
+	for conn in connections:
+		if conn.to_node == node_name and conn.to_port == port_index:
+			disconnect_node(conn.from_node, conn.from_port, conn.to_node, conn.to_port)

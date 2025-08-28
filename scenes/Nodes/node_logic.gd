@@ -2,6 +2,7 @@ extends GraphNode
 
 @export var min_gap: float = 0.5  # editable value in inspector for the minimum gap between min and max
 signal open_help
+signal inlet_removed
 
 func _ready() -> void:
 	var sliders := _get_all_hsliders(self) #finds all sliders
@@ -83,6 +84,7 @@ func remove_inlet_from_node():
 	var inlet_count = self.get_input_port_count()
 	var child_count = self.get_child_count()
 	
+	inlet_removed.emit(self.get_name(), child_count - 1)
 	set_slot(inlet_count - 1, false, get_input_port_type(0), get_input_port_color(0), false, 0, get_input_port_color(0))
 	
 	if get_child(child_count - 2).has_meta("dummynode"):
