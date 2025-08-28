@@ -199,7 +199,18 @@ func run_thread_with_branches():
 			graph[from].append(to)
 			reverse_graph[to].append(from)
 			indegree[to] += 1  # Count incoming edges
-
+			
+	# check for loops
+	var has_cycle := detect_cycles(graph, {})  # pass loop_nodes list later
+	if has_cycle:
+		log_console("[color=#9c2828][b]Error: Thread not valid[/b][/color]", true)
+		log_console("Threads cannot contain loops (except loop-iterator nodes).", true)
+		if progress_window.visible:
+			progress_window.hide()
+		if !console_window.visible:
+			console_window.popup_centered()
+		return
+		
 	# Step 3: Topological sort to get execution order
 	var sorted = []  # Sorted list of node names
 	var queue = []   # Queue of nodes with 0 indegree
@@ -217,10 +228,10 @@ func run_thread_with_branches():
 				queue.append(neighbor)
 
 	# If not all nodes were processed, there's a cycle
-	if sorted.size() != graph.size():
-		log_console("[color=#9c2828][b]Error: Thread not valid[/b][/color]", true)
-		log_console("Threads cannot contain loops.", true)
-		return
+	#if sorted.size() != graph.size():
+		#log_console("[color=#9c2828][b]Error: Thread not valid[/b][/color]", true)
+		#log_console("Threads cannot contain loops.", true)
+		#return
 	progress_bar.value = progress_step
 	# Step 4: Start processing audio
 
@@ -1239,3 +1250,34 @@ func monitor_process(pid: int, stdout: FileAccess, stderr: FileAccess) -> String
 			
 	process_running = false
 	return output
+
+# Main cycle detection
+func detect_cycles(graph: Dictionary, loop_nodes: Dictionary) -> bool:
+	var visited := {}
+	var stack := {}
+
+	for node in graph.keys():
+		if _dfs_cycle(node, graph, visited, stack, loop_nodes):
+			return true
+	return false
+	
+func _dfs_cycle(node: String, graph: Dictionary, visited: Dictionary, stack: Dictionary, loop_nodes: Dictionary) -> bool:
+	if not visited.has(node):
+		visited[node] = true
+		stack[node] = true
+
+		for neighbor in graph[node]:
+			# If neighbor hasn't been visited, recurse
+			if not visited.has(neighbor):
+				if _dfs_cycle(neighbor, graph, visited, stack, loop_nodes):
+					# Cycle found down this path
+					if not (loop_nodes.has(node) or loop_nodes.has(neighbor)):
+						return true
+			elif stack.has(neighbor):
+				# Back edge found → cycle
+				if not (loop_nodes.has(node) or loop_nodes.has(neighbor)):
+					return true
+
+	# Done exploring this node
+	stack.erase(node)
+	return false
