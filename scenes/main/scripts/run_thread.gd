@@ -146,7 +146,7 @@ func run_thread_with_branches():
 	elif input_nodes.size() == 1:
 		processing_sample_rate = input_nodes[0].get_node("AudioPlayer").get_meta("sample_rate")
 		var soundfile_properties = get_soundfile_properties(input_nodes[0].get_node("AudioPlayer").get_meta("inputfile"))
-		processing_bit_depth = classify_format(soundfile_properties[0], soundfile_properties[3])
+		processing_bit_depth = classify_format(soundfile_properties["format"], soundfile_properties["bitdepth"])
 	
 	
 	#check if the sample rate of synthesis nodes match and if they match any files in the input file nodes
@@ -354,7 +354,7 @@ func run_thread_with_branches():
 				
 				#check if bitdepth matches other files in thread and convert if needed
 				var soundfile_properties = get_soundfile_properties(output_file)
-				if processing_bit_depth != classify_format(soundfile_properties[0], soundfile_properties[3]):
+				if processing_bit_depth != classify_format(soundfile_properties["format"], soundfile_properties["bitdepth"]):
 					var bit_convert_output = output_file.get_basename() + "_bit_depth_convert.wav"
 					await run_command(control_script.cdpprogs_location + "/copysfx", ["-h0", "-s" + str(processing_bit_depth), output_file, bit_convert_output])
 					#store converted output file path for this node
@@ -691,7 +691,7 @@ func process_dual_mono_pvoc(current_infiles: Dictionary, node: Node, process_cou
 	
 func is_stereo(file: String) -> bool:
 	var soundfile_properties = get_soundfile_properties(file)
-	if soundfile_properties[1] == 2:
+	if soundfile_properties["channels"] == 2:
 		return true
 	else:
 		return false
@@ -702,56 +702,98 @@ func is_pvoc_stereo(current_infiles: Dictionary) -> bool:
 			return true
 	return false
 
-func get_soundfile_properties(file: String) -> Array:
-	var format
-	var channels
-	var samplerate
-	var bitdepth
+## Returns properties of a WAV file as a Dictionary:
+## {
+##   "format": 1 or 3,
+##   "channels": number of channels,
+##   "samplerate": sample rate in Hz,
+##   "bitdepth": bits per sample,
+##   "duration": length in seconds
+## }
+func get_soundfile_properties(file: String) -> Dictionary:
+	var soundfile_properties:= {
+		"format": 0,
+		"channels": 0,
+		"samplerate": 0,
+		"bitdepth": 0,
+		"duration": 0.0
+	
+	}
 	
 	#open the audio file
 	var f = FileAccess.open(file, FileAccess.READ)
 	if f == null:
 		log_console("Could not find file: " + file, true)
-		return [0, 0, 0, 0]  # couldn't open
+		return soundfile_properties  # couldn't open
+	else:
+		print("opened file")
 	
 	#Skip the RIFF header (12 bytes: "RIFF", file size, "WAVE")
 	f.seek(12)
 	
+	var audio_chunk_size = 0
+	
 	#read through file until end of file if needed
-	while not f.eof_reached():
+	while f.get_position() + 8 <= f.get_length():
 		#read the 4 byte chunk id to identify what this chunk is
 		var chunk_id = f.get_buffer(4).get_string_from_ascii() 
-		#read how big this chunk is so it can be skipped if not the fmt chunk
+		#read how big this chunk is
 		var chunk_size = f.get_32()
 		
 		if chunk_id == "fmt ":
 			#found the format chunk
 			#fmt chunk layout:
-			#  - 2 bytes: Audio format (1 = PCM, 3 = IEEE float, etc.)
-			#  - 2 bytes: Number of channels (1 = mono, 2 = stereo, ...)
-			#  - 4 bytes: Sample rate
-			#  - 4 bytes: Byte rate
-			#  - 2 bytes: Block align
-			#  - 2 bytes: Bits per sample
-			format = f.get_16() #format 2 bytes: 1 = int PCM, 3 = float
-			channels = f.get_16() #num of channels 2 bytes
-			samplerate = f.get_32() #sample rate 4 bytes
+			#2 bytes: Audio format (1 = PCM, 3 = IEEE float, etc.)
+			#2 bytes: Number of channels (1 = mono, 2 = stereo, ...)
+			#4 bytes: Sample rate
+			#4 bytes: Byte rate
+			#2 bytes: Block align
+			#2 bytes: Bits per sample
+			#potentially misc other stuff depending on format
+			soundfile_properties["format"] = f.get_16() #format 2 bytes: 1 = int PCM, 3 = float
+			soundfile_properties["channels"] = f.get_16() #num of channels 2 bytes
+			soundfile_properties["samplerate"] = f.get_32() #sample rate 4 bytes
 			f.seek(f.get_position() + 6)
-			bitdepth = f.get_16() #bitdepth 2 bytes
-			f.close()
+			soundfile_properties["bitdepth"] = f.get_16() #bitdepth 2 bytes
 			
-			return [format, channels, samplerate, bitdepth]
-		# otherwise skip this chunk and continue
-		f.seek(f.get_position() + chunk_size)
-	
+			#check if we have already found the data chunk (not likely) and break the loop
+			if audio_chunk_size > 0:
+				f.close()
+				break
+			#skip to the end of the fmt chunk - max protects against skipping weirdly if wav is malformed and we have already moved too far into the file
+			f.seek(f.get_position() + (max(chunk_size - 16, 0)))
+		elif chunk_id == "data":
+			#this is where the audio is stored
+			audio_chunk_size = chunk_size
+			#check if we have already found the fmt chunk and break loop
+			if soundfile_properties["format"] > 0:
+				f.close()
+				break
+			#skip the rest of the chunk
+			f.seek(f.get_position() + chunk_size)
+		else:
+			#don't care about any other data in the file skip it
+			f.seek(f.get_position() + chunk_size)
+			
+	#close the file
 	f.close()
-	log_console("No valid fmt chunk found in wav file, unable to establish, format, channel count, samplerate or bit-depth", true)
-	return [0, 0, 0, 0] #no fmt chunk found, invalid wav file
+	
+	if audio_chunk_size > 0 and soundfile_properties["channels"] > 0 and soundfile_properties["bitdepth"] > 0 and soundfile_properties["samplerate"] > 0:
+		#(channels * bitdepth) / 8 - div 8 to convet bits to bytes
+		var block_align = int((soundfile_properties["channels"] * soundfile_properties["bitdepth"]) / 8)
+		#number of frames = size of audio chunk / block size in bytes
+		var num_frames = int(audio_chunk_size / block_align)
+		#length in seconds = number of frames / sample rate
+		soundfile_properties.duration = (num_frames) / soundfile_properties["samplerate"]
+	else:
+		#something = 0 and something has gone wrong
+		log_console("No valid fmt chunk found in wav file, unable to establish, format, channel count, samplerate or bit-depth", true)
+		for key in soundfile_properties:
+			#normalise dictionary to 0 so code can detect errors later even if some values have ended up in the dictionary
+			soundfile_properties[key] = 0
+		return soundfile_properties #no fmt chunk found, invalid wav file
 		
-#func get_samplerate(file: String) -> int:
-	#var output = await run_command(control_script.cdpprogs_location + "/sfprops", ["-r", file])
-	#output = int(output.strip_edges())
-	#return output
+	return soundfile_properties
 
 func merge_many_files(inlet_id: int, process_count: int, input_files: Array) -> Array:
 	var merge_output = "%s_merge_%d_%d.wav" % [Global.outfile.get_basename(), inlet_id, process_count]
@@ -788,9 +830,9 @@ func match_input_file_sample_rates_and_bit_depths(input_nodes: Array) -> Array:
 	#get the sample rate, bit depth and file type (int/float) for each file and add to arrays
 	for node in input_nodes:
 		var soundfile_props = get_soundfile_properties(node.get_node("AudioPlayer").get_meta("inputfile"))
-		file_types.append(soundfile_props[0])
-		sample_rates.append(soundfile_props[2])
-		bit_depths.append(soundfile_props[3])
+		file_types.append(soundfile_props["format"])
+		sample_rates.append(soundfile_props["samplerate"])
+		bit_depths.append(soundfile_props["bitdepth"])
 		#set upsampled meta to false to allow for repeat runs of thread
 		node.get_node("AudioPlayer").set_meta("upsampled", false)
 	
@@ -1016,8 +1058,8 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 				#get length of input file in seconds
 				var infile_length = 1 #set infile length to dummy value just incase it does get used where it shouldn't to avoid crashes
 				if current_infile.size() > 0:
-					infile_length = await run_command(control_script.cdpprogs_location + "/sfprops", ["-d", current_infile])
-					infile_length = float(infile_length.strip_edges())
+					var soundfile_props = get_soundfile_properties(current_infile[0])
+					infile_length = soundfile_props["duration"]
 				
 				#scale values from automation window to the right length for file and correct slider values
 				#if node has an output duration then breakpoint files should be x = outputduration y= slider value else x=input duration, y=value
@@ -1066,8 +1108,8 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 				
 			else: #no break file append slider value
 				if time == true:
-					var infile_length = await run_command(control_script.cdpprogs_location + "/sfprops", ["-d", current_infile])
-					infile_length = float(infile_length.strip_edges())
+					var soundfile_props = get_soundfile_properties(current_infile[0])
+					var infile_length = soundfile_props["duration"]
 					if value == 100:
 						#if slider is set to 100% default to a millisecond before the end of the file to stop cdp moaning about rounding errors
 						value = infile_length - 0.01
