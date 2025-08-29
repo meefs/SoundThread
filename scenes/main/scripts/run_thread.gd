@@ -725,8 +725,6 @@ func get_soundfile_properties(file: String) -> Dictionary:
 	if f == null:
 		log_console("Could not find file: " + file, true)
 		return soundfile_properties  # couldn't open
-	else:
-		print("opened file")
 	
 	#Skip the RIFF header (12 bytes: "RIFF", file size, "WAVE")
 	f.seek(12)
