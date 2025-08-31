@@ -9,6 +9,7 @@ var copied_nodes_data = [] #stores node data on ctrl+c
 var copied_connections = [] #stores all connections on ctrl+c
 var node_data = {} #stores json with all nodes in it
 var valueslider = preload("res://scenes/Nodes/valueslider.tscn") #slider scene for use in nodes
+var addremoveinlets = preload("res://scenes/Nodes/addremoveinlets.tscn") #add remove inlets scene for use in nodes
 var node_logic = preload("res://scenes/Nodes/node_logic.gd") #load the script logic
 
 
@@ -71,44 +72,18 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			
 			#get node properties
 			var stereo = node_info.get("stereo", false)
+			var outputisstereo = node_info.get("outputisstereo", false) #used to identify the few processes that always output in stereo making the thread need to be stereo
 			var inputs = JSON.parse_string(node_info.get("inputtype", ""))
 			var outputs = JSON.parse_string(node_info.get("outputtype", ""))
 			var portcount = max(inputs.size(), outputs.size())
 			var parameters = node_info.get("parameters", {})
 			
 			var graphnode = GraphNode.new()
-			for i in range(portcount):
-				#add a number of control nodes equal to whatever is higher input or output ports
-				var control = Control.new()
-				graphnode.add_child(control)
-				
-				#check if input or output is enabled
-				var enable_input = i < inputs.size()
-				var enable_output = i < outputs.size()
-				
-				#get the colour of the port for time or pvoc ins/outs
-				var input_colour = Color("#ffffff90")
-				var output_colour = Color("#ffffff90")
-				
-				if enable_input:
-					if inputs[i] == 1:
-						input_colour = Color("#000000b0")
-				if enable_output:
-					if outputs[i] == 1:
-						output_colour = Color("#000000b0")
-				
-				#enable and set ports
-				if enable_input == true and enable_output == false:
-					graphnode.set_slot(i, true, inputs[i], input_colour, false, 0, output_colour)
-				elif enable_input == false and enable_output == true:
-					graphnode.set_slot(i, false, 0, input_colour, true, outputs[i], output_colour)
-				elif enable_input == true and enable_output == true:
-					graphnode.set_slot(i, true, inputs[i], input_colour, true, outputs[i], output_colour)
-				else:
-					pass
+			
 			#set meta data for the process
 			graphnode.set_meta("command", command)
 			graphnode.set_meta("stereo_input", stereo)
+			graphnode.set_meta("output_is_stereo", outputisstereo)
 			if inputs.size() == 0 and outputs.size() > 0:
 				graphnode.set_meta("input", true)
 			else:
@@ -122,9 +97,16 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			graphnode.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom)
 			graphnode.name = command
 			
+			#add one small control node to the top of the node to aline first inlet to top
+			var first_inlet = Control.new()
+			graphnode.add_child(first_inlet)
+			
 			if parameters.is_empty():
 				var noparams = Label.new()
 				noparams.text = "No adjustable parameters"
+				noparams.custom_minimum_size.x = 270
+				noparams.custom_minimum_size.y = 57
+				noparams.vertical_alignment = 1
 				
 				graphnode.add_child(noparams)
 			else:
@@ -225,7 +207,11 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						var optionbutton_tooltip  = param_data.get("paramdescription", "")
 						
 						#name optionbutton
-						optionbutton.name = optionbutton_label.replace(" ", "")
+						optionbutton.name = optionbutton_label.replace(" ", "").to_lower()
+						
+						#add meta flag if this is a sample rate selector for running thread sample rate checks
+						if optionbutton.name == "samplerate":
+							graphnode.set_meta("node_sets_sample_rate", true)
 						
 						#get optionbutton properties
 						var options = JSON.parse_string(param_data.get("step", ""))
@@ -246,20 +232,71 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						#set flag meta
 						optionbutton.set_meta("flag", flag)
 						
-						#add margin size for ertical spacing
+						#add margin size for vertical spacing
 						margin.add_theme_constant_override("margin_bottom", 4)
 						
 						graphnode.add_child(label)
 						graphnode.add_child(optionbutton)
 						graphnode.add_child(margin)
+					elif param_data.get("uitype", "") == "addremoveinlets":
+						var addremove = addremoveinlets.instantiate()
+						addremove.name = "addremoveinlets"
+						
+						#get parameters
+						var min_inlets = param_data.get("minrange", 0)
+						var max_inlets = param_data.get("maxrange", 10)
+						var default_inlets = param_data.get("value", 1)
+						
+						#set meta
+						addremove.set_meta("min", min_inlets)
+						addremove.set_meta("max", max_inlets)
+						addremove.set_meta("default", default_inlets)
+						
+						graphnode.add_child(addremove)
 				
 				control_script.changesmade = true
 			
+			#add control nodes if number of child nodes is lower than the number of inlets or outlets
+			for i in range(portcount - graphnode.get_child_count()):
+				#add a number of control nodes equal to whatever is higher input or output ports
+				var control = Control.new()
+				control.custom_minimum_size.y = 57
+				graphnode.add_child(control)
+				if graphnode.has_node("addremoveinlets"):
+					graphnode.move_child(graphnode.get_node("addremoveinlets"), graphnode.get_child_count() - 1)
+			
+			#add ports
+			for i in range(portcount):
+				#check if input or output is enabled
+				var enable_input = i < inputs.size()
+				var enable_output = i < outputs.size()
+				
+				#get the colour of the port for time or pvoc ins/outs
+				var input_colour = Color("#ffffff90")
+				var output_colour = Color("#ffffff90")
+				
+				if enable_input:
+					if inputs[i] == 1:
+						input_colour = Color("#000000b0")
+				if enable_output:
+					if outputs[i] == 1:
+						output_colour = Color("#000000b0")
+				
+				#enable and set ports
+				if enable_input == true and enable_output == false:
+					graphnode.set_slot(i, true, inputs[i], input_colour, false, 0, output_colour)
+				elif enable_input == false and enable_output == true:
+					graphnode.set_slot(i, false, 0, input_colour, true, outputs[i], output_colour)
+				elif enable_input == true and enable_output == true:
+					graphnode.set_slot(i, true, inputs[i], input_colour, true, outputs[i], output_colour)
+				else:
+					pass
 			
 			graphnode.set_script(node_logic)
 			
 			add_child(graphnode, true)
 			graphnode.connect("open_help", open_help)
+			graphnode.connect("inlet_removed", Callable(self, "on_inlet_removed"))
 			_register_inputs_in_node(graphnode) #link sliders for changes tracking
 			_register_node_movement() #link nodes for tracking position changes for changes tracking
 			
@@ -548,3 +585,9 @@ func _on_paste_nodes_request() -> void:
 	control_script.simulate_mouse_click() #hacky fix to stop tooltips getting stuck
 	await get_tree().process_frame
 	graph_edit.paste_copied_nodes()
+
+func on_inlet_removed(node_name: StringName, port_index: int):
+	var connections = get_connection_list()
+	for conn in connections:
+		if conn.to_node == node_name and conn.to_port == port_index:
+			disconnect_node(conn.from_node, conn.from_port, conn.to_node, conn.to_port)

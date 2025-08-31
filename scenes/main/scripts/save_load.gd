@@ -44,6 +44,7 @@ func save_graph_edit(path: String):
 				"command": node.get_meta("command"),
 				"offset": { "x": offset.x, "y": offset.y },
 				"slider_values": {},
+				"addremoveinlets":{},
 				"notes": {},
 				"checkbutton_states": {},
 				"optionbutton_values": {}
@@ -62,6 +63,11 @@ func save_graph_edit(path: String):
 				for key in child.get_meta_list():
 					node_data["slider_values"][path_str]["meta"][str(key)] = child.get_meta(key)
 				
+			#save add remove inlet meta data
+			if node.has_node("addremoveinlets"):
+				if node.get_node("addremoveinlets").has_meta("inlet_count"):
+					node_data["addremoveinlets"]["inlet_count"] = node.get_node("addremoveinlets").get_meta("inlet_count")
+					
 			# Save notes from CodeEdit children
 			for child in node.find_children("*", "CodeEdit", true, false):
 				node_data["notes"][child.name] = child.text
@@ -191,6 +197,15 @@ func load_graph_edit(path: String):
 				if optionbutton and (optionbutton is OptionButton):
 					optionbutton.selected = node_data["optionbutton_values"][optionbutton_name]
 
+		#restore dynamic inlets
+		if node_data.has("addremoveinlets") and new_node.has_node("addremoveinlets"):
+			print("restoring inlets")
+			var addremoveinlets = new_node.get_node("addremoveinlets")
+			addremoveinlets.set_meta("inlet_count", node_data["addremoveinlets"]["inlet_count"])
+			await get_tree().process_frame
+			addremoveinlets.restore_inlets()
+		
+		
 		register_input.call(new_node)
 
 	# Recreate connections

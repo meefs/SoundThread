@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=68 format=3 uid="uid://cefwkdcoxihro"]
+[gd_resource type="Theme" load_steps=69 format=3 uid="uid://cefwkdcoxihro"]
 
 [ext_resource type="Texture2D" uid="uid://b4o8vm5o4uptk" path="res://theme/images/toggle_checked.png" id="1_cibxr"]
 [ext_resource type="Texture2D" uid="uid://d0dubcywvqtkw" path="res://theme/images/toggle_unchecked.png" id="2_adhqp"]
@@ -12,6 +12,14 @@
 [ext_resource type="Texture2D" uid="uid://dfs2h35xvdoxb" path="res://theme/images/zoomin.png" id="7_ftk8o"]
 [ext_resource type="Texture2D" uid="uid://bjg8l0k0ypi4f" path="res://theme/images/zoomout.png" id="8_4xa5k"]
 [ext_resource type="Texture2D" uid="uid://br24jo4nhi88d" path="res://theme/images/reset.png" id="9_fqy7u"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_41w5c"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+corner_detail = 5
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_470mv"]
 content_margin_left = 4.0
@@ -561,6 +569,7 @@ expand_margin_right = 2.0
 expand_margin_bottom = 2.0
 
 [resource]
+Button/styles/disabled = SubResource("StyleBoxFlat_41w5c")
 Button/styles/focus = SubResource("StyleBoxFlat_470mv")
 Button/styles/hover = SubResource("StyleBoxFlat_466ly")
 Button/styles/normal = SubResource("StyleBoxFlat_52mx2")

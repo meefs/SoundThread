@@ -31,9 +31,10 @@ offset_right = 325.0
 offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
-current_tab = 0
+current_tab = 1
 
 [node name="Time Domain" type="TabContainer" parent="Control/select_effect"]
+visible = false
 layout_mode = 2
 current_tab = 5
 metadata/_tab_index = 0
@@ -261,9 +262,8 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 5
 
 [node name="Frequency Domain" type="TabContainer" parent="Control/select_effect"]
-visible = false
 layout_mode = 2
-current_tab = 4
+current_tab = 2
 metadata/_tab_index = 1
 
 [node name="Convert" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
@@ -332,10 +332,42 @@ autowrap_mode = 3
 layout_mode = 2
 theme_override_constants/margin_bottom = 5
 
+[node name="Combine" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
+layout_mode = 2
+metadata/_tab_index = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Combine"]
+layout_mode = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 10
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Control/select_effect/Frequency Domain/Combine/MarginContainer"]
+custom_minimum_size = Vector2(620, 425)
+layout_mode = 2
+size_flags_horizontal = 0
+horizontal_scroll_mode = 0
+
+[node name="PVOCCombineContainer" type="VBoxContainer" parent="Control/select_effect/Frequency Domain/Combine/MarginContainer/ScrollContainer"]
+custom_minimum_size = Vector2(620, 0)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/select_effect/Frequency Domain/Combine/MarginContainer/ScrollContainer/PVOCCombineContainer"]
+custom_minimum_size = Vector2(620, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "These processes take multiple inputs and combine them into one output. This is not mixing in the conventional sense, instead these processes can be used to morph between sounds or create hybrids of sounds."
+autowrap_mode = 3
+
+[node name="MarginContainer4" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Combine/MarginContainer/ScrollContainer/PVOCCombineContainer"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 5
+
 [node name="Formants" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 2
+metadata/_tab_index = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Formants"]
 layout_mode = 2
@@ -368,7 +400,7 @@ theme_override_constants/margin_bottom = 5
 [node name="Time" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 3
+metadata/_tab_index = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Time"]
 layout_mode = 2
@@ -399,8 +431,9 @@ layout_mode = 2
 theme_override_constants/margin_bottom = 5
 
 [node name="Spectrum" type="VBoxContainer" parent="Control/select_effect/Frequency Domain"]
+visible = false
 layout_mode = 2
-metadata/_tab_index = 4
+metadata/_tab_index = 5
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/select_effect/Frequency Domain/Spectrum"]
 layout_mode = 2

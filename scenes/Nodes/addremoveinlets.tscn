@@ -1,0 +1,43 @@
+[gd_scene load_steps=2 format=3 uid="uid://cho3fvni7kadi"]
+
+[ext_resource type="Script" uid="uid://ddy27yplob87l" path="res://scenes/Nodes/addremoveinlets.gd" id="1_1pgec"]
+
+[node name="Control" type="Control"]
+custom_minimum_size = Vector2(270, 57)
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -1010.0
+offset_bottom = -663.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_1pgec")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Add/Remove Inlets"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(270, 0)
+layout_mode = 2
+
+[node name="AddInletButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Add new inlet to node"
+text = "+"
+
+[node name="RemoveInletButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+tooltip_text = "Remove last inlet from node"
+text = "-"
+
+[connection signal="button_down" from="VBoxContainer/HBoxContainer/AddInletButton" to="." method="_on_add_inlet_button_button_down"]
+[connection signal="button_down" from="VBoxContainer/HBoxContainer/RemoveInletButton" to="." method="_on_remove_inlet_button_button_down"]
