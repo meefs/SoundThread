@@ -3458,7 +3458,7 @@
 	"subcategory": "reverb",
 	"title": "Pitched Delay"
   },
-  "rmverb_": {
+  "rmverb": {
 	"category": "time",
 	"description": "This process produces a reverb effect, emulating the way sound bounces around an acoustic space. It has three modes, Small, Medium and Large that aim to emulate three different acoustic spaces.",
 	"inputtype": "[0]",

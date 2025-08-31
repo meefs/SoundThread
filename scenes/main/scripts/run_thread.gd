@@ -1011,6 +1011,9 @@ func _get_slider_values_ordered(node: Node) -> Array:
 
 
 func make_process(node: Node, process_count: int, current_infile: Array, slider_data: Array) -> Array:
+	var args:= []
+	var command
+	
 	# Determine output extension: .wav or .ana based on the node's slot type
 	var extension = ".wav" if node.get_slot_type_right(0) == 0 else ".ana"
 
@@ -1019,9 +1022,13 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 
 	# Get the command name from metadata or default to node name
 	var command_name = str(node.get_meta("command"))
-	command_name = command_name.split("_", true, 1)
-	var command = "%s/%s" %[control_script.cdpprogs_location, command_name[0]]
-	var args = command_name[1].split("_", true, 1)
+	if command_name.find("_") != -1:
+		command_name = command_name.split("_", true, 1)
+		command = "%s/%s" %[control_script.cdpprogs_location, command_name[0]]
+		args = command_name[1].split("_", true, 1)
+	else:
+		command = "%s/%s" %[control_script.cdpprogs_location, command_name]
+		
 	if current_infile.size() > 0:
 		#check if input is empty, e.g. synthesis nodes, otherwise append input file to arguments
 		for file in current_infile:
