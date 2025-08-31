@@ -1013,132 +1013,163 @@ func _get_slider_values_ordered(node: Node) -> Array:
 func make_process(node: Node, process_count: int, current_infile: Array, slider_data: Array) -> Array:
 	var args:= []
 	var command
+	var cleanup = []
 	
 	# Determine output extension: .wav or .ana based on the node's slot type
 	var extension = ".wav" if node.get_slot_type_right(0) == 0 else ".ana"
 
 	# Construct output filename for this step
 	var output_file = "%s_%d%s" % [Global.outfile.get_basename(), process_count, extension]
-
-	# Get the command name from metadata or default to node name
-	var command_name = str(node.get_meta("command"))
-	if command_name.find("_") != -1:
-		command_name = command_name.split("_", true, 1)
-		command = "%s/%s" %[control_script.cdpprogs_location, command_name[0]]
-		args = command_name[1].split("_", true, 1)
-	else:
-		command = "%s/%s" %[control_script.cdpprogs_location, command_name]
-		
-	if current_infile.size() > 0:
-		#check if input is empty, e.g. synthesis nodes, otherwise append input file to arguments
-		for file in current_infile:
-			args.append(file)
-	args.append(output_file)
-
-	# Start building the command line windows i dont think this is used anymore
-	#var line = "%s/%s \"%s\" \"%s\" " % [control_script.cdpprogs_location, command_name, current_infile, output_file]
-	#mac
-
 	
-	var cleanup = []
+	#special case for morph glide as it requires spec grab to have been run first
+	if node.get_meta("command") == "morph_glide":
+		#get slider values nothing else needed
+		var window1 = slider_data[0][2]
+		var window2 = slider_data[1][2]
+		var duration = slider_data[2][2]
+		
+		#get length of the two input files
+		var soundfile_1_props = get_soundfile_properties(current_infile[0])
+		var infile_1_length = soundfile_1_props["duration"]
+		var soundfile_2_props = get_soundfile_properties(current_infile[1])
+		var infile_2_length = soundfile_2_props["duration"]
+		if window1 == 100:
+			#if slider is set to 100% default to 10 milliseconds before the end of the file to stop cdp moaning about rounding errors
+			window1 = infile_1_length - 0.1
+		else:
+			window1 = infile_1_length * (window1 / 100) #calculate percentage time of the input file
+		if window2 == 100:
+			#if slider is set to 100% default to 10 milliseconds before the end of the file to stop cdp moaning about rounding errors
+			window2 = infile_2_length - 0.1
+		else:
+			window2 = infile_2_length * (window2 / 100) #calculate percentage time of the input file
+			
+		#run spec grab to extract the chosen windows
+		var window1_outfile = "%s_%d_%s%s" % [Global.outfile.get_basename(), process_count, "window1", extension]
+		run_command("%s/%s" %[control_script.cdpprogs_location, "spec"], ["grab", current_infile[0], window1_outfile, str(window1)])
+		cleanup.append(window1_outfile)
+		var window2_outfile = "%s_%d_%s%s" % [Global.outfile.get_basename(), process_count, "window2", extension]
+		run_command("%s/%s" %[control_script.cdpprogs_location, "spec"], ["grab", current_infile[1], window2_outfile, str(window2)])
+		cleanup.append(window2_outfile)
+		
+		#build actual glide command
+		command = "%s/%s" %[control_script.cdpprogs_location, "morph"]
+		args = ["glide", window1_outfile, window2_outfile, output_file, duration]
+	else:
+		# Get the command name from metadata
+		var command_name = str(node.get_meta("command"))
+		if command_name.find("_") != -1:
+			command_name = command_name.split("_", true, 1)
+			command = "%s/%s" %[control_script.cdpprogs_location, command_name[0]]
+			args = command_name[1].split("_", true, 1)
+		else:
+			command = "%s/%s" %[control_script.cdpprogs_location, command_name]
+			
+		if current_infile.size() > 0:
+			#check if input is empty, e.g. synthesis nodes, otherwise append input file to arguments
+			for file in current_infile:
+				args.append(file)
+		args.append(output_file)
 
-	# Append parameter values from the sliders, include flags if present
-	var slider_count = 0
-	for entry in slider_data:
-		if entry[0] == "slider":
-			var flag = entry[1]
-			var value = entry[2]
-			#if value == int(value):
-				#value = int(value)
-			var time = entry[3] #checks if slider is a time percentage slider
-			var brk_data = entry[4]
-			var min_slider = entry[5]
-			var max_slider = entry[6]
-			var exp = entry[7]
-			if brk_data.size() > 0: #if breakpoint data is present on slider
-				#Sort all points by time
-				var sorted_brk_data = []
-				sorted_brk_data = brk_data.duplicate()
-				sorted_brk_data.sort_custom(sort_points)
-				
-				var calculated_brk = []
-				
-				#get length of input file in seconds
-				var infile_length = 1 #set infile length to dummy value just incase it does get used where it shouldn't to avoid crashes
-				if current_infile.size() > 0:
-					var soundfile_props = get_soundfile_properties(current_infile[0])
-					infile_length = soundfile_props["duration"]
-				
-				#scale values from automation window to the right length for file and correct slider values
-				#if node has an output duration then breakpoint files should be x = outputduration y= slider value else x=input duration, y=value
-				if node.has_meta("outputduration"):
-					for i in range(sorted_brk_data.size()):
-						var point = sorted_brk_data[i]
-						var new_x = float(node.get_meta("outputduration")) * (point.x / 700) #output time
-						if i == sorted_brk_data.size() - 1: #check if this is last automation point
-							new_x = float(node.get_meta("outputduration")) + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
-						var new_y
-						#check if slider is exponential and scale automation
-						if exp:
-							new_y = remap_y_to_log_scale(point.y, 0.0, 255.0, min_slider, max_slider)
-						else:
-							new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
-						if time: #check if this is a time slider and convert to percentage of input file
-							new_y = infile_length * (new_y / 100)
-						calculated_brk.append(Vector2(new_x, new_y))
-				else:
-					for i in range(sorted_brk_data.size()):
-						var point = sorted_brk_data[i]
-						var new_x = infile_length * (point.x / 700) #time
-						if i == sorted_brk_data.size() - 1: #check if this is last automation point
-							new_x = infile_length + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
-						var new_y
-						#check if slider is exponential and scale automation
-						if exp:
-							new_y = remap_y_to_log_scale(point.y, 0.0, 255.0, min_slider, max_slider)
-						else:
-							new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
-						calculated_brk.append(Vector2(new_x, new_y))
+		
+
+		# Append parameter values from the sliders, include flags if present
+		var slider_count = 0
+		for entry in slider_data:
+			if entry[0] == "slider":
+				var flag = entry[1]
+				var value = entry[2]
+				#if value == int(value):
+					#value = int(value)
+				var time = entry[3] #checks if slider is a time percentage slider
+				var brk_data = entry[4]
+				var min_slider = entry[5]
+				var max_slider = entry[6]
+				var exp = entry[7]
+				if brk_data.size() > 0: #if breakpoint data is present on slider
+					#Sort all points by time
+					var sorted_brk_data = []
+					sorted_brk_data = brk_data.duplicate()
+					sorted_brk_data.sort_custom(sort_points)
 					
-				#make text file
-				var brk_file_path = output_file.get_basename() + "_" + str(slider_count) + ".txt"
-				write_breakfile(calculated_brk, brk_file_path)
-				
-				#add breakfile to cleanup before adding flag
-				cleanup.append(brk_file_path)
-				
-				#append text file in place of value
-				#include flag if this param has a flag
-				if flag.begins_with("-"):
-					brk_file_path = flag + brk_file_path
-				args.append(brk_file_path)
-				
-				
-			else: #no break file append slider value
-				if time == true:
-					var soundfile_props = get_soundfile_properties(current_infile[0])
-					var infile_length = soundfile_props["duration"]
-					if value == 100:
-						#if slider is set to 100% default to a millisecond before the end of the file to stop cdp moaning about rounding errors
-						value = infile_length - 0.01
+					var calculated_brk = []
+					
+					#get length of input file in seconds
+					var infile_length = 1 #set infile length to dummy value just incase it does get used where it shouldn't to avoid crashes
+					if current_infile.size() > 0:
+						var soundfile_props = get_soundfile_properties(current_infile[0])
+						infile_length = soundfile_props["duration"]
+					
+					#scale values from automation window to the right length for file and correct slider values
+					#if node has an output duration then breakpoint files should be x = outputduration y= slider value else x=input duration, y=value
+					if node.has_meta("outputduration"):
+						for i in range(sorted_brk_data.size()):
+							var point = sorted_brk_data[i]
+							var new_x = float(node.get_meta("outputduration")) * (point.x / 700) #output time
+							if i == sorted_brk_data.size() - 1: #check if this is last automation point
+								new_x = float(node.get_meta("outputduration")) + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
+							var new_y
+							#check if slider is exponential and scale automation
+							if exp:
+								new_y = remap_y_to_log_scale(point.y, 0.0, 255.0, min_slider, max_slider)
+							else:
+								new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
+							if time: #check if this is a time slider and convert to percentage of input file
+								new_y = infile_length * (new_y / 100)
+							calculated_brk.append(Vector2(new_x, new_y))
 					else:
-						value = infile_length * (value / 100) #calculate percentage time of the input file
-				#line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
+						for i in range(sorted_brk_data.size()):
+							var point = sorted_brk_data[i]
+							var new_x = infile_length * (point.x / 700) #time
+							if i == sorted_brk_data.size() - 1: #check if this is last automation point
+								new_x = infile_length + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
+							var new_y
+							#check if slider is exponential and scale automation
+							if exp:
+								new_y = remap_y_to_log_scale(point.y, 0.0, 255.0, min_slider, max_slider)
+							else:
+								new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
+							calculated_brk.append(Vector2(new_x, new_y))
+						
+					#make text file
+					var brk_file_path = output_file.get_basename() + "_" + str(slider_count) + ".txt"
+					write_breakfile(calculated_brk, brk_file_path)
+					
+					#add breakfile to cleanup before adding flag
+					cleanup.append(brk_file_path)
+					
+					#append text file in place of value
+					#include flag if this param has a flag
+					if flag.begins_with("-"):
+						brk_file_path = flag + brk_file_path
+					args.append(brk_file_path)
+					
+					
+				else: #no break file append slider value
+					if time == true:
+						var soundfile_props = get_soundfile_properties(current_infile[0])
+						var infile_length = soundfile_props["duration"]
+						if value == 100:
+							#if slider is set to 100% default to a millisecond before the end of the file to stop cdp moaning about rounding errors
+							value = infile_length - 0.1
+						else:
+							value = infile_length * (value / 100) #calculate percentage time of the input file
+					#line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
+					args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else str(value))
+					
+			elif entry[0] == "checkbutton":
+				var flag = entry[1]
+				var value = entry[2]
+				#if button is pressed add the flag to the arguments list
+				if value == true:
+					args.append(flag)
+					
+			elif entry[0] == "optionbutton":
+				var flag = entry[1]
+				var value = entry[2]
 				args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else str(value))
 				
-		elif entry[0] == "checkbutton":
-			var flag = entry[1]
-			var value = entry[2]
-			#if button is pressed add the flag to the arguments list
-			if value == true:
-				args.append(flag)
-				
-		elif entry[0] == "optionbutton":
-			var flag = entry[1]
-			var value = entry[2]
-			args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else str(value))
-			
-		slider_count += 1
+			slider_count += 1
 	return [command, output_file, cleanup, args]
 	#return [line.strip_edges(), output_file, cleanup]
 

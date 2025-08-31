@@ -4462,6 +4462,67 @@
 	"subcategory": "combine",
 	"title": "Formant Vocode"
   },
+  "morph_glide": {
+	"category": "pvoc",
+	"description": "This process allows you to extract a single window from each input file and then create an input that slowly morphs from the window in the first file to the second. This is excellent for create slowly evolving drones with shifting spectral content.",
+	"inputtype": "[1, 1]",
+	"outputisstereo": false,
+	"outputtype": "[1]",
+	"parameters": {
+	  "param1": {
+		"paramname": "Window 1 Position",
+		"paramdescription": "The point as a percentage of length in the first sound to freeze",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 0.0,
+		"maxrange": 100.0,
+		"step": 0.01,
+		"value": 10.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param2": {
+		"paramname": "Window 2 Position",
+		"paramdescription": "The point as a percentage of length in the second sound to freeze",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 0.0,
+		"maxrange": 100.0,
+		"step": 0.01,
+		"value": 10.0,
+		"exponential": false,
+		"uitype": "hslider"
+	  },
+	  "param3": {
+		"paramname": "Output Duration",
+		"paramdescription": "The length of the output file in seconds",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": 1.0,
+		"maxrange": 1000.0,
+		"step": 0.01,
+		"value": 60.0,
+		"exponential": true,
+		"uitype": "hslider"
+	  }
+	},
+	"short_description": "Morph between a frozen point in time in each input sound",
+	"stereo": false,
+	"subcategory": "combine",
+	"title": "Freeze Morph"
+  },
   "combine_interleave": {
 	"category": "pvoc",
 	"description": "This process interleaves windows from each input file. The number of windows is set by the chunk size. At low values the sounds will begin to merge together, at high values recognisable chunks from each sound will become audible. ",
