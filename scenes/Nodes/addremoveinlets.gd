@@ -16,12 +16,14 @@ func _ready() -> void:
 func _on_add_inlet_button_button_down() -> void:
 	add_inlet.emit()
 	current_inlet_count += 1
+	set_meta("inlet_count", current_inlet_count)
 	check_buttons()
 
 
 func _on_remove_inlet_button_button_down() -> void:
 	remove_inlet.emit()
 	current_inlet_count -= 1
+	set_meta("inlet_count", current_inlet_count)
 	check_buttons()
 
 func check_buttons():
@@ -34,3 +36,14 @@ func check_buttons():
 		$VBoxContainer/HBoxContainer/RemoveInletButton.disabled = true
 	else:
 		$VBoxContainer/HBoxContainer/RemoveInletButton.disabled = false
+		
+func restore_inlets():
+	print("current meta for inlet count is " + str(get_meta("inlet_count")))
+	var restore_inlet_count = get_meta("inlet_count")
+	while restore_inlet_count > current_inlet_count:
+		_on_add_inlet_button_button_down()
+	
+	while restore_inlet_count < current_inlet_count:
+		_on_remove_inlet_button_button_down()
+		
+	print("current inlet count is " + str(current_inlet_count))
