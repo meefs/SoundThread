@@ -144,6 +144,9 @@ func run_thread_with_branches():
 		processing_sample_rate = match_input_files[1]
 		processing_bit_depth = match_input_files[2]
 	elif input_nodes.size() == 1:
+		#reset upsampled if it has previously been set on this node
+		input_nodes[0].get_node("AudioPlayer").set_meta("upsampled", false)
+		#get sample rate and bit-depth so that any synthesis nodes can have the correct sample rate set
 		processing_sample_rate = input_nodes[0].get_node("AudioPlayer").get_meta("sample_rate")
 		var soundfile_properties = get_soundfile_properties(input_nodes[0].get_node("AudioPlayer").get_meta("inputfile"))
 		processing_bit_depth = classify_format(soundfile_properties["format"], soundfile_properties["bitdepth"])

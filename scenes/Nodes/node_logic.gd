@@ -93,7 +93,7 @@ func remove_inlet_from_node():
 	var child_count = self.get_child_count()
 	
 	#emit a signal to the graphedit script to remove any connections to this inlet
-	inlet_removed.emit(self.get_name(), child_count - 1)
+	inlet_removed.emit(self.get_name(), inlet_count - 1)
 	#remove the inlet note inlet idx starts at 0 hence inlet_count -1
 	set_slot(inlet_count - 1, false, get_input_port_type(0), get_input_port_color(0), false, 0, get_input_port_color(0))
 	
