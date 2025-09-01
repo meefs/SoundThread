@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=157 format=3 uid="uid://cefwkdcoxihro"]
+[gd_resource type="Theme" load_steps=158 format=3 uid="uid://cefwkdcoxihro"]
 
 [ext_resource type="FontFile" uid="uid://cc7mj053bhfvh" path="res://theme/WorkSans-Regular.otf" id="1_4xa5k"]
 [ext_resource type="Texture2D" uid="uid://b4o8vm5o4uptk" path="res://theme/images/toggle_checked.png" id="1_cibxr"]
@@ -1066,6 +1066,14 @@ content_margin_top = 0.0
 content_margin_right = 0.0
 content_margin_bottom = 0.0
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_uq5wx"]
+content_margin_left = 8.0
+content_margin_top = 2.0
+content_margin_right = 8.0
+content_margin_bottom = 2.0
+bg_color = Color(0, 0, 0, 0.5)
+corner_detail = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_a24hu"]
 content_margin_left = 4.0
 content_margin_top = 4.0
@@ -1428,6 +1436,15 @@ TabContainer/styles/tab_hovered = SubResource("StyleBoxFlat_xxa0j")
 TabContainer/styles/tab_selected = SubResource("StyleBoxFlat_70bsv")
 TabContainer/styles/tab_unselected = SubResource("StyleBoxFlat_hr40q")
 TabContainer/styles/tabbar_background = SubResource("StyleBoxEmpty_bu68i")
+TooltipLabel/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+TooltipLabel/colors/font_outline_color = Color(0, 0, 0, 1)
+TooltipLabel/colors/font_shadow_color = Color(0, 0, 0, 0)
+TooltipLabel/constants/outline_size = 0
+TooltipLabel/constants/shadow_offset_x = 1
+TooltipLabel/constants/shadow_offset_y = 1
+TooltipLabel/font_sizes/font_size = 16
+TooltipLabel/fonts/font = ExtResource("1_4xa5k")
+TooltipPanel/styles/panel = SubResource("StyleBoxFlat_uq5wx")
 VScrollBar/icons/decrement = SubResource("ImageTexture_1f2pp")
 VScrollBar/icons/decrement_highlight = SubResource("ImageTexture_1f2pp")
 VScrollBar/icons/decrement_pressed = SubResource("ImageTexture_1f2pp")
