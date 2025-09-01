@@ -3,6 +3,7 @@ signal open_cdp_location
 signal console_on_top
 var interface_settings
 var main_theme = preload("res://theme/main_theme.tres")
+var cdpprogs_location
 
 signal invert_ui
 
@@ -29,6 +30,8 @@ func _on_about_to_popup() -> void:
 	$VBoxContainer/HBoxContainer6/ProgressBar.button_pressed = interface_settings.disable_progress_bar
 	$VBoxContainer/HBoxContainer3/AutoCloseConsole.button_pressed = interface_settings.auto_close_console
 	$VBoxContainer/HBoxContainer4/ConsoleAlwaysOnTop.button_pressed = interface_settings.console_on_top
+	$VBoxContainer/HBoxContainer7/cdprogsLocationLabel.text = cdpprogs_location
+	$VBoxContainer/HBoxContainer7.tooltip_text = cdpprogs_location
 	
 
 func _on_pvoc_warning_toggled(toggled_on: bool) -> void:

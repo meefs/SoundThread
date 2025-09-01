@@ -376,6 +376,7 @@ func _on_settings_button_index_pressed(index: int) -> void:
 	
 	match index:
 		0:
+			$Settings.cdpprogs_location = cdpprogs_location
 			$Settings.popup_centered()
 		1:
 			$AudioSettings.popup_centered()

@@ -7,7 +7,7 @@
 auto_translate_mode = 1
 title = "SoundThread Settings"
 initial_position = 2
-size = Vector2i(500, 410)
+size = Vector2i(500, 458)
 transient = true
 unresizable = true
 always_on_top = true
@@ -15,7 +15,7 @@ script = ExtResource("1_uey6c")
 
 [node name="ColorRect" type="ColorRect" parent="." groups=["invertable_background"]]
 offset_right = 506.0
-offset_bottom = 421.0
+offset_bottom = 467.0
 color = Color(0.101961, 0.101961, 0.101961, 0.6)
 script = ExtResource("2_bym2s")
 
@@ -38,6 +38,18 @@ theme_override_constants/margin_bottom = 3
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Composers Desktop Project"
+
+[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer7"]
+layout_mode = 2
+text = "CDP location: "
+
+[node name="cdprogsLocationLabel" type="Label" parent="VBoxContainer/HBoxContainer7"]
+layout_mode = 2
+size_flags_horizontal = 3
+text_overrun_behavior = 3
 
 [node name="ChangeCDP" type="Button" parent="VBoxContainer"]
 layout_mode = 2
