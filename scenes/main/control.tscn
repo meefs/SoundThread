@@ -290,6 +290,7 @@ offset_left = 12.0
 offset_top = 352.0
 offset_right = 292.0
 offset_bottom = 393.0
+disabled = true
 text = "Stop Running Thread"
 
 [node name="ConsoleRightClick" type="PopupMenu" parent="Console"]
