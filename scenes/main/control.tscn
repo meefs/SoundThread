@@ -1,7 +1,8 @@
-[gd_scene load_steps=12 format=3 uid="uid://bcs87y7ptx3ke"]
+[gd_scene load_steps=13 format=3 uid="uid://bcs87y7ptx3ke"]
 
 [ext_resource type="Script" uid="uid://bdlfvuljckmu1" path="res://scenes/main/scripts/control.gd" id="1_2f0aq"]
 [ext_resource type="Script" uid="uid://l2yejnjysupr" path="res://scenes/main/scripts/graph_edit.gd" id="2_3ioqo"]
+[ext_resource type="Texture2D" uid="uid://drn34trxhf80f" path="res://theme/images/open_explore.png" id="3_4na11"]
 [ext_resource type="PackedScene" uid="uid://b0wdj8v6o0wq0" path="res://scenes/menu/menu.tscn" id="3_dtf4o"]
 [ext_resource type="Texture2D" uid="uid://cdwux1smquvpi" path="res://theme/images/logo.png" id="4_3ioqo"]
 [ext_resource type="Script" uid="uid://c503vew41pw80" path="res://scenes/main/scripts/color_rect_theme_invert.gd" id="4_mg8al"]
@@ -29,6 +30,15 @@ anchor_bottom = 1.0
 offset_top = 32.0
 right_disconnects = true
 script = ExtResource("2_3ioqo")
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 301.0
+offset_top = 44.0
+offset_right = 325.0
+offset_bottom = 71.0
+tooltip_text = "Explore available processes (Ctrl/Cmd + E)"
+icon = ExtResource("3_4na11")
 
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a Directory"
@@ -565,6 +575,7 @@ text = "Stop Running Thread"
 [connection signal="node_selected" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_node_selected"]
 [connection signal="paste_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_paste_nodes_request"]
 [connection signal="popup_request" from="GraphEdit" to="." method="_on_graph_edit_popup_request"]
+[connection signal="button_down" from="Button" to="." method="open_explore"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="close_requested" from="mainmenu" to="." method="_on_mainmenu_close_requested"]
 [connection signal="meta_clicked" from="NoLocationPopup/RichTextLabel" to="." method="_on_rich_text_label_meta_clicked"]
