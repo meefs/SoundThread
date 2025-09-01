@@ -40,6 +40,7 @@ window/per_pixel_transparency/allowed=true
 
 outputnode="Controls from the output node"
 inputnode="input file controls"
+invertable_background=""
 
 [gui]
 

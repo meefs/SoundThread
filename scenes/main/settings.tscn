@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c1a6elrpk4eks"]
+[gd_scene load_steps=3 format=3 uid="uid://c1a6elrpk4eks"]
 
 [ext_resource type="Script" uid="uid://co12pspac25gq" path="res://scenes/main/scripts/settings.gd" id="1_uey6c"]
+[ext_resource type="Script" uid="uid://c503vew41pw80" path="res://scenes/main/scripts/color_rect_theme_invert.gd" id="2_bym2s"]
 
 [node name="Settings" type="Window"]
 auto_translate_mode = 1
@@ -12,10 +13,11 @@ unresizable = true
 always_on_top = true
 script = ExtResource("1_uey6c")
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="ColorRect" type="ColorRect" parent="." groups=["invertable_background"]]
 offset_right = 506.0
 offset_bottom = 421.0
 color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("2_bym2s")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 offset_left = 12.0

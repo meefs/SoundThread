@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dya5kxx132fgp"]
+[gd_scene load_steps=4 format=3 uid="uid://dya5kxx132fgp"]
 
 [ext_resource type="Script" uid="uid://bco7hof3wqck4" path="res://scenes/Nodes/valueslider.gd" id="1_4kxw6"]
 [ext_resource type="Script" uid="uid://duykdpsfmfw38" path="res://scenes/Nodes/breakfilemaker.gd" id="2_6ltu5"]
+[ext_resource type="Script" uid="uid://c503vew41pw80" path="res://scenes/main/scripts/color_rect_theme_invert.gd" id="2_du0of"]
 
 [node name="VBoxContainer" type="VBoxContainer"]
 custom_minimum_size = Vector2(270, 0)
@@ -59,13 +60,14 @@ text = "Double click to add/remove automation"
 horizontal_alignment = 2
 vertical_alignment = 1
 
-[node name="ColorRect" type="ColorRect" parent="BreakFileMaker"]
+[node name="ColorRect" type="ColorRect" parent="BreakFileMaker" groups=["invertable_background"]]
 offset_left = -20.0
 offset_top = 255.0
 offset_right = 716.0
 offset_bottom = 300.0
 mouse_filter = 2
 color = Color(0.101961, 0.101961, 0.101961, 0.329412)
+script = ExtResource("2_du0of")
 
 [node name="AutomationEditor" type="Control" parent="BreakFileMaker"]
 layout_mode = 3

@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://bcs87y7ptx3ke"]
+[gd_scene load_steps=12 format=3 uid="uid://bcs87y7ptx3ke"]
 
 [ext_resource type="Script" uid="uid://bdlfvuljckmu1" path="res://scenes/main/scripts/control.gd" id="1_2f0aq"]
 [ext_resource type="Script" uid="uid://l2yejnjysupr" path="res://scenes/main/scripts/graph_edit.gd" id="2_3ioqo"]
 [ext_resource type="PackedScene" uid="uid://b0wdj8v6o0wq0" path="res://scenes/menu/menu.tscn" id="3_dtf4o"]
 [ext_resource type="Texture2D" uid="uid://cdwux1smquvpi" path="res://theme/images/logo.png" id="4_3ioqo"]
+[ext_resource type="Script" uid="uid://c503vew41pw80" path="res://scenes/main/scripts/color_rect_theme_invert.gd" id="4_mg8al"]
 [ext_resource type="PackedScene" uid="uid://dta7rfalv4uvd" path="res://scenes/main/audio_settings.tscn" id="5_dtf4o"]
 [ext_resource type="Script" uid="uid://cyhaucukdha8a" path="res://scenes/main/scripts/console.gd" id="5_fbaj0"]
 [ext_resource type="Script" uid="uid://wja0lo4nobh1" path="res://scenes/main/scripts/about_menu.gd" id="5_yf4wl"]
@@ -50,6 +51,12 @@ exclusive = true
 unresizable = true
 borderless = true
 popup_window = true
+
+[node name="ColorRect" type="ColorRect" parent="NoLocationPopup" groups=["invertable_background"]]
+offset_right = 459.0
+offset_bottom = 514.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
 
 [node name="TextureRect" type="TextureRect" parent="NoLocationPopup"]
 offset_left = -6.0
@@ -98,6 +105,12 @@ unresizable = true
 borderless = true
 popup_window = true
 
+[node name="ColorRect" type="ColorRect" parent="NoInputPopup" groups=["invertable_background"]]
+offset_right = 506.0
+offset_bottom = 421.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
+
 [node name="Label" type="Label" parent="NoInputPopup"]
 offset_left = 14.0
 offset_top = 7.0
@@ -129,6 +142,12 @@ exclusive = true
 unresizable = true
 borderless = true
 popup_window = true
+
+[node name="ColorRect" type="ColorRect" parent="WrongFolderPopup" groups=["invertable_background"]]
+offset_right = 506.0
+offset_bottom = 421.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
 
 [node name="Label" type="Label" parent="WrongFolderPopup"]
 offset_left = 14.0
@@ -169,6 +188,12 @@ exclusive = true
 unresizable = true
 popup_window = true
 
+[node name="ColorRect" type="ColorRect" parent="AudioDevicePopup" groups=["invertable_background"]]
+offset_right = 506.0
+offset_bottom = 421.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
+
 [node name="Label" type="Label" parent="AudioDevicePopup"]
 offset_left = 14.0
 offset_top = 7.0
@@ -197,6 +222,12 @@ exclusive = true
 unresizable = true
 borderless = true
 popup_window = true
+
+[node name="ColorRect" type="ColorRect" parent="MultipleConnectionsPopup" groups=["invertable_background"]]
+offset_right = 506.0
+offset_bottom = 421.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
 
 [node name="Label" type="Label" parent="MultipleConnectionsPopup"]
 offset_left = 14.0
@@ -268,13 +299,13 @@ item_0/id = 0
 item_1/text = "Copy"
 item_1/id = 1
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="MenuBarBackground" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 35.0
 grow_horizontal = 2
-color = Color(0.0646965, 0.0646965, 0.0646965, 1)
+color = Color(0.93408, 0.93408, 0.93408, 1)
 
 [node name="MenuBar" type="MenuBar" parent="."]
 layout_mode = 1
@@ -373,6 +404,12 @@ unresizable = true
 borderless = true
 popup_window = true
 
+[node name="ColorRect" type="ColorRect" parent="SaveChangesPopup" groups=["invertable_background"]]
+offset_right = 369.0
+offset_bottom = 114.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
+
 [node name="Label" type="Label" parent="SaveChangesPopup"]
 offset_left = -1.0
 offset_top = 21.0
@@ -447,6 +484,12 @@ exclusive = true
 unresizable = true
 popup_window = true
 
+[node name="ColorRect" type="ColorRect" parent="CheckForUpdates/UpdatePopup" groups=["invertable_background"]]
+offset_right = 398.0
+offset_bottom = 313.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
+
 [node name="Label" type="Label" parent="CheckForUpdates/UpdatePopup"]
 offset_left = 14.0
 offset_top = 6.0
@@ -482,6 +525,12 @@ visible = false
 transient = true
 exclusive = true
 borderless = true
+
+[node name="ColorRect" type="ColorRect" parent="ProgressWindow" groups=["invertable_background"]]
+offset_right = 613.0
+offset_bottom = 121.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
 
 [node name="ProgressBar" type="ProgressBar" parent="ProgressWindow"]
 offset_left = 10.0

@@ -1,4 +1,4 @@
-[gd_resource type="Theme" load_steps=153 format=3 uid="uid://cefwkdcoxihro"]
+[gd_resource type="Theme" load_steps=157 format=3 uid="uid://cefwkdcoxihro"]
 
 [ext_resource type="FontFile" uid="uid://cc7mj053bhfvh" path="res://theme/WorkSans-Regular.otf" id="1_4xa5k"]
 [ext_resource type="Texture2D" uid="uid://b4o8vm5o4uptk" path="res://theme/images/toggle_checked.png" id="1_cibxr"]
@@ -647,6 +647,54 @@ border_color = Color(0, 0, 0, 0.6)
 corner_detail = 5
 shadow_color = Color(0, 0, 0, 0)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1i8tr"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.3)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_twywa"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.225, 0.225, 0.225, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h6rxs"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kbb3a"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0, 0, 0, 0.6)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5mqb0"]
 content_margin_left = 0.0
 content_margin_top = 0.0
@@ -1268,6 +1316,21 @@ LineEdit/icons/clear = SubResource("ImageTexture_qw5ey")
 LineEdit/styles/focus = SubResource("StyleBoxFlat_7hjjl")
 LineEdit/styles/normal = SubResource("StyleBoxFlat_wnmfn")
 LineEdit/styles/read_only = SubResource("StyleBoxFlat_qnold")
+MenuBar/colors/font_color = Color(0.875, 0.875, 0.875, 1)
+MenuBar/colors/font_disabled_color = Color(0.875, 0.875, 0.875, 0.5)
+MenuBar/colors/font_focus_color = Color(0.95, 0.95, 0.95, 1)
+MenuBar/colors/font_hover_color = Color(0.95, 0.95, 0.95, 1)
+MenuBar/colors/font_hover_pressed_color = Color(1, 1, 1, 1)
+MenuBar/colors/font_outline_color = Color(0, 0, 0, 1)
+MenuBar/colors/font_pressed_color = Color(1, 1, 1, 1)
+MenuBar/constants/h_separation = 4
+MenuBar/constants/outline_size = 0
+MenuBar/font_sizes/font_size = 16
+MenuBar/fonts/font = ExtResource("1_4xa5k")
+MenuBar/styles/disabled = SubResource("StyleBoxFlat_1i8tr")
+MenuBar/styles/hover = SubResource("StyleBoxFlat_twywa")
+MenuBar/styles/normal = SubResource("StyleBoxFlat_h6rxs")
+MenuBar/styles/pressed = SubResource("StyleBoxFlat_kbb3a")
 Panel/styles/panel = SubResource("StyleBoxFlat_5mqb0")
 PopupMenu/colors/font_accelerator_color = Color(0.7, 0.7, 0.7, 0.8)
 PopupMenu/colors/font_color = Color(0.875, 0.875, 0.875, 1)

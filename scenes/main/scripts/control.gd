@@ -83,6 +83,7 @@ func make_signal_connections():
 	get_node("mainmenu").open_help.connect(open_help.show_help_for_node)
 	get_node("Settings").open_cdp_location.connect(show_cdp_location)
 	get_node("Settings").console_on_top.connect(change_console_settings)
+	get_node("Settings").invert_ui.connect(invert_theme_toggled)
 	
 func hidpi_adjustment():
 	#checks if display is hidpi and scales ui accordingly hidpi - 144
@@ -183,11 +184,8 @@ func check_user_preferences():
 			RenderingServer.set_default_clear_color(Color(interface_settings.theme_custom_colour))
 			
 	#set the theme to either the main theme or inverted theme depending on user preferences
-	if interface_settings.invert_theme:
-		var inverted = $Settings.invert_theme(main_theme)
-		get_tree().root.theme = inverted
-	else:
-		get_tree().root.theme = main_theme
+	invert_theme_toggled(interface_settings.invert_theme)
+
 		
 func show_cdp_location():
 	$CdpLocationDialog.show()
@@ -667,3 +665,45 @@ func change_console_settings(toggled: bool):
 
 func _on_kill_process_button_down() -> void:
 	run_thread._on_kill_process_button_down()
+
+func invert_theme_toggled(toggled: bool):
+	if toggled:
+		var inverted = invert_theme(main_theme)
+		get_tree().root.theme = inverted # force refresh
+		$MenuBarBackground.color = Color(0.934, 0.934, 0.934)
+		for color_rect in get_tree().get_nodes_in_group("invertable_background"):
+			if color_rect is ColorRect:
+				color_rect.color = Color(0.898, 0.898, 0.898, 0.6)
+		
+	else:
+		get_tree().root.theme = main_theme # force refresheme = main_theme
+		$MenuBarBackground.color = Color(0.065, 0.065, 0.065)
+		
+		for color_rect in get_tree().get_nodes_in_group("invertable_background"):
+			if color_rect is ColorRect:
+				color_rect.color = Color(0.102, 0.102, 0.102, 0.6)
+		
+func invert_theme(theme: Theme) -> Theme:
+	var inverted_theme = theme.duplicate(true) # deep copy
+
+	# Check all types and color names in the theme
+	var types = inverted_theme.get_type_list()
+	for type in types:
+		var color_names = inverted_theme.get_color_list(type)
+		for cname in color_names:
+			var col = inverted_theme.get_color(cname, type)
+			var inverted = Color(1.0 - col.r, 1.0 - col.g, 1.0 - col.b, col.a)
+			inverted_theme.set_color(cname, type, inverted)
+
+		var style_names = inverted_theme.get_stylebox_list(type)
+		for sname in style_names:
+			if type == "GraphEdit" and sname == "panel":
+				continue
+			var sb = inverted_theme.get_stylebox(sname, type)
+			var new_sb = sb.duplicate()
+			if new_sb is StyleBoxFlat:
+				var col = new_sb.bg_color
+				new_sb.bg_color = Color(1.0 - col.r, 1.0 - col.g, 1.0 - col.b, col.a)
+			inverted_theme.set_stylebox(sname, type, new_sb)
+	
+	return inverted_theme

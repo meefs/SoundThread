@@ -4,6 +4,8 @@ signal console_on_top
 var interface_settings
 var main_theme = preload("res://theme/main_theme.tres")
 
+signal invert_ui
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
@@ -65,37 +67,7 @@ func _on_custom_colour_picker_color_changed(color: Color) -> void:
 	if $VBoxContainer/HBoxContainer5/ThemeList.is_selected(3):
 		RenderingServer.set_default_clear_color(color)
 		
-func invert_theme(theme: Theme) -> Theme:
-	var inverted_theme = theme.duplicate(true) # deep copy
-
-	# Check all types and color names in the theme
-	var types = inverted_theme.get_type_list()
-	for type in types:
-		var color_names = inverted_theme.get_color_list(type)
-		for cname in color_names:
-			var col = inverted_theme.get_color(cname, type)
-			var inverted = Color(1.0 - col.r, 1.0 - col.g, 1.0 - col.b, col.a)
-			inverted_theme.set_color(cname, type, inverted)
-
-		var style_names = inverted_theme.get_stylebox_list(type)
-		for sname in style_names:
-			if type == "GraphEdit" and sname == "panel":
-				continue
-			var sb = inverted_theme.get_stylebox(sname, type)
-			var new_sb = sb.duplicate()
-			if new_sb is StyleBoxFlat:
-				var col = new_sb.bg_color
-				new_sb.bg_color = Color(1.0 - col.r, 1.0 - col.g, 1.0 - col.b, col.a)
-			inverted_theme.set_stylebox(sname, type, new_sb)
-	
-	return inverted_theme
-	
 
 func _on_invert_ui_toggled(toggled_on: bool) -> void:
 	ConfigHandler.save_interface_settings("invert_theme", toggled_on)
-	if toggled_on:
-		print("invert toggled on")
-		var inverted = invert_theme(main_theme)
-		get_tree().root.theme = inverted # force refresh
-	else:
-		get_tree().root.theme = main_theme # force refresheme = main_theme
+	invert_ui.emit(toggled_on)
