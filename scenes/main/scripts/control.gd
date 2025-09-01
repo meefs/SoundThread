@@ -84,6 +84,7 @@ func make_signal_connections():
 	get_node("Settings").open_cdp_location.connect(show_cdp_location)
 	get_node("Settings").console_on_top.connect(change_console_settings)
 	get_node("Settings").invert_ui.connect(invert_theme_toggled)
+	get_node("Settings").swap_zoom_and_move.connect(swap_zoom_and_move)
 	
 func hidpi_adjustment():
 	#checks if display is hidpi and scales ui accordingly hidpi - 144
@@ -185,6 +186,7 @@ func check_user_preferences():
 			
 	#set the theme to either the main theme or inverted theme depending on user preferences
 	invert_theme_toggled(interface_settings.invert_theme)
+	swap_zoom_and_move(interface_settings.swap_zoom_and_move)
 
 		
 func show_cdp_location():
@@ -708,3 +710,9 @@ func invert_theme(theme: Theme) -> Theme:
 			inverted_theme.set_stylebox(sname, type, new_sb)
 	
 	return inverted_theme
+
+func swap_zoom_and_move(toggled: bool):
+	if toggled:
+		graph_edit.set_panning_scheme(1)
+	else:
+		graph_edit.set_panning_scheme(0)

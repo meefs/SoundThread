@@ -1,11 +1,14 @@
 extends Window
 signal open_cdp_location
 signal console_on_top
+signal invert_ui
+signal swap_zoom_and_move
+
 var interface_settings
 var main_theme = preload("res://theme/main_theme.tres")
 var cdpprogs_location
 
-signal invert_ui
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -26,6 +29,7 @@ func _on_about_to_popup() -> void:
 	$VBoxContainer/HBoxContainer5/ThemeList.select(interface_settings.theme, true)
 	$VBoxContainer/HBoxContainer/CustomColourPicker.color = Color(interface_settings.theme_custom_colour)
 	$VBoxContainer/invert_ui_container/InvertUI.button_pressed = interface_settings.invert_theme
+	$VBoxContainer/HBoxContainer8/SwapZoomAndMoveToggle.button_pressed = interface_settings.swap_zoom_and_move
 	$VBoxContainer/HBoxContainer2/PvocWarning.button_pressed = interface_settings.disable_pvoc_warning
 	$VBoxContainer/HBoxContainer6/ProgressBar.button_pressed = interface_settings.disable_progress_bar
 	$VBoxContainer/HBoxContainer3/AutoCloseConsole.button_pressed = interface_settings.auto_close_console
@@ -74,3 +78,8 @@ func _on_custom_colour_picker_color_changed(color: Color) -> void:
 func _on_invert_ui_toggled(toggled_on: bool) -> void:
 	ConfigHandler.save_interface_settings("invert_theme", toggled_on)
 	invert_ui.emit(toggled_on)
+
+
+func _on_swap_zoom_and_move_toggle_toggled(toggled_on: bool) -> void:
+	ConfigHandler.save_interface_settings("swap_zoom_and_move", toggled_on)
+	swap_zoom_and_move.emit(toggled_on)
