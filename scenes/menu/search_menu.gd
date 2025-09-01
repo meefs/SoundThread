@@ -4,7 +4,10 @@ extends PopupPanel
 @onready var scroll_container: ScrollContainer = $VBoxContainer/ScrollContainer
 @onready var search_bar = $VBoxContainer/SearchBar
 var node_data = {} #stores node data for each node to display in help popup
+var replace_node = false
+var node_to_replace
 signal make_node(command)
+signal swap_node(node_to_replace, command)
 
 
 func _ready() -> void:
@@ -101,7 +104,10 @@ func _on_search_bar_text_changed(new_text: String) -> void:
 	
 func _on_item_selected(key: String):
 	self.hide()
-	make_node.emit(key) # send out signal to main patch
+	if replace_node == true:
+		swap_node.emit(node_to_replace, key)
+	else:
+		make_node.emit(key) # send out signal to main patch
 
 func _on_search_bar_text_submitted(new_text: String) -> void:
 	var button = item_container.get_child(0)

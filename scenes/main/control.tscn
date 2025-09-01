@@ -457,14 +457,20 @@ visible = false
 [node name="SearchMenu" type="PopupPanel" parent="." groups=["popup_windows"]]
 auto_translate_mode = 1
 position = Vector2i(100, 100)
-size = Vector2i(600, 53)
+size = Vector2i(600, 77)
 script = ExtResource("6_fyarh")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SearchMenu"]
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 596.0
-offset_bottom = 49.0
+offset_bottom = 73.0
+
+[node name="ReplaceLabel" type="Label" parent="SearchMenu/VBoxContainer"]
+layout_mode = 2
+text = "Replace"
+clip_text = true
+text_overrun_behavior = 3
 
 [node name="SearchBar" type="LineEdit" parent="SearchMenu/VBoxContainer"]
 layout_mode = 2

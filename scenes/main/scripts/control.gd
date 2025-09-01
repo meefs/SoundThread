@@ -79,6 +79,7 @@ func load_scripts():
 
 func make_signal_connections():
 	get_node("SearchMenu").make_node.connect(graph_edit._make_node)
+	get_node("SearchMenu").swap_node.connect(graph_edit._swap_node)
 	get_node("mainmenu").make_node.connect(graph_edit._make_node)
 	get_node("mainmenu").open_help.connect(open_help.show_help_for_node)
 	get_node("Settings").open_cdp_location.connect(show_cdp_location)
@@ -618,6 +619,27 @@ func _on_graph_edit_popup_request(at_position: Vector2) -> void:
 	#get the window size relative to its scaling for retina displays
 	var window_size = get_window().size * DisplayServer.screen_get_scale()
 
+	#see if it was empty space or a node that was right clicked
+	var clicked_node
+	for child in graph_edit.get_children():
+		if child is GraphNode:
+			if Rect2(child.position, child.size).has_point(effect_position):
+				clicked_node = child
+				break
+	
+	if clicked_node and clicked_node.get_meta("command") != "outputfile":
+		var title = clicked_node.title
+		$SearchMenu/VBoxContainer/ReplaceLabel.text = "Replace " + title
+		$SearchMenu/VBoxContainer/ReplaceLabel.show()
+		$SearchMenu.replace_node = true
+		$SearchMenu.node_to_replace = clicked_node
+	else:
+		$SearchMenu/VBoxContainer/ReplaceLabel.hide()
+		$SearchMenu.replace_node = false
+	
+	var closest_connection = graph_edit.get_closest_connection_at_point(effect_position)
+	print("closest_connection")
+	print(closest_connection)
 	#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
 	var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - $SearchMenu.size.x)
 	var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - (420 * DisplayServer.screen_get_scale()))

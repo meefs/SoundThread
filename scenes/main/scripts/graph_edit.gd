@@ -359,43 +359,42 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
 	control_script.undo_redo.create_action("Delete Nodes (Undo only)")
-			
-	for node in selected_nodes.keys():
-		if is_instance_valid(node) and selected_nodes[node]:
-			if selected_nodes[node]:
-				#check if node is the output or the last input node and do nothing
-				if node.get_meta("command") == "outputfile":
-					pass
-				else:
-					# Store duplicate and state for undo
-					var node_data = node.duplicate()
-					var position = node.position_offset
 
-					# Store all connections for undo
-					var conns = []
-					for con in get_connection_list():
-						if con["to_node"] == node.name or con["from_node"] == node.name:
-							conns.append(con)
+	for node_name in nodes:
+		var node: GraphNode = get_node_or_null(NodePath(node_name))
+		if node and is_instance_valid(node):
+			# Skip output nodes
+			if node.get_meta("command") == "outputfile":
+				continue
 
-					# Delete
-					remove_connections_to_node(node)
-					node.queue_free()
-					control_script.changesmade = true
+			# Store duplicate and state for undo
+			var node_data = node.duplicate()
+			var position = node.position_offset
 
-					# Register undo restore
-					control_script.undo_redo.add_undo_method(Callable(self, "add_child").bind(node_data, true))
-					control_script.undo_redo.add_undo_method(Callable(node_data, "set_position_offset").bind(position))
-					for con in conns:
-						control_script.undo_redo.add_undo_method(Callable(self, "connect_node").bind(
-							con["from_node"], con["from_port"],
-							con["to_node"], con["to_port"]
-						))
-					control_script.undo_redo.add_undo_method(Callable(self, "set_node_selected").bind(node_data, true))
-					control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-					control_script.undo_redo.add_undo_method(Callable(self, "_register_inputs_in_node").bind(node_data)) #link sliders for changes tracking
-					control_script.undo_redo.add_undo_method(Callable(self, "_register_node_movement")) # link nodes for changes tracking
+			# Store all connections for undo
+			var conns := []
+			for con in get_connection_list():
+				if con["to_node"] == node.name or con["from_node"] == node.name:
+					conns.append(con)
 
-	# Clear selection
+			# Delete
+			remove_connections_to_node(node)
+			node.queue_free()
+			control_script.changesmade = true
+
+			# Register undo restore
+			control_script.undo_redo.add_undo_method(Callable(self, "add_child").bind(node_data, true))
+			control_script.undo_redo.add_undo_method(Callable(node_data, "set_position_offset").bind(position))
+			for con in conns:
+				control_script.undo_redo.add_undo_method(Callable(self, "connect_node").bind(
+					con["from_node"], con["from_port"],
+					con["to_node"], con["to_port"]
+				))
+			control_script.undo_redo.add_undo_method(Callable(self, "set_node_selected").bind(node_data, true))
+			control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
+			control_script.undo_redo.add_undo_method(Callable(self, "_register_inputs_in_node").bind(node_data))
+			control_script.undo_redo.add_undo_method(Callable(self, "_register_node_movement"))
+
 	selected_nodes = {}
 
 	control_script.undo_redo.commit_action()
@@ -591,3 +590,51 @@ func on_inlet_removed(node_name: StringName, port_index: int):
 	for conn in connections:
 		if conn.to_node == node_name and conn.to_port == port_index:
 			disconnect_node(conn.from_node, conn.from_port, conn.to_node, conn.to_port)
+			
+func _swap_node(old_node: GraphNode, command: String):
+	#store the position and name of the node to be replaced
+	var position = old_node.position_offset
+	var old_name = old_node.name
+	#gather all connections in the graph
+	var connections = get_connection_list()
+	var related_connections = []
+	
+	#filter the connections to get just those connected to the node to be replaced
+	for conn in connections:
+		if conn.from_node == old_name or conn.to_node == old_name:
+			related_connections.append(conn)
+			
+	#delete the old node
+	_on_graph_edit_delete_nodes_request([old_node.name])
+	
+	#make the new node and reposition it to the location of the old node
+	var new_node = _make_node(command)
+	new_node.position_offset = position
+	
+	#filter through all the connections to the old node
+	for conn in related_connections:
+		var from = conn.from_node
+		var from_port = conn.from_port
+		var to = conn.to_node
+		var to_port = conn.to_port
+		
+		#where the old node is referenced replace it with the name of the new node
+		if from == old_name:
+			from = new_node.name
+		if to == old_name:
+			to = new_node.name
+			
+		#check that the ports being connected to/from on the new node actually exist
+		if (from == new_node.name and new_node.is_slot_enabled_right(from_port)) or (to == new_node.name and new_node.is_slot_enabled_left(to_port)):
+			#if they do get the two nodes to be connected
+			var from_node = get_node_or_null(NodePath(from))
+			var to_node = get_node_or_null(NodePath(to))
+			#safety incase one somehow no longer exists
+			if from_node != null and to_node != null:
+				#check if the port types are the same e.g. both time or both pvoc
+				if from_node.get_output_port_type(from_port) == to_node.get_input_port_type(to_port):
+					#connect them together
+					_on_connection_request(from, from_port, to, to_port)
+	
+	
+	
