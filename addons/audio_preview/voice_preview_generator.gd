@@ -9,7 +9,10 @@ const IMAGE_HEIGHT: int = 64
 
 var image_compression: float = 10.0 # How many samples in one pixel
 var background_color = Color(0, 0, 0, 0)
-var foreground_color = Color.SILVER
+var foreground_color
+
+
+
 
 
 
@@ -26,6 +29,15 @@ var must_abort := false
 
 
 func generate_preview(stream: AudioStreamWAV, image_max_width: int = 500):
+	#set colour based on theme
+	var interface_settings = ConfigHandler.load_interface_settings()
+	#check if the theme is inverted
+	if interface_settings.invert_theme:
+		foreground_color = Color(0.102, 0.102, 0.102, 0.6)
+	else:
+		foreground_color = Color(0.898, 0.898, 0.898, 0.6)
+	
+	
 	if not stream:
 		return
 	if stream.format == AudioStreamWAV.FORMAT_IMA_ADPCM:
