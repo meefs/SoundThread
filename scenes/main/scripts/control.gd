@@ -18,6 +18,7 @@ var foldertoggle #links to the reuse folder button
 var lastoutputfolder = "none" #tracks last output folder, this can in future be used to replace global.outfile but i cba right now
 var uiscale = 1.0 #tracks scaling for retina screens
 var use_anyway #used to store the folder selected for cdprogs when it appears the wrong folder is selected but the user wants to use it anyway
+var main_theme = preload("res://theme/main_theme.tres") #load the theme
 
 
 #scripts
@@ -50,6 +51,7 @@ func _ready() -> void:
 	$LoadDialog.filters = ["*.thd"]
 	
 	get_tree().set_auto_accept_quit(false) #disable closing the app with the x and instead handle it internally
+	
 	
 	load_scripts()
 	make_signal_connections()
@@ -179,6 +181,14 @@ func check_user_preferences():
 			RenderingServer.set_default_clear_color(Color("#98d4d2"))
 		3:
 			RenderingServer.set_default_clear_color(Color(interface_settings.theme_custom_colour))
+			
+	#set the theme to either the main theme or inverted theme depending on user preferences
+	if interface_settings.invert_theme:
+		var inverted = $Settings.invert_theme(main_theme)
+		get_tree().root.theme = inverted
+	else:
+		get_tree().root.theme = main_theme
+		
 func show_cdp_location():
 	$CdpLocationDialog.show()
 	

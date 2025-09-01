@@ -43,7 +43,6 @@ inputnode="input file controls"
 
 [gui]
 
-theme/custom="uid://cefwkdcoxihro"
 theme/custom_font="uid://cc7mj053bhfvh"
 
 [input]
