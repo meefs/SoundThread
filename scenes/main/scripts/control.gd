@@ -8,7 +8,7 @@ var delete_intermediate_outputs # tracks state of delete intermediate outputs to
 @onready var console_output: RichTextLabel = $Console/ConsoleOutput
 var undo_redo := UndoRedo.new() 
 var output_audio_player #tracks the node that is the current output player for linking
-var input_audio_player #tracks node that is the current input player for linking
+var input_audio_player #potentially unused, remove? tracks node that is the current input player for linking
 var currentfile = "none" #tracks dir of currently loaded file for saving
 var changesmade = false #tracks if user has made changes to the currently loaded save file
 var savestate # tracks what the user is trying to do when savechangespopup is called
@@ -299,8 +299,6 @@ func _input(event):
 		savestate = "saveas"
 		$SaveDialog.popup_centered()
 	
-
-
 func simulate_mouse_click():
 	#simulates clicking the middle mouse button in order to hide any visible tooltips
 	var click_pos = get_viewport().get_mouse_position()
