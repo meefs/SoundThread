@@ -56,6 +56,8 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			if command == "outputfile":
 				effect.init() #initialise ui from user prefs
 			effect.connect("open_help", open_help)
+			if effect.has_signal("node_moved"):
+				effect.node_moved.connect(_auto_link_nodes)
 			effect.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 			_register_inputs_in_node(effect) #link sliders for changes tracking
 			_register_node_movement() #link nodes for tracking position changes for changes tracking
@@ -516,6 +518,7 @@ func paste_copied_nodes():
 
 		add_child(new_node, true)
 		new_node.connect("open_help", open_help)
+		new_node.node_moved.connect(_auto_link_nodes)
 		_register_inputs_in_node(new_node) #link sliders for changes tracking
 		_register_node_movement() # link nodes for changes tracking
 		name_map[node_data["name"]] = new_node.name

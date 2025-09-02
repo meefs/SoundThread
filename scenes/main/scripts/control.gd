@@ -128,6 +128,8 @@ func new_patch():
 	effect.name = "inputfile"
 	get_node("GraphEdit").add_child(effect, true)
 	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
+	if effect.has_signal("node_moved"):
+		effect.node_moved.connect(graph_edit._auto_link_nodes)
 	effect.position_offset = Vector2(20,80)
 	default_input_node = effect #store a reference to this node to allow for loading into it directly if software launched with a wav file argument
 	
@@ -136,6 +138,8 @@ func new_patch():
 	get_node("GraphEdit").add_child(effect, true)
 	effect.init() #initialise ui from user prefs
 	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
+	if effect.has_signal("node_moved"):
+		effect.node_moved.connect(graph_edit._auto_link_nodes)
 	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) / uiscale, 80)
 	graph_edit._register_node_movement() #link nodes for tracking position changes for changes tracking
 	
