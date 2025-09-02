@@ -3,6 +3,7 @@ extends GraphNode
 @export var min_gap: float = 0.5  # editable value in inspector for the minimum gap between min and max
 signal open_help
 signal inlet_removed
+signal node_moved
 
 func _ready() -> void:
 	var sliders := _get_all_hsliders(self) #finds all sliders
@@ -19,6 +20,8 @@ func _ready() -> void:
 	titlebar.add_child(btn)
 	await get_tree().process_frame
 	#reset_size()
+	
+	self.position_offset_changed.connect(_on_position_offset_changed)
 	
 	if self.has_node("addremoveinlets"):
 		var addremove = self.get_node("addremoveinlets")
@@ -106,3 +109,6 @@ func remove_inlet_from_node():
 		#update the size of the graphnode to shrink to fit smaller ui
 		update_minimum_size()
 		size.y = get_combined_minimum_size().y
+
+func _on_position_offset_changed():
+	node_moved.emit(self, Rect2(position, size))

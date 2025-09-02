@@ -307,6 +307,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			add_child(graphnode, true)
 			graphnode.connect("open_help", open_help)
 			graphnode.connect("inlet_removed", Callable(self, "on_inlet_removed"))
+			graphnode.node_moved.connect(_auto_link_nodes)
 			_register_inputs_in_node(graphnode) #link sliders for changes tracking
 			_register_node_movement() #link nodes for tracking position changes for changes tracking
 			
@@ -324,14 +325,23 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 	
 
 func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
+	#check if this is trying to connect a node to itself and skip
+	if from_node == to_node:
+		return
+	
 	var to_graph_node = get_node(NodePath(to_node))
 	var from_graph_node = get_node(NodePath(from_node))
 
-	# Get the type of the input port using GraphNode's built-in method
-	var port_type = to_graph_node.get_input_port_type(to_port)
+	# Get the type of the ports
+	var to_port_type = to_graph_node.get_input_port_type(to_port)
+	var from_port_type = from_graph_node.get_output_port_type(from_port)
+	
+	#skip if this isnt a valid connection
+	if to_port_type != from_port_type:
+		return
 
 	# If port type is 1 and already has a connection, reject the request
-	if port_type == 1:
+	if to_port_type == 1:
 		var connections = get_connection_list()
 		var existing_connections = 0
 
@@ -636,15 +646,9 @@ func _swap_node(old_node: GraphNode, command: String):
 			
 		#check that the ports being connected to/from on the new node actually exist
 		if (from == new_node.name and new_node.is_slot_enabled_right(from_port)) or (to == new_node.name and new_node.is_slot_enabled_left(to_port)):
-			#if they do get the two nodes to be connected
-			var from_node = get_node_or_null(NodePath(from))
-			var to_node = get_node_or_null(NodePath(to))
-			#safety incase one somehow no longer exists
-			if from_node != null and to_node != null:
-				#check if the port types are the same e.g. both time or both pvoc
-				if from_node.get_output_port_type(from_port) == to_node.get_input_port_type(to_port):
-					#connect them together
-					_on_connection_request(from, from_port, to, to_port)
+			#check the two ports are the same type
+			if _same_port_type(from, from_port, to, to_port):
+				_on_connection_request(from, from_port, to, to_port)
 	
 	
 	
@@ -734,3 +738,54 @@ func set_cable_colour(theme_colour: int):
 		cable_colour = Color.from_hsv(background_colour.h, clamp(background_colour.s + 0.2, 0, 1), clamp(background_colour.v + 0.2, 0, 1))
 	#overide theme for cable highlight
 	add_theme_color_override("activity", cable_colour)
+
+func _auto_link_nodes(node: GraphNode, rect: Rect2):
+	#get all cables that overlap with the node being moved
+	var potential_connections = get_connections_intersecting_with_rect(rect)
+	
+	#if there are anyoverlapping and shift is being held down then
+	if potential_connections.size() > 0 and Input.is_action_pressed("auto_link_nodes"):
+		#sort through all the cables that overlap
+		for conn in potential_connections:
+			#get their info
+			var new_node_name = node.name
+			var new_node_has_inputs = node.get_input_port_count() > 0
+			var new_node_has_outputs = node.get_output_port_count() > 0
+			var from = conn.from_node
+			var from_port = conn.from_port
+			var to = conn.to_node
+			var to_port = conn.to_port
+			
+			if new_node_has_inputs and new_node_has_outputs:
+				#connect in the middle of the two nodes if they are the same port type
+				var from_matches = _same_port_type(from, from_port, new_node_name, 0)
+				var to_matches = _same_port_type(new_node_name, 0, to, to_port)
+				if from_matches:
+					_on_connection_request(from, from_port, new_node_name, 0)
+				if to_matches:
+					_on_connection_request(new_node_name, 0, to, to_port)
+				#skip deleting cables if they are the same as the node being dragged or the ports don't match
+				if from_matches and to_matches and from != new_node_name and to != new_node_name:
+					_on_graph_edit_disconnection_request(from, from_port, to, to_port)
+
+			elif new_node_has_inputs:
+				if _same_port_type(from, from_port, new_node_name, 0):
+					_on_connection_request(from, from_port, new_node_name, 0)
+					
+			elif new_node_has_outputs:
+				if _same_port_type(new_node_name, 0, to, to_port):
+					_on_connection_request(new_node_name, 0, to, to_port)
+
+# function for checking if an inlet and an outlet are the same type
+func _same_port_type(from: String, from_port: int, to: String, to_port: int) -> bool:
+	var from_node = get_node_or_null(NodePath(from))
+	var to_node = get_node_or_null(NodePath(to))
+	#safety incase one somehow no longer exists
+	if from_node != null and to_node != null:
+		#check if the port types are the same e.g. both time or both pvoc
+		if from_node.get_output_port_type(from_port) == to_node.get_input_port_type(to_port):
+			return true
+		else:
+			return false
+	else:
+		return false
