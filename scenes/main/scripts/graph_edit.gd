@@ -11,6 +11,10 @@ var node_data = {} #stores json with all nodes in it
 var valueslider = preload("res://scenes/Nodes/valueslider.tscn") #slider scene for use in nodes
 var addremoveinlets = preload("res://scenes/Nodes/addremoveinlets.tscn") #add remove inlets scene for use in nodes
 var node_logic = preload("res://scenes/Nodes/node_logic.gd") #load the script logic
+var selected_cables:= [] #used to track which cables are selected for changing colour and for deletion
+var theme_background #used to track if the theme has changed and if so change the cable selection colour
+var theme_custom_background
+var high_contrast_cables
 
 
 # Called when the node enters the scene tree for the first time.
@@ -26,6 +30,12 @@ func _ready() -> void:
 			node_data = result
 		else:
 			push_error("Invalid JSON")
+			
+	var interface_settings = ConfigHandler.load_interface_settings()
+	theme_background = interface_settings.theme
+	theme_custom_background = interface_settings.theme_custom_colour
+	high_contrast_cables = interface_settings.high_contrast_selected_cables
+	set_cable_colour(interface_settings.theme)
 
 func init(main_node: Node, graphedit: GraphEdit, openhelp: Callable, multipleconnections: Window) -> void:
 	control_script = main_node
@@ -638,3 +648,89 @@ func _swap_node(old_node: GraphNode, command: String):
 	
 	
 	
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	#check if this is an unhandled mouse click
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		
+		#get dictionary of a cable if nearby
+		var closest_connection = get_closest_connection_at_point(get_local_mouse_position())
+		
+		#check if there is anything in that dictionary
+		if closest_connection.size() > 0:
+			#check if the background has changed colour for highlighted cable colour
+			var interface_settings = ConfigHandler.load_interface_settings()
+			if interface_settings.theme != theme_background or interface_settings.theme_custom_colour != theme_custom_background or interface_settings.high_contrast_selected_cables != high_contrast_cables:
+				#if bg has changed colour since last cable highlight reset to new bg and change cable colour
+				theme_background = interface_settings.theme
+				theme_custom_background = interface_settings.theme_custom_colour
+				high_contrast_cables = interface_settings.high_contrast_selected_cables
+				set_cable_colour(interface_settings.theme)
+				
+			#get details of nearby cable
+			var from_node = closest_connection.from_node
+			var from_port = closest_connection.from_port
+			var to_node = closest_connection.to_node
+			var to_port = closest_connection.to_port
+			
+			#check if user was holding shift and if so allow for multiple cables to be selected
+			if event.shift_pressed:
+				selected_cables.append(closest_connection)
+				set_connection_activity(from_node, from_port, to_node, to_port, 1)
+			
+			#if user double clicked unselect all cables and delete the nearest cable
+			elif event.double_click:
+					for conn in selected_cables:
+						set_connection_activity(conn.from_node, conn.from_port, conn.to_node, conn.to_port, 0)
+					_on_graph_edit_disconnection_request(from_node, from_port, to_node, to_port)
+					
+			#else just a single click, unselect any previously selected cables and select just the nearest
+			else:
+				for conn in selected_cables:
+					set_connection_activity(conn.from_node, conn.from_port, conn.to_node, conn.to_port, 0)
+				selected_cables = []
+				selected_cables.append(closest_connection)
+				set_connection_activity(from_node, from_port, to_node, to_port, 1)
+		
+		#user didnt click on a cable unselect all cables
+		else:
+			for conn in selected_cables:
+				set_connection_activity(conn.from_node, conn.from_port, conn.to_node, conn.to_port, 0)
+			selected_cables = []
+			
+	#if this is an unhandled delete check if there are any cables selected and deleted them
+	if event is InputEventKey and event.pressed:
+		if (event.keycode == KEY_BACKSPACE or event.keycode == KEY_DELETE) and selected_cables.size() > 0:
+			for conn in selected_cables:
+				_on_graph_edit_disconnection_request(conn.from_node, conn.from_port, conn.to_node, conn.to_port)
+				selected_cables = []
+	
+func set_cable_colour(theme_colour: int):
+	var background_colour
+	var cable_colour
+	var interface_settings = ConfigHandler.load_interface_settings()
+	match theme_colour:
+		0:
+			background_colour = Color("#2f4f4e")
+		1:
+			background_colour = Color("#000807")
+		2:
+			background_colour = Color("#98d4d2")
+		3:
+			background_colour = Color(interface_settings.theme_custom_colour)
+			
+	if interface_settings.high_contrast_selected_cables:
+		#180 colour shift from background and up sv
+		cable_colour = Color.from_hsv(fposmod(background_colour.h + 0.5, 1.0), clamp(background_colour.s + 0.2, 0, 1), clamp(background_colour.v + 0.2, 0, 1))
+		var luminance = 0.299 * background_colour.r + 0.587 * background_colour.g + 0.114 * background_colour.b
+		if luminance > 0.5 and cable_colour.get_luminance() > 0.5:
+			cable_colour = cable_colour.darkened(0.4)
+		elif luminance <= 0.5 and cable_colour.get_luminance() < 0.5:
+			#increase s and v again
+			cable_colour = Color.from_hsv(cable_colour.h, clamp(cable_colour.s + 0.2, 0, 0.8), clamp(cable_colour.v + 0.2, 0, 0.8))
+	else:
+		#keep hue but up saturation and variance
+		cable_colour = Color.from_hsv(background_colour.h, clamp(background_colour.s + 0.2, 0, 1), clamp(background_colour.v + 0.2, 0, 1))
+	#overide theme for cable highlight
+	add_theme_color_override("activity", cable_colour)

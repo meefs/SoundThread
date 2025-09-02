@@ -577,6 +577,7 @@ text = "Stop Running Thread"
 [connection signal="copy_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_copy_nodes_request"]
 [connection signal="delete_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_delete_nodes_request"]
 [connection signal="disconnection_request" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_disconnection_request"]
+[connection signal="gui_input" from="GraphEdit" to="GraphEdit" method="_on_gui_input"]
 [connection signal="node_deselected" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_node_deselected"]
 [connection signal="node_selected" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_node_selected"]
 [connection signal="paste_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_paste_nodes_request"]

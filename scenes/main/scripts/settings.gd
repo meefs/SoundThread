@@ -29,6 +29,7 @@ func _on_about_to_popup() -> void:
 	$VBoxContainer/HBoxContainer5/ThemeList.select(interface_settings.theme, true)
 	$VBoxContainer/HBoxContainer/CustomColourPicker.color = Color(interface_settings.theme_custom_colour)
 	$VBoxContainer/invert_ui_container/InvertUI.button_pressed = interface_settings.invert_theme
+	$VBoxContainer/high_contrast_cables_container/HighContrastCablesToggle.button_pressed = interface_settings.high_contrast_selected_cables
 	$VBoxContainer/HBoxContainer8/SwapZoomAndMoveToggle.button_pressed = interface_settings.swap_zoom_and_move
 	$VBoxContainer/HBoxContainer2/PvocWarning.button_pressed = interface_settings.disable_pvoc_warning
 	$VBoxContainer/HBoxContainer6/ProgressBar.button_pressed = interface_settings.disable_progress_bar
@@ -83,3 +84,7 @@ func _on_invert_ui_toggled(toggled_on: bool) -> void:
 func _on_swap_zoom_and_move_toggle_toggled(toggled_on: bool) -> void:
 	ConfigHandler.save_interface_settings("swap_zoom_and_move", toggled_on)
 	swap_zoom_and_move.emit(toggled_on)
+
+
+func _on_high_contrast_cables_toggle_toggled(toggled_on: bool) -> void:
+	ConfigHandler.save_interface_settings("high_contrast_selected_cables", toggled_on)

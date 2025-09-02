@@ -637,9 +637,6 @@ func _on_graph_edit_popup_request(at_position: Vector2) -> void:
 		$SearchMenu/VBoxContainer/ReplaceLabel.hide()
 		$SearchMenu.replace_node = false
 	
-	var closest_connection = graph_edit.get_closest_connection_at_point(effect_position)
-	print("closest_connection")
-	print(closest_connection)
 	#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
 	var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - $SearchMenu.size.x)
 	var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - (420 * DisplayServer.screen_get_scale()))

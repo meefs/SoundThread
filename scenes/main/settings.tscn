@@ -7,7 +7,7 @@
 auto_translate_mode = 1
 title = "SoundThread Settings"
 initial_position = 2
-size = Vector2i(500, 516)
+size = Vector2i(500, 545)
 transient = true
 unresizable = true
 always_on_top = true
@@ -15,7 +15,7 @@ script = ExtResource("1_uey6c")
 
 [node name="ColorRect" type="ColorRect" parent="." groups=["invertable_background"]]
 offset_right = 506.0
-offset_bottom = 522.0
+offset_bottom = 550.0
 color = Color(0.101961, 0.101961, 0.101961, 0.6)
 script = ExtResource("2_bym2s")
 
@@ -107,6 +107,17 @@ text = "Invert UI colours:"
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="high_contrast_cables_container" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/high_contrast_cables_container"]
+layout_mode = 2
+text = "High Contrast Selected Cables:"
+
+[node name="HighContrastCablesToggle" type="CheckButton" parent="VBoxContainer/high_contrast_cables_container"]
+layout_mode = 2
+size_flags_horizontal = 3
+
 [node name="Controls" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
@@ -179,6 +190,7 @@ size_flags_horizontal = 3
 [connection signal="item_selected" from="VBoxContainer/HBoxContainer5/ThemeList" to="." method="_on_theme_list_item_selected"]
 [connection signal="color_changed" from="VBoxContainer/HBoxContainer/CustomColourPicker" to="." method="_on_custom_colour_picker_color_changed"]
 [connection signal="toggled" from="VBoxContainer/invert_ui_container/InvertUI" to="." method="_on_invert_ui_toggled"]
+[connection signal="toggled" from="VBoxContainer/high_contrast_cables_container/HighContrastCablesToggle" to="." method="_on_high_contrast_cables_toggle_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer8/SwapZoomAndMoveToggle" to="." method="_on_swap_zoom_and_move_toggle_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer2/PvocWarning" to="." method="_on_pvoc_warning_toggled"]
 [connection signal="toggled" from="VBoxContainer/HBoxContainer6/ProgressBar" to="." method="_on_progress_bar_toggled"]
