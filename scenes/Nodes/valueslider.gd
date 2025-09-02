@@ -71,7 +71,9 @@ func _on_h_slider_gui_input(event: InputEvent) -> void:
 		$HSplitContainer/HSlider/PopupMenu.set_position(local_pos)
 		# Prevent default context menu or input propagation if needed
 		accept_event()
-
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.double_click:
+		$HSplitContainer/HSlider.value = $HSplitContainer/HSlider.get_meta("default_value")
+		accept_event()
 
 func _on_popup_menu_index_pressed(index: int) -> void:
 	match index:

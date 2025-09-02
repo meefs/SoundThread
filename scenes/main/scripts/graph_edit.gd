@@ -162,6 +162,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						hslider.set_meta("min", min)
 						hslider.set_meta("max", max)
 						hslider.set_meta("flag", flag)
+						hslider.set_meta("default_value", value)
 						
 						#set slider params
 						hslider.min_value = minrange
