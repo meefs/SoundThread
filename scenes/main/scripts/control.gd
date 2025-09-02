@@ -19,6 +19,7 @@ var lastoutputfolder = "none" #tracks last output folder, this can in future be 
 var uiscale = 1.0 #tracks scaling for retina screens
 var use_anyway #used to store the folder selected for cdprogs when it appears the wrong folder is selected but the user wants to use it anyway
 var main_theme = preload("res://theme/main_theme.tres") #load the theme
+var default_input_node #stores a reference to the input node created on launch to allow auto loading a wav file
 
 
 #scripts
@@ -58,6 +59,7 @@ func _ready() -> void:
 	check_user_preferences()
 	hidpi_adjustment()
 	new_patch()
+	await get_tree().process_frame
 	load_from_filesystem()
 	check_cdp_location_set()
 	
@@ -105,6 +107,9 @@ func load_from_filesystem():
 		if FileAccess.file_exists(path) and path.get_extension().to_lower() == "thd":
 			save_load.load_graph_edit(path)
 			break
+		if FileAccess.file_exists(path) and path.get_extension().to_lower() == "wav":
+			default_input_node.get_node("AudioPlayer")._on_file_selected(path)
+			break
 
 func new_patch():
 	#clear old patch
@@ -124,6 +129,7 @@ func new_patch():
 	get_node("GraphEdit").add_child(effect, true)
 	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
 	effect.position_offset = Vector2(20,80)
+	default_input_node = effect #store a reference to this node to allow for loading into it directly if software launched with a wav file argument
 	
 	effect = Nodes.get_node(NodePath("outputfile")).duplicate()
 	effect.name = "outputfile"
@@ -263,8 +269,8 @@ func _input(event):
 		simulate_mouse_click()
 		await get_tree().process_frame
 		undo_redo.undo()
-	elif event.is_action_pressed("redo"):
-		undo_redo.redo()
+	#elif event.is_action_pressed("redo"):
+		#undo_redo.redo()
 	elif event.is_action_pressed("save"):
 		if currentfile == "none":
 			savestate = "saveas"

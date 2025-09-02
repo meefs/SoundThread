@@ -760,6 +760,7 @@ func _auto_link_nodes(node: GraphNode, rect: Rect2):
 				#connect in the middle of the two nodes if they are the same port type
 				var from_matches = _same_port_type(from, from_port, new_node_name, 0)
 				var to_matches = _same_port_type(new_node_name, 0, to, to_port)
+				
 				if from_matches:
 					_on_connection_request(from, from_port, new_node_name, 0)
 				if to_matches:
@@ -769,10 +770,12 @@ func _auto_link_nodes(node: GraphNode, rect: Rect2):
 					_on_graph_edit_disconnection_request(from, from_port, to, to_port)
 
 			elif new_node_has_inputs:
+				#only has inputs check if the ports match and if they do connect but leave original connection in place
 				if _same_port_type(from, from_port, new_node_name, 0):
 					_on_connection_request(from, from_port, new_node_name, 0)
 					
 			elif new_node_has_outputs:
+				#only has outputs check if the ports match and if they do connect but leave original connection in place
 				if _same_port_type(new_node_name, 0, to, to_port):
 					_on_connection_request(new_node_name, 0, to, to_port)
 
