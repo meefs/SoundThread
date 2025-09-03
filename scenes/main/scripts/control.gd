@@ -15,7 +15,7 @@ var savestate # tracks what the user is trying to do when savechangespopup is ca
 var helpfile #tracks which help file the user was trying to load when savechangespopup is called
 var outfilename #links to the user name for outputfile field
 var foldertoggle #links to the reuse folder button
-var lastoutputfolder = "none" #tracks last output folder, this can in future be used to replace global.outfile but i cba right now
+#var lastoutputfolder = "none" #tracks last output folder, this can in future be used to replace global.outfile but i cba right now
 var uiscale = 1.0 #tracks scaling for retina screens
 var use_anyway #used to store the folder selected for cdprogs when it appears the wrong folder is selected but the user wants to use it anyway
 var main_theme = preload("res://theme/main_theme.tres") #load the theme
@@ -198,6 +198,9 @@ func check_user_preferences():
 	#set the theme to either the main theme or inverted theme depending on user preferences
 	invert_theme_toggled(interface_settings.invert_theme)
 	swap_zoom_and_move(interface_settings.swap_zoom_and_move)
+	
+	#set the global outfile to the last used directory
+	#Global.outfile = interface_settings.last_used_output_folder
 
 		
 func show_cdp_location():
@@ -318,19 +321,22 @@ func simulate_mouse_click():
 
 func _run_process() -> void:
 	#check if any of the inputfile nodes don't have files loaded
+	var interface_settings = ConfigHandler.load_interface_settings()
 	for node in graph_edit.get_children():
 		if node.get_meta("command") == "inputfile" and node.get_node("AudioPlayer").has_meta("inputfile") == false:
 			$NoInputPopup.popup_centered()
 			return
 	#check if the reuse folder toggle is set and a folder has been previously chosen
-	if foldertoggle.button_pressed == true and lastoutputfolder != "none":
-		_on_file_dialog_dir_selected(lastoutputfolder)
+	var output_folder = interface_settings.last_used_output_folder
+	if foldertoggle.button_pressed == true and output_folder != "no_file" and DirAccess.open(output_folder) != null:
+		_on_file_dialog_dir_selected(output_folder)
 	else:
 		$FileDialog.show()
 			
 
 func _on_file_dialog_dir_selected(dir: String) -> void:
-	lastoutputfolder = dir
+	#lastoutputfolder = dir
+	ConfigHandler.save_interface_settings("last_used_output_folder", dir)
 	console_output.clear()
 	var interface_settings = ConfigHandler.load_interface_settings()
 	if interface_settings.disable_progress_bar == false:
@@ -370,7 +376,10 @@ func _on_console_close_requested() -> void:
 
 func _on_console_open_folder_button_down() -> void:
 	$Console.hide()
-	OS.shell_open(Global.outfile.get_base_dir())
+	var interface_settings = ConfigHandler.load_interface_settings()
+	var output_folder = interface_settings.last_used_output_folder
+	if output_folder != "no_file" and DirAccess.open(output_folder) != null:
+		OS.shell_open(output_folder)
 
 
 func _on_ok_button_2_button_down() -> void:
@@ -607,8 +616,10 @@ func _notification(what):
 			get_tree().quit() # default behavior
 			
 func _open_output_folder():
-	if lastoutputfolder != "none":
-		OS.shell_open(lastoutputfolder)
+	var interface_settings = ConfigHandler.load_interface_settings()
+	var output_folder = interface_settings.last_used_output_folder
+	if output_folder != "no_file" and DirAccess.open(output_folder) != null:
+		OS.shell_open(output_folder)
 		
 
 func _on_rich_text_label_meta_clicked(meta: Variant) -> void:

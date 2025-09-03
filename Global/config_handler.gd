@@ -22,6 +22,8 @@ func _ready():
 	ensure_setting("interface_settings", "swap_zoom_and_move", false)
 	ensure_setting("interface_settings", "delete_intermediate", true)
 	ensure_setting("interface_settings", "reuse_output_folder", true)
+	ensure_setting("interface_settings", "last_used_output_folder", "no_file")
+	ensure_setting("interface_settings", "last_used_input_folder", "no_file")
 	ensure_setting("interface_settings", "autoplay", true)
 	ensure_setting("audio_settings", "device", "Default")
 
