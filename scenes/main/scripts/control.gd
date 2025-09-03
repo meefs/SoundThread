@@ -83,6 +83,7 @@ func load_scripts():
 func make_signal_connections():
 	get_node("SearchMenu").make_node.connect(graph_edit._make_node)
 	get_node("SearchMenu").swap_node.connect(graph_edit._swap_node)
+	get_node("SearchMenu").connect_to_clicked_node.connect(graph_edit._connect_to_clicked_node)
 	get_node("mainmenu").make_node.connect(graph_edit._make_node)
 	get_node("mainmenu").open_help.connect(open_help.show_help_for_node)
 	get_node("Settings").open_cdp_location.connect(show_cdp_location)
@@ -372,7 +373,7 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	var check_characters = Global.outfile.get_basename().split("/")
 	var invalid_chars:= []
 	var regex = RegEx.new()
-	regex.compile("[^a-zA-Z0-9\\-_ :]")
+	regex.compile("[^a-zA-Z0-9\\-_ :+]")
 	for string in check_characters:
 		if string != "":
 			var result = regex.search_all(string)
@@ -390,7 +391,7 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 		run_thread.run_thread_with_branches()
 	else:
 		run_thread.log_console("[color=#9c2828][b]Error:[/b][/color] Chosen file name or folder path " + Global.outfile.get_basename() + " contains invalid characters.", true)
-		run_thread.log_console("File names and paths can only contain A-Z a-z 0-9 - _ and space.", true)
+		run_thread.log_console("File names and paths can only contain A-Z a-z 0-9 - _ + and space.", true)
 		run_thread.log_console("Chosen file name/path contains the following invalid characters: " + invalid_string, true)
 		if $ProgressWindow.visible:
 			$ProgressWindow.hide()
@@ -680,13 +681,22 @@ func _on_graph_edit_popup_request(at_position: Vector2) -> void:
 	
 	if clicked_node and clicked_node.get_meta("command") != "outputfile":
 		var title = clicked_node.title
-		$SearchMenu/VBoxContainer/ReplaceLabel.text = "Replace " + title
-		$SearchMenu/VBoxContainer/ReplaceLabel.show()
-		$SearchMenu.replace_node = true
-		$SearchMenu.node_to_replace = clicked_node
+		if Input.is_action_pressed("auto_link_nodes"):
+			$SearchMenu/VBoxContainer/ReplaceLabel.text = "Connect to " + title
+			$SearchMenu/VBoxContainer/ReplaceLabel.show()
+			$SearchMenu.replace_node = false
+			$SearchMenu.connect_to_node = true
+			$SearchMenu.node_to_connect_to = clicked_node
+		else:
+			$SearchMenu/VBoxContainer/ReplaceLabel.text = "Replace " + title
+			$SearchMenu/VBoxContainer/ReplaceLabel.show()
+			$SearchMenu.replace_node = true
+			$SearchMenu.connect_to_node = false
+			$SearchMenu.node_to_replace = clicked_node
 	else:
 		$SearchMenu/VBoxContainer/ReplaceLabel.hide()
 		$SearchMenu.replace_node = false
+		$SearchMenu.connect_to_node = false
 	
 	#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
 	var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - $SearchMenu.size.x)

@@ -6,8 +6,11 @@ extends PopupPanel
 var node_data = {} #stores node data for each node to display in help popup
 var replace_node = false
 var node_to_replace
+var connect_to_node = false
+var node_to_connect_to
 signal make_node(command)
 signal swap_node(node_to_replace, command)
+signal connect_to_clicked_node(node_to_connect_to, command)
 
 
 func _ready() -> void:
@@ -106,6 +109,8 @@ func _on_item_selected(key: String):
 	self.hide()
 	if replace_node == true:
 		swap_node.emit(node_to_replace, key)
+	elif connect_to_node == true:
+		connect_to_clicked_node.emit(node_to_connect_to, key)
 	else:
 		make_node.emit(key) # send out signal to main patch
 

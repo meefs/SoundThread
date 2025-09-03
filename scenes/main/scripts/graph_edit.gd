@@ -654,8 +654,18 @@ func _swap_node(old_node: GraphNode, command: String):
 			if _same_port_type(from, from_port, to, to_port):
 				_on_connection_request(from, from_port, to, to_port)
 	
+func _connect_to_clicked_node(clicked_node: GraphNode, command: String):
+	var new_node_position = clicked_node.position_offset + Vector2(clicked_node.size.x + 50, 0)
+	#make the new node and reposition it to right of the node to connect to
+	var new_node = _make_node(command)
+	new_node.position_offset = new_node_position
 	
+	var clicked_node_has_outputs = clicked_node.get_output_port_count() > 0
+	var new_node_has_inputs = new_node.get_input_port_count() > 0
 	
+	if clicked_node_has_outputs and new_node_has_inputs:
+		if _same_port_type(clicked_node.name, 0, new_node.name, 0):
+			_on_connection_request(clicked_node.name, 0, new_node.name, 0)
 
 
 func _on_gui_input(event: InputEvent) -> void:
