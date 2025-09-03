@@ -20,6 +20,7 @@ var uiscale = 1.0 #tracks scaling for retina screens
 var use_anyway #used to store the folder selected for cdprogs when it appears the wrong folder is selected but the user wants to use it anyway
 var main_theme = preload("res://theme/main_theme.tres") #load the theme
 var default_input_node #stores a reference to the input node created on launch to allow auto loading a wav file
+var output_folder_label
 
 
 #scripts
@@ -56,8 +57,8 @@ func _ready() -> void:
 	
 	load_scripts()
 	make_signal_connections()
-	check_user_preferences()
 	hidpi_adjustment()
+	check_user_preferences()
 	new_patch()
 	await get_tree().process_frame
 	load_from_filesystem()
@@ -143,6 +144,13 @@ func new_patch():
 	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) / uiscale, 80)
 	graph_edit._register_node_movement() #link nodes for tracking position changes for changes tracking
 	
+	#set label for last output folder
+	var interface_settings = ConfigHandler.load_interface_settings()
+	output_folder_label = effect.get_node("OutputFolderMargin/OutputFolderLabel")
+	if output_folder_label != null and interface_settings.last_used_output_folder != "no_file":
+		output_folder_label.text = interface_settings.last_used_output_folder
+		output_folder_label.get_parent().tooltip_text = interface_settings.last_used_output_folder
+	
 	changesmade = false #so it stops trying to save unchanged empty files
 	get_window().title = "SoundThread"
 	link_output()
@@ -198,9 +206,6 @@ func check_user_preferences():
 	#set the theme to either the main theme or inverted theme depending on user preferences
 	invert_theme_toggled(interface_settings.invert_theme)
 	swap_zoom_and_move(interface_settings.swap_zoom_and_move)
-	
-	#set the global outfile to the last used directory
-	#Global.outfile = interface_settings.last_used_output_folder
 
 		
 func show_cdp_location():
@@ -337,6 +342,9 @@ func _run_process() -> void:
 func _on_file_dialog_dir_selected(dir: String) -> void:
 	#lastoutputfolder = dir
 	ConfigHandler.save_interface_settings("last_used_output_folder", dir)
+	if output_folder_label != null:
+		output_folder_label.text = dir
+		output_folder_label.tooltip_text = dir
 	console_output.clear()
 	var interface_settings = ConfigHandler.load_interface_settings()
 	if interface_settings.disable_progress_bar == false:

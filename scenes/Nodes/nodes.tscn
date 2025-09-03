@@ -52,6 +52,7 @@ layout_mode = 2
 
 [node name="AudioPlayer" parent="inputfile" groups=["inputnode"] instance=ExtResource("2_b6nw4")]
 layout_mode = 2
+size_flags_horizontal = 4
 metadata/loadenable = true
 metadata/inputfunction = "audioplayer"
 
@@ -90,14 +91,15 @@ layout_mode = 2
 
 [node name="AudioPlayer" parent="preview" groups=["inputnode"] instance=ExtResource("2_b6nw4")]
 layout_mode = 2
+size_flags_horizontal = 4
 metadata/inputfunction = "audioplayer"
 
 [node name="outputfile" type="GraphNode" parent="."]
 layout_mode = 0
 offset_left = 523.0
 offset_top = 6.0
-offset_right = 954.0
-offset_bottom = 519.0
+offset_right = 959.0
+offset_bottom = 555.0
 tooltip_text = "Handles everything to do with audio output. "
 title = "Output File"
 slot/0/left_enabled = true
@@ -217,6 +219,15 @@ slot/12/right_type = 0
 slot/12/right_color = Color(1, 1, 1, 1)
 slot/12/right_icon = null
 slot/12/draw_stylebox = true
+slot/13/left_enabled = false
+slot/13/left_type = 0
+slot/13/left_color = Color(1, 1, 1, 1)
+slot/13/left_icon = null
+slot/13/right_enabled = false
+slot/13/right_type = 0
+slot/13/right_color = Color(1, 1, 1, 1)
+slot/13/right_icon = null
+slot/13/draw_stylebox = true
 script = ExtResource("3_0jqh0")
 metadata/command = "outputfile"
 metadata/utility = true
@@ -265,6 +276,19 @@ text = "Reuse Last Output Folder"
 expand_icon = true
 metadata/outputfunction = "reusefolder"
 
+[node name="OutputFolderMargin" type="MarginContainer" parent="outputfile"]
+layout_mode = 2
+theme_override_constants/margin_left = 7
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 7
+theme_override_constants/margin_bottom = 9
+
+[node name="OutputFolderLabel" type="Label" parent="outputfile/OutputFolderMargin"]
+layout_mode = 2
+size_flags_horizontal = 3
+clip_text = true
+text_overrun_behavior = 3
+
 [node name="OpenOutputFolder" type="Button" parent="outputfile" groups=["outputnode"]]
 custom_minimum_size = Vector2(0, 43)
 layout_mode = 2
@@ -294,6 +318,7 @@ theme_override_constants/margin_bottom = 2
 
 [node name="AudioPlayer" parent="outputfile" groups=["outputnode"] instance=ExtResource("2_b6nw4")]
 layout_mode = 2
+size_flags_horizontal = 4
 metadata/outputfunction = "audioplayer"
 
 [node name="notes" type="GraphNode" parent="."]
