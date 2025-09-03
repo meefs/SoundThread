@@ -17,11 +17,16 @@ var autoplay
 signal setnodetitle
 
 func _ready():
+	var interface_settings = ConfigHandler.load_interface_settings()
 	#Setup file dialogue to access system files and only accept wav files
 	#get_window().files_dropped.connect(_on_files_dropped)
 	file_dialog.access = FileDialog.ACCESS_FILESYSTEM
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	file_dialog.filters = ["*.wav ; WAV audio files"]
+	var input_folder = interface_settings.last_used_input_folder
+	if input_folder != "no_file" and DirAccess.open(input_folder) != null:
+		file_dialog.current_dir = input_folder
+	
 	file_dialog.connect("file_selected", Callable(self, "_on_file_selected"))
 	audio_player.connect("finished", Callable(self, "_on_audio_finished"))
 	
@@ -62,9 +67,14 @@ func _on_close_button_button_down() -> void:
 	$WavError.hide()
 
 func _on_load_button_button_down() -> void:
+	var interface_settings = ConfigHandler.load_interface_settings()
+	var input_folder = interface_settings.last_used_input_folder
+	if input_folder != "no_file" and DirAccess.open(input_folder) != null:
+		file_dialog.current_dir = input_folder
 	file_dialog.popup_centered()
 
 func _on_file_selected(path: String):
+	ConfigHandler.save_interface_settings("last_used_input_folder", path.get_base_dir())
 	audio_player.stream = AudioStreamWAV.load_from_file(path, {
 		"compress/mode" = 0,
 		"edit/loop_mode" = 1})
