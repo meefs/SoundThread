@@ -340,7 +340,6 @@ func _run_process() -> void:
 			
 
 func _on_file_dialog_dir_selected(dir: String) -> void:
-	#lastoutputfolder = dir
 	ConfigHandler.save_interface_settings("last_used_output_folder", dir)
 	if output_folder_label != null:
 		output_folder_label.text = dir
@@ -368,10 +367,35 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	var second = str(time_dict.second).pad_zeros(2)
 	var time_str = hour + "-" + minute + "-" + second
 	Global.outfile = dir + "/" + outfilename.text.get_basename() + "_" + Time.get_date_string_from_system() + "_" + time_str
-	run_thread.log_console("Output directory and file name(s):" + Global.outfile, true)
-	await get_tree().process_frame
 	
-	run_thread.run_thread_with_branches()
+	#check path and file name do not contain special characters
+	var check_characters = Global.outfile.get_basename().split("/")
+	var invalid_chars:= []
+	var regex = RegEx.new()
+	regex.compile("[^a-zA-Z0-9\\-_ :]")
+	for string in check_characters:
+		if string != "":
+			var result = regex.search_all(string)
+			for matches in result:
+				var char = matches.get_string()
+				if invalid_chars.has(char) == false:
+					invalid_chars.append(char)
+
+	var invalid_string = " ".join(invalid_chars)
+	
+	if invalid_chars.size() == 0:
+		run_thread.log_console("Output directory and file name(s):" + Global.outfile, true)
+		await get_tree().process_frame
+		
+		run_thread.run_thread_with_branches()
+	else:
+		run_thread.log_console("[color=#9c2828][b]Error:[/b][/color] Chosen file name or folder path " + Global.outfile.get_basename() + " contains invalid characters.", true)
+		run_thread.log_console("File names and paths can only contain A-Z a-z 0-9 - _ and space.", true)
+		run_thread.log_console("Chosen file name/path contains the following invalid characters: " + invalid_string, true)
+		if $ProgressWindow.visible:
+			$ProgressWindow.hide()
+		if !$Console.visible:
+			$Console.popup_centered()
 
 func _toggle_delete(toggled_on: bool):
 	delete_intermediate_outputs = toggled_on
