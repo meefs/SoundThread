@@ -8,6 +8,7 @@ var replace_node = false
 var node_to_replace
 var connect_to_node = false
 var node_to_connect_to
+var uiscale
 signal make_node(command)
 signal swap_node(node_to_replace, command)
 signal connect_to_clicked_node(node_to_connect_to, command)
@@ -94,10 +95,10 @@ func display_items(filter: String):
 	
 	#resize menu within certain bounds #50
 	await get_tree().process_frame
-	if DisplayServer.screen_get_dpi(0) >= 144:
-		self.size.y = min((item_container.size.y + search_bar.size.y + 12) * 2, 820) #i think this will scale for retina screens but might be wrong
-	else:
-		self.size.y = min(item_container.size.y + search_bar.size.y + 12, 410)
+	#if DisplayServer.screen_get_dpi(0) >= 144:
+		#self.size.y = min((item_container.size.y + search_bar.size.y + 12) * 2, 820) #i think this will scale for retina screens but might be wrong
+	#else:
+	self.size.y = min((item_container.size.y + search_bar.size.y + 12) * uiscale, 410 * uiscale)
 	
 	#highlight first button
 	_on_search_bar_editing_toggled(true)
