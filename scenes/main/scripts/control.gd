@@ -16,7 +16,8 @@ var helpfile #tracks which help file the user was trying to load when savechange
 var outfilename #links to the user name for outputfile field
 var foldertoggle #links to the reuse folder button
 #var lastoutputfolder = "none" #tracks last output folder, this can in future be used to replace global.outfile but i cba right now
-var uiscale = 1.0 #tracks scaling for retina screens
+var uiscale = 0.0 # tracks the overal ui scale after hidpi adjustment and user offset
+var retina_scaling = 1.0 #tracks scaling for retina screens
 var use_anyway #used to store the folder selected for cdprogs when it appears the wrong folder is selected but the user wants to use it anyway
 var main_theme = preload("res://theme/main_theme.tres") #load the theme
 var default_input_node #stores a reference to the input node created on launch to allow auto loading a wav file
@@ -90,16 +91,28 @@ func make_signal_connections():
 	get_node("Settings").console_on_top.connect(change_console_settings)
 	get_node("Settings").invert_ui.connect(invert_theme_toggled)
 	get_node("Settings").swap_zoom_and_move.connect(swap_zoom_and_move)
+	get_node("Settings").ui_scale_multiplier_changed.connect(scale_ui)
 	
 func hidpi_adjustment():
 	#checks if display is hidpi and scales ui accordingly hidpi - 144
 	if DisplayServer.screen_get_dpi(0) >= 144:
-		uiscale = 2.0
-		get_window().content_scale_factor = uiscale
-		#goes through popup_windows group and scales all popups and resizes them
-		for window in get_tree().get_nodes_in_group("popup_windows"):
+		retina_scaling = 2.0
+	else:
+		retina_scaling = 1.0
+		
+
+func scale_ui(scale_multiplier: float):
+	var old_uiscale = uiscale
+	uiscale = retina_scaling * scale_multiplier
+	get_window().content_scale_factor = uiscale
+	#goes through popup_windows group and scales all popups and resizes them
+	for window in get_tree().get_nodes_in_group("popup_windows"):
+		if old_uiscale != 0: #if ui scale = 0 this is the first time this is being adjusted so no need to revert values back to default first
+			window.size = (window.size / old_uiscale) * uiscale
+		else:
 			window.size = window.size * uiscale
-			window.content_scale_factor = uiscale
+		window.content_scale_factor = uiscale
+	
 
 func load_from_filesystem():
 	#checks if user has opened a file from the system file menu and loads it
@@ -207,6 +220,9 @@ func check_user_preferences():
 	#set the theme to either the main theme or inverted theme depending on user preferences
 	invert_theme_toggled(interface_settings.invert_theme)
 	swap_zoom_and_move(interface_settings.swap_zoom_and_move)
+	
+	#scale ui
+	scale_ui(interface_settings.ui_scale_multiplier)
 
 		
 func show_cdp_location():

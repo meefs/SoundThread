@@ -20,6 +20,7 @@ func _ready():
 	ensure_setting("interface_settings", "invert_theme", false)
 	ensure_setting("interface_settings", "high_contrast_selected_cables", false)
 	ensure_setting("interface_settings", "swap_zoom_and_move", false)
+	ensure_setting("interface_settings", "ui_scale_multiplier", 1.0)
 	ensure_setting("interface_settings", "delete_intermediate", true)
 	ensure_setting("interface_settings", "reuse_output_folder", true)
 	ensure_setting("interface_settings", "last_used_output_folder", "no_file")
