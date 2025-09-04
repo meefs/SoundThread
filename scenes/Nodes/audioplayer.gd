@@ -220,23 +220,24 @@ func _on_button_button_down() -> void:
 
 func _on_button_button_up() -> void:
 	rect_focus = false
-	if get_meta("loadenable") == true:
-		if $LoopRegion.size.x > 0:
-			set_meta("trimfile", true)
-			var length = $AudioStreamPlayer.stream.get_length()
-			var pixel_to_time = length / 399
-			var start = pixel_to_time * $LoopRegion.position.x
-			var starttime = convert_length(start)
-			$StartLabel.text = starttime
-			var end = start + (pixel_to_time * $LoopRegion.size.x)
-			var endtime = convert_length(end)
-			$EndLabel.text = endtime
-			set_meta("trimpoints", [start, end])
-		else:
-			set_meta("trimfile", false)
-			$StartLabel.text = "00:00.00"
-			var end = convert_length($AudioStreamPlayer.stream.get_length())
-			$EndLabel.text = end
+	if audio_player.stream != null:
+		if get_meta("loadenable") == true:
+			if $LoopRegion.size.x > 0:
+				set_meta("trimfile", true)
+				var length = $AudioStreamPlayer.stream.get_length()
+				var pixel_to_time = length / 399
+				var start = pixel_to_time * $LoopRegion.position.x
+				var starttime = convert_length(start)
+				$StartLabel.text = starttime
+				var end = start + (pixel_to_time * $LoopRegion.size.x)
+				var endtime = convert_length(end)
+				$EndLabel.text = endtime
+				set_meta("trimpoints", [start, end])
+			else:
+				set_meta("trimfile", false)
+				$StartLabel.text = "00:00.00"
+				var end = convert_length($AudioStreamPlayer.stream.get_length())
+				$EndLabel.text = end
 			
 
 func convert_length(reportedseconds: float) -> String:

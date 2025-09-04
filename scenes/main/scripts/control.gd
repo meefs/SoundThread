@@ -92,6 +92,7 @@ func make_signal_connections():
 	get_node("Settings").invert_ui.connect(invert_theme_toggled)
 	get_node("Settings").swap_zoom_and_move.connect(swap_zoom_and_move)
 	get_node("Settings").ui_scale_multiplier_changed.connect(scale_ui)
+	get_window().files_dropped.connect(on_files_dropped)
 	
 func hidpi_adjustment():
 	#checks if display is hidpi and scales ui accordingly hidpi - 144
@@ -815,3 +816,38 @@ func swap_zoom_and_move(toggled: bool):
 		graph_edit.set_panning_scheme(1)
 	else:
 		graph_edit.set_panning_scheme(0)
+
+func on_files_dropped(files):
+	var mouse_pos = graph_edit.get_local_mouse_position()
+	
+	#see if files were dropped on an input node
+	var dropped_node
+	for child in graph_edit.get_children():
+		if child is GraphNode:
+			if Rect2(child.position, child.size).has_point(mouse_pos):
+				dropped_node = child
+				break
+				
+	#if they were dropped on a node and the first file in the array is a wav file replace the file in the input node
+	if dropped_node and dropped_node.has_meta("command") and dropped_node.get_meta("command") == "inputfile":
+		if files[0].get_extension().to_lower() == "wav":
+			dropped_node.get_node("AudioPlayer")._on_file_selected(files[0])
+	else:
+		#else make a new input node at the mouse position and load it in
+		if files[0].get_extension().to_lower() == "wav":
+			var new_input_node = graph_edit._make_node("inputfile")
+			new_input_node.position_offset = mouse_pos
+			new_input_node.get_node("AudioPlayer")._on_file_selected(files[0])
+	
+	#remove first element from the array
+	files.remove_at(0)
+	
+	#check if there are any other files
+	if files.size() > 0:
+		var position_plus_offset = Vector2(mouse_pos.x, mouse_pos.y + 250) #apply a vertical offset from the mouse position so nodes dont overlap
+		for file in files:
+			if file.get_extension().to_lower() == "wav":
+				var new_input_node = graph_edit._make_node("inputfile")
+				new_input_node.position_offset = position_plus_offset
+				new_input_node.get_node("AudioPlayer")._on_file_selected(file)
+				position_plus_offset.y = position_plus_offset.y + 250
