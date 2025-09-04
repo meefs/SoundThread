@@ -7,72 +7,80 @@
 auto_translate_mode = 1
 title = "SoundThread Settings"
 initial_position = 2
-size = Vector2i(500, 607)
+size = Vector2i(950, 410)
 transient = true
 unresizable = true
 always_on_top = true
 script = ExtResource("1_uey6c")
 
 [node name="ColorRect" type="ColorRect" parent="." groups=["invertable_background"]]
-offset_right = 506.0
-offset_bottom = 616.0
+offset_right = 955.0
+offset_bottom = 643.0
 color = Color(0.101961, 0.101961, 0.101961, 0.6)
 script = ExtResource("2_bym2s")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-offset_left = 12.0
-offset_top = 6.0
-offset_right = 490.0
-offset_bottom = 367.0
+[node name="MainContainer" type="VBoxContainer" parent="."]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 946.0
+offset_bottom = 385.0
 
-[node name="WindowTitle" type="Label" parent="VBoxContainer"]
+[node name="WindowTitle" type="Label" parent="MainContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "SoundThread Settings"
 
-[node name="MarginContainer2" type="MarginContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer"]
+layout_mode = 2
+theme_override_constants/separation = 36
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainContainer/HBoxContainer"]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 3
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "Composers Desktop Project"
+text = "Composers Desktop Project Location"
 
-[node name="HBoxContainer7" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer7" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label3" type="Label" parent="VBoxContainer/HBoxContainer7"]
+[node name="Label3" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer/HBoxContainer7"]
 layout_mode = 2
-text = "CDP location: "
+text = "Current location: "
 
-[node name="cdprogsLocationLabel" type="Label" parent="VBoxContainer/HBoxContainer7"]
+[node name="cdprogsLocationLabel" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer/HBoxContainer7"]
 layout_mode = 2
 size_flags_horizontal = 3
 text_overrun_behavior = 3
 
-[node name="ChangeCDP" type="Button" parent="VBoxContainer"]
+[node name="ChangeCDP" type="Button" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 text = "Change location for cdprogs folder"
 
-[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_constants/margin_bottom = 7
 
-[node name="Theme" type="Label" parent="VBoxContainer"]
+[node name="Theme" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Appearance"
 
-[node name="HBoxContainer5" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer5" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer5"]
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer/HBoxContainer5"]
 custom_minimum_size = Vector2(183, 100)
 layout_mode = 2
 text = "Theme: "
 
-[node name="ThemeList" type="ItemList" parent="VBoxContainer/HBoxContainer5"]
+[node name="ThemeList" type="ItemList" parent="MainContainer/HBoxContainer/VBoxContainer/HBoxContainer5"]
 layout_mode = 2
 size_flags_horizontal = 3
 auto_height = true
@@ -82,133 +90,158 @@ item_1/text = "Dark"
 item_2/text = "Light"
 item_3/text = "Custom"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 text = "Custom theme colour: "
 
-[node name="CustomColourPicker" type="ColorPickerButton" parent="VBoxContainer/HBoxContainer"]
+[node name="CustomColourPicker" type="ColorPickerButton" parent="MainContainer/HBoxContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 size_flags_horizontal = 3
 color = Color(0.184314, 0.309804, 0.305882, 1)
 edit_alpha = false
 
-[node name="invert_ui_container" type="HBoxContainer" parent="VBoxContainer"]
+[node name="invert_ui_container" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/invert_ui_container"]
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer/invert_ui_container"]
 layout_mode = 2
 text = "Invert UI colours:"
 
-[node name="InvertUI" type="CheckButton" parent="VBoxContainer/invert_ui_container"]
+[node name="InvertUI" type="CheckButton" parent="MainContainer/HBoxContainer/VBoxContainer/invert_ui_container"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="high_contrast_cables_container" type="HBoxContainer" parent="VBoxContainer"]
+[node name="high_contrast_cables_container" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/high_contrast_cables_container"]
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer/high_contrast_cables_container"]
 layout_mode = 2
 text = "High Contrast Selected Cables:"
 
-[node name="HighContrastCablesToggle" type="CheckButton" parent="VBoxContainer/high_contrast_cables_container"]
+[node name="HighContrastCablesToggle" type="CheckButton" parent="MainContainer/HBoxContainer/VBoxContainer/high_contrast_cables_container"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ui_scale_container2" type="HBoxContainer" parent="VBoxContainer"]
+[node name="ui_scale_container2" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/ui_scale_container2"]
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer/ui_scale_container2"]
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Ui Scale:"
+text = "UI Scale:"
 
-[node name="UIScaleOffsetSpinbox" type="SpinBox" parent="VBoxContainer/ui_scale_container2"]
+[node name="UIScaleOffsetSpinbox" type="SpinBox" parent="MainContainer/HBoxContainer/VBoxContainer/ui_scale_container2"]
 layout_mode = 2
 min_value = 0.1
 max_value = 5.0
 step = 0.1
 value = 1.0
 
-[node name="Controls" type="Label" parent="VBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MainContainer/HBoxContainer"]
+custom_minimum_size = Vector2(450, 0)
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="MainContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 3
+
+[node name="Controls" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
 text = "Controls"
 
-[node name="HBoxContainer8" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer8" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 tooltip_text = "Default: Scroll Zooms, Ctrl/Cmd + Scroll Moves"
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer8"]
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer8"]
 layout_mode = 2
 text = "Swap Zoom and Move:"
 
-[node name="SwapZoomAndMoveToggle" type="CheckButton" parent="VBoxContainer/HBoxContainer8"]
+[node name="SwapZoomAndMoveToggle" type="CheckButton" parent="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer8"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Windows" type="Label" parent="VBoxContainer"]
+[node name="HBoxContainer9" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+tooltip_text = "Default: right-click opens search menu. Note: Search menu still used for replace and connect"
+
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer9"]
+layout_mode = 2
+text = "Right-click opens Explore Menu:"
+
+[node name="RightClickOpensExploreToggle" type="CheckButton" parent="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer9"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer3" type="MarginContainer" parent="MainContainer/HBoxContainer/VBoxContainer2"]
+layout_mode = 2
+theme_override_constants/margin_bottom = 17
+
+[node name="Windows" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 18
-text = "Windows"
+text = "Popups and Dialogs"
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer2"]
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
 layout_mode = 2
 text = "Disable frequency domain multiple input warning:"
 
-[node name="PvocWarning" type="CheckButton" parent="VBoxContainer/HBoxContainer2"]
+[node name="PvocWarning" type="CheckButton" parent="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer2"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer6" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer6" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer6"]
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer6"]
 layout_mode = 2
 text = "Show console instead of progress bar:"
 
-[node name="ProgressBar" type="CheckButton" parent="VBoxContainer/HBoxContainer6"]
+[node name="ProgressBar" type="CheckButton" parent="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer6"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer3" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer3"]
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer3"]
 layout_mode = 2
 text = "Auto close console when thread is complete: "
 
-[node name="AutoCloseConsole" type="CheckButton" parent="VBoxContainer/HBoxContainer3"]
+[node name="AutoCloseConsole" type="CheckButton" parent="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer3"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer"]
+[node name="HBoxContainer4" type="HBoxContainer" parent="MainContainer/HBoxContainer/VBoxContainer2"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="VBoxContainer/HBoxContainer4"]
+[node name="Label" type="Label" parent="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer4"]
 layout_mode = 2
 text = "Console always on top: "
 
-[node name="ConsoleAlwaysOnTop" type="CheckButton" parent="VBoxContainer/HBoxContainer4"]
+[node name="ConsoleAlwaysOnTop" type="CheckButton" parent="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer4"]
 layout_mode = 2
 size_flags_horizontal = 3
 
 [connection signal="about_to_popup" from="." to="." method="_on_about_to_popup"]
 [connection signal="close_requested" from="." to="." method="_on_close_requested"]
-[connection signal="button_down" from="VBoxContainer/ChangeCDP" to="." method="_on_change_cdp_button_down"]
-[connection signal="item_selected" from="VBoxContainer/HBoxContainer5/ThemeList" to="." method="_on_theme_list_item_selected"]
-[connection signal="color_changed" from="VBoxContainer/HBoxContainer/CustomColourPicker" to="." method="_on_custom_colour_picker_color_changed"]
-[connection signal="toggled" from="VBoxContainer/invert_ui_container/InvertUI" to="." method="_on_invert_ui_toggled"]
-[connection signal="toggled" from="VBoxContainer/high_contrast_cables_container/HighContrastCablesToggle" to="." method="_on_high_contrast_cables_toggle_toggled"]
-[connection signal="value_changed" from="VBoxContainer/ui_scale_container2/UIScaleOffsetSpinbox" to="." method="_on_ui_scale_offset_spinbox_value_changed"]
-[connection signal="toggled" from="VBoxContainer/HBoxContainer8/SwapZoomAndMoveToggle" to="." method="_on_swap_zoom_and_move_toggle_toggled"]
-[connection signal="toggled" from="VBoxContainer/HBoxContainer2/PvocWarning" to="." method="_on_pvoc_warning_toggled"]
-[connection signal="toggled" from="VBoxContainer/HBoxContainer6/ProgressBar" to="." method="_on_progress_bar_toggled"]
-[connection signal="toggled" from="VBoxContainer/HBoxContainer3/AutoCloseConsole" to="." method="_on_auto_close_console_toggled"]
-[connection signal="toggled" from="VBoxContainer/HBoxContainer4/ConsoleAlwaysOnTop" to="." method="_on_console_always_on_top_toggled"]
+[connection signal="button_down" from="MainContainer/HBoxContainer/VBoxContainer/ChangeCDP" to="." method="_on_change_cdp_button_down"]
+[connection signal="item_selected" from="MainContainer/HBoxContainer/VBoxContainer/HBoxContainer5/ThemeList" to="." method="_on_theme_list_item_selected"]
+[connection signal="color_changed" from="MainContainer/HBoxContainer/VBoxContainer/HBoxContainer/CustomColourPicker" to="." method="_on_custom_colour_picker_color_changed"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/invert_ui_container/InvertUI" to="." method="_on_invert_ui_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer/high_contrast_cables_container/HighContrastCablesToggle" to="." method="_on_high_contrast_cables_toggle_toggled"]
+[connection signal="value_changed" from="MainContainer/HBoxContainer/VBoxContainer/ui_scale_container2/UIScaleOffsetSpinbox" to="." method="_on_ui_scale_offset_spinbox_value_changed"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer8/SwapZoomAndMoveToggle" to="." method="_on_swap_zoom_and_move_toggle_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer9/RightClickOpensExploreToggle" to="." method="_on_right_click_opens_explore_toggle_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer2/PvocWarning" to="." method="_on_pvoc_warning_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer6/ProgressBar" to="." method="_on_progress_bar_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer3/AutoCloseConsole" to="." method="_on_auto_close_console_toggled"]
+[connection signal="toggled" from="MainContainer/HBoxContainer/VBoxContainer2/HBoxContainer4/ConsoleAlwaysOnTop" to="." method="_on_console_always_on_top_toggled"]

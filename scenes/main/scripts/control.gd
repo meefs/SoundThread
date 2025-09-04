@@ -714,9 +714,14 @@ func _on_graph_edit_popup_request(at_position: Vector2) -> void:
 			$SearchMenu.connect_to_node = false
 			$SearchMenu.node_to_replace = clicked_node
 	else:
-		$SearchMenu/VBoxContainer/ReplaceLabel.hide()
-		$SearchMenu.replace_node = false
-		$SearchMenu.connect_to_node = false
+		var interface_settings = ConfigHandler.load_interface_settings()
+		if interface_settings.right_click_opens_explore:
+			open_explore()
+			return
+		else:
+			$SearchMenu/VBoxContainer/ReplaceLabel.hide()
+			$SearchMenu.replace_node = false
+			$SearchMenu.connect_to_node = false
 	
 	#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
 	var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - $SearchMenu.size.x)
