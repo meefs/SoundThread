@@ -22,6 +22,7 @@ func _ready() -> void:
 			push_error("Invalid JSON")
 				
 	fill_menu()
+	load_search()
 	
 	#chec user prefs fr favourites and load them
 	var interface_settings = ConfigHandler.load_interface_settings()
@@ -136,7 +137,7 @@ func fill_menu():
 
 
 func _on_about_to_popup() -> void:
-	fill_search("")
+	#fill_search("")
 	$"Control/select_effect/Search/Search for a process in SoundThread/MarginContainer/VBoxContainer/SearchBar".clear()
 	if $Control/select_effect.current_tab == 3:
 		$"Control/select_effect/Search/Search for a process in SoundThread/MarginContainer/VBoxContainer/SearchBar".grab_focus()
@@ -149,23 +150,26 @@ func fill_search(filter: String):
 	var favourites = interface_settings.favourites
 	# Remove all existing items from the VBoxContainer
 	var container = $"Control/select_effect/Search/Search for a process in SoundThread/MarginContainer/VBoxContainer/ScrollContainer/ItemContainer"
-	for child in container.get_children():
-		child.queue_free()
+	#for child in container.get_children():
+		#child.queue_free()
 		
 	var filters = filter.to_lower().split(" ", false)
 	
 	
 	for key in node_data.keys():
 		var item = node_data[key]
+		var search_element = container.find_child("search_" + key, true, false)
+		var search_margin = container.find_child("search_margin_" + key, true, false)
 		var title = item.get("title", "")
+		
+		if search_element == null:
+			continue
 		
 		if filters.has("*"):
 			if favourites.has(key) == false:
-				continue
+				search_element.hide()
+				search_margin.hide()
 		
-		#filter out output node
-		if title == "Output File":
-			continue
 		
 		var category = item.get("category", "")
 		var subcategory = item.get("subcategory", "")
@@ -185,9 +189,46 @@ func fill_search(filter: String):
 				
 				if word != "" and not searchable_text.findn(word) != -1:
 					match_all_words = false
+					search_element.hide()
+					search_margin.hide()
 					break
 			if not match_all_words:
 				continue
+				
+		search_element.show()
+		search_margin.show()
+		
+		
+
+	
+
+func load_search():
+	var interface_settings = ConfigHandler.load_interface_settings()
+	var favourites = interface_settings.favourites
+	# Remove all existing items from the VBoxContainer
+	var container = $"Control/select_effect/Search/Search for a process in SoundThread/MarginContainer/VBoxContainer/ScrollContainer/ItemContainer"
+	for child in container.get_children():
+		child.queue_free()
+		
+	
+	
+	for key in node_data.keys():
+		var item = node_data[key]
+		var title = item.get("title", "")
+		
+		
+		#filter out output node
+		if title == "Output File":
+			continue
+		
+		var category = item.get("category", "")
+		var subcategory = item.get("subcategory", "")
+		var short_desc = item.get("short_description", "")
+		var command = key.replace("_", " ")
+		
+		# Combine all searchable text into one lowercase string
+		var searchable_text = "%s %s %s %s %s" % [title, short_desc, category, subcategory, key]
+		searchable_text = searchable_text.to_lower()
 		
 		
 		var hbox = HBoxContainer.new()
@@ -198,13 +239,15 @@ func fill_search(filter: String):
 		var margin = MarginContainer.new()
 		
 		hbox.size.x = container.size.x
+		hbox.name = "search_" + key
+		margin.name = "search_margin_" + key
 		label.bbcode_enabled = true
 		label.text = "[b]%s[/b]\n%s" % [title, short_desc]
 		label.set_h_size_flags(Control.SIZE_EXPAND_FILL)
 		label.set_v_size_flags(Control.SIZE_EXPAND_FILL)
 		label.fit_content = true
 		
-		favbtn.name = "fav_" + key
+		favbtn.name = "search_fav_" + key
 		favbtn.add_theme_font_size_override("font_size", 20)
 		favbtn.tooltip_text = "Favourite " + title
 		favbtn.custom_minimum_size = Vector2(40, 40)
@@ -241,7 +284,6 @@ func fill_search(filter: String):
 		hbox.add_child(makebtn)
 		container.add_child(margin)
 
-	
 
 	
 func _on_search_bar_text_changed(new_text: String) -> void:
@@ -279,6 +321,14 @@ func _favourite_process(toggled_on: bool, key: String, favourites: Array):
 			else:
 				button.text = "☆"
 	
+	if $Control/select_effect.current_tab != 4:
+		var button = $Control/select_effect.find_child("search_fav_" + key, true, false)
+		if button != null:
+			button.set_pressed_no_signal(toggled_on)
+			if toggled_on:
+				button.text = "★"
+			else:
+				button.text = "☆"
 	_load_favourites(favourites)
 		
 func refresh_menu():
@@ -317,7 +367,6 @@ func _load_favourites(favourites: Array):
 			label.set_v_size_flags(Control.SIZE_EXPAND_FILL)
 			label.fit_content = true
 			
-			favbtn.name = "fav_" + key
 			favbtn.add_theme_font_size_override("font_size", 20)
 			favbtn.tooltip_text = "Favourite " + title
 			favbtn.custom_minimum_size = Vector2(40, 40)
