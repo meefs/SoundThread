@@ -140,10 +140,5 @@ func _randomise_sliders():
 		else:
 			rnd_value = (rnd * (max - min)) + min
 		
-		
 		slider.value = rnd_value
 	
-func generate_random_value(min: float, max: float, default: float) -> float:
-
-	# Clamp so it doesn't go out of range
-	return 1

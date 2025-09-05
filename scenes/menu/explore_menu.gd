@@ -169,6 +169,7 @@ func fill_search(filter: String):
 			if favourites.has(key) == false:
 				search_element.hide()
 				search_margin.hide()
+				continue
 		
 		
 		var category = item.get("category", "")
