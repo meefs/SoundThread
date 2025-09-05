@@ -27,7 +27,9 @@ func _ready():
 	ensure_setting("interface_settings", "last_used_output_folder", "no_file")
 	ensure_setting("interface_settings", "last_used_input_folder", "no_file")
 	ensure_setting("interface_settings", "autoplay", true)
+	ensure_setting("interface_settings", "favourites", [])
 	ensure_setting("audio_settings", "device", "Default")
+	
 
 	# Only save if we added anything new
 	if !file_exists or config_changed:

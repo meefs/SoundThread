@@ -9,6 +9,7 @@ var node_to_replace
 var connect_to_node = false
 var node_to_connect_to
 var uiscale
+var favourites
 signal make_node(command)
 signal swap_node(node_to_replace, command)
 signal connect_to_clicked_node(node_to_connect_to, command)
@@ -32,9 +33,12 @@ func _ready() -> void:
 
 
 func _on_about_to_popup() -> void:
+	var interface_settings = ConfigHandler.load_interface_settings()
+	favourites = interface_settings.favourites
 	display_items("") #populate menu when needed
 	search_bar.clear()
 	search_bar.grab_focus()
+	
 
 func display_items(filter: String):
 	# Remove all existing items from the VBoxContainer
@@ -46,6 +50,11 @@ func display_items(filter: String):
 	for key in node_data.keys():
 		var item = node_data[key]
 		var title = item.get("title", "")
+		
+		#check if searching for favourites
+		if filters.has("*"):
+			if favourites.has(key) == false:
+				continue
 		
 		#filter out output node
 		if title == "Output File":
@@ -65,6 +74,9 @@ func display_items(filter: String):
 		if filter != "":
 			var match_all_words = true
 			for word in filters:
+				if word == "*":
+					continue
+					
 				if word != "" and not searchable_text.findn(word) != -1:
 					match_all_words = false
 					break
@@ -76,12 +88,16 @@ func display_items(filter: String):
 		btn.alignment = 0 #left align text
 		btn.clip_text = true #clip off labels that are too long
 		btn.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS #and replace with ...
+		var button_text = ""
+		if favourites.has(key):
+			button_text += "★ "
 		if category.to_lower() == "pvoc": #format node names correctly, only show the category for PVOC
-			btn.text = "%s %s: %s - %s" % [category.to_upper(), subcategory.to_pascal_case(), title, short_desc]
+			button_text += "%s %s: %s - %s" % [category.to_upper(), subcategory.to_pascal_case(), title, short_desc]
 		elif title.to_lower() == "input file":
-			btn.text = "%s - %s" % [title, short_desc]
+			button_text += "%s - %s" % [title, short_desc]
 		else:
-			btn.text = "%s: %s - %s" % [subcategory.to_pascal_case(), title, short_desc]
+			button_text += "%s: %s - %s" % [subcategory.to_pascal_case(), title, short_desc]
+		btn.text = button_text
 		btn.connect("pressed", Callable(self, "_on_item_selected").bind(key)) #pass key (process name) when button is pressed
 		
 		#apply custom focus theme for keyboard naviagation
