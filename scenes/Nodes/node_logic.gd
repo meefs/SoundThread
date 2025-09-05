@@ -13,6 +13,16 @@ func _ready() -> void:
 		
 	#add button to title bar
 	var titlebar = self.get_titlebar_hbox()
+	
+	#add randomise button
+	if sliders.size() > 0:
+		var rnd_btn = Button.new()
+		rnd_btn.text = "!"
+		rnd_btn.tooltip_text = "Randomise Slider Values"
+		rnd_btn.connect("pressed", Callable(self, "_randomise_sliders")) #pass key (process name) when button is pressed
+		titlebar.add_child(rnd_btn)
+	
+	#add help button
 	var btn = Button.new()
 	btn.text = "?"
 	btn.tooltip_text = "Open help for " + self.title
@@ -112,3 +122,28 @@ func remove_inlet_from_node():
 
 func _on_position_offset_changed():
 	node_moved.emit(self, Rect2(position, size))
+	
+	
+func _randomise_sliders():
+	var sliders := _get_all_hsliders(self) #finds all sliders
+	#links sliders to this script
+	for slider in sliders:
+		var min = slider.min_value
+		var max = slider.max_value
+		var expo = slider.exp_edit
+		var default = slider.get_meta("default_value")
+		
+		var rnd = randf()
+		var rnd_value
+		if expo:
+			rnd_value = min * pow(max / min, rnd)
+		else:
+			rnd_value = (rnd * (max - min)) + min
+		
+		
+		slider.value = rnd_value
+	
+func generate_random_value(min: float, max: float, default: float) -> float:
+
+	# Clamp so it doesn't go out of range
+	return 1
