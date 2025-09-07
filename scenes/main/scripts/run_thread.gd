@@ -34,6 +34,7 @@ func run_thread_with_branches():
 	process_successful = true
 	progress_bar.value = 0
 	progress_label.text = "Initialising Inputs"
+	console_window.find_child("KillProcess").disabled = false
 	# Detect platform: Determine if the OS is Windows
 	var is_windows := OS.get_name() == "Windows"
 	
@@ -633,6 +634,7 @@ func run_thread_with_branches():
 	progress_window.hide()
 	progress_bar.value = 0
 	progress_label.text = ""
+	console_window.find_child("KillProcess").disabled = true
 	if interface_settings.auto_close_console and process_successful == true:
 		console_window.hide()
 

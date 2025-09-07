@@ -17,11 +17,16 @@ var autoplay
 signal setnodetitle
 
 func _ready():
+	var interface_settings = ConfigHandler.load_interface_settings()
 	#Setup file dialogue to access system files and only accept wav files
 	#get_window().files_dropped.connect(_on_files_dropped)
 	file_dialog.access = FileDialog.ACCESS_FILESYSTEM
 	file_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	file_dialog.filters = ["*.wav ; WAV audio files"]
+	var input_folder = interface_settings.last_used_input_folder
+	if input_folder != "no_file" and DirAccess.open(input_folder) != null:
+		file_dialog.current_dir = input_folder
+	
 	file_dialog.connect("file_selected", Callable(self, "_on_file_selected"))
 	audio_player.connect("finished", Callable(self, "_on_audio_finished"))
 	
@@ -62,9 +67,14 @@ func _on_close_button_button_down() -> void:
 	$WavError.hide()
 
 func _on_load_button_button_down() -> void:
+	var interface_settings = ConfigHandler.load_interface_settings()
+	var input_folder = interface_settings.last_used_input_folder
+	if input_folder != "no_file" and DirAccess.open(input_folder) != null:
+		file_dialog.current_dir = input_folder
 	file_dialog.popup_centered()
 
 func _on_file_selected(path: String):
+	ConfigHandler.save_interface_settings("last_used_input_folder", path.get_base_dir())
 	audio_player.stream = AudioStreamWAV.load_from_file(path, {
 		"compress/mode" = 0,
 		"edit/loop_mode" = 1})
@@ -210,23 +220,24 @@ func _on_button_button_down() -> void:
 
 func _on_button_button_up() -> void:
 	rect_focus = false
-	if get_meta("loadenable") == true:
-		if $LoopRegion.size.x > 0:
-			set_meta("trimfile", true)
-			var length = $AudioStreamPlayer.stream.get_length()
-			var pixel_to_time = length / 399
-			var start = pixel_to_time * $LoopRegion.position.x
-			var starttime = convert_length(start)
-			$StartLabel.text = starttime
-			var end = start + (pixel_to_time * $LoopRegion.size.x)
-			var endtime = convert_length(end)
-			$EndLabel.text = endtime
-			set_meta("trimpoints", [start, end])
-		else:
-			set_meta("trimfile", false)
-			$StartLabel.text = "00:00.00"
-			var end = convert_length($AudioStreamPlayer.stream.get_length())
-			$EndLabel.text = end
+	if audio_player.stream != null:
+		if get_meta("loadenable") == true:
+			if $LoopRegion.size.x > 0:
+				set_meta("trimfile", true)
+				var length = $AudioStreamPlayer.stream.get_length()
+				var pixel_to_time = length / 399
+				var start = pixel_to_time * $LoopRegion.position.x
+				var starttime = convert_length(start)
+				$StartLabel.text = starttime
+				var end = start + (pixel_to_time * $LoopRegion.size.x)
+				var endtime = convert_length(end)
+				$EndLabel.text = endtime
+				set_meta("trimpoints", [start, end])
+			else:
+				set_meta("trimfile", false)
+				$StartLabel.text = "00:00.00"
+				var end = convert_length($AudioStreamPlayer.stream.get_length())
+				$EndLabel.text = end
 			
 
 func convert_length(reportedseconds: float) -> String:

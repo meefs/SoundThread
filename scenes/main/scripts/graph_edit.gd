@@ -11,6 +11,10 @@ var node_data = {} #stores json with all nodes in it
 var valueslider = preload("res://scenes/Nodes/valueslider.tscn") #slider scene for use in nodes
 var addremoveinlets = preload("res://scenes/Nodes/addremoveinlets.tscn") #add remove inlets scene for use in nodes
 var node_logic = preload("res://scenes/Nodes/node_logic.gd") #load the script logic
+var selected_cables:= [] #used to track which cables are selected for changing colour and for deletion
+var theme_background #used to track if the theme has changed and if so change the cable selection colour
+var theme_custom_background
+var high_contrast_cables
 
 
 # Called when the node enters the scene tree for the first time.
@@ -26,6 +30,12 @@ func _ready() -> void:
 			node_data = result
 		else:
 			push_error("Invalid JSON")
+			
+	var interface_settings = ConfigHandler.load_interface_settings()
+	theme_background = interface_settings.theme
+	theme_custom_background = interface_settings.theme_custom_colour
+	high_contrast_cables = interface_settings.high_contrast_selected_cables
+	set_cable_colour(interface_settings.theme)
 
 func init(main_node: Node, graphedit: GraphEdit, openhelp: Callable, multipleconnections: Window) -> void:
 	control_script = main_node
@@ -46,6 +56,8 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			if command == "outputfile":
 				effect.init() #initialise ui from user prefs
 			effect.connect("open_help", open_help)
+			if effect.has_signal("node_moved"):
+				effect.node_moved.connect(_auto_link_nodes)
 			effect.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 			_register_inputs_in_node(effect) #link sliders for changes tracking
 			_register_node_movement() #link nodes for tracking position changes for changes tracking
@@ -150,6 +162,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						hslider.set_meta("min", min)
 						hslider.set_meta("max", max)
 						hslider.set_meta("flag", flag)
+						hslider.set_meta("default_value", value)
 						
 						#set slider params
 						hslider.min_value = minrange
@@ -297,6 +310,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			add_child(graphnode, true)
 			graphnode.connect("open_help", open_help)
 			graphnode.connect("inlet_removed", Callable(self, "on_inlet_removed"))
+			graphnode.node_moved.connect(_auto_link_nodes)
 			_register_inputs_in_node(graphnode) #link sliders for changes tracking
 			_register_node_movement() #link nodes for tracking position changes for changes tracking
 			
@@ -314,14 +328,23 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 	
 
 func _on_connection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
+	#check if this is trying to connect a node to itself and skip
+	if from_node == to_node:
+		return
+	
 	var to_graph_node = get_node(NodePath(to_node))
 	var from_graph_node = get_node(NodePath(from_node))
 
-	# Get the type of the input port using GraphNode's built-in method
-	var port_type = to_graph_node.get_input_port_type(to_port)
+	# Get the type of the ports
+	var to_port_type = to_graph_node.get_input_port_type(to_port)
+	var from_port_type = from_graph_node.get_output_port_type(from_port)
+	
+	#skip if this isnt a valid connection
+	if to_port_type != from_port_type:
+		return
 
 	# If port type is 1 and already has a connection, reject the request
-	if port_type == 1:
+	if to_port_type == 1:
 		var connections = get_connection_list()
 		var existing_connections = 0
 
@@ -359,43 +382,42 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
 	control_script.undo_redo.create_action("Delete Nodes (Undo only)")
-			
-	for node in selected_nodes.keys():
-		if is_instance_valid(node) and selected_nodes[node]:
-			if selected_nodes[node]:
-				#check if node is the output or the last input node and do nothing
-				if node.get_meta("command") == "outputfile":
-					pass
-				else:
-					# Store duplicate and state for undo
-					var node_data = node.duplicate()
-					var position = node.position_offset
 
-					# Store all connections for undo
-					var conns = []
-					for con in get_connection_list():
-						if con["to_node"] == node.name or con["from_node"] == node.name:
-							conns.append(con)
+	for node_name in nodes:
+		var node: GraphNode = get_node_or_null(NodePath(node_name))
+		if node and is_instance_valid(node):
+			# Skip output nodes
+			if node.get_meta("command") == "outputfile":
+				continue
 
-					# Delete
-					remove_connections_to_node(node)
-					node.queue_free()
-					control_script.changesmade = true
+			# Store duplicate and state for undo
+			var node_data = node.duplicate()
+			var position = node.position_offset
 
-					# Register undo restore
-					control_script.undo_redo.add_undo_method(Callable(self, "add_child").bind(node_data, true))
-					control_script.undo_redo.add_undo_method(Callable(node_data, "set_position_offset").bind(position))
-					for con in conns:
-						control_script.undo_redo.add_undo_method(Callable(self, "connect_node").bind(
-							con["from_node"], con["from_port"],
-							con["to_node"], con["to_port"]
-						))
-					control_script.undo_redo.add_undo_method(Callable(self, "set_node_selected").bind(node_data, true))
-					control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-					control_script.undo_redo.add_undo_method(Callable(self, "_register_inputs_in_node").bind(node_data)) #link sliders for changes tracking
-					control_script.undo_redo.add_undo_method(Callable(self, "_register_node_movement")) # link nodes for changes tracking
+			# Store all connections for undo
+			var conns := []
+			for con in get_connection_list():
+				if con["to_node"] == node.name or con["from_node"] == node.name:
+					conns.append(con)
 
-	# Clear selection
+			# Delete
+			remove_connections_to_node(node)
+			node.queue_free()
+			control_script.changesmade = true
+
+			# Register undo restore
+			control_script.undo_redo.add_undo_method(Callable(self, "add_child").bind(node_data, true))
+			control_script.undo_redo.add_undo_method(Callable(node_data, "set_position_offset").bind(position))
+			for con in conns:
+				control_script.undo_redo.add_undo_method(Callable(self, "connect_node").bind(
+					con["from_node"], con["from_port"],
+					con["to_node"], con["to_port"]
+				))
+			control_script.undo_redo.add_undo_method(Callable(self, "set_node_selected").bind(node_data, true))
+			control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
+			control_script.undo_redo.add_undo_method(Callable(self, "_register_inputs_in_node").bind(node_data))
+			control_script.undo_redo.add_undo_method(Callable(self, "_register_node_movement"))
+
 	selected_nodes = {}
 
 	control_script.undo_redo.commit_action()
@@ -497,6 +519,7 @@ func paste_copied_nodes():
 
 		add_child(new_node, true)
 		new_node.connect("open_help", open_help)
+		new_node.node_moved.connect(_auto_link_nodes)
 		_register_inputs_in_node(new_node) #link sliders for changes tracking
 		_register_node_movement() # link nodes for changes tracking
 		name_map[node_data["name"]] = new_node.name
@@ -591,3 +614,195 @@ func on_inlet_removed(node_name: StringName, port_index: int):
 	for conn in connections:
 		if conn.to_node == node_name and conn.to_port == port_index:
 			disconnect_node(conn.from_node, conn.from_port, conn.to_node, conn.to_port)
+			
+func _swap_node(old_node: GraphNode, command: String):
+	#store the position and name of the node to be replaced
+	var position = old_node.position_offset
+	var old_name = old_node.name
+	#gather all connections in the graph
+	var connections = get_connection_list()
+	var related_connections = []
+	
+	#filter the connections to get just those connected to the node to be replaced
+	for conn in connections:
+		if conn.from_node == old_name or conn.to_node == old_name:
+			related_connections.append(conn)
+			
+	#delete the old node
+	_on_graph_edit_delete_nodes_request([old_node.name])
+	
+	#make the new node and reposition it to the location of the old node
+	var new_node = _make_node(command)
+	new_node.position_offset = position
+	
+	#filter through all the connections to the old node
+	for conn in related_connections:
+		var from = conn.from_node
+		var from_port = conn.from_port
+		var to = conn.to_node
+		var to_port = conn.to_port
+		
+		#where the old node is referenced replace it with the name of the new node
+		if from == old_name:
+			from = new_node.name
+		if to == old_name:
+			to = new_node.name
+			
+		#check that the ports being connected to/from on the new node actually exist
+		if (from == new_node.name and new_node.is_slot_enabled_right(from_port)) or (to == new_node.name and new_node.is_slot_enabled_left(to_port)):
+			#check the two ports are the same type
+			if _same_port_type(from, from_port, to, to_port):
+				_on_connection_request(from, from_port, to, to_port)
+	
+func _connect_to_clicked_node(clicked_node: GraphNode, command: String):
+	var new_node_position = clicked_node.position_offset + Vector2(clicked_node.size.x + 50, 0)
+	#make the new node and reposition it to right of the node to connect to
+	var new_node = _make_node(command)
+	new_node.position_offset = new_node_position
+	
+	var clicked_node_has_outputs = clicked_node.get_output_port_count() > 0
+	var new_node_has_inputs = new_node.get_input_port_count() > 0
+	
+	if clicked_node_has_outputs and new_node_has_inputs:
+		if _same_port_type(clicked_node.name, 0, new_node.name, 0):
+			_on_connection_request(clicked_node.name, 0, new_node.name, 0)
+
+
+func _on_gui_input(event: InputEvent) -> void:
+	#check if this is an unhandled mouse click
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		
+		#get dictionary of a cable if nearby
+		var closest_connection = get_closest_connection_at_point(get_local_mouse_position())
+		
+		#check if there is anything in that dictionary
+		if closest_connection.size() > 0:
+			#check if the background has changed colour for highlighted cable colour
+			var interface_settings = ConfigHandler.load_interface_settings()
+			if interface_settings.theme != theme_background or interface_settings.theme_custom_colour != theme_custom_background or interface_settings.high_contrast_selected_cables != high_contrast_cables:
+				#if bg has changed colour since last cable highlight reset to new bg and change cable colour
+				theme_background = interface_settings.theme
+				theme_custom_background = interface_settings.theme_custom_colour
+				high_contrast_cables = interface_settings.high_contrast_selected_cables
+				set_cable_colour(interface_settings.theme)
+				
+			#get details of nearby cable
+			var from_node = closest_connection.from_node
+			var from_port = closest_connection.from_port
+			var to_node = closest_connection.to_node
+			var to_port = closest_connection.to_port
+			
+			#check if user was holding shift and if so allow for multiple cables to be selected
+			if event.shift_pressed:
+				selected_cables.append(closest_connection)
+				set_connection_activity(from_node, from_port, to_node, to_port, 1)
+			
+			#if user double clicked unselect all cables and delete the nearest cable
+			elif event.double_click:
+					for conn in selected_cables:
+						set_connection_activity(conn.from_node, conn.from_port, conn.to_node, conn.to_port, 0)
+					_on_graph_edit_disconnection_request(from_node, from_port, to_node, to_port)
+					
+			#else just a single click, unselect any previously selected cables and select just the nearest
+			else:
+				for conn in selected_cables:
+					set_connection_activity(conn.from_node, conn.from_port, conn.to_node, conn.to_port, 0)
+				selected_cables = []
+				selected_cables.append(closest_connection)
+				set_connection_activity(from_node, from_port, to_node, to_port, 1)
+		
+		#user didnt click on a cable unselect all cables
+		else:
+			for conn in selected_cables:
+				set_connection_activity(conn.from_node, conn.from_port, conn.to_node, conn.to_port, 0)
+			selected_cables = []
+			
+	#if this is an unhandled delete check if there are any cables selected and deleted them
+	if event is InputEventKey and event.pressed:
+		if (event.keycode == KEY_BACKSPACE or event.keycode == KEY_DELETE) and selected_cables.size() > 0:
+			for conn in selected_cables:
+				_on_graph_edit_disconnection_request(conn.from_node, conn.from_port, conn.to_node, conn.to_port)
+				selected_cables = []
+	
+func set_cable_colour(theme_colour: int):
+	var background_colour
+	var cable_colour
+	var interface_settings = ConfigHandler.load_interface_settings()
+	match theme_colour:
+		0:
+			background_colour = Color("#2f4f4e")
+		1:
+			background_colour = Color("#000807")
+		2:
+			background_colour = Color("#98d4d2")
+		3:
+			background_colour = Color(interface_settings.theme_custom_colour)
+			
+	if interface_settings.high_contrast_selected_cables:
+		#180 colour shift from background and up sv
+		cable_colour = Color.from_hsv(fposmod(background_colour.h + 0.5, 1.0), clamp(background_colour.s + 0.2, 0, 1), clamp(background_colour.v + 0.2, 0, 1))
+		var luminance = 0.299 * background_colour.r + 0.587 * background_colour.g + 0.114 * background_colour.b
+		if luminance > 0.5 and cable_colour.get_luminance() > 0.5:
+			cable_colour = cable_colour.darkened(0.4)
+		elif luminance <= 0.5 and cable_colour.get_luminance() < 0.5:
+			#increase s and v again
+			cable_colour = Color.from_hsv(cable_colour.h, clamp(cable_colour.s + 0.2, 0, 0.8), clamp(cable_colour.v + 0.2, 0, 0.8))
+	else:
+		#keep hue but up saturation and variance
+		cable_colour = Color.from_hsv(background_colour.h, clamp(background_colour.s + 0.2, 0, 1), clamp(background_colour.v + 0.2, 0, 1))
+	#overide theme for cable highlight
+	add_theme_color_override("activity", cable_colour)
+
+func _auto_link_nodes(node: GraphNode, rect: Rect2):
+	#get all cables that overlap with the node being moved
+	var potential_connections = get_connections_intersecting_with_rect(rect)
+	
+	#if there are anyoverlapping and shift is being held down then
+	if potential_connections.size() > 0 and Input.is_action_pressed("auto_link_nodes"):
+		#sort through all the cables that overlap
+		for conn in potential_connections:
+			#get their info
+			var new_node_name = node.name
+			var new_node_has_inputs = node.get_input_port_count() > 0
+			var new_node_has_outputs = node.get_output_port_count() > 0
+			var from = conn.from_node
+			var from_port = conn.from_port
+			var to = conn.to_node
+			var to_port = conn.to_port
+			
+			if new_node_has_inputs and new_node_has_outputs:
+				#connect in the middle of the two nodes if they are the same port type
+				var from_matches = _same_port_type(from, from_port, new_node_name, 0)
+				var to_matches = _same_port_type(new_node_name, 0, to, to_port)
+				
+				if from_matches:
+					_on_connection_request(from, from_port, new_node_name, 0)
+				if to_matches:
+					_on_connection_request(new_node_name, 0, to, to_port)
+				#skip deleting cables if they are the same as the node being dragged or the ports don't match
+				if from_matches and to_matches and from != new_node_name and to != new_node_name:
+					_on_graph_edit_disconnection_request(from, from_port, to, to_port)
+
+			elif new_node_has_inputs:
+				#only has inputs check if the ports match and if they do connect but leave original connection in place
+				if _same_port_type(from, from_port, new_node_name, 0):
+					_on_connection_request(from, from_port, new_node_name, 0)
+					
+			elif new_node_has_outputs:
+				#only has outputs check if the ports match and if they do connect but leave original connection in place
+				if _same_port_type(new_node_name, 0, to, to_port):
+					_on_connection_request(new_node_name, 0, to, to_port)
+
+# function for checking if an inlet and an outlet are the same type
+func _same_port_type(from: String, from_port: int, to: String, to_port: int) -> bool:
+	var from_node = get_node_or_null(NodePath(from))
+	var to_node = get_node_or_null(NodePath(to))
+	#safety incase one somehow no longer exists
+	if from_node != null and to_node != null:
+		#check if the port types are the same e.g. both time or both pvoc
+		if from_node.get_output_port_type(from_port) == to_node.get_input_port_type(to_port):
+			return true
+		else:
+			return false
+	else:
+		return false

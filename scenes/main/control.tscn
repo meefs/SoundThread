@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://bcs87y7ptx3ke"]
+[gd_scene load_steps=13 format=3 uid="uid://bcs87y7ptx3ke"]
 
 [ext_resource type="Script" uid="uid://bdlfvuljckmu1" path="res://scenes/main/scripts/control.gd" id="1_2f0aq"]
 [ext_resource type="Script" uid="uid://l2yejnjysupr" path="res://scenes/main/scripts/graph_edit.gd" id="2_3ioqo"]
+[ext_resource type="Texture2D" uid="uid://drn34trxhf80f" path="res://theme/images/open_explore.png" id="3_4na11"]
 [ext_resource type="PackedScene" uid="uid://b0wdj8v6o0wq0" path="res://scenes/menu/menu.tscn" id="3_dtf4o"]
 [ext_resource type="Texture2D" uid="uid://cdwux1smquvpi" path="res://theme/images/logo.png" id="4_3ioqo"]
+[ext_resource type="Script" uid="uid://c503vew41pw80" path="res://scenes/main/scripts/color_rect_theme_invert.gd" id="4_mg8al"]
 [ext_resource type="PackedScene" uid="uid://dta7rfalv4uvd" path="res://scenes/main/audio_settings.tscn" id="5_dtf4o"]
 [ext_resource type="Script" uid="uid://cyhaucukdha8a" path="res://scenes/main/scripts/console.gd" id="5_fbaj0"]
 [ext_resource type="Script" uid="uid://wja0lo4nobh1" path="res://scenes/main/scripts/about_menu.gd" id="5_yf4wl"]
@@ -29,6 +31,15 @@ offset_top = 32.0
 right_disconnects = true
 script = ExtResource("2_3ioqo")
 
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 301.0
+offset_top = 44.0
+offset_right = 325.0
+offset_bottom = 71.0
+tooltip_text = "Explore available processes (Ctrl/Cmd + E)"
+icon = ExtResource("3_4na11")
+
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a Directory"
 ok_button_text = "Select Current Folder"
@@ -50,6 +61,12 @@ exclusive = true
 unresizable = true
 borderless = true
 popup_window = true
+
+[node name="ColorRect" type="ColorRect" parent="NoLocationPopup" groups=["invertable_background"]]
+offset_right = 459.0
+offset_bottom = 514.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
 
 [node name="TextureRect" type="TextureRect" parent="NoLocationPopup"]
 offset_left = -6.0
@@ -98,6 +115,12 @@ unresizable = true
 borderless = true
 popup_window = true
 
+[node name="ColorRect" type="ColorRect" parent="NoInputPopup" groups=["invertable_background"]]
+offset_right = 506.0
+offset_bottom = 421.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
+
 [node name="Label" type="Label" parent="NoInputPopup"]
 offset_left = 14.0
 offset_top = 7.0
@@ -129,6 +152,12 @@ exclusive = true
 unresizable = true
 borderless = true
 popup_window = true
+
+[node name="ColorRect" type="ColorRect" parent="WrongFolderPopup" groups=["invertable_background"]]
+offset_right = 506.0
+offset_bottom = 421.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
 
 [node name="Label" type="Label" parent="WrongFolderPopup"]
 offset_left = 14.0
@@ -169,6 +198,12 @@ exclusive = true
 unresizable = true
 popup_window = true
 
+[node name="ColorRect" type="ColorRect" parent="AudioDevicePopup" groups=["invertable_background"]]
+offset_right = 506.0
+offset_bottom = 421.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
+
 [node name="Label" type="Label" parent="AudioDevicePopup"]
 offset_left = 14.0
 offset_top = 7.0
@@ -197,6 +232,12 @@ exclusive = true
 unresizable = true
 borderless = true
 popup_window = true
+
+[node name="ColorRect" type="ColorRect" parent="MultipleConnectionsPopup" groups=["invertable_background"]]
+offset_right = 506.0
+offset_bottom = 421.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
 
 [node name="Label" type="Label" parent="MultipleConnectionsPopup"]
 offset_left = 14.0
@@ -259,6 +300,7 @@ offset_left = 12.0
 offset_top = 352.0
 offset_right = 292.0
 offset_bottom = 393.0
+disabled = true
 text = "Stop Running Thread"
 
 [node name="ConsoleRightClick" type="PopupMenu" parent="Console"]
@@ -268,13 +310,13 @@ item_0/id = 0
 item_1/text = "Copy"
 item_1/id = 1
 
-[node name="ColorRect" type="ColorRect" parent="."]
+[node name="MenuBarBackground" type="ColorRect" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_bottom = 35.0
 grow_horizontal = 2
-color = Color(0.0646965, 0.0646965, 0.0646965, 1)
+color = Color(0.93408, 0.93408, 0.93408, 1)
 
 [node name="MenuBar" type="MenuBar" parent="."]
 layout_mode = 1
@@ -373,6 +415,12 @@ unresizable = true
 borderless = true
 popup_window = true
 
+[node name="ColorRect" type="ColorRect" parent="SaveChangesPopup" groups=["invertable_background"]]
+offset_right = 369.0
+offset_bottom = 114.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
+
 [node name="Label" type="Label" parent="SaveChangesPopup"]
 offset_left = -1.0
 offset_top = 21.0
@@ -409,14 +457,20 @@ visible = false
 [node name="SearchMenu" type="PopupPanel" parent="." groups=["popup_windows"]]
 auto_translate_mode = 1
 position = Vector2i(100, 100)
-size = Vector2i(600, 53)
+size = Vector2i(600, 77)
 script = ExtResource("6_fyarh")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="SearchMenu"]
 offset_left = 4.0
 offset_top = 4.0
 offset_right = 596.0
-offset_bottom = 49.0
+offset_bottom = 73.0
+
+[node name="ReplaceLabel" type="Label" parent="SearchMenu/VBoxContainer"]
+layout_mode = 2
+text = "Replace"
+clip_text = true
+text_overrun_behavior = 3
 
 [node name="SearchBar" type="LineEdit" parent="SearchMenu/VBoxContainer"]
 layout_mode = 2
@@ -446,6 +500,12 @@ transient = true
 exclusive = true
 unresizable = true
 popup_window = true
+
+[node name="ColorRect" type="ColorRect" parent="CheckForUpdates/UpdatePopup" groups=["invertable_background"]]
+offset_right = 398.0
+offset_bottom = 313.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
 
 [node name="Label" type="Label" parent="CheckForUpdates/UpdatePopup"]
 offset_left = 14.0
@@ -483,6 +543,12 @@ transient = true
 exclusive = true
 borderless = true
 
+[node name="ColorRect" type="ColorRect" parent="ProgressWindow" groups=["invertable_background"]]
+offset_right = 613.0
+offset_bottom = 121.0
+color = Color(0.101961, 0.101961, 0.101961, 0.6)
+script = ExtResource("4_mg8al")
+
 [node name="ProgressBar" type="ProgressBar" parent="ProgressWindow"]
 offset_left = 10.0
 offset_top = 11.0
@@ -511,10 +577,12 @@ text = "Stop Running Thread"
 [connection signal="copy_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_copy_nodes_request"]
 [connection signal="delete_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_delete_nodes_request"]
 [connection signal="disconnection_request" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_disconnection_request"]
+[connection signal="gui_input" from="GraphEdit" to="GraphEdit" method="_on_gui_input"]
 [connection signal="node_deselected" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_node_deselected"]
 [connection signal="node_selected" from="GraphEdit" to="GraphEdit" method="_on_graph_edit_node_selected"]
 [connection signal="paste_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_paste_nodes_request"]
 [connection signal="popup_request" from="GraphEdit" to="." method="_on_graph_edit_popup_request"]
+[connection signal="button_down" from="Button" to="." method="open_explore"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="close_requested" from="mainmenu" to="." method="_on_mainmenu_close_requested"]
 [connection signal="meta_clicked" from="NoLocationPopup/RichTextLabel" to="." method="_on_rich_text_label_meta_clicked"]

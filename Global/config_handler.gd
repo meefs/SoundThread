@@ -17,10 +17,19 @@ func _ready():
 	ensure_setting("interface_settings", "console_on_top", true)
 	ensure_setting("interface_settings", "theme", 0)
 	ensure_setting("interface_settings", "theme_custom_colour", "#865699")
+	ensure_setting("interface_settings", "invert_theme", false)
+	ensure_setting("interface_settings", "high_contrast_selected_cables", false)
+	ensure_setting("interface_settings", "swap_zoom_and_move", false)
+	ensure_setting("interface_settings", "right_click_opens_explore", false)
+	ensure_setting("interface_settings", "ui_scale_multiplier", 1.0)
 	ensure_setting("interface_settings", "delete_intermediate", true)
 	ensure_setting("interface_settings", "reuse_output_folder", true)
+	ensure_setting("interface_settings", "last_used_output_folder", "no_file")
+	ensure_setting("interface_settings", "last_used_input_folder", "no_file")
 	ensure_setting("interface_settings", "autoplay", true)
+	ensure_setting("interface_settings", "favourites", [])
 	ensure_setting("audio_settings", "device", "Default")
+	
 
 	# Only save if we added anything new
 	if !file_exists or config_changed:

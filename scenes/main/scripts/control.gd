@@ -8,16 +8,20 @@ var delete_intermediate_outputs # tracks state of delete intermediate outputs to
 @onready var console_output: RichTextLabel = $Console/ConsoleOutput
 var undo_redo := UndoRedo.new() 
 var output_audio_player #tracks the node that is the current output player for linking
-var input_audio_player #tracks node that is the current input player for linking
+var input_audio_player #potentially unused, remove? tracks node that is the current input player for linking
 var currentfile = "none" #tracks dir of currently loaded file for saving
 var changesmade = false #tracks if user has made changes to the currently loaded save file
 var savestate # tracks what the user is trying to do when savechangespopup is called
 var helpfile #tracks which help file the user was trying to load when savechangespopup is called
 var outfilename #links to the user name for outputfile field
 var foldertoggle #links to the reuse folder button
-var lastoutputfolder = "none" #tracks last output folder, this can in future be used to replace global.outfile but i cba right now
-var uiscale = 1.0 #tracks scaling for retina screens
+#var lastoutputfolder = "none" #tracks last output folder, this can in future be used to replace global.outfile but i cba right now
+var uiscale = 0.0 # tracks the overal ui scale after hidpi adjustment and user offset
+var retina_scaling = 1.0 #tracks scaling for retina screens
 var use_anyway #used to store the folder selected for cdprogs when it appears the wrong folder is selected but the user wants to use it anyway
+var main_theme = preload("res://theme/main_theme.tres") #load the theme
+var default_input_node #stores a reference to the input node created on launch to allow auto loading a wav file
+var output_folder_label
 
 
 #scripts
@@ -51,11 +55,13 @@ func _ready() -> void:
 	
 	get_tree().set_auto_accept_quit(false) #disable closing the app with the x and instead handle it internally
 	
+	
 	load_scripts()
 	make_signal_connections()
-	check_user_preferences()
 	hidpi_adjustment()
+	check_user_preferences()
 	new_patch()
+	await get_tree().process_frame
 	load_from_filesystem()
 	check_cdp_location_set()
 	
@@ -77,20 +83,37 @@ func load_scripts():
 
 func make_signal_connections():
 	get_node("SearchMenu").make_node.connect(graph_edit._make_node)
+	get_node("SearchMenu").swap_node.connect(graph_edit._swap_node)
+	get_node("SearchMenu").connect_to_clicked_node.connect(graph_edit._connect_to_clicked_node)
 	get_node("mainmenu").make_node.connect(graph_edit._make_node)
 	get_node("mainmenu").open_help.connect(open_help.show_help_for_node)
 	get_node("Settings").open_cdp_location.connect(show_cdp_location)
 	get_node("Settings").console_on_top.connect(change_console_settings)
+	get_node("Settings").invert_ui.connect(invert_theme_toggled)
+	get_node("Settings").swap_zoom_and_move.connect(swap_zoom_and_move)
+	get_node("Settings").ui_scale_multiplier_changed.connect(scale_ui)
+	get_window().files_dropped.connect(on_files_dropped)
 	
 func hidpi_adjustment():
 	#checks if display is hidpi and scales ui accordingly hidpi - 144
 	if DisplayServer.screen_get_dpi(0) >= 144:
-		uiscale = 2.0
-		get_window().content_scale_factor = uiscale
-		#goes through popup_windows group and scales all popups and resizes them
-		for window in get_tree().get_nodes_in_group("popup_windows"):
+		retina_scaling = 2.0
+	else:
+		retina_scaling = 1.0
+		
+
+func scale_ui(scale_multiplier: float):
+	var old_uiscale = uiscale
+	uiscale = retina_scaling * scale_multiplier
+	get_window().content_scale_factor = uiscale
+	#goes through popup_windows group and scales all popups and resizes them
+	for window in get_tree().get_nodes_in_group("popup_windows"):
+		if old_uiscale != 0: #if ui scale = 0 this is the first time this is being adjusted so no need to revert values back to default first
+			window.size = (window.size / old_uiscale) * uiscale
+		else:
 			window.size = window.size * uiscale
-			window.content_scale_factor = uiscale
+		window.content_scale_factor = uiscale
+	
 
 func load_from_filesystem():
 	#checks if user has opened a file from the system file menu and loads it
@@ -99,6 +122,9 @@ func load_from_filesystem():
 		var path = arg.strip_edges()
 		if FileAccess.file_exists(path) and path.get_extension().to_lower() == "thd":
 			save_load.load_graph_edit(path)
+			break
+		if FileAccess.file_exists(path) and path.get_extension().to_lower() == "wav":
+			default_input_node.get_node("AudioPlayer")._on_file_selected(path)
 			break
 
 func new_patch():
@@ -118,15 +144,27 @@ func new_patch():
 	effect.name = "inputfile"
 	get_node("GraphEdit").add_child(effect, true)
 	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
+	if effect.has_signal("node_moved"):
+		effect.node_moved.connect(graph_edit._auto_link_nodes)
 	effect.position_offset = Vector2(20,80)
+	default_input_node = effect #store a reference to this node to allow for loading into it directly if software launched with a wav file argument
 	
 	effect = Nodes.get_node(NodePath("outputfile")).duplicate()
 	effect.name = "outputfile"
 	get_node("GraphEdit").add_child(effect, true)
 	effect.init() #initialise ui from user prefs
 	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
+	if effect.has_signal("node_moved"):
+		effect.node_moved.connect(graph_edit._auto_link_nodes)
 	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) / uiscale, 80)
 	graph_edit._register_node_movement() #link nodes for tracking position changes for changes tracking
+	
+	#set label for last output folder
+	var interface_settings = ConfigHandler.load_interface_settings()
+	output_folder_label = effect.get_node("OutputFolderMargin/OutputFolderLabel")
+	if output_folder_label != null and interface_settings.last_used_output_folder != "no_file":
+		output_folder_label.text = interface_settings.last_used_output_folder
+		output_folder_label.get_parent().tooltip_text = interface_settings.last_used_output_folder
 	
 	changesmade = false #so it stops trying to save unchanged empty files
 	get_window().title = "SoundThread"
@@ -179,6 +217,15 @@ func check_user_preferences():
 			RenderingServer.set_default_clear_color(Color("#98d4d2"))
 		3:
 			RenderingServer.set_default_clear_color(Color(interface_settings.theme_custom_colour))
+			
+	#set the theme to either the main theme or inverted theme depending on user preferences
+	invert_theme_toggled(interface_settings.invert_theme)
+	swap_zoom_and_move(interface_settings.swap_zoom_and_move)
+	
+	#scale ui
+	scale_ui(interface_settings.ui_scale_multiplier)
+
+		
 func show_cdp_location():
 	$CdpLocationDialog.show()
 	
@@ -252,8 +299,8 @@ func _input(event):
 		simulate_mouse_click()
 		await get_tree().process_frame
 		undo_redo.undo()
-	elif event.is_action_pressed("redo"):
-		undo_redo.redo()
+	#elif event.is_action_pressed("redo"):
+		#undo_redo.redo()
 	elif event.is_action_pressed("save"):
 		if currentfile == "none":
 			savestate = "saveas"
@@ -278,8 +325,6 @@ func _input(event):
 		savestate = "saveas"
 		$SaveDialog.popup_centered()
 	
-
-
 func simulate_mouse_click():
 	#simulates clicking the middle mouse button in order to hide any visible tooltips
 	var click_pos = get_viewport().get_mouse_position()
@@ -299,19 +344,24 @@ func simulate_mouse_click():
 
 func _run_process() -> void:
 	#check if any of the inputfile nodes don't have files loaded
+	var interface_settings = ConfigHandler.load_interface_settings()
 	for node in graph_edit.get_children():
 		if node.get_meta("command") == "inputfile" and node.get_node("AudioPlayer").has_meta("inputfile") == false:
 			$NoInputPopup.popup_centered()
 			return
 	#check if the reuse folder toggle is set and a folder has been previously chosen
-	if foldertoggle.button_pressed == true and lastoutputfolder != "none":
-		_on_file_dialog_dir_selected(lastoutputfolder)
+	var output_folder = interface_settings.last_used_output_folder
+	if foldertoggle.button_pressed == true and output_folder != "no_file" and DirAccess.open(output_folder) != null:
+		_on_file_dialog_dir_selected(output_folder)
 	else:
 		$FileDialog.show()
 			
 
 func _on_file_dialog_dir_selected(dir: String) -> void:
-	lastoutputfolder = dir
+	ConfigHandler.save_interface_settings("last_used_output_folder", dir)
+	if output_folder_label != null:
+		output_folder_label.text = dir
+		output_folder_label.tooltip_text = dir
 	console_output.clear()
 	var interface_settings = ConfigHandler.load_interface_settings()
 	if interface_settings.disable_progress_bar == false:
@@ -335,10 +385,35 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	var second = str(time_dict.second).pad_zeros(2)
 	var time_str = hour + "-" + minute + "-" + second
 	Global.outfile = dir + "/" + outfilename.text.get_basename() + "_" + Time.get_date_string_from_system() + "_" + time_str
-	run_thread.log_console("Output directory and file name(s):" + Global.outfile, true)
-	await get_tree().process_frame
 	
-	run_thread.run_thread_with_branches()
+	#check path and file name do not contain special characters
+	var check_characters = Global.outfile.get_basename().split("/")
+	var invalid_chars:= []
+	var regex = RegEx.new()
+	regex.compile("[^a-zA-Z0-9\\-_ :+]")
+	for string in check_characters:
+		if string != "":
+			var result = regex.search_all(string)
+			for matches in result:
+				var char = matches.get_string()
+				if invalid_chars.has(char) == false:
+					invalid_chars.append(char)
+
+	var invalid_string = " ".join(invalid_chars)
+	
+	if invalid_chars.size() == 0:
+		run_thread.log_console("Output directory and file name(s):" + Global.outfile, true)
+		await get_tree().process_frame
+		
+		run_thread.run_thread_with_branches()
+	else:
+		run_thread.log_console("[color=#9c2828][b]Error:[/b][/color] Chosen file name or folder path " + Global.outfile.get_basename() + " contains invalid characters.", true)
+		run_thread.log_console("File names and paths can only contain A-Z a-z 0-9 - _ + and space.", true)
+		run_thread.log_console("Chosen file name/path contains the following invalid characters: " + invalid_string, true)
+		if $ProgressWindow.visible:
+			$ProgressWindow.hide()
+		if !$Console.visible:
+			$Console.popup_centered()
 
 func _toggle_delete(toggled_on: bool):
 	delete_intermediate_outputs = toggled_on
@@ -351,7 +426,10 @@ func _on_console_close_requested() -> void:
 
 func _on_console_open_folder_button_down() -> void:
 	$Console.hide()
-	OS.shell_open(Global.outfile.get_base_dir())
+	var interface_settings = ConfigHandler.load_interface_settings()
+	var output_folder = interface_settings.last_used_output_folder
+	if output_folder != "no_file" and DirAccess.open(output_folder) != null:
+		OS.shell_open(output_folder)
 
 
 func _on_ok_button_2_button_down() -> void:
@@ -368,6 +446,7 @@ func _on_settings_button_index_pressed(index: int) -> void:
 	
 	match index:
 		0:
+			$Settings.cdpprogs_location = cdpprogs_location
 			$Settings.popup_centered()
 		1:
 			$AudioSettings.popup_centered()
@@ -587,8 +666,10 @@ func _notification(what):
 			get_tree().quit() # default behavior
 			
 func _open_output_folder():
-	if lastoutputfolder != "none":
-		OS.shell_open(lastoutputfolder)
+	var interface_settings = ConfigHandler.load_interface_settings()
+	var output_folder = interface_settings.last_used_output_folder
+	if output_folder != "no_file" and DirAccess.open(output_folder) != null:
+		OS.shell_open(output_folder)
 		
 
 func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
@@ -599,6 +680,9 @@ func _on_rich_text_label_meta_clicked(meta: Variant) -> void:
 func _on_graph_edit_popup_request(at_position: Vector2) -> void:
 
 	effect_position = graph_edit.get_local_mouse_position()
+	
+	#give the search menu the ui scale
+	$SearchMenu.uiscale = uiscale
 
 	#get the mouse position in screen coordinates
 	var mouse_screen_pos = DisplayServer.mouse_get_position()  
@@ -607,6 +691,38 @@ func _on_graph_edit_popup_request(at_position: Vector2) -> void:
 	#get the window size relative to its scaling for retina displays
 	var window_size = get_window().size * DisplayServer.screen_get_scale()
 
+	#see if it was empty space or a node that was right clicked
+	var clicked_node
+	for child in graph_edit.get_children():
+		if child is GraphNode:
+			if Rect2(child.position, child.size).has_point(effect_position):
+				clicked_node = child
+				break
+	
+	if clicked_node and clicked_node.get_meta("command") != "outputfile":
+		var title = clicked_node.title
+		if Input.is_action_pressed("auto_link_nodes"):
+			$SearchMenu/VBoxContainer/ReplaceLabel.text = "Connect to " + title
+			$SearchMenu/VBoxContainer/ReplaceLabel.show()
+			$SearchMenu.replace_node = false
+			$SearchMenu.connect_to_node = true
+			$SearchMenu.node_to_connect_to = clicked_node
+		else:
+			$SearchMenu/VBoxContainer/ReplaceLabel.text = "Replace " + title
+			$SearchMenu/VBoxContainer/ReplaceLabel.show()
+			$SearchMenu.replace_node = true
+			$SearchMenu.connect_to_node = false
+			$SearchMenu.node_to_replace = clicked_node
+	else:
+		var interface_settings = ConfigHandler.load_interface_settings()
+		if interface_settings.right_click_opens_explore:
+			open_explore()
+			return
+		else:
+			$SearchMenu/VBoxContainer/ReplaceLabel.hide()
+			$SearchMenu.replace_node = false
+			$SearchMenu.connect_to_node = false
+	
 	#calculate the xy position of the mouse clamped to the size of the window and menu so it doesn't go off the screen
 	var clamped_x = clamp(mouse_screen_pos.x, window_screen_pos.x, window_screen_pos.x + window_size.x - $SearchMenu.size.x)
 	var clamped_y = clamp(mouse_screen_pos.y, window_screen_pos.y, window_screen_pos.y + window_size.y - (420 * DisplayServer.screen_get_scale()))
@@ -657,3 +773,86 @@ func change_console_settings(toggled: bool):
 
 func _on_kill_process_button_down() -> void:
 	run_thread._on_kill_process_button_down()
+
+func invert_theme_toggled(toggled: bool):
+	if toggled:
+		var inverted = invert_theme(main_theme)
+		get_tree().root.theme = inverted # force refresh
+		$MenuBarBackground.color = Color(0.934, 0.934, 0.934)
+		for color_rect in get_tree().get_nodes_in_group("invertable_background"):
+			if color_rect is ColorRect:
+				color_rect.color = Color(0.898, 0.898, 0.898, 0.6)
+		
+	else:
+		get_tree().root.theme = main_theme # force refresheme = main_theme
+		$MenuBarBackground.color = Color(0.065, 0.065, 0.065)
+		
+		for color_rect in get_tree().get_nodes_in_group("invertable_background"):
+			if color_rect is ColorRect:
+				color_rect.color = Color(0.102, 0.102, 0.102, 0.6)
+		
+func invert_theme(theme: Theme) -> Theme:
+	var inverted_theme = theme.duplicate(true) # deep copy
+
+	# Check all types and color names in the theme
+	var types = inverted_theme.get_type_list()
+	for type in types:
+		var color_names = inverted_theme.get_color_list(type)
+		for cname in color_names:
+			var col = inverted_theme.get_color(cname, type)
+			var inverted = Color(1.0 - col.r, 1.0 - col.g, 1.0 - col.b, col.a)
+			inverted_theme.set_color(cname, type, inverted)
+
+		var style_names = inverted_theme.get_stylebox_list(type)
+		for sname in style_names:
+			if type == "GraphEdit" and sname == "panel":
+				continue
+			var sb = inverted_theme.get_stylebox(sname, type)
+			var new_sb = sb.duplicate()
+			if new_sb is StyleBoxFlat:
+				var col = new_sb.bg_color
+				new_sb.bg_color = Color(1.0 - col.r, 1.0 - col.g, 1.0 - col.b, col.a)
+			inverted_theme.set_stylebox(sname, type, new_sb)
+	
+	return inverted_theme
+
+func swap_zoom_and_move(toggled: bool):
+	if toggled:
+		graph_edit.set_panning_scheme(1)
+	else:
+		graph_edit.set_panning_scheme(0)
+
+func on_files_dropped(files):
+	var mouse_pos = graph_edit.get_local_mouse_position()
+	
+	#see if files were dropped on an input node
+	var dropped_node
+	for child in graph_edit.get_children():
+		if child is GraphNode:
+			if Rect2(child.position, child.size).has_point(mouse_pos):
+				dropped_node = child
+				break
+				
+	#if they were dropped on a node and the first file in the array is a wav file replace the file in the input node
+	if dropped_node and dropped_node.has_meta("command") and dropped_node.get_meta("command") == "inputfile":
+		if files[0].get_extension().to_lower() == "wav":
+			dropped_node.get_node("AudioPlayer")._on_file_selected(files[0])
+	else:
+		#else make a new input node at the mouse position and load it in
+		if files[0].get_extension().to_lower() == "wav":
+			var new_input_node = graph_edit._make_node("inputfile")
+			new_input_node.position_offset = mouse_pos
+			new_input_node.get_node("AudioPlayer")._on_file_selected(files[0])
+	
+	#remove first element from the array
+	files.remove_at(0)
+	
+	#check if there are any other files
+	if files.size() > 0:
+		var position_plus_offset = Vector2(mouse_pos.x, mouse_pos.y + 250) #apply a vertical offset from the mouse position so nodes dont overlap
+		for file in files:
+			if file.get_extension().to_lower() == "wav":
+				var new_input_node = graph_edit._make_node("inputfile")
+				new_input_node.position_offset = position_plus_offset
+				new_input_node.get_node("AudioPlayer")._on_file_selected(file)
+				position_plus_offset.y = position_plus_offset.y + 250

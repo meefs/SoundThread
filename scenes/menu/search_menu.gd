@@ -4,7 +4,15 @@ extends PopupPanel
 @onready var scroll_container: ScrollContainer = $VBoxContainer/ScrollContainer
 @onready var search_bar = $VBoxContainer/SearchBar
 var node_data = {} #stores node data for each node to display in help popup
+var replace_node = false
+var node_to_replace
+var connect_to_node = false
+var node_to_connect_to
+var uiscale
+var favourites
 signal make_node(command)
+signal swap_node(node_to_replace, command)
+signal connect_to_clicked_node(node_to_connect_to, command)
 
 
 func _ready() -> void:
@@ -25,9 +33,12 @@ func _ready() -> void:
 
 
 func _on_about_to_popup() -> void:
+	var interface_settings = ConfigHandler.load_interface_settings()
+	favourites = interface_settings.favourites
 	display_items("") #populate menu when needed
 	search_bar.clear()
 	search_bar.grab_focus()
+	
 
 func display_items(filter: String):
 	# Remove all existing items from the VBoxContainer
@@ -39,6 +50,11 @@ func display_items(filter: String):
 	for key in node_data.keys():
 		var item = node_data[key]
 		var title = item.get("title", "")
+		
+		#check if searching for favourites
+		if filters.has("*"):
+			if favourites.has(key) == false:
+				continue
 		
 		#filter out output node
 		if title == "Output File":
@@ -58,6 +74,9 @@ func display_items(filter: String):
 		if filter != "":
 			var match_all_words = true
 			for word in filters:
+				if word == "*":
+					continue
+					
 				if word != "" and not searchable_text.findn(word) != -1:
 					match_all_words = false
 					break
@@ -69,12 +88,16 @@ func display_items(filter: String):
 		btn.alignment = 0 #left align text
 		btn.clip_text = true #clip off labels that are too long
 		btn.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS #and replace with ...
+		var button_text = ""
+		if favourites.has(key):
+			button_text += "★ "
 		if category.to_lower() == "pvoc": #format node names correctly, only show the category for PVOC
-			btn.text = "%s %s: %s - %s" % [category.to_upper(), subcategory.to_pascal_case(), title, short_desc]
+			button_text += "%s %s: %s - %s" % [category.to_upper(), subcategory.to_pascal_case(), title, short_desc]
 		elif title.to_lower() == "input file":
-			btn.text = "%s - %s" % [title, short_desc]
+			button_text += "%s - %s" % [title, short_desc]
 		else:
-			btn.text = "%s: %s - %s" % [subcategory.to_pascal_case(), title, short_desc]
+			button_text += "%s: %s - %s" % [subcategory.to_pascal_case(), title, short_desc]
+		btn.text = button_text
 		btn.connect("pressed", Callable(self, "_on_item_selected").bind(key)) #pass key (process name) when button is pressed
 		
 		#apply custom focus theme for keyboard naviagation
@@ -88,10 +111,10 @@ func display_items(filter: String):
 	
 	#resize menu within certain bounds #50
 	await get_tree().process_frame
-	if DisplayServer.screen_get_dpi(0) >= 144:
-		self.size.y = min((item_container.size.y + search_bar.size.y + 12) * 2, 820) #i think this will scale for retina screens but might be wrong
-	else:
-		self.size.y = min(item_container.size.y + search_bar.size.y + 12, 410)
+	#if DisplayServer.screen_get_dpi(0) >= 144:
+		#self.size.y = min((item_container.size.y + search_bar.size.y + 12) * 2, 820) #i think this will scale for retina screens but might be wrong
+	#else:
+	self.size.y = min((item_container.size.y + search_bar.size.y + 12) * uiscale, 410 * uiscale)
 	
 	#highlight first button
 	_on_search_bar_editing_toggled(true)
@@ -101,7 +124,12 @@ func _on_search_bar_text_changed(new_text: String) -> void:
 	
 func _on_item_selected(key: String):
 	self.hide()
-	make_node.emit(key) # send out signal to main patch
+	if replace_node == true:
+		swap_node.emit(node_to_replace, key)
+	elif connect_to_node == true:
+		connect_to_clicked_node.emit(node_to_connect_to, key)
+	else:
+		make_node.emit(key) # send out signal to main patch
 
 func _on_search_bar_text_submitted(new_text: String) -> void:
 	var button = item_container.get_child(0)
