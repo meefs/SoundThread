@@ -12,6 +12,7 @@ var process_info = {} #tracks the data of the currently running process
 var process_running := false #tracks if a process is currently running
 var process_cancelled = false #checks if the currently running process has been cancelled
 var final_output_dir
+var fft_size = 1024 #tracks the fft size for the thread set in the main window
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -982,6 +983,9 @@ func match_pvoc_channels(dict: Dictionary) -> void:
 			
 func _get_slider_values_ordered(node: Node) -> Array:
 	var results := []
+	if node.has_meta("command") and node.get_meta("command") == "pvoc_anal_1":
+		results.append(["slider", "-c", fft_size, false, [], 2, 32768, false])
+		return results
 	for child in node.get_children():
 		if child is Range:
 			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
@@ -1058,6 +1062,7 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 		command = "%s/%s" %[control_script.cdpprogs_location, "morph"]
 		args = ["glide", window1_outfile, window2_outfile, output_file, duration]
 	else:
+		# Normal node process as usual 
 		# Get the command name from metadata
 		var command_name = str(node.get_meta("command"))
 		if command_name.find("_") != -1:
@@ -1072,7 +1077,7 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 			for file in current_infile:
 				args.append(file)
 		args.append(output_file)
-
+		
 		
 
 		# Append parameter values from the sliders, include flags if present
