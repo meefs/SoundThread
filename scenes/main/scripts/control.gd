@@ -53,6 +53,8 @@ func _ready() -> void:
 	$LoadDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	$LoadDialog.filters = ["*.thd"]
 	
+	
+	
 	get_tree().set_auto_accept_quit(false) #disable closing the app with the x and instead handle it internally
 	
 	
@@ -170,10 +172,15 @@ func new_patch():
 	get_window().title = "SoundThread"
 	link_output()
 	
+	#set fft size to default
+	$FFTSize.select(9)
+	_on_fft_size_item_selected(9)
+	
 	
 func link_output():
 	#links various buttons and function in the input nodes - this is called after they are created so that it still works on new and loading files
 	for control in get_tree().get_nodes_in_group("outputnode"): #check all items in outputnode group
+		#if control.has_meta("outputfunciton"):
 		if control.get_meta("outputfunction") == "deleteintermediate": #link delete intermediate files toggle to script
 			control.toggled.connect(_toggle_delete)
 			_toggle_delete(control.button_pressed)
@@ -856,3 +863,12 @@ func on_files_dropped(files):
 				new_input_node.position_offset = position_plus_offset
 				new_input_node.get_node("AudioPlayer")._on_file_selected(file)
 				position_plus_offset.y = position_plus_offset.y + 250
+
+
+func _on_fft_size_item_selected(index: int) -> void:
+	var fft_size
+	if index == 13:
+		fft_size = 16380
+	else:
+		fft_size = 1 << (index + 1)
+	run_thread.fft_size = fft_size

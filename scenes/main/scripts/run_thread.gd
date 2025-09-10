@@ -12,6 +12,7 @@ var process_info = {} #tracks the data of the currently running process
 var process_running := false #tracks if a process is currently running
 var process_cancelled = false #checks if the currently running process has been cancelled
 var final_output_dir
+var fft_size = 1024 #tracks the fft size for the thread set in the main window
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -722,7 +723,6 @@ func get_soundfile_properties(file: String) -> Dictionary:
 		"samplerate": 0,
 		"bitdepth": 0,
 		"duration": 0.0
-	
 	}
 	
 	#open the audio file
@@ -797,6 +797,90 @@ func get_soundfile_properties(file: String) -> Dictionary:
 		return soundfile_properties #no fmt chunk found, invalid wav file
 		
 	return soundfile_properties
+
+func get_analysis_file_properties(file: String) -> Dictionary:
+	var analysis_file_properties:= {
+		"windowsize": 0,
+		"windowcount": 0,
+		"decimationfactor": 0
+	}
+	
+	#open the audio file
+	var f = FileAccess.open(file, FileAccess.READ)
+	if f == null:
+		log_console("Could not find file: " + file, true)
+		return analysis_file_properties  # couldn't open
+	
+	#Skip the RIFF header (12 bytes: "RIFF", file size, "WAVE")
+	f.seek(12)
+	
+	var data_chunk_size = 0
+	
+	#read through file until end of file if needed
+	while f.get_position() + 8 <= f.get_length():
+		#read the 4 byte chunk id to identify what this chunk is
+		var chunk_id = f.get_buffer(4).get_string_from_ascii() 
+		#read how big this chunk is
+		var chunk_size = f.get_32()
+		
+		if chunk_id == "LIST":
+			f.seek(f.get_position() + 4) # skip first four bits of data - list type "adtl"
+			var list_end = f.get_position() + chunk_size
+			while f.get_position() <= list_end:
+				var sub_chunk_id = f.get_buffer(4).get_string_from_ascii() 
+				var sub_chunk_size = f.get_32()
+				
+				if sub_chunk_id == "note":
+					var note_bytes = f.get_buffer(sub_chunk_size)
+					var note_text = ""
+					for b in note_bytes:
+						note_text += char(b)
+					var pvoc_header_data = note_text.split("\n", false)
+					var i = 0
+					for entry in pvoc_header_data:
+						if entry == "analwinlen":
+							analysis_file_properties["windowsize"] = hex_string_to_int_le(pvoc_header_data[i+1])
+						elif entry == "decfactor":
+							analysis_file_properties["decimationfactor"] =  hex_string_to_int_le(pvoc_header_data[i+1])
+						i += 1
+					break
+			#check if we have already found the data chunk (not likely) and break the loop
+			if data_chunk_size > 0:
+				f.close()
+				break
+		elif chunk_id == "data":
+			#this is where the audio is stored
+			data_chunk_size = chunk_size
+			#check if we have already found the sfif chunk and break loop
+			if analysis_file_properties["windowsize"] > 0:
+				f.close()
+				break
+			#skip the rest of the chunk
+			f.seek(f.get_position() + chunk_size)
+		else:
+			#don't care about any other data in the file skip it
+			f.seek(f.get_position() + chunk_size)
+			
+	#close the file
+	f.close()
+	if analysis_file_properties["windowsize"] != 0 and data_chunk_size != 0:
+		var bytes_per_frame = (analysis_file_properties["windowsize"] + 2) * 4
+		analysis_file_properties["windowcount"] = int(data_chunk_size / bytes_per_frame)
+	else:
+		log_console("Error: Could not get information from analysis file", true)
+		
+	return analysis_file_properties
+	
+func hex_string_to_int_le(hex_string: String) -> int:
+	# Ensure the string is 8 characters (4 bytes)
+	if hex_string.length() != 8:
+		push_error("Invalid hex string length: " + hex_string)
+		return 0
+	var le_string = ""
+	for i in [6, 4, 2, 0]: #flip the order of the bytes as ana format uses little endian
+		le_string += hex_string.substr(i, 2)
+	
+	return le_string.hex_to_int()
 
 func merge_many_files(inlet_id: int, process_count: int, input_files: Array) -> Array:
 	var merge_output = "%s_merge_%d_%d.wav" % [Global.outfile.get_basename(), inlet_id, process_count]
@@ -982,6 +1066,9 @@ func match_pvoc_channels(dict: Dictionary) -> void:
 			
 func _get_slider_values_ordered(node: Node) -> Array:
 	var results := []
+	if node.has_meta("command") and node.get_meta("command") == "pvoc_anal_1":
+		results.append(["slider", "-c", fft_size, false, [], 2, 32768, false, false])
+		return results
 	for child in node.get_children():
 		if child is Range:
 			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
@@ -990,9 +1077,21 @@ func _get_slider_values_ordered(node: Node) -> Array:
 			var min_slider = child.min_value
 			var max_slider = child.max_value
 			var exp = child.exp_edit
+			var fftwindowsize = child.get_meta("fftwindowsize")
+			var fftwindowcount = child.get_meta("fftwindowcount")
+			var value = child.value
+			
 			if child.has_meta("brk_data"):
 				brk_data = child.get_meta("brk_data")
-			results.append(["slider", flag, child.value, time, brk_data, min_slider, max_slider, exp])
+			#if this slider is a percentage of the fft size just calulate this here as fft size is a global value
+			if fftwindowsize == true:
+				if value == 100:
+					value = fft_size
+				else:
+					value = max(int(fft_size * (value/100)), 1)
+				min_slider = max(int(fft_size * (min_slider/100)), 1)
+				max_slider = int(fft_size * (max_slider/100))
+			results.append(["slider", flag, value, time, brk_data, min_slider, max_slider, exp, fftwindowcount])
 		elif child is CheckButton:
 			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
 			results.append(["checkbutton", flag, child.button_pressed])
@@ -1058,6 +1157,7 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 		command = "%s/%s" %[control_script.cdpprogs_location, "morph"]
 		args = ["glide", window1_outfile, window2_outfile, output_file, duration]
 	else:
+		# Normal node process as usual 
 		# Get the command name from metadata
 		var command_name = str(node.get_meta("command"))
 		if command_name.find("_") != -1:
@@ -1072,7 +1172,7 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 			for file in current_infile:
 				args.append(file)
 		args.append(output_file)
-
+		
 		
 
 		# Append parameter values from the sliders, include flags if present
@@ -1088,6 +1188,14 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 				var min_slider = entry[5]
 				var max_slider = entry[6]
 				var exp = entry[7]
+				var fftwindowcount = entry[8]
+				var window_count
+				if fftwindowcount == true:
+					var analysis_file_data = get_analysis_file_properties(current_infile[0])
+					window_count = analysis_file_data["windowcount"]
+					min_slider = int(max(window_count * (min_slider / 100), 1))
+					max_slider = int(window_count * (max_slider / 100))
+				
 				if brk_data.size() > 0: #if breakpoint data is present on slider
 					#Sort all points by time
 					var sorted_brk_data = []
@@ -1156,7 +1264,11 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 							value = infile_length - 0.1
 						else:
 							value = infile_length * (value / 100) #calculate percentage time of the input file
-					#line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
+					if fftwindowcount == true:
+						if value == 100:
+							value = window_count
+						else:
+							value = int(window_count * (value / 100))
 					args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else str(value))
 					
 			elif entry[0] == "checkbutton":

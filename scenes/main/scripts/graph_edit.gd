@@ -142,6 +142,8 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						var min = param_data.get("min", false)
 						var max = param_data.get("max", false)
 						var flag = param_data.get("flag", "")
+						var fftwindowsize = param_data.get("fftwindowsize", false)
+						var fftwindowcount = param_data.get("fftwindowcount", false)
 						var minrange = param_data.get("minrange", 0)
 						var maxrange = param_data.get("maxrange", 10)
 						var step = param_data.get("step", 0.01)
@@ -163,6 +165,8 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						hslider.set_meta("max", max)
 						hslider.set_meta("flag", flag)
 						hslider.set_meta("default_value", value)
+						hslider.set_meta("fftwindowsize", fftwindowsize)
+						hslider.set_meta("fftwindowcount", fftwindowcount)
 						
 						#set slider params
 						hslider.min_value = minrange
