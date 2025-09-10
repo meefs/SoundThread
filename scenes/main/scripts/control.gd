@@ -180,6 +180,7 @@ func new_patch():
 func link_output():
 	#links various buttons and function in the input nodes - this is called after they are created so that it still works on new and loading files
 	for control in get_tree().get_nodes_in_group("outputnode"): #check all items in outputnode group
+		#if control.has_meta("outputfunciton"):
 		if control.get_meta("outputfunction") == "deleteintermediate": #link delete intermediate files toggle to script
 			control.toggled.connect(_toggle_delete)
 			_toggle_delete(control.button_pressed)

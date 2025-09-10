@@ -27,7 +27,6 @@ func _on_request_completed(result, response_code, headers, body):
 		return
 
 	var latest_version = response.get("tag_name", "")
-	print("Latest GitHub version: ", latest_version)
 	
 	var update_notes = response.get("body", "")
 

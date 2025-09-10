@@ -429,6 +429,8 @@ func run_thread_with_branches():
 						output_files[node_name] = pvoc_stereo_files
 						
 					else: 
+						if current_infiles.values()[0].get_extension() == "ana":
+							get_analysis_file_properties(current_infiles.values()[0])
 						#input file is mono run through process
 						var makeprocess = await make_process(node, process_count, current_infiles.values(), slider_data)
 						# run the command
@@ -723,7 +725,6 @@ func get_soundfile_properties(file: String) -> Dictionary:
 		"samplerate": 0,
 		"bitdepth": 0,
 		"duration": 0.0
-	
 	}
 	
 	#open the audio file
@@ -798,6 +799,79 @@ func get_soundfile_properties(file: String) -> Dictionary:
 		return soundfile_properties #no fmt chunk found, invalid wav file
 		
 	return soundfile_properties
+
+func get_analysis_file_properties(file: String) -> Dictionary:
+	var analysis_file_properties:= {
+		"windowsize": 0,
+		"windowcount": 0,
+		"decimationfactor": 0
+	}
+	
+	#open the audio file
+	var f = FileAccess.open(file, FileAccess.READ)
+	if f == null:
+		log_console("Could not find file: " + file, true)
+		return analysis_file_properties  # couldn't open
+	
+	#Skip the RIFF header (12 bytes: "RIFF", file size, "WAVE")
+	f.seek(12)
+	
+	var data_chunk_size = 0
+	
+	#read through file until end of file if needed
+	while f.get_position() + 8 <= f.get_length():
+		#read the 4 byte chunk id to identify what this chunk is
+		var chunk_id = f.get_buffer(4).get_string_from_ascii() 
+		#read how big this chunk is
+		var chunk_size = f.get_32()
+		
+		if chunk_id == "LIST":
+			print("found list chunk")
+			f.seek(f.get_position() + 4) # skip first four bits of data - list type "adtl"
+			var list_end = f.get_position() + chunk_size
+			while f.get_position() <= list_end:
+				var sub_chunk_id = f.get_buffer(4).get_string_from_ascii() 
+				var sub_chunk_size = f.get_32()
+				
+				if sub_chunk_id == "note":
+					print("found note chunk")
+					var note_bytes = f.get_buffer(sub_chunk_size)
+					var note_text = ""
+					for b in note_bytes:
+						note_text += char(b)
+					var pvoc_header_data = note_text.split("\n", false)
+					print(pvoc_header_data)
+					break
+			#check if we have already found the data chunk (not likely) and break the loop
+			if data_chunk_size > 0:
+				f.close()
+				break
+		elif chunk_id == "data":
+			#this is where the audio is stored
+			data_chunk_size = chunk_size
+			print("found data chunk, data is this big")
+			print(data_chunk_size)
+			#check if we have already found the sfif chunk and break loop
+			if analysis_file_properties["windowsize"] > 0:
+				f.close()
+				break
+			#skip the rest of the chunk
+			f.seek(f.get_position() + chunk_size)
+		else:
+			#don't care about any other data in the file skip it
+			f.seek(f.get_position() + chunk_size)
+			
+	#close the file
+	f.close()
+	if analysis_file_properties["windowsize"] != 0 and data_chunk_size != 0:
+		var bytes_per_frame = (analysis_file_properties["windowsize"] + 2) * 4
+		analysis_file_properties["windowcount"] = int(data_chunk_size / bytes_per_frame)
+	else:
+		print("Error: oould not parse analysis file for info")
+		
+	print(analysis_file_properties)
+	return analysis_file_properties
+
 
 func merge_many_files(inlet_id: int, process_count: int, input_files: Array) -> Array:
 	var merge_output = "%s_merge_%d_%d.wav" % [Global.outfile.get_basename(), inlet_id, process_count]
