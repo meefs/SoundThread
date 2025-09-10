@@ -20,7 +20,9 @@
 		"step": 1.0,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Average the waveshape over a number of wavecycles",
@@ -49,7 +51,9 @@
 		"step": 1.0,
 		"value": 12.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Sample Rate Division",
@@ -65,7 +69,9 @@
 		"step": 1.0,
 		"value": 10.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Reduce sample rate or bit-depth",
@@ -106,7 +112,9 @@
 		"step": 0.01,
 		"value": 0.7,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Clip a fraction of half wavecycles",
@@ -135,7 +143,9 @@
 		"step": 1.0,
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Shortens a sound by deleting wavecycles",
@@ -164,7 +174,9 @@
 		"step": 1.0,
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Distortion by dividing wavecycle frequency",
@@ -193,7 +205,9 @@
 		"step": 1.0,
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Loudness",
@@ -209,7 +223,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Superimpose miniature copies of a wavecycles onto itself",
@@ -262,7 +278,9 @@
 		"step": 1.0,
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Time-stretch by repeating and interpolating wavecycles",
@@ -291,7 +309,9 @@
 		"step": 1.0,
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Distortion by multiplying wavecycle frequency",
@@ -320,7 +340,9 @@
 		"step": 1.0,
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Group Size",
@@ -336,7 +358,9 @@
 		"step": 1.0,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Delete wavecycles replacing them with silence",
@@ -365,7 +389,9 @@
 		"step": 0.01,
 		"value": 0.7,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Distortion by raising sample values of half wavecycles to a power",
@@ -394,7 +420,9 @@
 		"step": 1.0,
 		"value": 4.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Cycle Count",
@@ -410,7 +438,9 @@
 		"step": 1.0,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Time-stretch by repeating wavecycles",
@@ -439,7 +469,9 @@
 		"step": 1.0,
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "The strongest wavecycle in a group replaces the others",
@@ -504,7 +536,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Crossfade",
@@ -520,7 +554,9 @@
 		"step": 0.01,
 		"value": 15.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Play a sound backwards, then forwards",
@@ -549,7 +585,9 @@
 		"step": 1.0,
 		"value": 8.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Intitial Bounce",
@@ -565,7 +603,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Bounciness",
@@ -581,7 +621,9 @@
 		"step": 0.01,
 		"value": 0.9,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Decay",
@@ -597,7 +639,9 @@
 		"step": 0.01,
 		"value": 0.05,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Decay Shape",
@@ -613,7 +657,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Shrink",
@@ -629,7 +675,9 @@
 		"step": 0.01,
 		"value": 0.02,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Bounce a sound: accelerating repeats, decaying in level",
@@ -658,7 +706,9 @@
 		"step": 1.0,
 		"value": 30.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Location",
@@ -674,7 +724,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Ambitus",
@@ -690,7 +742,9 @@
 		"step": 0.01,
 		"value": 2.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Maximum Step",
@@ -706,7 +760,9 @@
 		"step": 0.01,
 		"value": 0.5,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Clock",
@@ -722,7 +778,9 @@
 		"step": 0.1,
 		"value": 0.05,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Sober Mimimum Time",
@@ -738,7 +796,9 @@
 		"step": 1.0,
 		"value": 10.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param7": {
 		"paramname": "Sober Maximum Time",
@@ -754,7 +814,9 @@
 		"step": 1.0,
 		"value": 30.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Random stumbling walk through a sound with sober moments",
@@ -783,7 +845,9 @@
 		"step": 1.0,
 		"value": 15.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Syllable Length",
@@ -799,7 +863,9 @@
 		"step": 1.0,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Start Offset",
@@ -815,7 +881,9 @@
 		"step": 1.0,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Repeats",
@@ -831,7 +899,9 @@
 		"step": 1.0,
 		"value": 4.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Randomisation",
@@ -847,7 +917,9 @@
 		"step": 0.01,
 		"value": 0.1,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Identifies syllables and repeats them, shrinking inwards",
@@ -876,7 +948,9 @@
 		"step": 1.0,
 		"value": 15.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Syllable Length",
@@ -892,7 +966,9 @@
 		"step": 1.0,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Start Offset",
@@ -908,7 +984,9 @@
 		"step": 1.0,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Repeats",
@@ -924,7 +1002,9 @@
 		"step": 1.0,
 		"value": 4.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Randomisation",
@@ -940,7 +1020,9 @@
 		"step": 0.01,
 		"value": 0.1,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Identifies syllables and repeats them, shrinking outwards",
@@ -969,7 +1051,9 @@
 		"step": 1.0,
 		"value": 15.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Syllable Length",
@@ -985,7 +1069,9 @@
 		"step": 1.0,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Start Offset",
@@ -1001,7 +1087,9 @@
 		"step": 1.0,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Repeats",
@@ -1017,7 +1105,9 @@
 		"step": 1.0,
 		"value": 4.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Randomisation",
@@ -1033,7 +1123,9 @@
 		"step": 0.01,
 		"value": 0.1,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Identifies syllables and repeats them",
@@ -1062,7 +1154,9 @@
 		"step": 1.0,
 		"value": 15.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Syllable Length",
@@ -1078,7 +1172,9 @@
 		"step": 1.0,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Start Offset",
@@ -1094,7 +1190,9 @@
 		"step": 1.0,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Identifies syllables and repeats them in reverse",
@@ -1123,7 +1221,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Loop Length",
@@ -1139,7 +1239,9 @@
 		"step": 1.0,
 		"value": 200.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Step",
@@ -1155,7 +1257,9 @@
 		"step": 1.0,
 		"value": 100.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Repeats advancing segments of a sound",
@@ -1184,7 +1288,9 @@
 		"step": 0.01,
 		"value": 0.1,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Repeats",
@@ -1200,7 +1306,9 @@
 		"step": 1.0,
 		"value": 4.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Breaks sound into segements and repeats them",
@@ -1229,7 +1337,9 @@
 		"step": 0.01,
 		"value": 2.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Maximum Chunk Length",
@@ -1245,7 +1355,9 @@
 		"step": 0.01,
 		"value": 3.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Output Duration",
@@ -1261,7 +1373,9 @@
 		"step": 1.0,
 		"value": 60.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Scrambles a sound file for a set duration",
@@ -1290,7 +1404,9 @@
 		"step": 0.01,
 		"value": 60.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Lowest Transposition",
@@ -1306,7 +1422,9 @@
 		"step": 0.01,
 		"value": -12.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Highest Transposition",
@@ -1322,7 +1440,9 @@
 		"step": 0.01,
 		"value": 12.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Start",
@@ -1338,7 +1458,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "End",
@@ -1354,7 +1476,9 @@
 		"step": 0.01,
 		"value": 100.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Move forwards and backwards through sound changing speed",
@@ -1383,7 +1507,9 @@
 		"step": 1.0,
 		"value": 30.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Location",
@@ -1399,7 +1525,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Ambitus",
@@ -1415,7 +1543,9 @@
 		"step": 0.01,
 		"value": 2.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Maximum Step",
@@ -1431,7 +1561,9 @@
 		"step": 0.01,
 		"value": 0.5,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Clock",
@@ -1447,7 +1579,9 @@
 		"step": 0.1,
 		"value": 0.05,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Random stumbling walk through a sound",
@@ -1476,7 +1610,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "End Point",
@@ -1492,7 +1628,9 @@
 		"step": 0.01,
 		"value": 10.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Output Duration",
@@ -1508,7 +1646,9 @@
 		"step": 1.0,
 		"value": 60.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Minimum Zigzag Time",
@@ -1524,7 +1664,9 @@
 		"step": 0.01,
 		"value": 0.05,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Moves through a sound sliding backwards and forwards as it goes",
@@ -1553,7 +1695,9 @@
 		"step": 0.01,
 		"value": 400.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Makeup Gain",
@@ -1569,7 +1713,9 @@
 		"step": 0.01,
 		"value": 1.5,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Lowest Band",
@@ -1585,7 +1731,9 @@
 		"step": 0.01,
 		"value": 55.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Highest Band",
@@ -1601,7 +1749,9 @@
 		"step": 0.01,
 		"value": 12000.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Scatter",
@@ -1617,7 +1767,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Filter bank tuned to the harmonic series",
@@ -1646,7 +1798,9 @@
 		"step": 0.01,
 		"value": 400.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Makeup Gain",
@@ -1662,7 +1816,9 @@
 		"step": 0.01,
 		"value": 1.5,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Lowest Band",
@@ -1678,7 +1834,9 @@
 		"step": 0.01,
 		"value": 55.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Highest Band",
@@ -1694,7 +1852,9 @@
 		"step": 0.01,
 		"value": 12000.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Number of Filters",
@@ -1710,7 +1870,9 @@
 		"step": 1.0,
 		"value": 8.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Scatter",
@@ -1726,7 +1888,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Filter bank with equal spacing in Hz",
@@ -1755,7 +1919,9 @@
 		"step": 0.01,
 		"value": -60.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Pass-band",
@@ -1771,7 +1937,9 @@
 		"step": 0.01,
 		"value": 440.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Stop-band",
@@ -1787,7 +1955,9 @@
 		"step": 0.01,
 		"value": 10000.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Fixed low-pass or high-pass filter",
@@ -1816,7 +1986,9 @@
 		"step": 0.01,
 		"value": 400.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Makeup Gain",
@@ -1832,7 +2004,9 @@
 		"step": 0.01,
 		"value": 1.5,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Lowest Band",
@@ -1848,7 +2022,9 @@
 		"step": 0.01,
 		"value": 55.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Highest Band",
@@ -1864,7 +2040,9 @@
 		"step": 0.01,
 		"value": 12000.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Scatter",
@@ -1880,7 +2058,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Filter bank tuned to odd harmonics from the harmonic series",
@@ -1909,7 +2089,9 @@
 		"step": 0.01,
 		"value": 400.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Makeup Gain",
@@ -1925,7 +2107,9 @@
 		"step": 0.01,
 		"value": 1.5,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Lowest Band",
@@ -1941,7 +2125,9 @@
 		"step": 0.01,
 		"value": 55.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Highest Band",
@@ -1957,7 +2143,9 @@
 		"step": 0.01,
 		"value": 12000.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Semitones",
@@ -1973,7 +2161,9 @@
 		"step": 1.0,
 		"value": 7.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Scatter",
@@ -1989,7 +2179,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Filter bank with equal spacing in semitones",
@@ -2018,7 +2210,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Density",
@@ -2034,7 +2228,9 @@
 		"step": 0.01,
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Grain Size",
@@ -2050,7 +2246,9 @@
 		"step": 0.01,
 		"value": 50.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Pitch Shift",
@@ -2066,7 +2264,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Amplitude",
@@ -2082,7 +2282,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Panning",
@@ -2098,7 +2300,9 @@
 		"step": 0.01,
 		"value": 0.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param7": {
 		"paramname": "Attack",
@@ -2114,7 +2318,9 @@
 		"step": 0.01,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param8": {
 		"paramname": "Decay",
@@ -2130,7 +2336,9 @@
 		"step": 0.01,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param9": {
 		"paramname": "Search Range",
@@ -2146,7 +2354,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param10": {
 		"paramname": "Jitter",
@@ -2162,7 +2372,9 @@
 		"step": 0.01,
 		"value": 0.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Granular segmentation/fragmentation procedures",
@@ -2191,7 +2403,9 @@
 		"step": 0.01,
 		"value": 0.6,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Puts a grainy surface on a source",
@@ -2220,7 +2434,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Density",
@@ -2236,7 +2452,9 @@
 		"step": 0.01,
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Scan Speed Limit",
@@ -2252,7 +2470,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Density Limit",
@@ -2268,7 +2488,9 @@
 		"step": 0.01,
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Grain Size",
@@ -2284,7 +2506,9 @@
 		"step": 0.01,
 		"value": 50.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Pitch Shift",
@@ -2300,7 +2524,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param7": {
 		"paramname": "Amplitude",
@@ -2316,7 +2542,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param8": {
 		"paramname": "Panning",
@@ -2332,7 +2560,9 @@
 		"step": 0.01,
 		"value": 0.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param9": {
 		"paramname": "Attack",
@@ -2348,7 +2578,9 @@
 		"step": 0.01,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param10": {
 		"paramname": "Decay",
@@ -2364,7 +2596,9 @@
 		"step": 0.01,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param11": {
 		"paramname": "Grain Size Limit",
@@ -2380,7 +2614,9 @@
 		"step": 0.01,
 		"value": 50.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param12": {
 		"paramname": "Pitch Shift Limit",
@@ -2396,7 +2632,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param13": {
 		"paramname": "Amplitude Limit",
@@ -2412,7 +2650,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param14": {
 		"paramname": "Panning Limit",
@@ -2428,7 +2668,9 @@
 		"step": 0.01,
 		"value": 0.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param15": {
 		"paramname": "Attack Limit",
@@ -2444,7 +2686,9 @@
 		"step": 0.01,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param16": {
 		"paramname": "Release Limit",
@@ -2460,7 +2704,9 @@
 		"step": 0.01,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param17": {
 		"paramname": "Search Range",
@@ -2476,7 +2722,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param18": {
 		"paramname": "Jitter",
@@ -2492,7 +2740,9 @@
 		"step": 0.01,
 		"value": 0.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param19": {
 		"paramname": "Add/Remove Inlets",
@@ -2508,7 +2758,9 @@
 		"step": "",
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "addremoveinlets"
+		"uitype": "addremoveinlets",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Granular segmentation/fragmentation on multiple inputs",
@@ -2537,7 +2789,9 @@
 		"step": 0.01,
 		"value": -12.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Granular pitch shift keeping the same speed",
@@ -2566,7 +2820,9 @@
 		"step": 1.0,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Cycle Count",
@@ -2582,7 +2838,9 @@
 		"step": 1.0,
 		"value": 20.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Random Pitch",
@@ -2598,7 +2856,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Random Amplitude",
@@ -2614,7 +2874,9 @@
 		"step": 0.01,
 		"value": 0.1,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Reorders all grains by how loud they are",
@@ -2643,7 +2905,9 @@
 		"step": 1.0,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Cycle Count",
@@ -2659,7 +2923,9 @@
 		"step": 1.0,
 		"value": 20.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Random Pitch",
@@ -2675,7 +2941,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Random Amplitude",
@@ -2691,7 +2959,9 @@
 		"step": 0.01,
 		"value": 0.1,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Reorders all grains by how loud they are",
@@ -2720,7 +2990,9 @@
 		"step": 0.01,
 		"value": 10.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Range",
@@ -2736,7 +3008,9 @@
 		"step": 0.01,
 		"value": 2500.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Random reordering of grains",
@@ -2765,7 +3039,9 @@
 		"step": 0.01,
 		"value": 0.25,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Granular time stretch keeping the same pitch",
@@ -2794,7 +3070,9 @@
 		"step": 0.01,
 		"value": 0.25,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Goal Time",
@@ -2810,7 +3088,9 @@
 		"step": 0.01,
 		"value": 10.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Speed up or slow down a sound over time",
@@ -2839,7 +3119,9 @@
 		"step": 0.01,
 		"value": 10.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Adds silence to the end of a sound",
@@ -2880,7 +3162,9 @@
 		"step": 0.001,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Adjust DC offset",
@@ -2909,7 +3193,9 @@
 		"step": 0.001,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Adjust gain",
@@ -2950,7 +3236,9 @@
 		"step": "",
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "addremoveinlets"
+		"uitype": "addremoveinlets",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Append multiple sounds end to end",
@@ -2979,7 +3267,9 @@
 		"step": 0.01,
 		"value": 40.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "End",
@@ -2995,7 +3285,9 @@
 		"step": 0.01,
 		"value": 60.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Remove a section from an audio file",
@@ -3024,7 +3316,9 @@
 		"step": 0.01,
 		"value": 20.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Replace the envelope of one sound file onto another",
@@ -3065,7 +3359,9 @@
 		"step": 0.01,
 		"value": 60.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Multiply the input by a set frequency",
@@ -3094,7 +3390,9 @@
 		"step": 0.01,
 		"value": -12.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Speeds up or slows down a sound changing pitch",
@@ -3123,7 +3421,9 @@
 		"step": 0.01,
 		"value": -12.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Layers",
@@ -3139,7 +3439,9 @@
 		"step": 1.0,
 		"value": 6.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Lean",
@@ -3155,7 +3457,9 @@
 		"step": 0.01,
 		"value": 0.8,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Attack Offset",
@@ -3171,7 +3475,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Output Gain",
@@ -3187,7 +3493,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Output Duration",
@@ -3203,7 +3511,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Stacks transposed versions of a sound on top of one another",
@@ -3232,7 +3542,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "End",
@@ -3248,7 +3560,9 @@
 		"step": 0.01,
 		"value": 80.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Trim a file to a set length",
@@ -3277,7 +3591,9 @@
 		"step": 0.01,
 		"value": 250.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Dry/Wet",
@@ -3293,7 +3609,9 @@
 		"step": 0.01,
 		"value": 0.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Feedback",
@@ -3309,7 +3627,9 @@
 		"step": 0.01,
 		"value": 0.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Modulation Depth",
@@ -3325,7 +3645,9 @@
 		"step": 0.01,
 		"value": 0.1,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Modulation Speed",
@@ -3341,7 +3663,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Modulation Phase",
@@ -3357,7 +3681,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param7": {
 		"paramname": "Modulation Start Time",
@@ -3373,7 +3699,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param8": {
 		"paramname": "Tail",
@@ -3389,7 +3717,9 @@
 		"step": 0.01,
 		"value": 10.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Delays a signal with optional LFO modulation over delay time",
@@ -3418,7 +3748,9 @@
 		"step": 0.01,
 		"value": 60.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Dry/Wet",
@@ -3434,7 +3766,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Feedback",
@@ -3450,7 +3784,9 @@
 		"step": 0.01,
 		"value": 0.7,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Time delays tuned to a specified pitch",
@@ -3479,7 +3815,9 @@
 		"step": 1.0,
 		"value": 3.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Density",
@@ -3495,7 +3833,9 @@
 		"step": 0.01,
 		"value": 0.25,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Wet/Dry Mix",
@@ -3511,7 +3851,9 @@
 		"step": 0.1,
 		"value": 0.4,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Decay",
@@ -3527,7 +3869,9 @@
 		"step": 0.01,
 		"value": 0.8,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Damping",
@@ -3543,7 +3887,9 @@
 		"step": 0.01,
 		"value": 10000.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Low Pass Filter",
@@ -3559,7 +3905,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param7": {
 		"paramname": "Tail Time",
@@ -3575,7 +3923,9 @@
 		"step": 0.01,
 		"value": 10.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Add simulated acoustic resonance",
@@ -3604,7 +3954,9 @@
 		"step": 0.01,
 		"value": 30.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Carrier Frequency",
@@ -3620,7 +3972,9 @@
 		"step": 0.01,
 		"value": 110.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Modulator 1 Frequency",
@@ -3636,7 +3990,9 @@
 		"step": 0.01,
 		"value": 1046.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Modulator 1 Amplitude",
@@ -3652,7 +4008,9 @@
 		"step": 0.01,
 		"value": 0.1,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Modulator 2 Frequency",
@@ -3668,7 +4026,9 @@
 		"step": 0.01,
 		"value": 888.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Modulator 2 Amplitude",
@@ -3684,7 +4044,9 @@
 		"step": 0.01,
 		"value": 0.03,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param7": {
 		"paramname": "Modulator 3 Frequency",
@@ -3700,7 +4062,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param8": {
 		"paramname": "Modulator 3 Amplitude",
@@ -3716,7 +4080,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param9": {
 		"paramname": "Sample Rate",
@@ -3732,7 +4098,9 @@
 		"step": "[44100, 48000, 88200, 96000]",
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "optionbutton"
+		"uitype": "optionbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param10": {
 		"paramname": "Splice Length",
@@ -3748,7 +4116,9 @@
 		"step": 1.0,
 		"value": 50.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Four operator FM tone generator",
@@ -3777,7 +4147,9 @@
 		"step": "[44100, 48000, 88200, 96000]",
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "optionbutton"
+		"uitype": "optionbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Mono/Stereo",
@@ -3793,7 +4165,9 @@
 		"step": 1.0,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Output Duration",
@@ -3809,7 +4183,9 @@
 		"step": 0.01,
 		"value": 30.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Frequency",
@@ -3825,7 +4201,9 @@
 		"step": 0.01,
 		"value": 220.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Amplitude",
@@ -3841,7 +4219,9 @@
 		"step": 0.01,
 		"value": 0.6,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Generates a ramp tone",
@@ -3870,7 +4250,9 @@
 		"step": "[44100, 48000, 88200, 96000]",
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "optionbutton"
+		"uitype": "optionbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Output Duration",
@@ -3886,7 +4268,9 @@
 		"step": 0.01,
 		"value": 30.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Frequency",
@@ -3902,7 +4286,9 @@
 		"step": 0.01,
 		"value": 220.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Spline Count",
@@ -3918,7 +4304,9 @@
 		"step": 1.0,
 		"value": 4.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Morph Speed",
@@ -3934,7 +4322,9 @@
 		"step": 1.0,
 		"value": 24.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Seed",
@@ -3950,7 +4340,9 @@
 		"step": 1.0,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Generates varying waveforms with random overtones",
@@ -3979,7 +4371,9 @@
 		"step": "[44100, 48000, 88200, 96000]",
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "optionbutton"
+		"uitype": "optionbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Mono/Stereo",
@@ -3995,7 +4389,9 @@
 		"step": 1.0,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Output Duration",
@@ -4011,7 +4407,9 @@
 		"step": 0.01,
 		"value": 30.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Frequency",
@@ -4027,7 +4425,9 @@
 		"step": 0.01,
 		"value": 220.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Amplitude",
@@ -4043,7 +4443,9 @@
 		"step": 0.01,
 		"value": 0.6,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Generates a sine tone",
@@ -4072,7 +4474,9 @@
 		"step": "[44100, 48000, 88200, 96000]",
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "optionbutton"
+		"uitype": "optionbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Mono/Stereo",
@@ -4088,7 +4492,9 @@
 		"step": 1.0,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Output Duration",
@@ -4104,7 +4510,9 @@
 		"step": 0.01,
 		"value": 30.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Frequency",
@@ -4120,7 +4528,9 @@
 		"step": 0.01,
 		"value": 220.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Amplitude",
@@ -4136,7 +4546,9 @@
 		"step": 0.01,
 		"value": 0.6,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Generates a square tone",
@@ -4165,7 +4577,9 @@
 		"step": "[44100, 48000, 88200, 96000]",
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "optionbutton"
+		"uitype": "optionbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Mono/Stereo",
@@ -4181,7 +4595,9 @@
 		"step": 1.0,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Output Duration",
@@ -4197,7 +4613,9 @@
 		"step": 0.01,
 		"value": 30.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Frequency",
@@ -4213,7 +4631,9 @@
 		"step": 0.01,
 		"value": 220.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Amplitude",
@@ -4229,7 +4649,9 @@
 		"step": 0.01,
 		"value": 0.6,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Generates a triangle tone",
@@ -4258,7 +4680,9 @@
 		"step": "[44100, 48000, 88200, 96000]",
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "optionbutton"
+		"uitype": "optionbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Mono/Stereo",
@@ -4274,7 +4698,9 @@
 		"step": 1.0,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Output Duration",
@@ -4290,7 +4716,9 @@
 		"step": 0.01,
 		"value": 30.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Amplitude",
@@ -4306,7 +4734,9 @@
 		"step": 0.01,
 		"value": 0.6,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Generates white noise",
@@ -4335,7 +4765,9 @@
 		"step": 0.001,
 		"value": 0.8,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Adjusts the gain in the frequency domain",
@@ -4364,7 +4796,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Replace first sound's spectral amplitude with the second's",
@@ -4393,7 +4827,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Subtract second sound's amplitude from the first",
@@ -4422,7 +4858,9 @@
 		"step": 1.0,
 		"value": 8.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "High Pass Cutoff",
@@ -4438,7 +4876,9 @@
 		"step": 0.01,
 		"value": 5.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Low Pass Cutoff",
@@ -4454,7 +4894,9 @@
 		"step": 0.01,
 		"value": 20000.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Impose the formants of one sound onto another",
@@ -4483,7 +4925,9 @@
 		"step": 0.01,
 		"value": 10.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Window 2 Position",
@@ -4499,7 +4943,9 @@
 		"step": 0.01,
 		"value": 10.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Output Duration",
@@ -4515,7 +4961,9 @@
 		"step": 0.01,
 		"value": 60.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Morph between a frozen point in time in each input sound",
@@ -4544,7 +4992,9 @@
 		"step": 1.0,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Add/Remove Inlets",
@@ -4560,7 +5010,9 @@
 		"step": "",
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "addremoveinlets"
+		"uitype": "addremoveinlets",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Combine alternating chunks of multiple inputs",
@@ -4589,7 +5041,9 @@
 		"step": "",
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "addremoveinlets"
+		"uitype": "addremoveinlets",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Keep the loudest elements in each channel and window",
@@ -4618,7 +5072,9 @@
 		"step": 0.01,
 		"value": 20.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Low Pass",
@@ -4634,7 +5090,9 @@
 		"step": 0.01,
 		"value": 20000.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Average the amplitude and pitch of two sounds",
@@ -4663,7 +5121,9 @@
 		"step": 0.01,
 		"value": 20.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Low Pass",
@@ -4679,7 +5139,9 @@
 		"step": 0.01,
 		"value": 20000.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Average the pitch of two sounds keeping the amplitude of the first",
@@ -4708,7 +5170,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Amplitude Interpolation End",
@@ -4724,7 +5188,9 @@
 		"step": 0.01,
 		"value": 95.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Frequency Interpolation Start",
@@ -4740,7 +5206,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Frequency Interpolation End",
@@ -4756,7 +5224,9 @@
 		"step": 0.01,
 		"value": 95.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Amplitude Exponent",
@@ -4772,7 +5242,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Frequency Exponent",
@@ -4788,7 +5260,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Morph between two sounds with control over timing",
@@ -4853,7 +5327,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Add the difference in amplitude between two sounds",
@@ -4906,7 +5382,9 @@
 		"step": 1.0,
 		"value": 8.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Glissando Rate",
@@ -4922,7 +5400,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Spacing",
@@ -4938,7 +5418,9 @@
 		"step": 0.01,
 		"value": 50.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Impose formants on inharmonic glissandos",
@@ -4967,7 +5449,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Output Gain",
@@ -4983,7 +5467,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Omit Inharmonic Partials",
@@ -4999,7 +5485,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Omit Harmonic Partials",
@@ -5015,7 +5503,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Inverts peaks and troughs",
@@ -5044,7 +5534,9 @@
 		"step": 0.01,
 		"value": 100.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Formant 2 Frequency",
@@ -5060,7 +5552,9 @@
 		"step": 0.01,
 		"value": 200.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Formant 3 Frequency",
@@ -5076,7 +5570,9 @@
 		"step": 0.01,
 		"value": 500.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Formant 3 Frequency",
@@ -5092,7 +5588,9 @@
 		"step": 0.01,
 		"value": 1200.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Output Gain",
@@ -5108,7 +5606,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Omit Inharmonic Partials",
@@ -5124,7 +5624,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param7": {
 		"paramname": "Omit Harmonic Paritials",
@@ -5140,7 +5642,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Move the first four formants to set frequencies",
@@ -5169,7 +5673,9 @@
 		"step": 1.0,
 		"value": 4.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Output Gain",
@@ -5185,7 +5691,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Omit Inharmonic Partials",
@@ -5201,7 +5709,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Omit Harmonic Partials",
@@ -5217,7 +5727,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Narrows formants, focusing energy at spectral peaks",
@@ -5246,7 +5758,9 @@
 		"step": 0.01,
 		"value": 0.1,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Output Gain",
@@ -5262,7 +5776,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Omit Inharmonic Partials",
@@ -5278,7 +5794,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Omit Harmonic Partials",
@@ -5294,7 +5812,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Move formants up or down spectrum",
@@ -5323,7 +5843,9 @@
 		"step": 1.0,
 		"value": 8.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Glissando Rate",
@@ -5339,7 +5861,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Impose formants on a shepard tone",
@@ -5368,7 +5892,9 @@
 		"step": 0.01,
 		"value": -100.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Formant 2 Shift",
@@ -5384,7 +5910,9 @@
 		"step": 0.01,
 		"value": 100.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Formant 3 Shift",
@@ -5400,7 +5928,9 @@
 		"step": 0.01,
 		"value": 200.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Formant 4 Shift",
@@ -5416,7 +5946,9 @@
 		"step": 0.01,
 		"value": 700.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Output Gain",
@@ -5432,7 +5964,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Omit Inharmonic Partials",
@@ -5448,7 +5982,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param7": {
 		"paramname": "Omit Harmonic Paritials",
@@ -5464,7 +6000,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Shift the first four formants by set amounts",
@@ -5493,7 +6031,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Flat",
@@ -5509,7 +6049,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Spectral values are inverted for each channel",
@@ -5538,7 +6080,9 @@
 		"step": 1.0,
 		"value": 4.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Centre Formant",
@@ -5554,7 +6098,9 @@
 		"step": 1.0,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Output Gain",
@@ -5570,7 +6116,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Invert",
@@ -5586,7 +6134,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Omit Inharmonic Partials",
@@ -5602,7 +6152,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Omit Harmonic Partials",
@@ -5618,7 +6170,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Squeeze the spectrum around a specified formant",
@@ -5647,7 +6201,9 @@
 		"step": 1.0,
 		"value": 30.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Frequency Randomise",
@@ -5663,7 +6219,9 @@
 		"step": 0.01,
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Chorusing by randomising amplitudes and frequencies of partials",
@@ -5692,7 +6250,9 @@
 		"step": 0.01,
 		"value": 880.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Highest Frequency",
@@ -5708,7 +6268,9 @@
 		"step": 0.01,
 		"value": 1760.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Transposes the frequency spectrum to a set range",
@@ -5737,7 +6299,9 @@
 		"step": 0.01,
 		"value": 50.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Minimum Frequency",
@@ -5753,7 +6317,9 @@
 		"step": 0.01,
 		"value": 20.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Maximum Frequency",
@@ -5769,7 +6335,9 @@
 		"step": 1.0,
 		"value": 20000.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Linear frequency shift within a set range",
@@ -5798,7 +6366,9 @@
 		"step": 1.0,
 		"value": 8.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Glissando Rate",
@@ -5814,7 +6384,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Glissando sound retaining original formants",
@@ -5843,7 +6415,9 @@
 		"step": 0.01,
 		"value": -12.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Pitch shift a sound in the frequency domain",
@@ -5872,7 +6446,9 @@
 		"step": 1.0,
 		"value": 8.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Pitch Shift",
@@ -5888,7 +6464,9 @@
 		"step": 0.01,
 		"value": -12.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Pitch shift a sound in the frequency domain retaining formants",
@@ -5917,7 +6495,9 @@
 		"step": 0.01,
 		"value": 0.1,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Output Gain",
@@ -5933,7 +6513,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Omit Inharmonic Partials",
@@ -5949,7 +6531,9 @@
 		"step": "",
 		"value": false,
 		"exponential": false,
-		"uitype": "checkbutton"
+		"uitype": "checkbutton",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Randomises the pitch of partials retaining formants",
@@ -5978,7 +6562,9 @@
 		"step": 0.01,
 		"value": 440.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Tunes the spectrum to a specified frequency",
@@ -6007,7 +6593,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Stretch",
@@ -6023,7 +6611,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Base Frequency",
@@ -6039,7 +6629,9 @@
 		"step": 0.1,
 		"value": 5.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Oscillate between harmonic and inharmonic state",
@@ -6068,7 +6660,9 @@
 		"step": 1.0,
 		"value": 6.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Average spectral energy across adjacent channels",
@@ -6097,7 +6691,9 @@
 		"step": 1.0,
 		"value": 7.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Noise Amount",
@@ -6113,7 +6709,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Introduce noise retaining formants and spectral envelope",
@@ -6142,7 +6740,9 @@
 		"step": 0.01,
 		"value": 0.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Exaggerates the spectral contour",
@@ -6171,7 +6771,9 @@
 		"step": 1.0,
 		"value": 7.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Number of peaks to find",
@@ -6187,7 +6789,9 @@
 		"step": 1.0,
 		"value": 16.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Bandwidth",
@@ -6203,7 +6807,9 @@
 		"step": 0.01,
 		"value": 0.3,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Filters sound through prominent peak frequencies",
@@ -6225,7 +6831,7 @@
   },
   "blur_noise": {
 	"category": "pvoc",
-	"description": "This process enables one to move a sound source towards pure noise, by making the data in every channel â€“ most of which is actually low level noise â€“ equally loud. Setting noise amount to 1 will reduce all sounds to a very similar noise signal that follows the dynamic envelope of the original sound.",
+	"description": "This process enables one to move a sound source towards pure noise, by making the data in every channel Ã¢â‚¬â€œ most of which is actually low level noise Ã¢â‚¬â€œ equally loud. Setting noise amount to 1 will reduce all sounds to a very similar noise signal that follows the dynamic envelope of the original sound.",
 	"inputtype": "[1]",
 	"outputisstereo": false,
 	"outputtype": "[1]",
@@ -6244,7 +6850,9 @@
 		"step": 0.01,
 		"value": 0.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Make all frequency channels equally loud increasing noise",
@@ -6273,7 +6881,9 @@
 		"step": 1.0,
 		"value": 20.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Channels to process",
@@ -6289,7 +6899,9 @@
 		"step": 1.0,
 		"value": 256.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Seed",
@@ -6305,7 +6917,9 @@
 		"step": 1.0,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Randomise the spectrum",
@@ -6334,7 +6948,9 @@
 		"step": 0.01,
 		"value": 440.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Max Stretch",
@@ -6350,7 +6966,9 @@
 		"step": 0.01,
 		"value": 1.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Stretch Exponent",
@@ -6366,7 +6984,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Depth",
@@ -6382,7 +7002,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Stretches all frequencies above a set point upwards",
@@ -6411,7 +7033,9 @@
 		"step": 0.01,
 		"value": 440.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Max Stretch",
@@ -6427,7 +7051,9 @@
 		"step": 0.01,
 		"value": 1.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Stretch Exponent",
@@ -6443,7 +7069,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Depth",
@@ -6459,7 +7087,9 @@
 		"step": 0.01,
 		"value": 1.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Stretches all frequencies below a set point upwards",
@@ -6476,19 +7106,21 @@
 	"parameters": {
 	  "param1": {
 		"paramname": "Amount Removed",
-		"paramdescription": "The number of partials to remove from the sound",
+		"paramdescription": "The number of partials to remove from the sound as a percentage of the window size",
 		"automatable": true,
 		"outputduration": false,
 		"time": false,
 		"min": false,
 		"max": false,
 		"flag": "",
-		"minrange": 1.0,
-		"maxrange": 513.0,
-		"step": 1.0,
-		"value": 16.0,
+		"minrange": 0.1,
+		"maxrange": 50.0,
+		"step": 0.01,
+		"value": 15.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": true
 	  }
 	},
 	"short_description": "Remove the loudest partials",
@@ -6505,19 +7137,21 @@
 	"parameters": {
 	  "param1": {
 		"paramname": "Amount Kept",
-		"paramdescription": "Number of randomly chosen blocks to keep in each spectral window",
+		"paramdescription": "Number of randomly chosen blocks to keep in each spectral window as a percentage of the window size",
 		"automatable": true,
 		"outputduration": false,
 		"time": false,
 		"min": false,
 		"max": false,
 		"flag": "",
-		"minrange": 1.0,
-		"maxrange": 513.0,
-		"step": 1.0,
-		"value": 16.0,
+		"minrange": 0.1,
+		"maxrange": 50.0,
+		"step": 0.01,
+		"value": 15.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": true
 	  }
 	},
 	"short_description": "Randomly thin the spectrum",
@@ -6534,19 +7168,21 @@
 	"parameters": {
 	  "param1": {
 		"paramname": "Amount Kept",
-		"paramdescription": "The number of partials to keep",
+		"paramdescription": "The number of partials to keep as a percentage of the window size",
 		"automatable": true,
 		"outputduration": false,
 		"time": false,
 		"min": false,
 		"max": false,
 		"flag": "",
-		"minrange": 1.0,
-		"maxrange": 513.0,
-		"step": 1.0,
-		"value": 16.0,
+		"minrange": 0.1,
+		"maxrange": 50.0,
+		"step": 0.01,
+		"value": 15.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": true
 	  }
 	},
 	"short_description": "Highlight the loudest partials",
@@ -6575,7 +7211,9 @@
 		"step": 0.001,
 		"value": 0.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Glissandos",
@@ -6591,7 +7229,9 @@
 		"step": 0.1,
 		"value": -0.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Sustain each spectral band until louder data appears in that band",
@@ -6608,19 +7248,21 @@
 	"parameters": {
 	  "param1": {
 		"paramname": "Blurring",
-		"paramdescription": "The number of windows over which to average the spectrum",
+		"paramdescription": "The number of windows as a percentage of windows in the file over which to average the spectrum",
 		"automatable": true,
 		"outputduration": false,
 		"time": false,
 		"min": false,
 		"max": false,
 		"flag": "",
-		"minrange": 1.0,
-		"maxrange": 1024.0,
-		"step": 1.0,
-		"value": 64.0,
+		"minrange": 0.1,
+		"maxrange": 100.0,
+		"step": 0.01,
+		"value": 20.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": true,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Time-average the spectrum",
@@ -6649,7 +7291,9 @@
 		"step": 1.0,
 		"value": 10.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Start",
@@ -6665,7 +7309,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Output Duration",
@@ -6681,7 +7327,9 @@
 		"step": 0.01,
 		"value": 60.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Extend by drunken walk through analysis windows",
@@ -6710,7 +7358,9 @@
 		"step": 0.01,
 		"value": 10.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Output Duration",
@@ -6726,7 +7376,9 @@
 		"step": 0.1,
 		"value": 30.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Freeze a single analysis window",
@@ -6755,7 +7407,9 @@
 		"step": "",
 		"value": 2.0,
 		"exponential": false,
-		"uitype": "addremoveinlets"
+		"uitype": "addremoveinlets",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Append multiple sounds end to end in the frequency domain",
@@ -6784,7 +7438,9 @@
 		"step": 0.01,
 		"value": 0.5,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Freezes the spectrum of the sound at regular intervals",
@@ -6813,7 +7469,9 @@
 		"step": 0.01,
 		"value": 10.0,
 		"exponential": true,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "D-Ratio",
@@ -6829,7 +7487,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "D-Random",
@@ -6845,7 +7505,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Time stretch a sound without changing pitch",
@@ -6874,7 +7536,9 @@
 		"step": 0.01,
 		"value": 0.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "End",
@@ -6890,7 +7554,9 @@
 		"step": 0.01,
 		"value": 80.0,
 		"exponential": false,
-		"uitype": "hslider"
+		"uitype": "hslider",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Trim a file to a set length in the frequency domain",
@@ -6910,14 +7576,18 @@
 		"paramdescription": "Opens a file browser to select a sound file",
 		"automatable": false,
 		"outputduration": false,
-		"uitype": "button"
+		"uitype": "button",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Play/Stop",
 		"paramdescription": "Plays the input sound file",
 		"automatable": false,
 		"outputduration": false,
-		"uitype": "button"
+		"uitype": "button",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Reuse Output",
@@ -6933,7 +7603,9 @@
 		"step": "",
 		"value": "",
 		"exponential": false,
-		"uitype": "button"
+		"uitype": "button",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Loads a file for processing - supports mono and stereo .wav files",
@@ -6953,41 +7625,53 @@
 		"paramdescription": "The name for your output file",
 		"automatable": false,
 		"outputduration": false,
-		"uitype": "lineedit"
+		"uitype": "lineedit",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Run Thread",
 		"paramdescription": "Runs the current thread, opens a file dialog to choose the folder for the output files",
 		"automatable": false,
 		"outputduration": false,
-		"uitype": "button"
+		"uitype": "button",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "Delete Intermediate Files",
 		"paramdescription": "If switched on, deletes all files except the final output file",
 		"automatable": false,
 		"outputduration": false,
-		"uitype": "toggle"
+		"uitype": "toggle",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Open Folder",
 		"paramdescription": "Opens the last used output folder",
 		"automatable": false,
 		"outputduration": false,
-		"uitype": "button"
+		"uitype": "button",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "Recycle File",
 		"paramdescription": "Loops the output file back to the Input File node for reprocessing",
 		"automatable": false,
 		"outputduration": false,
-		"uitype": "button"
+		"uitype": "button",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Play/Stop",
 		"paramdescription": "Plays the last output file",
 		"outputduration": false,
-		"uitype": "button"
+		"uitype": "button",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Manages output for running threads",
@@ -7028,7 +7712,9 @@
 		"step": "",
 		"value": "",
 		"exponential": false,
-		"uitype": ""
+		"uitype": "",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Accidental",
@@ -7044,7 +7730,9 @@
 		"step": "",
 		"value": "",
 		"exponential": false,
-		"uitype": ""
+		"uitype": "",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Converts from musical notes to Hz",
@@ -7073,7 +7761,9 @@
 		"step": "",
 		"value": "",
 		"exponential": false,
-		"uitype": ""
+		"uitype": "",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param2": {
 		"paramname": "Seconds",
@@ -7089,7 +7779,9 @@
 		"step": "",
 		"value": "",
 		"exponential": false,
-		"uitype": ""
+		"uitype": "",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param3": {
 		"paramname": "1/4 Notes",
@@ -7105,7 +7797,9 @@
 		"step": "",
 		"value": "",
 		"exponential": false,
-		"uitype": ""
+		"uitype": "",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param4": {
 		"paramname": "Hertz",
@@ -7121,7 +7815,9 @@
 		"step": "",
 		"value": "",
 		"exponential": false,
-		"uitype": ""
+		"uitype": "",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param5": {
 		"paramname": "MIDI",
@@ -7137,7 +7833,9 @@
 		"step": "",
 		"value": "",
 		"exponential": false,
-		"uitype": ""
+		"uitype": "",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param6": {
 		"paramname": "Samples",
@@ -7153,7 +7851,9 @@
 		"step": "",
 		"value": "",
 		"exponential": false,
-		"uitype": ""
+		"uitype": "",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  },
 	  "param7": {
 		"paramname": "% of Time (s)",
@@ -7169,7 +7869,9 @@
 		"step": "",
 		"value": "",
 		"exponential": false,
-		"uitype": ""
+		"uitype": "",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Converts between various units of time",
@@ -7179,7 +7881,7 @@
   },
   "notes": {
 	"category": "utility",
-	"description": "Doesn't do anything other than giving you a space to take notes. You can right click in the text box to copy and paste and use special characters like emojis ÃƒÆ’Ã‚Â°Ãƒâ€¦Ã‚Â¸Ãƒâ€¹Ã…â€œÃƒâ€¦Ã‚Â .\n",
+	"description": "Doesn't do anything other than giving you a space to take notes. You can right click in the text box to copy and paste and use special characters like emojis ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â°ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â¸ÃƒÆ’Ã¢â‚¬Â¹Ãƒâ€¦Ã¢â‚¬Å“ÃƒÆ’Ã¢â‚¬Â¦Ãƒâ€šÃ‚Â .\n",
 	"inputtype": "",
 	"outputisstereo": false,
 	"outputtype": "",
@@ -7210,7 +7912,9 @@
 		"step": "",
 		"value": "",
 		"exponential": false,
-		"uitype": ""
+		"uitype": "",
+		"fftwindowcount": false,
+		"fftwindowsize": false
 	  }
 	},
 	"short_description": "Connect inside thread to preview output at that point",

@@ -1067,7 +1067,7 @@ func match_pvoc_channels(dict: Dictionary) -> void:
 func _get_slider_values_ordered(node: Node) -> Array:
 	var results := []
 	if node.has_meta("command") and node.get_meta("command") == "pvoc_anal_1":
-		results.append(["slider", "-c", fft_size, false, [], 2, 32768, false])
+		results.append(["slider", "-c", fft_size, false, [], 2, 32768, false, false])
 		return results
 	for child in node.get_children():
 		if child is Range:
@@ -1077,9 +1077,21 @@ func _get_slider_values_ordered(node: Node) -> Array:
 			var min_slider = child.min_value
 			var max_slider = child.max_value
 			var exp = child.exp_edit
+			var fftwindowsize = child.get_meta("fftwindowsize")
+			var fftwindowcount = child.get_meta("fftwindowcount")
+			var value = child.value
+			
 			if child.has_meta("brk_data"):
 				brk_data = child.get_meta("brk_data")
-			results.append(["slider", flag, child.value, time, brk_data, min_slider, max_slider, exp])
+			#if this slider is a percentage of the fft size just calulate this here as fft size is a global value
+			if fftwindowsize == true:
+				if value == 100:
+					value = fft_size
+				else:
+					value = max(int(fft_size * (value/100)), 1)
+				min_slider = max(int(fft_size * (min_slider/100)), 1)
+				max_slider = int(fft_size * (max_slider/100))
+			results.append(["slider", flag, value, time, brk_data, min_slider, max_slider, exp, fftwindowcount])
 		elif child is CheckButton:
 			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
 			results.append(["checkbutton", flag, child.button_pressed])
@@ -1176,6 +1188,14 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 				var min_slider = entry[5]
 				var max_slider = entry[6]
 				var exp = entry[7]
+				var fftwindowcount = entry[8]
+				var window_count
+				if fftwindowcount == true:
+					var analysis_file_data = get_analysis_file_properties(current_infile[0])
+					window_count = analysis_file_data["windowcount"]
+					min_slider = int(max(window_count * (min_slider / 100), 1))
+					max_slider = int(window_count * (max_slider / 100))
+				
 				if brk_data.size() > 0: #if breakpoint data is present on slider
 					#Sort all points by time
 					var sorted_brk_data = []
@@ -1244,7 +1264,11 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 							value = infile_length - 0.1
 						else:
 							value = infile_length * (value / 100) #calculate percentage time of the input file
-					#line += ("%s%.2f " % [flag, value]) if flag.begins_with("-") else ("%.2f " % value)
+					if fftwindowcount == true:
+						if value == 100:
+							value = window_count
+						else:
+							value = int(window_count * (value / 100))
 					args.append(("%s%.2f " % [flag, value]) if flag.begins_with("-") else str(value))
 					
 			elif entry[0] == "checkbutton":
