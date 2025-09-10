@@ -429,8 +429,6 @@ func run_thread_with_branches():
 						output_files[node_name] = pvoc_stereo_files
 						
 					else: 
-						if current_infiles.values()[0].get_extension() == "ana":
-							get_analysis_file_properties(current_infiles.values()[0])
 						#input file is mono run through process
 						var makeprocess = await make_process(node, process_count, current_infiles.values(), slider_data)
 						# run the command
@@ -826,7 +824,6 @@ func get_analysis_file_properties(file: String) -> Dictionary:
 		var chunk_size = f.get_32()
 		
 		if chunk_id == "LIST":
-			print("found list chunk")
 			f.seek(f.get_position() + 4) # skip first four bits of data - list type "adtl"
 			var list_end = f.get_position() + chunk_size
 			while f.get_position() <= list_end:
@@ -834,13 +831,18 @@ func get_analysis_file_properties(file: String) -> Dictionary:
 				var sub_chunk_size = f.get_32()
 				
 				if sub_chunk_id == "note":
-					print("found note chunk")
 					var note_bytes = f.get_buffer(sub_chunk_size)
 					var note_text = ""
 					for b in note_bytes:
 						note_text += char(b)
 					var pvoc_header_data = note_text.split("\n", false)
-					print(pvoc_header_data)
+					var i = 0
+					for entry in pvoc_header_data:
+						if entry == "analwinlen":
+							analysis_file_properties["windowsize"] = hex_string_to_int_le(pvoc_header_data[i+1])
+						elif entry == "decfactor":
+							analysis_file_properties["decimationfactor"] =  hex_string_to_int_le(pvoc_header_data[i+1])
+						i += 1
 					break
 			#check if we have already found the data chunk (not likely) and break the loop
 			if data_chunk_size > 0:
@@ -849,8 +851,6 @@ func get_analysis_file_properties(file: String) -> Dictionary:
 		elif chunk_id == "data":
 			#this is where the audio is stored
 			data_chunk_size = chunk_size
-			print("found data chunk, data is this big")
-			print(data_chunk_size)
 			#check if we have already found the sfif chunk and break loop
 			if analysis_file_properties["windowsize"] > 0:
 				f.close()
@@ -867,11 +867,20 @@ func get_analysis_file_properties(file: String) -> Dictionary:
 		var bytes_per_frame = (analysis_file_properties["windowsize"] + 2) * 4
 		analysis_file_properties["windowcount"] = int(data_chunk_size / bytes_per_frame)
 	else:
-		print("Error: oould not parse analysis file for info")
+		log_console("Error: Could not get information from analysis file", true)
 		
-	print(analysis_file_properties)
 	return analysis_file_properties
-
+	
+func hex_string_to_int_le(hex_string: String) -> int:
+	# Ensure the string is 8 characters (4 bytes)
+	if hex_string.length() != 8:
+		push_error("Invalid hex string length: " + hex_string)
+		return 0
+	var le_string = ""
+	for i in [6, 4, 2, 0]: #flip the order of the bytes as ana format uses little endian
+		le_string += hex_string.substr(i, 2)
+	
+	return le_string.hex_to_int()
 
 func merge_many_files(inlet_id: int, process_count: int, input_files: Array) -> Array:
 	var merge_output = "%s_merge_%d_%d.wav" % [Global.outfile.get_basename(), inlet_id, process_count]
