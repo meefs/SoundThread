@@ -13,6 +13,7 @@ var process_running := false #tracks if a process is currently running
 var process_cancelled = false #checks if the currently running process has been cancelled
 var final_output_dir
 var fft_size = 1024 #tracks the fft size for the thread set in the main window
+var fft_overlap = 3 #tracks the fft overlap for the thread set in the main window
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -1067,7 +1068,8 @@ func match_pvoc_channels(dict: Dictionary) -> void:
 func _get_slider_values_ordered(node: Node) -> Array:
 	var results := []
 	if node.has_meta("command") and node.get_meta("command") == "pvoc_anal_1":
-		results.append(["slider", "-c", fft_size, false, [], 2, 32768, false, false])
+		results.append(["slider", "-c", fft_size, false, [], 2, 16380, false, false])
+		results.append(["slider", "-o", fft_overlap, false, [], 1, 4, false, false])
 		return results
 	for child in node.get_children():
 		if child is Range:

@@ -172,9 +172,11 @@ func new_patch():
 	get_window().title = "SoundThread"
 	link_output()
 	
-	#set fft size to default
+	#set fft size and overlap to default
 	$FFTSize.select(9)
 	_on_fft_size_item_selected(9)
+	$FFTOverlap.select(2)
+	_on_fft_overlap_item_selected(2)
 	
 	
 func link_output():
@@ -872,3 +874,8 @@ func _on_fft_size_item_selected(index: int) -> void:
 	else:
 		fft_size = 1 << (index + 1)
 	run_thread.fft_size = fft_size
+
+
+
+func _on_fft_overlap_item_selected(index: int) -> void:
+	run_thread.fft_overlap = index + 1

@@ -573,7 +573,7 @@ offset_right = 592.0
 offset_bottom = 100.0
 text = "Stop Running Thread"
 
-[node name="Label" type="Label" parent="."]
+[node name="FFTSizeLabel" type="Label" parent="."]
 layout_mode = 0
 offset_left = 348.0
 offset_top = 48.0
@@ -617,6 +617,31 @@ popup/item_12/text = "8192"
 popup/item_12/id = 12
 popup/item_13/text = "16380"
 popup/item_13/id = 13
+
+[node name="FFTOverlapLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 517.0
+offset_top = 48.0
+offset_right = 617.0
+offset_bottom = 67.0
+text = "FFT Overlap:"
+
+[node name="FFTOverlap" type="OptionButton" parent="."]
+layout_mode = 0
+offset_left = 623.0
+offset_top = 45.0
+offset_right = 702.0
+offset_bottom = 72.0
+tooltip_text = "Adjusts the number of analysis points used by the frequency domain processes in this thread. More points give better frequency resolution but worse time resolution."
+item_count = 4
+popup/item_0/text = "1"
+popup/item_0/id = 0
+popup/item_1/text = "2"
+popup/item_1/id = 1
+popup/item_2/text = "3"
+popup/item_2/id = 2
+popup/item_3/text = "4"
+popup/item_3/id = 3
 
 [connection signal="connection_request" from="GraphEdit" to="GraphEdit" method="_on_connection_request"]
 [connection signal="copy_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_copy_nodes_request"]
@@ -662,3 +687,4 @@ popup/item_13/id = 13
 [connection signal="button_down" from="CheckForUpdates/UpdatePopup/OpenAudioSettings" to="CheckForUpdates" method="_on_open_audio_settings_button_down"]
 [connection signal="button_down" from="ProgressWindow/KillProcess2" to="." method="_on_kill_process_button_down"]
 [connection signal="item_selected" from="FFTSize" to="." method="_on_fft_size_item_selected"]
+[connection signal="item_selected" from="FFTOverlap" to="." method="_on_fft_overlap_item_selected"]
