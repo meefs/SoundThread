@@ -101,7 +101,9 @@ func save_graph_edit(path: String):
 
 	var graph_data = {
 		"nodes": node_data_list,
-		"connections": connection_data_list
+		"connections": connection_data_list,
+		"fftsize": control_script.fft_size_option_button.selected,
+		"fftoverlap": control_script.fft_overlap_option_button.selected
 	}
 
 	var json = JSON.new()
@@ -137,6 +139,14 @@ func load_graph_edit(path: String):
 
 	await get_tree().process_frame  # Ensure nodes are freed before adding new ones
 
+	#set fft size and window overlap if available
+	if graph_data.has("fftsize"):
+		control_script.fft_size_option_button.select(graph_data["fftsize"])
+		control_script._on_fft_size_item_selected(graph_data["fftsize"])
+	if graph_data.has("fftoverlap"):
+		control_script.fft_overlap_option_button.select(graph_data["fftoverlap"])
+		control_script._on_fft_overlap_item_selected(graph_data["fftoverlap"])
+		
 	var id_to_node = {}
 
 	# Create nodes

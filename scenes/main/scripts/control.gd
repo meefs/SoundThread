@@ -22,6 +22,8 @@ var use_anyway #used to store the folder selected for cdprogs when it appears th
 var main_theme = preload("res://theme/main_theme.tres") #load the theme
 var default_input_node #stores a reference to the input node created on launch to allow auto loading a wav file
 var output_folder_label
+@onready var fft_size_option_button = $FFTSize
+@onready var fft_overlap_option_button = $FFTOverlap
 
 
 #scripts
