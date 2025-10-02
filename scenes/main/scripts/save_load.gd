@@ -186,6 +186,15 @@ func load_graph_edit(path: String):
 							slider.set_meta(key, value)
 				else:
 					slider.value = slider_info
+		
+		#fill label for output file node on load
+		if new_node.has_meta("command") and new_node.get_meta("command") == "outputfile":
+			#set label for last output folder
+			var interface_settings = ConfigHandler.load_interface_settings()
+			control_script.output_folder_label = new_node.get_node("OutputFolderMargin/OutputFolderLabel")
+			if control_script.output_folder_label != null and interface_settings.last_used_output_folder != "no_file":
+				control_script.output_folder_label.text = interface_settings.last_used_output_folder
+				control_script.output_folder_label.get_parent().tooltip_text = interface_settings.last_used_output_folder
 
 		# Restore notes
 		for codeedit_name in node_data["notes"]:
