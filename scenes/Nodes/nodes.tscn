@@ -246,7 +246,7 @@ theme_override_constants/margin_bottom = 2
 
 [node name="FileNameField" type="LineEdit" parent="outputfile" groups=["outputnode"]]
 layout_mode = 2
-tooltip_text = "Your output file name."
+tooltip_text = "Your output file name, cannot contain special characters"
 metadata/outputfunction = "filename"
 
 [node name="MarginContainer3" type="MarginContainer" parent="outputfile"]
@@ -827,6 +827,7 @@ size_flags_horizontal = 3
 text = "+"
 metadata/calc = "+"
 
+[connection signal="focus_exited" from="outputfile/FileNameField" to="outputfile" method="_on_file_name_field_focus_exited"]
 [connection signal="text_submitted" from="outputfile/FileNameField" to="outputfile" method="_on_file_name_field_text_submitted"]
 [connection signal="toggled" from="outputfile/DeleteIntermediateFilesToggle" to="outputfile" method="_on_delete_intermediate_files_toggle_toggled"]
 [connection signal="toggled" from="outputfile/ReuseFolderToggle" to="outputfile" method="_on_reuse_folder_toggle_toggled"]

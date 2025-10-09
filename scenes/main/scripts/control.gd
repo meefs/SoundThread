@@ -398,21 +398,9 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	Global.outfile = dir + "/" + outfilename.text.get_basename() + "_" + Time.get_date_string_from_system() + "_" + time_str
 	
 	#check path and file name do not contain special characters
-	var check_characters = Global.outfile.get_basename().split("/")
-	var invalid_chars:= []
-	var regex = RegEx.new()
-	regex.compile("[^a-zA-Z0-9\\-_ :+]")
-	for string in check_characters:
-		if string != "":
-			var result = regex.search_all(string)
-			for matches in result:
-				var char = matches.get_string()
-				if invalid_chars.has(char) == false:
-					invalid_chars.append(char)
-
-	var invalid_string = " ".join(invalid_chars)
+	var check_file_name = Global.check_for_invalid_chars(Global.outfile)
 	
-	if invalid_chars.size() == 0:
+	if check_file_name["contains_invalid_characters"] == false:
 		run_thread.log_console("Output directory and file name(s):" + Global.outfile, true)
 		await get_tree().process_frame
 		
@@ -420,7 +408,7 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	else:
 		run_thread.log_console("[color=#9c2828][b]Error:[/b][/color] Chosen file name or folder path " + Global.outfile.get_basename() + " contains invalid characters.", true)
 		run_thread.log_console("File names and paths can only contain A-Z a-z 0-9 - _ + and space.", true)
-		run_thread.log_console("Chosen file name/path contains the following invalid characters: " + invalid_string, true)
+		run_thread.log_console("Chosen file name/path contains the following invalid characters: " + " ".join(check_file_name["invalid_characters_found"]), true)
 		if $ProgressWindow.visible:
 			$ProgressWindow.hide()
 		if !$Console.visible:

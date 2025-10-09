@@ -38,3 +38,19 @@ func _on_reuse_folder_toggle_toggled(toggled_on: bool) -> void:
 
 func _on_position_offset_changed():
 	node_moved.emit(self, Rect2(position, size))
+
+
+func _on_file_name_field_text_submitted(new_text: String) -> void:
+	#check for slashes which can't be in a file name
+	if new_text.contains("/"):
+		new_text = new_text.replace("/", "")
+	if new_text.contains("\\"):
+		new_text = new_text.replace("\\", "")
+		
+	var check_characters = Global.check_for_invalid_chars(new_text)
+	if check_characters["contains_invalid_characters"] == true:
+		$FileNameField.text = check_characters["string_without_invalid_characters"]
+
+
+func _on_file_name_field_focus_exited() -> void:
+	_on_file_name_field_text_submitted($FileNameField.text)
