@@ -321,6 +321,33 @@ func run_thread_with_branches():
 					loadedfile = node.get_node("AudioPlayer").get_meta("upsampled_file")
 				else:
 					loadedfile = node.get_node("AudioPlayer").get_meta("inputfile")
+					
+				#check if input file has any invalid characters in path/name
+				var check_invalid_characters = Global.check_for_invalid_chars(loadedfile)
+				
+				if check_invalid_characters["contains_invalid_characters"] == true:
+					log_console("Special characters found in input file path/name, creating copy without special characters", true)
+					#get just the output folder by giving the outfile and extension and the running get base dir
+					var output_folder_location = Global.outfile + ".wav"
+					output_folder_location = output_folder_location.get_base_dir()
+					#make a unigue name for this file
+					var input_file_copy_name = Global.outfile.get_basename() + "_input_file_copy_" + str(process_count) + "." + loadedfile.get_extension()
+					if is_windows:
+						loadedfile = loadedfile.replace("/", "\\")
+						output_folder_location = output_folder_location.replace("/", "\\")
+						input_file_copy_name = input_file_copy_name.replace("/", "\\")
+						await run_command("copy", [loadedfile, output_folder_location])
+						await run_command(rename_cmd, [output_folder_location + "\\" + loadedfile.get_file(), input_file_copy_name.get_file()])
+					else:
+						await run_command("cp", [loadedfile, output_folder_location])
+						await run_command(rename_cmd, [output_folder_location + "/" + loadedfile.get_file(), input_file_copy_name])
+					
+					loadedfile = input_file_copy_name
+					
+					if control_script.delete_intermediate_outputs:
+						intermediate_files.append(input_file_copy_name)
+						
+					
 				#get wether trim has been enabled
 				var trimfile = node.get_node("AudioPlayer").get_meta("trimfile")
 				
@@ -900,7 +927,7 @@ func merge_many_files(inlet_id: int, process_count: int, input_files: Array) -> 
 	await run_command(control_script.cdpprogs_location + "/submix", command)
 	
 	if process_successful == false:
-		log_console("Failed to to merge files to" + merge_output, true)
+		log_console("Failed to merge files to" + merge_output, true)
 	
 	return [merge_output, converted_files]
 	
@@ -951,7 +978,7 @@ func match_input_file_sample_rates_and_bit_depths(input_nodes: Array) -> Array:
 	input_files = [] #clear input files array for reuse with bitdepths
 	
 	#check if all file types and bit-depths are the same
-	if file_types.all(func(v): return v == sample_rates[0]) and bit_depths.all(func(v): return v == sample_rates[0]):
+	if file_types.all(func(v): return v == file_types[0]) and bit_depths.all(func(v): return v == bit_depths[0]):
 		highest_bit_depth = bit_depths[0]
 		int_float = file_types[0]
 		#convert this to the value cdp uses in copysfx for potential use with synthesis nodes later
@@ -1000,37 +1027,6 @@ func classify_format(file_type: int, bit_depth: int) -> int:
 		_:
 			return -1
 
-#need to remove this function as not needed
-#func match_file_sample_rates(inlet_id: int, process_count: int, input_files: Array) -> Array:
-	#var sample_rates := []
-	#var converted_files := []
-	#
-	##Get all sample rates
-	#for f in input_files:
-		#var samplerate = await get_samplerate(f)
-		#sample_rates.append(samplerate)
-	#
-	##Check if all sample rates are the same
-	#if sample_rates.all(func(v): return v == sample_rates[0]):
-		#pass
-	#else:
-		#log_console("Different sample rates found, upsampling files to match highest current sample rate before processing.", true)
-		##if not find the highest sample rate
-		#var highest_sample_rate = sample_rates.max()
-		#var index = 0
-		##move through all input files and compare match their index to the sample_rate array
-		#for f in input_files:
-			##check if sample rate of current file is less than the highest sample rate
-			#if sample_rates[index] < highest_sample_rate:
-				##up sample it to the highest sample rate if so
-				#var upsample_output = Global.outfile + "_" + str(inlet_id) + "_" + str(process_count) + f.get_file().get_slice(".wav", 0) + "_" + str(highest_sample_rate) + ".wav"
-				#await run_command(control_script.cdpprogs_location + "/housekeep", ["respec", "1", f, upsample_output, str(highest_sample_rate)])
-				##replace the file in the input_file index with the new upsampled file
-				#input_files[index] = upsample_output
-				#converted_files.append(upsample_output)
-				#
-			#index += 1
-	#return [input_files, converted_files]
 	
 func match_file_channels(inlet_id: int, process_count: int, input_files: Array) -> Array:
 	var converted_files := []
@@ -1466,7 +1462,7 @@ func run_command(command: String, args: Array) -> String:
 	console_output.scroll_to_line(console_output.get_line_count() - 1)
 	await get_tree().process_frame
 	
-	if is_windows and (command == "del" or command == "ren"): #checks if the command is a windows system command and runs it through cmd.exe
+	if is_windows and (command == "del" or command == "ren" or command =="copy"): #checks if the command is a windows system command and runs it through cmd.exe
 		args.insert(0, command)
 		args.insert(0, "/C")
 		process_info = OS.execute_with_pipe("cmd.exe", args, false)
@@ -1474,7 +1470,7 @@ func run_command(command: String, args: Array) -> String:
 		process_info = OS.execute_with_pipe(command, args, false)
 	# Check if the process was successfully started
 	if !process_info.has("pid"):
-		log_console("Failed to start process]", true)
+		log_console("Failed to start process", true)
 		return ""
 	
 	process_running = true

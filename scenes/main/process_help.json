@@ -7615,14 +7615,14 @@
   },
   "outputfile": {
 	"category": "utility",
-	"description": "The name inputted in File Name will be appended with the current date and time so that you don't need to input a new file name each time.\n\nSoundThread can create a lot of files as each node in the thread can create multiple files. Turning on Delete Intermediate Files will delete everything but the main output file. \n\nClicking and dragging on the sound file viewer will let you select a section of audio to play. Clicking on the sound file viewer while audio is playing will allow you to jump around the file to listen to different sections.\n",
+	"description": "The name inputted in File Name will be appended with the current date and time so that you don't need to input a new file name each time. The output file name and path can only contain the following characters: A-Z a-z 0-9 - _ + and space.\n\nSoundThread can create a lot of files as each node in the thread can create multiple files. Turning on Delete Intermediate Files will delete everything but the main output file. \n\nClicking and dragging on the sound file viewer will let you select a section of audio to play. Clicking on the sound file viewer while audio is playing will allow you to jump around the file to listen to different sections.\n",
 	"inputtype": "[0]",
 	"outputisstereo": false,
 	"outputtype": "",
 	"parameters": {
 	  "param1": {
 		"paramname": "File Name",
-		"paramdescription": "The name for your output file",
+		"paramdescription": "The name for your output file, cannot contain special characters",
 		"automatable": false,
 		"outputduration": false,
 		"uitype": "lineedit",
@@ -7640,7 +7640,7 @@
 	  },
 	  "param3": {
 		"paramname": "Delete Intermediate Files",
-		"paramdescription": "If switched on, deletes all files except the final output file",
+		"paramdescription": "When toggled deletes all files except the final output file",
 		"automatable": false,
 		"outputduration": false,
 		"uitype": "toggle",
@@ -7648,17 +7648,17 @@
 		"fftwindowsize": false
 	  },
 	  "param4": {
-		"paramname": "Open Folder",
-		"paramdescription": "Opens the last used output folder",
+		"paramname": "Reuse Last Output Folder",
+		"paramdescription": "When toggled the last selected folder will be used to save files, persists between sessions",
 		"automatable": false,
 		"outputduration": false,
-		"uitype": "button",
+		"uitype": "toggle",
 		"fftwindowcount": false,
 		"fftwindowsize": false
 	  },
 	  "param5": {
-		"paramname": "Recycle File",
-		"paramdescription": "Loops the output file back to the Input File node for reprocessing",
+		"paramname": "Open Folder",
+		"paramdescription": "Where available opens the last used output folder",
 		"automatable": false,
 		"outputduration": false,
 		"uitype": "button",
@@ -7666,9 +7666,27 @@
 		"fftwindowsize": false
 	  },
 	  "param6": {
-		"paramname": "Play/Stop",
-		"paramdescription": "Plays the last output file",
+		"paramname": "Autoplay",
+		"paramdescription": "When toggled will autoplay the output when the thread is done running",
 		"outputduration": false,
+		"uitype": "toggle",
+		"fftwindowcount": false,
+		"fftwindowsize": false
+	  },
+	  "param7": {
+		"paramname": "Play/Stop",
+		"paramdescription": "Starts/Stops playback of the output file",
+		"automatable": false,
+		"outputduration": false,
+		"time": false,
+		"min": false,
+		"max": false,
+		"flag": "",
+		"minrange": "",
+		"maxrange": "",
+		"step": "",
+		"value": "",
+		"exponential": false,
 		"uitype": "button",
 		"fftwindowcount": false,
 		"fftwindowsize": false
