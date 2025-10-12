@@ -128,17 +128,16 @@ func _randomise_sliders():
 	var sliders := _get_all_hsliders(self) #finds all sliders
 	#links sliders to this script
 	for slider in sliders:
-		var min = slider.min_value
-		var max = slider.max_value
+		var minimum = slider.min_value
+		var maximum = slider.max_value
 		var expo = slider.exp_edit
-		var default = slider.get_meta("default_value")
 		
 		var rnd = randf()
 		var rnd_value
 		if expo:
-			rnd_value = min * pow(max / min, rnd)
+			rnd_value = minimum * pow(maximum / minimum, rnd)
 		else:
-			rnd_value = (rnd * (max - min)) + min
+			rnd_value = (rnd * (maximum - minimum)) + minimum
 		
 		slider.value = rnd_value
 	

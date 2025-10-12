@@ -349,8 +349,6 @@ func _load_favourites(favourites: Array):
 			if favourites.has(key) == false:
 				continue
 				
-			var category = item.get("category", "")
-			var subcategory = item.get("subcategory", "")
 			var short_desc = item.get("short_description", "")
 			var command = key.replace("_", " ")
 			

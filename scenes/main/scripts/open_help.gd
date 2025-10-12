@@ -41,11 +41,11 @@ func show_help_for_node(node_name: String, node_title: String):
 			output += "[cell][b]Parameter Name[/b][/cell][cell][b]Description[/b][/cell][cell][b]Automatable[/b][/cell]\n"
 			for key in parameters.keys(): #scans through all parameters
 				var param = parameters[key]
-				var name = param.get("paramname", "")
+				var paramname = param.get("paramname", "")
 				var desc = param.get("paramdescription", "")
 				var automatable = param.get("automatable", false)
 				var autom_text = "[center]✓[/center]" if automatable else "[center]𐄂[/center]" #replaces true and false with ticks and crosses
-				output += "[cell]%s[/cell][cell]%s[/cell][cell]%s[/cell]\n" % [name, desc, autom_text] #places each param detail into cells of the table
+				output += "[cell]%s[/cell][cell]%s[/cell][cell]%s[/cell]\n" % [paramname, desc, autom_text] #places each param detail into cells of the table
 			output += "[/table]\n\n" #ends the table
 		
 		output += "[b]Functionality[/b]\n"

@@ -43,7 +43,6 @@ func run_thread_with_branches():
 	# Choose appropriate commands based on OS
 	var delete_cmd = "del" if is_windows else "rm"
 	var rename_cmd = "ren" if is_windows else "mv"
-	var path_sep := "/"  # Always use forward slash for paths
 
 	# Get all node connections in the GraphEdit
 	var connections = graph_edit.get_connection_list()
@@ -140,7 +139,6 @@ func run_thread_with_branches():
 	#check if input file sample rates and bit depths match
 	if input_nodes.size() > 1:
 		var match_input_files = await match_input_file_sample_rates_and_bit_depths(input_nodes)
-		var stereo = []
 		if control_script.delete_intermediate_outputs:
 			for f in match_input_files[0]:
 				intermediate_files.append(f)
@@ -379,7 +377,7 @@ func run_thread_with_branches():
 				process_count += 1
 			else: #not an audio file must be synthesis
 				var slider_data = _get_slider_values_ordered(node)
-				var makeprocess = await make_process(node, process_count, [], slider_data)
+				var makeprocess = make_process(node, process_count, [], slider_data)
 				# run the command
 				await run_command(makeprocess[0], makeprocess[3])
 				await get_tree().process_frame
@@ -426,7 +424,7 @@ func run_thread_with_branches():
 						
 					output_files[node_name] = pvoc_stereo_files
 				else:
-					var input_stereo = await is_stereo(current_infiles.values()[0])
+					var input_stereo = is_stereo(current_infiles.values()[0])
 					if input_stereo == true: 
 						#audio file is stereo and needs to be split for pvoc processing
 						var pvoc_stereo_files = []
@@ -458,7 +456,7 @@ func run_thread_with_branches():
 						
 					else: 
 						#input file is mono run through process
-						var makeprocess = await make_process(node, process_count, current_infiles.values(), slider_data)
+						var makeprocess = make_process(node, process_count, current_infiles.values(), slider_data)
 						# run the command
 						await run_command(makeprocess[0], makeprocess[3])
 						await get_tree().process_frame
@@ -510,12 +508,12 @@ func run_thread_with_branches():
 						intermediate_files.erase(preview_file)
 				else:
 					#Detect if input file is mono or stereo
-					var input_stereo = await is_stereo(current_infiles.values()[0])
+					var input_stereo = is_stereo(current_infiles.values()[0])
 					#var input_stereo = true #bypassing stereo check just for testing need to reimplement
 					if input_stereo == true:
 						if node.get_meta("stereo_input") == true: #audio file is stereo and process is stereo, run file through process
 							#current_infile = current_infiles.values()
-							var makeprocess = await make_process(node, process_count, current_infiles.values(), slider_data)
+							var makeprocess = make_process(node, process_count, current_infiles.values(), slider_data)
 							# run the command
 							await run_command(makeprocess[0], makeprocess[3])
 							await get_tree().process_frame
@@ -565,7 +563,7 @@ func run_thread_with_branches():
 								intermediate_files.append(output_file)
 
 					else: #audio file is mono, run through the process
-						var makeprocess = await make_process(node, process_count, current_infiles.values(), slider_data)
+						var makeprocess = make_process(node, process_count, current_infiles.values(), slider_data)
 						# run the command
 						await run_command(makeprocess[0], makeprocess[3])
 						await get_tree().process_frame
@@ -680,7 +678,7 @@ func stereo_split_and_process(files: Array, node: Node, process_count: int, slid
 	
 	#loop through the left and right arrays and make and run the process for each of them
 	for channel in [left, right]:
-		var makeprocess = await make_process(node, process_count, channel, slider_data)
+		var makeprocess = make_process(node, process_count, channel, slider_data)
 		# run the command
 		await run_command(makeprocess[0], makeprocess[3])
 		await get_tree().process_frame
@@ -709,7 +707,7 @@ func process_dual_mono_pvoc(current_infiles: Dictionary, node: Node, process_cou
 		infiles_right.append(value[1])
 		
 	for infiles in [infiles_left, infiles_right]:
-		var makeprocess = await make_process(node, process_count, infiles, slider_data)
+		var makeprocess = make_process(node, process_count, infiles, slider_data)
 		# run the command
 		await run_command(makeprocess[0], makeprocess[3])
 		await get_tree().process_frame
@@ -1034,7 +1032,7 @@ func match_file_channels(inlet_id: int, process_count: int, input_files: Array) 
 	
 	# Check each file's channel count and build channel count array
 	for f in input_files:
-		var stereo = await is_stereo(f)
+		var stereo = is_stereo(f)
 		channel_counts.append(stereo)
 
 	# Check if there is a mix of mono and stereo files
@@ -1074,7 +1072,7 @@ func _get_slider_values_ordered(node: Node) -> Array:
 			var brk_data = []
 			var min_slider = child.min_value
 			var max_slider = child.max_value
-			var exp = child.exp_edit
+			var exponential = child.exp_edit
 			var fftwindowsize = child.get_meta("fftwindowsize")
 			var fftwindowcount = child.get_meta("fftwindowcount")
 			var value = child.value
@@ -1089,7 +1087,7 @@ func _get_slider_values_ordered(node: Node) -> Array:
 					value = max(int(fft_size * (value/100)), 1)
 				min_slider = max(int(fft_size * (min_slider/100)), 1)
 				max_slider = int(fft_size * (max_slider/100))
-			results.append(["slider", flag, value, time, brk_data, min_slider, max_slider, exp, fftwindowcount])
+			results.append(["slider", flag, value, time, brk_data, min_slider, max_slider, exponential, fftwindowcount])
 		elif child is CheckButton:
 			var flag = child.get_meta("flag") if child.has_meta("flag") else ""
 			results.append(["checkbutton", flag, child.button_pressed])
@@ -1185,7 +1183,7 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 				var brk_data = entry[4]
 				var min_slider = entry[5]
 				var max_slider = entry[6]
-				var exp = entry[7]
+				var exponential = entry[7]
 				var fftwindowcount = entry[8]
 				var window_count
 				if fftwindowcount == true:
@@ -1218,7 +1216,7 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 								new_x = float(node.get_meta("outputduration")) + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
 							var new_y
 							#check if slider is exponential and scale automation
-							if exp:
+							if exponential:
 								new_y = remap_y_to_log_scale(point.y, 0.0, 255.0, min_slider, max_slider)
 							else:
 								new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value
@@ -1233,7 +1231,7 @@ func make_process(node: Node, process_count: int, current_infile: Array, slider_
 								new_x = infile_length + 0.1  # force last point's x to infile_length + 100ms to make sure the file is defo over
 							var new_y
 							#check if slider is exponential and scale automation
-							if exp:
+							if exponential:
 								new_y = remap_y_to_log_scale(point.y, 0.0, 255.0, min_slider, max_slider)
 							else:
 								new_y = remap(point.y, 255, 0, min_slider, max_slider) #slider value

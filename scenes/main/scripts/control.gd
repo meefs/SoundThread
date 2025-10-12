@@ -184,24 +184,24 @@ func new_patch():
 func link_output():
 	#links various buttons and function in the input nodes - this is called after they are created so that it still works on new and loading files
 	for control in get_tree().get_nodes_in_group("outputnode"): #check all items in outputnode group
-		#if control.has_meta("outputfunciton"):
-		if control.get_meta("outputfunction") == "deleteintermediate": #link delete intermediate files toggle to script
-			control.toggled.connect(_toggle_delete)
-			_toggle_delete(control.button_pressed)
-			#control.button_pressed = interface_settings.get("delete_intermediate", true)
+		if control.has_meta("outputfunction"):
+			if control.get_meta("outputfunction") == "deleteintermediate": #link delete intermediate files toggle to script
+				control.toggled.connect(_toggle_delete)
+				_toggle_delete(control.button_pressed)
+				#control.button_pressed = interface_settings.get("delete_intermediate", true)
 
-		elif control.get_meta("outputfunction") == "runprocess": #link runprocess button
-			control.button_down.connect(_run_process)
-		elif control.get_meta("outputfunction") == "audioplayer": #link output audio player
-			output_audio_player = control
-		elif control.get_meta("outputfunction") == "filename":
-			control.text = "outfile"
-			outfilename = control
-		elif control.get_meta("outputfunction") == "reusefolder":
-			foldertoggle = control
-			#foldertoggle.button_pressed = interface_settings.get("reuse_output_folder", true)
-		elif control.get_meta("outputfunction") == "openfolder":
-			control.button_down.connect(_open_output_folder)
+			elif control.get_meta("outputfunction") == "runprocess": #link runprocess button
+				control.button_down.connect(_run_process)
+			elif control.get_meta("outputfunction") == "audioplayer": #link output audio player
+				output_audio_player = control
+			elif control.get_meta("outputfunction") == "filename":
+				control.text = "outfile"
+				outfilename = control
+			elif control.get_meta("outputfunction") == "reusefolder":
+				foldertoggle = control
+				#foldertoggle.button_pressed = interface_settings.get("reuse_output_folder", true)
+			elif control.get_meta("outputfunction") == "openfolder":
+				control.button_down.connect(_open_output_folder)
 
 
 	#for control in get_tree().get_nodes_in_group("inputnode"):
@@ -441,7 +441,6 @@ func _on_ok_button_3_button_down() -> void:
 
 
 func _on_settings_button_index_pressed(index: int) -> void:
-	var interface_settings = ConfigHandler.load_interface_settings()
 	
 	match index:
 		0:

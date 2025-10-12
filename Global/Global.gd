@@ -23,11 +23,9 @@ func check_for_invalid_chars(file: String) -> Dictionary:
 		if string != "":
 			var result = regex.search_all(string)
 			for matches in result:
-				var char = matches.get_string()
-				if invalid_chars.has(char) == false:
-					invalid_chars.append(char)
-
-	var invalid_string = "".join(invalid_chars)
+				var character = matches.get_string()
+				if invalid_chars.has(character) == false:
+					invalid_chars.append(character)
 	
 	if invalid_chars.size() == 0:
 		output["contains_invalid_characters"] = false
@@ -35,7 +33,7 @@ func check_for_invalid_chars(file: String) -> Dictionary:
 		output["contains_invalid_characters"] = true
 		output["invalid_characters_found"] = invalid_chars
 		var cleaned_string = file
-		for char in invalid_chars:
-			cleaned_string = cleaned_string.replace(char, "")
+		for character in invalid_chars:
+			cleaned_string = cleaned_string.replace(character, "")
 		output["string_without_invalid_characters"] = cleaned_string
 	return output
