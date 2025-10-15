@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://b5206beyyhfvl"]
+
+[ext_resource type="Script" uid="uid://bifsyv5gxrddm" path="res://scenes/Nodes/inputfile.gd" id="1_bcco2"]
+[ext_resource type="PackedScene" uid="uid://csapiqka522fh" path="res://scenes/Nodes/audioplayer.tscn" id="2_xjpp1"]
+
+[node name="inputfile" type="GraphNode"]
+offset_left = 21.0
+offset_top = 6.0
+offset_right = 449.0
+offset_bottom = 236.0
+tooltip_text = "Stores your input file to be processed. Supports mono and stereo .wav files."
+title = "Input File"
+slot/0/left_enabled = false
+slot/0/left_type = 0
+slot/0/left_color = Color(1, 1, 1, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = true
+slot/0/right_type = 0
+slot/0/right_color = Color(1, 1, 1, 0.564706)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+script = ExtResource("1_bcco2")
+metadata/command = "inputfile"
+metadata/input = true
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 2
+
+[node name="AudioPlayer" parent="." groups=["inputnode"] instance=ExtResource("2_xjpp1")]
+layout_mode = 2
+size_flags_horizontal = 4
+metadata/loadenable = true
+metadata/inputfunction = "audioplayer"

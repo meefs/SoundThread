@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://cyoj8c0wdbp36"]
+
+[ext_resource type="Script" uid="uid://cdbx1dt3ohqte" path="res://scenes/Nodes/node_logic.gd" id="1_tyh4w"]
+
+[node name="notes" type="GraphNode"]
+offset_left = 1042.0
+offset_top = 32.0
+offset_right = 1425.0
+offset_bottom = 329.0
+tooltip_text = "A node just for taking notes."
+title = "Notes"
+slot/0/left_enabled = false
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+script = ExtResource("1_tyh4w")
+metadata/command = "notes"
+metadata/utility = true
+metadata/input = false
+
+[node name="CodeEdit" type="CodeEdit" parent="."]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 3
+wrap_mode = 1
+delimiter_strings = Array[String](["\" \"", "' '"])

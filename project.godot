@@ -25,7 +25,7 @@ boot_splash/minimum_display_time=500
 
 ConfigHandler="*res://global/config_handler.gd"
 Global="*res://global/global.gd"
-Nodes="*res://scenes/Nodes/nodes.tscn"
+Utilities="*res://global/utilities.gd"
 
 [display]
 

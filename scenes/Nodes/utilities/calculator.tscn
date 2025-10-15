@@ -1,0 +1,229 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3l60mjrsen1d"]
+
+[ext_resource type="Script" uid="uid://catbcnplcacvv" path="res://scenes/Nodes/calculator.gd" id="1_gvrl8"]
+
+[node name="calculator" type="GraphNode"]
+offset_left = 2453.0
+offset_top = 33.0
+offset_right = 2836.0
+offset_bottom = 330.0
+tooltip_text = "A simple calculator for quick maths"
+title = "Calculator"
+slot/0/left_enabled = false
+slot/0/left_type = 1
+slot/0/left_color = Color(0, 0, 0, 1)
+slot/0/left_icon = null
+slot/0/right_enabled = false
+slot/0/right_type = 1
+slot/0/right_color = Color(0, 0, 0, 1)
+slot/0/right_icon = null
+slot/0/draw_stylebox = true
+slot/1/left_enabled = false
+slot/1/left_type = 0
+slot/1/left_color = Color(1, 1, 1, 1)
+slot/1/left_icon = null
+slot/1/right_enabled = false
+slot/1/right_type = 0
+slot/1/right_color = Color(1, 1, 1, 1)
+slot/1/right_icon = null
+slot/1/draw_stylebox = true
+slot/2/left_enabled = false
+slot/2/left_type = 0
+slot/2/left_color = Color(1, 1, 1, 1)
+slot/2/left_icon = null
+slot/2/right_enabled = false
+slot/2/right_type = 0
+slot/2/right_color = Color(1, 1, 1, 1)
+slot/2/right_icon = null
+slot/2/draw_stylebox = true
+slot/3/left_enabled = false
+slot/3/left_type = 0
+slot/3/left_color = Color(1, 1, 1, 1)
+slot/3/left_icon = null
+slot/3/right_enabled = false
+slot/3/right_type = 0
+slot/3/right_color = Color(1, 1, 1, 1)
+slot/3/right_icon = null
+slot/3/draw_stylebox = true
+slot/4/left_enabled = false
+slot/4/left_type = 0
+slot/4/left_color = Color(1, 1, 1, 1)
+slot/4/left_icon = null
+slot/4/right_enabled = false
+slot/4/right_type = 0
+slot/4/right_color = Color(1, 1, 1, 1)
+slot/4/right_icon = null
+slot/4/draw_stylebox = true
+slot/5/left_enabled = false
+slot/5/left_type = 0
+slot/5/left_color = Color(1, 1, 1, 1)
+slot/5/left_icon = null
+slot/5/right_enabled = false
+slot/5/right_type = 0
+slot/5/right_color = Color(1, 1, 1, 1)
+slot/5/right_icon = null
+slot/5/draw_stylebox = true
+slot/6/left_enabled = false
+slot/6/left_type = 0
+slot/6/left_color = Color(1, 1, 1, 1)
+slot/6/left_icon = null
+slot/6/right_enabled = false
+slot/6/right_type = 0
+slot/6/right_color = Color(1, 1, 1, 1)
+slot/6/right_icon = null
+slot/6/draw_stylebox = true
+script = ExtResource("1_gvrl8")
+metadata/command = "calculator"
+metadata/utility = true
+metadata/input = false
+
+[node name="Screen" type="CodeEdit" parent="."]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+editable = false
+delimiter_strings = Array[String](["\" \"", "' '"])
+
+[node name="MarginContainer7" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_bottom = 4
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "("
+metadata/calc = "("
+
+[node name="Button2" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = ")"
+metadata/calc = ")"
+
+[node name="Button3" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "C"
+metadata/calc = "clear"
+
+[node name="Button4" type="Button" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "⌫"
+metadata/calc = "del"
+
+[node name="HBoxContainer5" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "7"
+metadata/calc = "7"
+
+[node name="Button2" type="Button" parent="HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "8"
+metadata/calc = "8"
+
+[node name="Button3" type="Button" parent="HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "9"
+metadata/calc = "9"
+
+[node name="Button4" type="Button" parent="HBoxContainer5"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "÷"
+metadata/calc = "/"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "4"
+metadata/calc = "4"
+
+[node name="Button2" type="Button" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "5"
+metadata/calc = "5"
+
+[node name="Button3" type="Button" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "6"
+metadata/calc = "6"
+
+[node name="Button4" type="Button" parent="HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "×"
+metadata/calc = "*"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "1"
+metadata/calc = "1"
+
+[node name="Button2" type="Button" parent="HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "2"
+metadata/calc = "2"
+
+[node name="Button3" type="Button" parent="HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "3"
+metadata/calc = "3"
+
+[node name="Button4" type="Button" parent="HBoxContainer3"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "-"
+metadata/calc = "-"
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="."]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Button" type="Button" parent="HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "0"
+metadata/calc = "0"
+
+[node name="Button2" type="Button" parent="HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "."
+metadata/calc = "."
+
+[node name="Button3" type="Button" parent="HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "="
+metadata/calc = "="
+
+[node name="Button4" type="Button" parent="HBoxContainer4"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "+"
+metadata/calc = "+"
