@@ -33,7 +33,6 @@ var save_load
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	Nodes.hide()
 	$mainmenu.hide()
 	$NoLocationPopup.hide()
 	$Console.hide()
@@ -144,7 +143,7 @@ func new_patch():
 	graph_edit.scroll_offset = Vector2(0, 0)
 	
 		#Generate input and output nodes
-	var effect: GraphNode = Nodes.get_node(NodePath("inputfile")).duplicate()
+	var effect = Utilities.nodes["inputfile"].instantiate()
 	effect.name = "inputfile"
 	get_node("GraphEdit").add_child(effect, true)
 	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
@@ -153,7 +152,7 @@ func new_patch():
 	effect.position_offset = Vector2(20,80)
 	default_input_node = effect #store a reference to this node to allow for loading into it directly if software launched with a wav file argument
 	
-	effect = Nodes.get_node(NodePath("outputfile")).duplicate()
+	effect = Utilities.nodes["outputfile"].instantiate()
 	effect.name = "outputfile"
 	get_node("GraphEdit").add_child(effect, true)
 	effect.init() #initialise ui from user prefs
@@ -501,6 +500,7 @@ func _on_save_dialog_file_selected(path: String) -> void:
 		currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 		save_load.load_graph_edit(helpfile)
 	elif savestate == "quit":
+		undo_redo.free()
 		await get_tree().create_timer(0.25).timeout #little pause so that it feels like it actually saved even though it did
 		get_tree().quit()
 	elif savestate == "saveas":
@@ -627,6 +627,7 @@ func _on_save_changes_button_down() -> void:
 			currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 			save_load.load_graph_edit(helpfile)
 		elif savestate == "quit":
+			undo_redo.free()
 			await get_tree().create_timer(0.25).timeout #little pause so that it feels like it actually saved even though it did
 			get_tree().quit()
 			
@@ -644,6 +645,7 @@ func _on_dont_save_changes_button_down() -> void:
 		currentfile = "none" #reset current file to none for save tracking so user cant save over help file
 		save_load.load_graph_edit(helpfile)
 	elif savestate == "quit":
+		undo_redo.free()
 		get_tree().quit()
 	
 	savestate = "none"
@@ -661,6 +663,7 @@ func _notification(what):
 			$SaveChangesPopup.popup_centered()
 			#$HelpWindow.hide()
 		else:
+			undo_redo.free()
 			get_tree().quit() # default behavior
 			
 func _open_output_folder():

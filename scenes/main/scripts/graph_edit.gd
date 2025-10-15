@@ -50,7 +50,8 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 		if node_info.get("category", "") == "utility":
 			#Find utility node with matching name and create a version of it in the graph edit
 			#and position it close to the origin right click to open the menu
-			var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
+			#var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
+			var effect = Utilities.nodes[command].instantiate()
 			effect.name = command
 			add_child(effect, true)
 			if command == "outputfile":
