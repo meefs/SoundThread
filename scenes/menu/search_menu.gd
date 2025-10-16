@@ -3,6 +3,7 @@ extends PopupPanel
 @onready var item_container: VBoxContainer = $VBoxContainer/ScrollContainer/ItemContainer
 @onready var scroll_container: ScrollContainer = $VBoxContainer/ScrollContainer
 @onready var search_bar = $VBoxContainer/SearchBar
+@onready var mode_label = $VBoxContainer/ReplaceLabel
 var node_data = {} #stores node data for each node to display in help popup
 var replace_node = false
 var node_to_replace
@@ -114,7 +115,10 @@ func display_items(filter: String):
 	#if DisplayServer.screen_get_dpi(0) >= 144:
 		#self.size.y = min((item_container.size.y + search_bar.size.y + 12) * 2, 820) #i think this will scale for retina screens but might be wrong
 	#else:
-	self.size.y = min((item_container.size.y + search_bar.size.y + 12) * uiscale, 410 * uiscale)
+	if mode_label.visible:
+		self.size.y = min((item_container.size.y + search_bar.size.y + 16 + mode_label.size.y) * uiscale, 410 * uiscale)
+	else:
+		self.size.y = min((item_container.size.y + search_bar.size.y + 12) * uiscale, 410 * uiscale)
 	
 	#highlight first button
 	_on_search_bar_editing_toggled(true)
