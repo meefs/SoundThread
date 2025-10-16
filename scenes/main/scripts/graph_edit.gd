@@ -469,8 +469,8 @@ func copy_selected_nodes():
 		var is_from_selected = from_ref != null and selected_nodes.get(from_ref, false)
 		var is_to_selected = to_ref != null and selected_nodes.get(to_ref, false)
 
-		# Skip if any of the connected nodes are 'inputfile' or 'outputfile'
-		if (from_ref != null and (from_ref.get_meta("command") == "inputfile" or from_ref.get_meta("command") == "outputfile")) or (to_ref != null and (to_ref.get_meta("command") == "inputfile" or to_ref.get_meta("command") == "outputfile")):
+		# Skip if any of the connected nodes are 'outputfile'
+		if (from_ref != null and from_ref.get_meta("command") == "outputfile") or (to_ref != null and to_ref.get_meta("command") == "outputfile"):
 			continue
 
 		if is_from_selected and is_to_selected:
