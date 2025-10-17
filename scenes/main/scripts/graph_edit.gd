@@ -66,6 +66,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			effect.connect("open_help", open_help)
 			if effect.has_signal("node_moved"):
 				effect.node_moved.connect(_auto_link_nodes)
+			effect.dragged.connect(node_position_changed.bind(effect))
 			effect.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 			_register_inputs_in_node(effect) #link sliders for changes tracking
 			_register_node_movement() #link nodes for tracking position changes for changes tracking
@@ -260,6 +261,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 					elif param_data.get("uitype", "") == "addremoveinlets":
 						var addremove = addremoveinlets.instantiate()
 						addremove.name = "addremoveinlets"
+						addremove.undo_redo = control_script.undo_redo #link to main undo redo
 						
 						#get parameters
 						var min_inlets = param_data.get("minrange", 0)
@@ -318,6 +320,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			control_script.undo_redo.add_do_reference(graphnode)
 			control_script.undo_redo.add_undo_method(delete_node.bind(graphnode))
 			control_script.undo_redo.commit_action()
+			#graphnode.undo_redo = control_script.undo_redo
 			graphnode.connect("open_help", open_help)
 			graphnode.connect("inlet_removed", Callable(self, "on_inlet_removed"))
 			graphnode.node_moved.connect(_auto_link_nodes)
