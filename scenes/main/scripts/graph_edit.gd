@@ -386,8 +386,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			pass
 
 func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
-	control_script.undo_redo.create_action("Delete Nodes (Undo only)")
-
+	control_script.undo_redo.create_action("Delete Nodes")
+	
+	#Collect node data for undo
 	for node_name in nodes:
 		var node: GraphNode = get_node_or_null(NodePath(node_name))
 		if node and is_instance_valid(node):
@@ -395,37 +396,39 @@ func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
 			if node.get_meta("command") == "outputfile":
 				continue
 
-			# Store duplicate and state for undo
-			var node_data = node.duplicate()
-			var position = node.position_offset
-
-			# Store all connections for undo
-			var conns := []
-			for con in get_connection_list():
-				if con["to_node"] == node.name or con["from_node"] == node.name:
-					conns.append(con)
-
-			# Delete
-			remove_connections_to_node(node)
-			node.queue_free()
-			control_script.changesmade = true
-
-			# Register undo restore
-			control_script.undo_redo.add_undo_method(Callable(self, "add_child").bind(node_data, true))
-			control_script.undo_redo.add_undo_method(Callable(node_data, "set_position_offset").bind(position))
-			for con in conns:
-				control_script.undo_redo.add_undo_method(Callable(self, "connect_node").bind(
-					con["from_node"], con["from_port"],
-					con["to_node"], con["to_port"]
-				))
-			control_script.undo_redo.add_undo_method(Callable(self, "set_node_selected").bind(node_data, true))
-			control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-			control_script.undo_redo.add_undo_method(Callable(self, "_register_inputs_in_node").bind(node_data))
-			control_script.undo_redo.add_undo_method(Callable(self, "_register_node_movement"))
-
+			#register redo
+			control_script.undo_redo.add_do_method(delete_node.bind(node))
+			#register undo
+			control_script.undo_redo.add_undo_method(restore_node.bind(node))
+			control_script.undo_redo.add_undo_reference(node)
+			
+			
 	selected_nodes = {}
 
 	control_script.undo_redo.commit_action()
+	
+	for node_name in nodes:
+		var node: GraphNode = get_node_or_null(NodePath(node_name))
+		if node and is_instance_valid(node):
+			# Skip output nodes
+			if node.get_meta("command") == "outputfile":
+				continue
+			delete_node(node)
+			
+
+func delete_node(node_to_delete: GraphNode) -> void:
+	remove_connections_to_node(node_to_delete)
+	remove_child(node_to_delete)
+	control_script.changesmade = true
+
+func restore_node(node_to_restore: GraphNode) -> void:
+	add_child(node_to_restore)
+	set_node_selected(node_to_restore, true)
+	_track_changes()
+	_register_inputs_in_node(node_to_restore)
+	_register_node_movement()
+	
+
 
 func set_node_selected(node: Node, selected: bool) -> void:
 	selected_nodes[node] = selected

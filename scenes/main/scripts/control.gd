@@ -54,7 +54,7 @@ func _ready() -> void:
 	$LoadDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	$LoadDialog.filters = ["*.thd"]
 	
-	
+	undo_redo.max_steps = 20
 	
 	get_tree().set_auto_accept_quit(false) #disable closing the app with the x and instead handle it internally
 	
@@ -309,8 +309,8 @@ func _input(event):
 		simulate_mouse_click()
 		await get_tree().process_frame
 		undo_redo.undo()
-	#elif event.is_action_pressed("redo"):
-		#undo_redo.redo()
+	elif event.is_action_pressed("redo"):
+		undo_redo.redo()
 	elif event.is_action_pressed("save"):
 		if currentfile == "none":
 			savestate = "saveas"
