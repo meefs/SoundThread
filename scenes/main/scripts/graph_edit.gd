@@ -54,7 +54,13 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			#var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
 			var effect = Utilities.nodes[command].instantiate()
 			effect.name = command
-			add_child(effect, true)
+			#add node and register it for undo redo
+			control_script.undo_redo.create_action("Add Node")
+			control_script.undo_redo.add_do_method(add_child.bind(effect, true))
+			control_script.undo_redo.add_do_reference(effect)
+			control_script.undo_redo.add_undo_method(delete_node.bind(effect))
+			control_script.undo_redo.commit_action()
+			
 			if command == "outputfile":
 				effect.init() #initialise ui from user prefs
 			effect.connect("open_help", open_help)
@@ -66,13 +72,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 
 			control_script.changesmade = true
 
-			if not skip_undo_redo:
-				# Remove node with UndoRedo
-				control_script.undo_redo.create_action("Add Node")
-				control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
-				control_script.undo_redo.add_undo_method(Callable(effect, "queue_free"))
-				control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-				control_script.undo_redo.commit_action()
+			
 			
 			return effect
 		else: #auto generate node from json
@@ -313,20 +313,19 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			
 			graphnode.set_script(node_logic)
 			
-			add_child(graphnode, true)
+			control_script.undo_redo.create_action("Add Node")
+			control_script.undo_redo.add_do_method(add_child.bind(graphnode))
+			control_script.undo_redo.add_do_reference(graphnode)
+			control_script.undo_redo.add_undo_method(delete_node.bind(graphnode))
+			control_script.undo_redo.commit_action()
 			graphnode.connect("open_help", open_help)
 			graphnode.connect("inlet_removed", Callable(self, "on_inlet_removed"))
 			graphnode.node_moved.connect(_auto_link_nodes)
 			_register_inputs_in_node(graphnode) #link sliders for changes tracking
 			_register_node_movement() #link nodes for tracking position changes for changes tracking
 			
-			if not skip_undo_redo:
-				# Remove node with UndoRedo
-				control_script.undo_redo.create_action("Add Node")
-				control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(graphnode))
-				control_script.undo_redo.add_undo_method(Callable(graphnode, "queue_free"))
-				control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-				control_script.undo_redo.commit_action()
+			
+			
 			
 			return graphnode
 			
@@ -425,7 +424,7 @@ func delete_node(node_to_delete: GraphNode) -> void:
 func restore_node(node_to_restore: GraphNode) -> void:
 	add_child(node_to_restore)
 	node_to_restore.connect("open_help", open_help)
-	node_to_restore.node_moved.connect(_auto_link_nodes)
+	node_to_restore.node_moved.connect(_auto_link_nodes)	
 	set_node_selected(node_to_restore, true)
 	_track_changes()
 	_register_inputs_in_node(node_to_restore)
