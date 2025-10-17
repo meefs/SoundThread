@@ -5,7 +5,6 @@ var node_data = {} #stores json file
 var json = "res://scenes/main/process_help.json"
 
 func _ready() -> void:
-	Nodes.hide()
 		
 	load_json()
 	hidpi_adjustment()
