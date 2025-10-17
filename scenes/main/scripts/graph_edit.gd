@@ -395,7 +395,7 @@ func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
 			# Skip output nodes
 			if node.get_meta("command") == "outputfile":
 				continue
-
+			
 			#register redo
 			control_script.undo_redo.add_do_method(delete_node.bind(node))
 			#register undo
@@ -405,6 +405,12 @@ func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
 			
 	selected_nodes = {}
 
+	var connections_to_restore = []
+	for con in get_connection_list():
+		if (con["from_node"] in nodes or con["to_node"] in nodes) and !connections_to_restore.has(con):
+			connections_to_restore.append(con)
+			
+	control_script.undo_redo.add_undo_method(restore_connections.bind(connections_to_restore))
 	control_script.undo_redo.commit_action()
 	
 	for node_name in nodes:
@@ -428,7 +434,14 @@ func restore_node(node_to_restore: GraphNode) -> void:
 	_register_inputs_in_node(node_to_restore)
 	_register_node_movement()
 	
-
+func restore_connections(connections_to_restore: Array) -> void:
+	for con in connections_to_restore:
+		var from_node = con["from_node"]
+		var from_port = con["from_port"]
+		var to_node = con["to_node"]
+		var to_port = con["to_port"]
+		if has_node(NodePath(from_node)) and has_node(NodePath(to_node)):
+			connect_node(from_node, from_port, to_node, to_port)
 
 func set_node_selected(node: Node, selected: bool) -> void:
 	selected_nodes[node] = selected
