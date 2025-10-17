@@ -344,6 +344,10 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 	var to_port_type = to_graph_node.get_input_port_type(to_port)
 	var from_port_type = from_graph_node.get_output_port_type(from_port)
 	
+	#skip if the nodes are already connected
+	if is_node_connected(from_node, from_port, to_node, to_port):
+		return
+	
 	#skip if this isnt a valid connection
 	if to_port_type != from_port_type:
 		return
@@ -365,12 +369,19 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 	if from_graph_node.get_meta("command") == "inputfile" and to_graph_node.get_meta("command") == "outputfile":
 		return
 
+	
 	# If no conflict, allow the connection
-	connect_node(from_node, from_port, to_node, to_port)
+	control_script.undo_redo.create_action("Connect Nodes")
+	control_script.undo_redo.add_do_method(connect_node.bind(from_node, from_port, to_node, to_port))
+	control_script.undo_redo.add_undo_method(disconnect_node.bind(from_node, from_port, to_node, to_port))
+	control_script.undo_redo.commit_action()
 	control_script.changesmade = true
 
 func _on_graph_edit_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
-	disconnect_node(from_node, from_port, to_node, to_port)
+	control_script.undo_redo.create_action("Disconnect Nodes")
+	control_script.undo_redo.add_do_method(disconnect_node.bind(from_node, from_port, to_node, to_port))
+	control_script.undo_redo.add_undo_method(connect_node.bind(from_node, from_port, to_node, to_port))
+	control_script.undo_redo.commit_action()
 	control_script.changesmade = true
 
 func _on_graph_edit_node_selected(node: Node) -> void:
