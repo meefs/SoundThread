@@ -433,6 +433,8 @@ func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
 	control_script.undo_redo.add_undo_method(restore_connections.bind(connections_to_restore))
 	control_script.undo_redo.commit_action()
 	
+	force_hide_tooltips()
+	
 
 func delete_node(node_to_delete: GraphNode) -> void:
 	remove_connections_to_node(node_to_delete)
@@ -513,6 +515,7 @@ func paste_copied_nodes():
 
 	var pasted_connections = copied_connections.duplicate(true)
 	
+	
 	control_script.undo_redo.create_action("Paste Nodes")
 	
 	var pasted_nodes = []
@@ -552,6 +555,8 @@ func paste_copied_nodes():
 
 	control_script.undo_redo.commit_action()
 	
+	force_hide_tooltips()
+	
 	#Select pasted nodes
 	for pasted_node in pasted_nodes:
 		set_selected(pasted_node)
@@ -559,6 +564,18 @@ func paste_copied_nodes():
 	
 	control_script.changesmade = true
 	
+func force_hide_tooltips():
+	#very janky fix that makes and removes a popup in one frame to force the engine to hide all visible popups to stop popups getting stuck
+	#seems to be more reliable that faking a middle mouse click
+	var popup := Popup.new()
+	add_child(popup)
+	popup.size = Vector2(1,1)
+	popup.transparent_bg = true
+	popup.borderless = true
+	popup.unresizable = true
+	await get_tree().process_frame
+	popup.popup()
+	popup.queue_free()
 	
 #functions for tracking changes for save state detection
 func _register_inputs_in_node(node: Node):
