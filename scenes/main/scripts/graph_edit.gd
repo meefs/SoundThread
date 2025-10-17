@@ -321,6 +321,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			graphnode.connect("open_help", open_help)
 			graphnode.connect("inlet_removed", Callable(self, "on_inlet_removed"))
 			graphnode.node_moved.connect(_auto_link_nodes)
+			graphnode.dragged.connect(node_position_changed.bind(graphnode))
 			_register_inputs_in_node(graphnode) #link sliders for changes tracking
 			_register_node_movement() #link nodes for tracking position changes for changes tracking
 			
@@ -800,3 +801,12 @@ func _same_port_type(from: String, from_port: int, to: String, to_port: int) -> 
 			return false
 	else:
 		return false
+		
+func node_position_changed(from: Vector2, to: Vector2, node: Node) -> void:
+	control_script.undo_redo.create_action("Move Node")
+	control_script.undo_redo.add_do_method(move_node.bind(node, to))
+	control_script.undo_redo.add_undo_method(move_node.bind(node, from))
+	control_script.undo_redo.commit_action()
+
+func move_node(node: Node, to: Vector2) -> void:
+	node.position_offset = to
