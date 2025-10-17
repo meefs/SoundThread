@@ -131,6 +131,9 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						#instance the slider scene
 						var slider = valueslider.instantiate()
 						
+						slider.undo_redo = control_script.undo_redo
+						
+						
 						#get slider text
 						var slider_label = param_data.get("paramname", "")
 						var slider_tooltip  = param_data.get("paramdescription", "")
@@ -176,6 +179,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						hslider.max_value = maxrange
 						hslider.step = step
 						hslider.value = value
+						slider.previous_value = value #used for undo redo
 						hslider.exp_edit = exponential
 						
 						#add output duration meta to main if true
@@ -320,7 +324,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			control_script.undo_redo.add_do_reference(graphnode)
 			control_script.undo_redo.add_undo_method(delete_node.bind(graphnode))
 			control_script.undo_redo.commit_action()
-			#graphnode.undo_redo = control_script.undo_redo
+			graphnode.undo_redo = control_script.undo_redo
 			graphnode.connect("open_help", open_help)
 			graphnode.connect("inlet_removed", Callable(self, "on_inlet_removed"))
 			graphnode.node_moved.connect(_auto_link_nodes)

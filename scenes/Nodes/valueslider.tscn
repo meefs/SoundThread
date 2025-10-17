@@ -88,6 +88,7 @@ offset_right = 304.0
 offset_bottom = 295.0
 text = "Cancel"
 
+[connection signal="drag_ended" from="HSplitContainer/HSlider" to="." method="_on_h_slider_drag_ended"]
 [connection signal="gui_input" from="HSplitContainer/HSlider" to="." method="_on_h_slider_gui_input"]
 [connection signal="value_changed" from="HSplitContainer/HSlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="index_pressed" from="HSplitContainer/HSlider/PopupMenu" to="." method="_on_popup_menu_index_pressed"]

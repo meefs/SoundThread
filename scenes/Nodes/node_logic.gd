@@ -1,6 +1,7 @@
 extends GraphNode
 
 @export var min_gap: float = 0.5  # editable value in inspector for the minimum gap between min and max
+var undo_redo: UndoRedo
 signal open_help
 signal inlet_removed
 signal node_moved
@@ -128,6 +129,7 @@ func _on_position_offset_changed():
 	
 	
 func _randomise_sliders():
+	undo_redo.create_action("Randomise Sliders")
 	var sliders := _get_all_hsliders(self) #finds all sliders
 	#links sliders to this script
 	for slider in sliders:
@@ -142,5 +144,10 @@ func _randomise_sliders():
 		else:
 			rnd_value = (rnd * (maximum - minimum)) + minimum
 		
-		slider.value = rnd_value
-	
+		
+		undo_redo.add_do_method(set_slider_value.bind(slider, rnd_value))
+		undo_redo.add_undo_method(set_slider_value.bind(slider, slider.value))
+		
+	undo_redo.commit_action()
+func set_slider_value(slider: HSlider, value: float) -> void:
+	slider.value = value
