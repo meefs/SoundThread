@@ -14,6 +14,8 @@ func _ready() -> void:
 	$HSplitContainer/LineEdit.text = str($HSplitContainer/HSlider.value) # initial value
 	$BreakFileMaker.hide()
 	editor.connect("automation_updated", Callable(self, "_on_automation_data_received"))
+	
+	previous_value = slider.value
 
 
 func _on_h_slider_value_changed(value: float) -> void:
@@ -128,4 +130,4 @@ func _on_h_slider_drag_ended(value_changed: bool) -> void:
 		
 func set_slider_value(value: float) -> void:
 	slider.value = value
-	previous_value = value
+	
