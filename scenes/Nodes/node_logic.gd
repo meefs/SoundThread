@@ -2,6 +2,7 @@ extends GraphNode
 
 @export var min_gap: float = 0.5  # editable value in inspector for the minimum gap between min and max
 var undo_redo: UndoRedo
+var button_states = {}
 signal open_help
 signal inlet_removed
 signal node_moved
@@ -12,6 +13,8 @@ func _ready() -> void:
 	for slider in sliders:
 		slider.value_changed.connect(_on_slider_value_changed.bind(slider))
 		
+	#link all buttons for undo redo
+	get_all_buttons()
 	#add button to title bar
 	var titlebar = self.get_titlebar_hbox()
 	
@@ -50,6 +53,15 @@ func _get_all_hsliders(node: Node) -> Array:
 			result += _get_all_hsliders(child)
 	return result
 
+func get_all_buttons() -> void:
+	for child in get_children():
+		if child is OptionButton:
+			button_states[child] = child.selected
+			child.item_selected.connect(button_changed.bind(child))
+		elif child is CheckButton:
+			button_states[child] = child.button_pressed
+			child.toggled.connect(button_changed.bind(child))
+			
 func _on_slider_value_changed(value: float, changed_slider: HSlider) -> void:
 	#checks if the slider moved has min or max meta data
 	var is_min = changed_slider.get_meta("min")
@@ -151,3 +163,18 @@ func _randomise_sliders():
 	undo_redo.commit_action()
 func set_slider_value(slider: HSlider, value: float) -> void:
 	slider.value = value
+
+func button_changed(value, button) -> void:
+	if button_states[button] != value:
+		undo_redo.create_action("Change Button Value")
+		undo_redo.add_do_method(set_button_value.bind(value, button))
+		undo_redo.add_undo_method(set_button_value.bind(button_states[button], button))
+		undo_redo.commit_action()
+		
+func set_button_value(value, button) -> void:
+	if button is OptionButton:
+		button.selected = value
+	elif button is CheckButton:
+		button.set_pressed_no_signal(value)
+		
+	button_states[button] = value
