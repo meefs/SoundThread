@@ -562,6 +562,7 @@ func paste_copied_nodes():
 	
 	#Select pasted nodes
 	for pasted_node in pasted_nodes:
+		selected_nodes.clear()
 		set_selected(pasted_node)
 		selected_nodes[pasted_node] = true
 	
