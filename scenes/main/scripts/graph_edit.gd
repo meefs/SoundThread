@@ -405,6 +405,9 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			pass
 
 func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
+	if nodes.size() == 0:
+		return
+	
 	control_script.undo_redo.create_action("Delete Nodes")
 	
 	#Collect node data for undo
