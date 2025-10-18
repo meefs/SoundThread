@@ -373,7 +373,7 @@ func _on_file_dialog_dir_selected(dir: String) -> void:
 	ConfigHandler.save_interface_settings("last_used_output_folder", dir)
 	if output_folder_label != null:
 		output_folder_label.text = dir
-		output_folder_label.tooltip_text = dir
+		output_folder_label.get_parent().tooltip_text = dir
 	console_output.clear()
 	var interface_settings = ConfigHandler.load_interface_settings()
 	if interface_settings.disable_progress_bar == false:
