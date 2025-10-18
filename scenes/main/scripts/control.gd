@@ -697,10 +697,11 @@ func _on_graph_edit_popup_request(at_position: Vector2) -> void:
 	var window_size = get_window().size * DisplayServer.screen_get_scale()
 
 	#see if it was empty space or a node that was right clicked
+	var clicked_position = (effect_position + graph_edit.scroll_offset) / graph_edit.zoom
 	var clicked_node
 	for child in graph_edit.get_children():
 		if child is GraphNode:
-			if Rect2(child.position, child.size).has_point(effect_position):
+			if Rect2(child.position_offset, child.size).has_point(clicked_position):
 				clicked_node = child
 				break
 	
@@ -828,15 +829,16 @@ func swap_zoom_and_move(toggled: bool):
 		graph_edit.set_panning_scheme(0)
 
 func on_files_dropped(files):
-	var mouse_pos = graph_edit.get_local_mouse_position()
+	var mouse_pos = (graph_edit.get_local_mouse_position() + graph_edit.scroll_offset) / graph_edit.zoom
 	
 	#see if files were dropped on an input node
 	var dropped_node
 	for child in graph_edit.get_children():
 		if child is GraphNode:
-			if Rect2(child.position, child.size).has_point(mouse_pos):
+			if Rect2(child.position_offset, child.size).has_point(mouse_pos):
 				dropped_node = child
 				break
+				
 				
 	#if they were dropped on a node and the first file in the array is a wav file replace the file in the input node
 	if dropped_node and dropped_node.has_meta("command") and dropped_node.get_meta("command") == "inputfile":
