@@ -138,6 +138,7 @@ func load_graph_edit(path: String):
 			node.queue_free()
 
 	await get_tree().process_frame  # Ensure nodes are freed before adding new ones
+	
 
 	#set fft size and window overlap if available
 	if graph_data.has("fftsize"):
@@ -244,6 +245,8 @@ func load_graph_edit(path: String):
 	print("Graph loaded.")
 	get_window().title = "SoundThread - " + path.get_file().trim_suffix(".thd")
 	
+	#clear all undo history from old threads and building this one
+	control_script.undo_redo.clear_history()
 	control_script.changesmade = false
 	
 	

@@ -140,6 +140,8 @@ func new_patch():
 	
 	await get_tree().process_frame  # Wait for nodes to actually be removed
 	
+	undo_redo.clear_history()
+	
 	graph_edit.scroll_offset = Vector2(0, 0)
 	
 		#Generate input and output nodes
