@@ -440,6 +440,7 @@ func delete_node(node_to_delete: GraphNode) -> void:
 	remove_connections_to_node(node_to_delete)
 	#remove child instead of queue free keeps a reference to the node in memory (until undo limit is hit) meaning nodes can be restored easily
 	remove_child(node_to_delete)
+	selected_nodes[node_to_delete] = false
 	control_script.changesmade = true
 
 func restore_node(node_to_restore: GraphNode) -> void:
