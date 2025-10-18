@@ -873,3 +873,15 @@ func _on_fft_size_item_selected(index: int) -> void:
 
 func _on_fft_overlap_item_selected(index: int) -> void:
 	run_thread.fft_overlap = index + 1
+
+
+func _on_undo_button_button_down() -> void:
+	simulate_mouse_click()
+	await get_tree().process_frame
+	undo_redo.undo()
+	
+
+func _on_redo_button_button_down() -> void:
+	simulate_mouse_click()
+	await get_tree().process_frame
+	undo_redo.redo()
