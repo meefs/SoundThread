@@ -1,14 +1,16 @@
-[gd_scene load_steps=13 format=3 uid="uid://bcs87y7ptx3ke"]
+[gd_scene load_steps=15 format=3 uid="uid://bcs87y7ptx3ke"]
 
 [ext_resource type="Script" uid="uid://bdlfvuljckmu1" path="res://scenes/main/scripts/control.gd" id="1_2f0aq"]
 [ext_resource type="Script" uid="uid://l2yejnjysupr" path="res://scenes/main/scripts/graph_edit.gd" id="2_3ioqo"]
 [ext_resource type="Texture2D" uid="uid://drn34trxhf80f" path="res://theme/images/open_explore.png" id="3_4na11"]
 [ext_resource type="PackedScene" uid="uid://b0wdj8v6o0wq0" path="res://scenes/menu/menu.tscn" id="3_dtf4o"]
 [ext_resource type="Texture2D" uid="uid://cdwux1smquvpi" path="res://theme/images/logo.png" id="4_3ioqo"]
+[ext_resource type="Texture2D" uid="uid://cjdlu2gooh81h" path="res://theme/images/undo.png" id="4_c1dxk"]
 [ext_resource type="Script" uid="uid://c503vew41pw80" path="res://scenes/main/scripts/color_rect_theme_invert.gd" id="4_mg8al"]
 [ext_resource type="PackedScene" uid="uid://dta7rfalv4uvd" path="res://scenes/main/audio_settings.tscn" id="5_dtf4o"]
 [ext_resource type="Script" uid="uid://cyhaucukdha8a" path="res://scenes/main/scripts/console.gd" id="5_fbaj0"]
 [ext_resource type="Script" uid="uid://wja0lo4nobh1" path="res://scenes/main/scripts/about_menu.gd" id="5_yf4wl"]
+[ext_resource type="Texture2D" uid="uid://bj7u7rhbxvsrq" path="res://theme/images/redo.png" id="5_yxbua"]
 [ext_resource type="Script" uid="uid://dlcbmyu3s2phc" path="res://scenes/menu/search_menu.gd" id="6_fyarh"]
 [ext_resource type="Script" uid="uid://b6r7k326k3vif" path="res://scenes/Nodes/check_for_updates.gd" id="7_1kc3g"]
 [ext_resource type="PackedScene" uid="uid://c1a6elrpk4eks" path="res://scenes/main/settings.tscn" id="8_16l5g"]
@@ -39,6 +41,24 @@ offset_right = 325.0
 offset_bottom = 71.0
 tooltip_text = "Explore available processes (Ctrl/Cmd + E)"
 icon = ExtResource("3_4na11")
+
+[node name="UndoButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 329.0
+offset_top = 44.0
+offset_right = 353.0
+offset_bottom = 71.0
+tooltip_text = "Undo (ctrl/cmd + z)"
+icon = ExtResource("4_c1dxk")
+
+[node name="RedoButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 357.0
+offset_top = 44.0
+offset_right = 381.0
+offset_bottom = 71.0
+tooltip_text = "Redo (ctrl/cmd + y)"
+icon = ExtResource("5_yxbua")
 
 [node name="FileDialog" type="FileDialog" parent="."]
 title = "Open a Directory"
@@ -575,17 +595,17 @@ text = "Stop Running Thread"
 
 [node name="FFTSizeLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 348.0
+offset_left = 393.0
 offset_top = 48.0
-offset_right = 420.0
+offset_right = 465.0
 offset_bottom = 67.0
 text = "FFT Size:"
 
 [node name="FFTSize" type="OptionButton" parent="."]
 layout_mode = 0
-offset_left = 425.0
+offset_left = 470.0
 offset_top = 45.0
-offset_right = 504.0
+offset_right = 549.0
 offset_bottom = 72.0
 tooltip_text = "Adjusts the number of analysis points used by the frequency domain processes in this thread. More points give better frequency resolution but worse time resolution."
 item_count = 14
@@ -620,17 +640,17 @@ popup/item_13/id = 13
 
 [node name="FFTOverlapLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 517.0
+offset_left = 562.0
 offset_top = 48.0
-offset_right = 617.0
+offset_right = 662.0
 offset_bottom = 67.0
 text = "FFT Overlap:"
 
 [node name="FFTOverlap" type="OptionButton" parent="."]
 layout_mode = 0
-offset_left = 623.0
+offset_left = 668.0
 offset_top = 45.0
-offset_right = 702.0
+offset_right = 747.0
 offset_bottom = 72.0
 tooltip_text = "Adjusts the number of analysis points used by the frequency domain processes in this thread. More points give better frequency resolution but worse time resolution."
 item_count = 4
@@ -653,6 +673,8 @@ popup/item_3/id = 3
 [connection signal="paste_nodes_request" from="GraphEdit" to="GraphEdit" method="_on_paste_nodes_request"]
 [connection signal="popup_request" from="GraphEdit" to="." method="_on_graph_edit_popup_request"]
 [connection signal="button_down" from="Button" to="." method="open_explore"]
+[connection signal="button_down" from="UndoButton" to="." method="_on_undo_button_button_down"]
+[connection signal="button_down" from="RedoButton" to="." method="_on_redo_button_button_down"]
 [connection signal="dir_selected" from="FileDialog" to="." method="_on_file_dialog_dir_selected"]
 [connection signal="close_requested" from="mainmenu" to="." method="_on_mainmenu_close_requested"]
 [connection signal="meta_clicked" from="NoLocationPopup/RichTextLabel" to="." method="_on_rich_text_label_meta_clicked"]

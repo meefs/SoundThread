@@ -2,6 +2,7 @@ extends Control
 
 signal add_inlet
 signal remove_inlet
+var undo_redo: UndoRedo
 var minimum_inlet_count
 var maximum_inlet_count
 var current_inlet_count
@@ -14,6 +15,12 @@ func _ready() -> void:
 
 
 func _on_add_inlet_button_button_down() -> void:
+	undo_redo.create_action("Add Inlet")
+	undo_redo.add_do_method(add_new)
+	undo_redo.add_undo_method(remove)
+	undo_redo.commit_action()
+	
+func add_new() -> void:
 	add_inlet.emit()
 	current_inlet_count += 1
 	set_meta("inlet_count", current_inlet_count)
@@ -21,6 +28,12 @@ func _on_add_inlet_button_button_down() -> void:
 
 
 func _on_remove_inlet_button_button_down() -> void:
+	undo_redo.create_action("Remove Inlet")
+	undo_redo.add_do_method(remove)
+	undo_redo.add_undo_method(add_new)
+	undo_redo.commit_action()
+	
+func remove() -> void:
 	remove_inlet.emit()
 	current_inlet_count -= 1
 	set_meta("inlet_count", current_inlet_count)

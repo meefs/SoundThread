@@ -2,6 +2,9 @@ extends VBoxContainer
 
 @onready var window := $BreakFileMaker
 @onready var editor := window.get_node("AutomationEditor")
+@onready var slider = $HSplitContainer/HSlider
+var undo_redo: UndoRedo
+var previous_value
 signal meta_changed
 
 
@@ -11,6 +14,8 @@ func _ready() -> void:
 	$HSplitContainer/LineEdit.text = str($HSplitContainer/HSlider.value) # initial value
 	$BreakFileMaker.hide()
 	editor.connect("automation_updated", Callable(self, "_on_automation_data_received"))
+	
+	previous_value = slider.value
 
 
 func _on_h_slider_value_changed(value: float) -> void:
@@ -114,3 +119,15 @@ func _on_break_file_maker_close_requested() -> void:
 
 func _on_meta_changed():
 	emit_signal("meta_changed")
+
+
+func _on_h_slider_drag_ended(value_changed: bool) -> void:
+	if slider.value != previous_value:
+		undo_redo.create_action("Change Slider Value")
+		undo_redo.add_do_method(set_slider_value.bind(slider.value))
+		undo_redo.add_undo_method(set_slider_value.bind(previous_value))
+		undo_redo.commit_action()
+		
+func set_slider_value(value: float) -> void:
+	slider.value = value
+	

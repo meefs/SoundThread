@@ -54,7 +54,7 @@ func _ready() -> void:
 	$LoadDialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	$LoadDialog.filters = ["*.thd"]
 	
-	
+	undo_redo.max_steps = 40
 	
 	get_tree().set_auto_accept_quit(false) #disable closing the app with the x and instead handle it internally
 	
@@ -149,6 +149,7 @@ func new_patch():
 	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
 	if effect.has_signal("node_moved"):
 		effect.node_moved.connect(graph_edit._auto_link_nodes)
+	effect.dragged.connect(graph_edit.node_position_changed.bind(effect))
 	effect.position_offset = Vector2(20,80)
 	default_input_node = effect #store a reference to this node to allow for loading into it directly if software launched with a wav file argument
 	
@@ -159,6 +160,7 @@ func new_patch():
 	effect.connect("open_help", Callable(open_help, "show_help_for_node"))
 	if effect.has_signal("node_moved"):
 		effect.node_moved.connect(graph_edit._auto_link_nodes)
+	effect.dragged.connect(graph_edit.node_position_changed.bind(effect))
 	effect.position_offset = Vector2((DisplayServer.screen_get_size().x - 480) / uiscale, 80)
 	graph_edit._register_node_movement() #link nodes for tracking position changes for changes tracking
 	
@@ -309,8 +311,8 @@ func _input(event):
 		simulate_mouse_click()
 		await get_tree().process_frame
 		undo_redo.undo()
-	#elif event.is_action_pressed("redo"):
-		#undo_redo.redo()
+	elif event.is_action_pressed("redo"):
+		undo_redo.redo()
 	elif event.is_action_pressed("save"):
 		if currentfile == "none":
 			savestate = "saveas"
@@ -871,3 +873,15 @@ func _on_fft_size_item_selected(index: int) -> void:
 
 func _on_fft_overlap_item_selected(index: int) -> void:
 	run_thread.fft_overlap = index + 1
+
+
+func _on_undo_button_button_down() -> void:
+	simulate_mouse_click()
+	await get_tree().process_frame
+	undo_redo.undo()
+	
+
+func _on_redo_button_button_down() -> void:
+	simulate_mouse_click()
+	await get_tree().process_frame
+	undo_redo.redo()

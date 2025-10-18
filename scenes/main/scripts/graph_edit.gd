@@ -7,6 +7,7 @@ var multiple_connections
 var selected_nodes = {} #used to track which nodes in the GraphEdit are selected
 var copied_nodes_data = [] #stores node data on ctrl+c
 var copied_connections = [] #stores all connections on ctrl+c
+var last_pasted_nodes = [] #stores last pasted nodes for undo/redo
 var node_data = {} #stores json with all nodes in it
 var valueslider = preload("res://scenes/Nodes/valueslider.tscn") #slider scene for use in nodes
 var addremoveinlets = preload("res://scenes/Nodes/addremoveinlets.tscn") #add remove inlets scene for use in nodes
@@ -53,25 +54,26 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			#var effect: GraphNode = Nodes.get_node(NodePath(command)).duplicate()
 			var effect = Utilities.nodes[command].instantiate()
 			effect.name = command
-			add_child(effect, true)
+			#add node and register it for undo redo
+			control_script.undo_redo.create_action("Add Node")
+			control_script.undo_redo.add_do_method(add_child.bind(effect, true))
+			control_script.undo_redo.add_do_reference(effect)
+			control_script.undo_redo.add_undo_method(delete_node.bind(effect))
+			control_script.undo_redo.commit_action()
+			
 			if command == "outputfile":
 				effect.init() #initialise ui from user prefs
 			effect.connect("open_help", open_help)
 			if effect.has_signal("node_moved"):
 				effect.node_moved.connect(_auto_link_nodes)
+			effect.dragged.connect(node_position_changed.bind(effect))
 			effect.set_position_offset((control_script.effect_position + graph_edit.scroll_offset) / graph_edit.zoom) #set node to current mouse position in graph edit
 			_register_inputs_in_node(effect) #link sliders for changes tracking
 			_register_node_movement() #link nodes for tracking position changes for changes tracking
 
 			control_script.changesmade = true
 
-			if not skip_undo_redo:
-				# Remove node with UndoRedo
-				control_script.undo_redo.create_action("Add Node")
-				control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(effect))
-				control_script.undo_redo.add_undo_method(Callable(effect, "queue_free"))
-				control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-				control_script.undo_redo.commit_action()
+			
 			
 			return effect
 		else: #auto generate node from json
@@ -129,6 +131,9 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						#instance the slider scene
 						var slider = valueslider.instantiate()
 						
+						slider.undo_redo = control_script.undo_redo
+						
+						
 						#get slider text
 						var slider_label = param_data.get("paramname", "")
 						var slider_tooltip  = param_data.get("paramdescription", "")
@@ -174,6 +179,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 						hslider.max_value = maxrange
 						hslider.step = step
 						hslider.value = value
+						slider.previous_value = value #used for undo redo
 						hslider.exp_edit = exponential
 						
 						#add output duration meta to main if true
@@ -259,6 +265,7 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 					elif param_data.get("uitype", "") == "addremoveinlets":
 						var addremove = addremoveinlets.instantiate()
 						addremove.name = "addremoveinlets"
+						addremove.undo_redo = control_script.undo_redo #link to main undo redo
 						
 						#get parameters
 						var min_inlets = param_data.get("minrange", 0)
@@ -312,20 +319,21 @@ func _make_node(command: String, skip_undo_redo := false) -> GraphNode:
 			
 			graphnode.set_script(node_logic)
 			
-			add_child(graphnode, true)
+			control_script.undo_redo.create_action("Add Node")
+			control_script.undo_redo.add_do_method(add_child.bind(graphnode))
+			control_script.undo_redo.add_do_reference(graphnode)
+			control_script.undo_redo.add_undo_method(delete_node.bind(graphnode))
+			control_script.undo_redo.commit_action()
+			graphnode.undo_redo = control_script.undo_redo
 			graphnode.connect("open_help", open_help)
 			graphnode.connect("inlet_removed", Callable(self, "on_inlet_removed"))
 			graphnode.node_moved.connect(_auto_link_nodes)
+			graphnode.dragged.connect(node_position_changed.bind(graphnode))
 			_register_inputs_in_node(graphnode) #link sliders for changes tracking
 			_register_node_movement() #link nodes for tracking position changes for changes tracking
 			
-			if not skip_undo_redo:
-				# Remove node with UndoRedo
-				control_script.undo_redo.create_action("Add Node")
-				control_script.undo_redo.add_undo_method(Callable(graph_edit, "remove_child").bind(graphnode))
-				control_script.undo_redo.add_undo_method(Callable(graphnode, "queue_free"))
-				control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-				control_script.undo_redo.commit_action()
+			
+			
 			
 			return graphnode
 			
@@ -343,6 +351,10 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 	# Get the type of the ports
 	var to_port_type = to_graph_node.get_input_port_type(to_port)
 	var from_port_type = from_graph_node.get_output_port_type(from_port)
+	
+	#skip if the nodes are already connected
+	if is_node_connected(from_node, from_port, to_node, to_port):
+		return
 	
 	#skip if this isnt a valid connection
 	if to_port_type != from_port_type:
@@ -365,12 +377,19 @@ func _on_connection_request(from_node: StringName, from_port: int, to_node: Stri
 	if from_graph_node.get_meta("command") == "inputfile" and to_graph_node.get_meta("command") == "outputfile":
 		return
 
+	
 	# If no conflict, allow the connection
-	connect_node(from_node, from_port, to_node, to_port)
+	control_script.undo_redo.create_action("Connect Nodes")
+	control_script.undo_redo.add_do_method(connect_node.bind(from_node, from_port, to_node, to_port))
+	control_script.undo_redo.add_undo_method(disconnect_node.bind(from_node, from_port, to_node, to_port))
+	control_script.undo_redo.commit_action()
 	control_script.changesmade = true
 
 func _on_graph_edit_disconnection_request(from_node: StringName, from_port: int, to_node: StringName, to_port: int) -> void:
-	disconnect_node(from_node, from_port, to_node, to_port)
+	control_script.undo_redo.create_action("Disconnect Nodes")
+	control_script.undo_redo.add_do_method(disconnect_node.bind(from_node, from_port, to_node, to_port))
+	control_script.undo_redo.add_undo_method(connect_node.bind(from_node, from_port, to_node, to_port))
+	control_script.undo_redo.commit_action()
 	control_script.changesmade = true
 
 func _on_graph_edit_node_selected(node: Node) -> void:
@@ -386,46 +405,78 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			pass
 
 func _on_graph_edit_delete_nodes_request(nodes: Array[StringName]) -> void:
-	control_script.undo_redo.create_action("Delete Nodes (Undo only)")
-
+	control_script.undo_redo.create_action("Delete Nodes")
+	
+	#Collect node data for undo
 	for node_name in nodes:
 		var node: GraphNode = get_node_or_null(NodePath(node_name))
 		if node and is_instance_valid(node):
 			# Skip output nodes
 			if node.get_meta("command") == "outputfile":
 				continue
-
-			# Store duplicate and state for undo
-			var node_data = node.duplicate()
-			var position = node.position_offset
-
-			# Store all connections for undo
-			var conns := []
-			for con in get_connection_list():
-				if con["to_node"] == node.name or con["from_node"] == node.name:
-					conns.append(con)
-
-			# Delete
-			remove_connections_to_node(node)
-			node.queue_free()
-			control_script.changesmade = true
-
-			# Register undo restore
-			control_script.undo_redo.add_undo_method(Callable(self, "add_child").bind(node_data, true))
-			control_script.undo_redo.add_undo_method(Callable(node_data, "set_position_offset").bind(position))
-			for con in conns:
-				control_script.undo_redo.add_undo_method(Callable(self, "connect_node").bind(
-					con["from_node"], con["from_port"],
-					con["to_node"], con["to_port"]
-				))
-			control_script.undo_redo.add_undo_method(Callable(self, "set_node_selected").bind(node_data, true))
-			control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-			control_script.undo_redo.add_undo_method(Callable(self, "_register_inputs_in_node").bind(node_data))
-			control_script.undo_redo.add_undo_method(Callable(self, "_register_node_movement"))
-
+			
+			#register redo
+			control_script.undo_redo.add_do_method(delete_node.bind(node))
+			#register undo
+			control_script.undo_redo.add_undo_method(restore_node.bind(node))
+			#store a reference to the removed node
+			control_script.undo_redo.add_undo_reference(node)
+			
+			
+	#remove deleted nodes from the selected nodes dictionary
 	selected_nodes = {}
 
+	#get all connections going to the deleted nodes and store them in an array
+	var connections_to_restore = get_connections_to_nodes(nodes)
+			
+	#register undo method for restoring those connections
+	control_script.undo_redo.add_undo_method(restore_connections.bind(connections_to_restore))
 	control_script.undo_redo.commit_action()
+	
+	force_hide_tooltips()
+	
+
+func delete_node(node_to_delete: GraphNode) -> void:
+	remove_connections_to_node(node_to_delete)
+	#remove child instead of queue free keeps a reference to the node in memory (until undo limit is hit) meaning nodes can be restored easily
+	remove_child(node_to_delete)
+	control_script.changesmade = true
+
+func restore_node(node_to_restore: GraphNode) -> void:
+	add_child(node_to_restore)
+	#relink everything
+	if not node_to_restore.is_connected("open_help", open_help):
+		node_to_restore.connect("open_help", open_help)
+	if not node_to_restore.is_connected("node_moved", _auto_link_nodes):
+		node_to_restore.node_moved.connect(_auto_link_nodes)
+	if "undo_redo" in node_to_restore:
+		node_to_restore.undo_redo = control_script.undo_redo
+	for child in node_to_restore.get_children():
+		if "undo_redo" in child:
+			child.undo_redo = control_script.undo_redo
+	if not node_to_restore.is_connected("dragged", node_position_changed):
+		node_to_restore.dragged.connect(node_position_changed.bind(node_to_restore))
+	set_node_selected(node_to_restore, true)
+	_track_changes()
+	_register_inputs_in_node(node_to_restore)
+	_register_node_movement()
+	control_script.changesmade = true
+	
+func get_connections_to_nodes(nodes: Array) -> Array:
+	var connections_to_nodes = []
+	for con in get_connection_list():
+		if (con["from_node"] in nodes or con["to_node"] in nodes) and !connections_to_nodes.has(con):
+			connections_to_nodes.append(con)
+	return connections_to_nodes
+
+func restore_connections(connections_to_restore: Array) -> void:
+	for con in connections_to_restore:
+		var from_node = con["from_node"]
+		var from_port = con["from_port"]
+		var to_node = con["to_node"]
+		var to_port = con["to_port"]
+		if has_node(NodePath(from_node)) and has_node(NodePath(to_node)):
+			connect_node(from_node, from_port, to_node, to_port)
 
 func set_node_selected(node: Node, selected: bool) -> void:
 	selected_nodes[node] = selected
@@ -438,124 +489,98 @@ func remove_connections_to_node(node):
 			
 #copy and paste nodes with vertical offset on paste
 func copy_selected_nodes():
+	if selected_nodes.size() == 0:
+		return
 	copied_nodes_data.clear()
 	copied_connections.clear()
+	
+	var copied_node_names = []
 
-	# Store selected nodes and their slider values
+	# Store selected nodes
 	for node in get_children():
-		# Check if the node is selected and not an 'inputfile' or 'outputfile'
+		# Check if the node is selected and not an 'outputfile'
 		if node is GraphNode and selected_nodes.get(node, false):
 			if node.get_meta("command") == "outputfile":
 				continue  # Skip these nodes
+			
+			#this is throwing errors, i think this is due to it trying to deep copy engine level things it doesn't need such as file dialog elements, seems to work anyway
+			var copied_node = node.duplicate()
+			
+			copied_nodes_data.append(copied_node)
+			copied_node_names.append(node.name)
 
-			var node_data = {
-				"name": node.name,
-				"type": node.get_class(),
-				"offset": node.position_offset,
-				"slider_values": {}
-			}
+	copied_connections = get_connections_to_nodes(copied_node_names)
 
-			for child in node.get_children():
-				if child is HSlider or child is VSlider:
-					node_data["slider_values"][child.name] = child.value
-
-			copied_nodes_data.append(node_data)
-
-	# Store connections between selected nodes
-	for conn in get_connection_list():
-		var from_ref = get_node_or_null(NodePath(conn["from_node"]))
-		var to_ref = get_node_or_null(NodePath(conn["to_node"]))
-
-		var is_from_selected = from_ref != null and selected_nodes.get(from_ref, false)
-		var is_to_selected = to_ref != null and selected_nodes.get(to_ref, false)
-
-		# Skip if any of the connected nodes are 'outputfile'
-		if (from_ref != null and from_ref.get_meta("command") == "outputfile") or (to_ref != null and to_ref.get_meta("command") == "outputfile"):
-			continue
-
-		if is_from_selected and is_to_selected:
-			# Store connection as dictionary
-			var conn_data = {
-				"from_node": conn["from_node"],
-				"from_port": conn["from_port"],
-				"to_node": conn["to_node"],
-				"to_port": conn["to_port"]
-			}
-			copied_connections.append(conn_data)
 
 func paste_copied_nodes():
 	if copied_nodes_data.is_empty():
 		return
 
-	var name_map = {}
+	var pasted_connections = copied_connections.duplicate(true)
+	
+	
+	control_script.undo_redo.create_action("Paste Nodes")
+	
 	var pasted_nodes = []
-
-	# Step 1: Find topmost and bottommost Y of copied nodes
+	#Find topmost and bottommost Y of copied nodes and decide where to paste
 	var min_y = INF
 	var max_y = -INF
-	for node_data in copied_nodes_data:
-		var y = node_data["offset"].y
+	for node in copied_nodes_data:
+		var y = node.position_offset.y
 		min_y = min(min_y, y)
 		max_y = max(max_y, y)
 
-	# Step 2: Decide where to paste the group
 	var base_y_offset = max_y + 350  # Pasting below the lowest node
 
 	# Step 3: Paste nodes, preserving vertical layout
-	for node_data in copied_nodes_data:
-		var original_node = get_node_or_null(NodePath(node_data["name"]))
-		if not original_node:
-			continue
-
-		var new_node = original_node.duplicate()
-		new_node.name = node_data["name"] + "_copy_" + str(randi() % 10000)
-
-		var relative_y = node_data["offset"].y - min_y
-		new_node.position_offset = Vector2(
-			node_data["offset"].x,
-			base_y_offset + relative_y
-		)
+	for node in copied_nodes_data:
+		#duplicate the copied node again so it can be pasted more than once and add using restore_node function
+		var pasted_node = node.duplicate()
+		#give the node a random name
+		pasted_node.name = node.name + "_copy_" + str(randi() % 10000) 
+		control_script.undo_redo.add_do_method(restore_node.bind(pasted_node))
+		control_script.undo_redo.add_do_reference(pasted_node) 
+		#adjust the offset of the pasted node to be below the copied node
+		var relative_y = pasted_node.position_offset.y - min_y
+		pasted_node.position_offset.y = base_y_offset + relative_y
 		
+		for con in pasted_connections:
+			if con["from_node"] == node.name:
+				con["from_node"] = pasted_node.name
+				print(pasted_node.name)
+			if con["to_node"] == node.name:
+				con["to_node"] = pasted_node.name
+		
+		control_script.undo_redo.add_undo_method(delete_node.bind(pasted_node))
+		pasted_nodes.append(pasted_node)
+	
+	control_script.undo_redo.add_do_method(restore_connections.bind(pasted_connections))
 
-		# Restore sliders
-		for child in new_node.get_children():
-			if child.name in node_data["slider_values"]:
-				child.value = node_data["slider_values"][child.name]
-
-		add_child(new_node, true)
-		new_node.connect("open_help", open_help)
-		new_node.node_moved.connect(_auto_link_nodes)
-		_register_inputs_in_node(new_node) #link sliders for changes tracking
-		_register_node_movement() # link nodes for changes tracking
-		name_map[node_data["name"]] = new_node.name
-		pasted_nodes.append(new_node)
-
-
-	# Step 4: Reconnect new nodes
-	for conn_data in copied_connections:
-		var new_from = name_map.get(conn_data["from_node"], null)
-		var new_to = name_map.get(conn_data["to_node"], null)
-
-		if new_from and new_to:
-			connect_node(new_from, conn_data["from_port"], new_to, conn_data["to_port"])
-
-	# Step 5: Select pasted nodes
+	control_script.undo_redo.commit_action()
+	
+	force_hide_tooltips()
+	
+	#Select pasted nodes
 	for pasted_node in pasted_nodes:
+		selected_nodes.clear()
 		set_selected(pasted_node)
 		selected_nodes[pasted_node] = true
 	
 	control_script.changesmade = true
 	
-	# Remove node with UndoRedo
-	control_script.undo_redo.create_action("Paste Nodes")
-	for pasted_node in pasted_nodes:
-		control_script.undo_redo.add_undo_method(Callable(self, "remove_child").bind(pasted_node))
-		control_script.undo_redo.add_undo_method(Callable(pasted_node, "queue_free"))
-		control_script.undo_redo.add_undo_method(Callable(self, "remove_connections_to_node").bind(pasted_node))
-		control_script.undo_redo.add_undo_method(Callable(self, "_track_changes"))
-	control_script.undo_redo.commit_action()
+func force_hide_tooltips():
+	#very janky fix that makes and removes a popup in one frame to force the engine to hide all visible popups to stop popups getting stuck
+	#seems to be more reliable that faking a middle mouse click
+	var popup := Popup.new()
+	add_child(popup)
+	popup.size = Vector2(1,1)
+	popup.transparent_bg = true
+	popup.borderless = true
+	popup.unresizable = true
+	await get_tree().process_frame
+	popup.popup()
+	popup.queue_free()
 	
-
 #functions for tracking changes for save state detection
 func _register_inputs_in_node(node: Node):
 	#tracks input to nodes sliders and codeedit to track if patch is saved
@@ -811,3 +836,12 @@ func _same_port_type(from: String, from_port: int, to: String, to_port: int) -> 
 			return false
 	else:
 		return false
+		
+func node_position_changed(from: Vector2, to: Vector2, node: Node) -> void:
+	control_script.undo_redo.create_action("Move Node")
+	control_script.undo_redo.add_do_method(move_node.bind(node, to))
+	control_script.undo_redo.add_undo_method(move_node.bind(node, from))
+	control_script.undo_redo.commit_action()
+
+func move_node(node: Node, to: Vector2) -> void:
+	node.position_offset = to
