@@ -445,14 +445,17 @@ func delete_node(node_to_delete: GraphNode) -> void:
 func restore_node(node_to_restore: GraphNode) -> void:
 	add_child(node_to_restore)
 	#relink everything
-	node_to_restore.connect("open_help", open_help)
-	node_to_restore.node_moved.connect(_auto_link_nodes)
+	if not node_to_restore.is_connected("open_help", open_help):
+		node_to_restore.connect("open_help", open_help)
+	if not node_to_restore.is_connected("node_moved", _auto_link_nodes):
+		node_to_restore.node_moved.connect(_auto_link_nodes)
 	if "undo_redo" in node_to_restore:
 		node_to_restore.undo_redo = control_script.undo_redo
 	for child in node_to_restore.get_children():
 		if "undo_redo" in child:
 			child.undo_redo = control_script.undo_redo
-	node_to_restore.dragged.connect(node_position_changed.bind(node_to_restore))
+	if not node_to_restore.is_connected("dragged", node_position_changed):
+		node_to_restore.dragged.connect(node_position_changed.bind(node_to_restore))
 	set_node_selected(node_to_restore, true)
 	_track_changes()
 	_register_inputs_in_node(node_to_restore)
