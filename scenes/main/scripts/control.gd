@@ -313,8 +313,10 @@ func _input(event):
 		simulate_mouse_click()
 		await get_tree().process_frame
 		undo_redo.undo()
+		graph_edit.force_hide_tooltips()
 	elif event.is_action_pressed("redo"):
 		undo_redo.redo()
+		graph_edit.force_hide_tooltips()
 	elif event.is_action_pressed("save"):
 		if currentfile == "none":
 			savestate = "saveas"
@@ -883,9 +885,11 @@ func _on_undo_button_button_down() -> void:
 	simulate_mouse_click()
 	await get_tree().process_frame
 	undo_redo.undo()
+	graph_edit.force_hide_tooltips()
 	
 
 func _on_redo_button_button_down() -> void:
 	simulate_mouse_click()
 	await get_tree().process_frame
 	undo_redo.redo()
+	graph_edit.force_hide_tooltips()
