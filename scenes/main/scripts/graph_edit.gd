@@ -809,13 +809,14 @@ func _auto_link_nodes(node: GraphNode, rect: Rect2):
 				var from_matches = _same_port_type(from, from_port, new_node_name, 0)
 				var to_matches = _same_port_type(new_node_name, 0, to, to_port)
 				
+				#skip deleting cables if they are the same as the node being dragged or the ports don't match
+				if from_matches and to_matches and from != new_node_name and to != new_node_name:
+					_on_graph_edit_disconnection_request(from, from_port, to, to_port)
 				if from_matches:
 					_on_connection_request(from, from_port, new_node_name, 0)
 				if to_matches:
 					_on_connection_request(new_node_name, 0, to, to_port)
-				#skip deleting cables if they are the same as the node being dragged or the ports don't match
-				if from_matches and to_matches and from != new_node_name and to != new_node_name:
-					_on_graph_edit_disconnection_request(from, from_port, to, to_port)
+				
 
 			elif new_node_has_inputs:
 				#only has inputs check if the ports match and if they do connect but leave original connection in place
