@@ -849,52 +849,52 @@ func get_analysis_file_properties(file: String) -> Dictionary:
 		#read how big this chunk is
 		var chunk_size = f.get_32()
 		
-		if chunk_id == "LIST":
-			f.seek(f.get_position() + 4) # skip first four bits of data - list type "adtl"
-			var list_end = f.get_position() + chunk_size
-			while f.get_position() <= list_end:
-				var sub_chunk_id = f.get_buffer(4).get_string_from_ascii() 
-				var sub_chunk_size = f.get_32()
-				
-				if sub_chunk_id == "note":
-					var note_bytes = f.get_buffer(sub_chunk_size)
-					var note_text = ""
-					for b in note_bytes:
-						note_text += char(b)
-					var pvoc_header_data = note_text.split("\n", false)
-					var i = 0
-					for entry in pvoc_header_data:
-						if entry == "analwinlen":
-							analysis_file_properties["windowsize"] = hex_string_to_int_le(pvoc_header_data[i+1])
-						elif entry == "decfactor":
-							analysis_file_properties["decimationfactor"] =  hex_string_to_int_le(pvoc_header_data[i+1])
-						i += 1
-					break
-			#check if we have already found the data chunk (not likely) and break the loop
-			if data_chunk_size > 0:
-				f.close()
-				break
-		elif chunk_id == "data":
+		#if chunk_id == "LIST":
+			#f.seek(f.get_position() + 4) # skip first four bits of data - list type "adtl"
+			#var list_end = f.get_position() + chunk_size
+			#while f.get_position() <= list_end:
+				#var sub_chunk_id = f.get_buffer(4).get_string_from_ascii() 
+				#var sub_chunk_size = f.get_32()
+				#
+				#if sub_chunk_id == "note":
+					#var note_bytes = f.get_buffer(sub_chunk_size)
+					#var note_text = ""
+					#for b in note_bytes:
+						#note_text += char(b)
+					#var pvoc_header_data = note_text.split("\n", false)
+					#var i = 0
+					#for entry in pvoc_header_data:
+						#if entry == "analwinlen":
+							#analysis_file_properties["windowsize"] = hex_string_to_int_le(pvoc_header_data[i+1])
+						#elif entry == "decfactor":
+							#analysis_file_properties["decimationfactor"] =  hex_string_to_int_le(pvoc_header_data[i+1])
+						#i += 1
+					#break
+			##check if we have already found the data chunk (not likely) and break the loop
+			#if data_chunk_size > 0:
+				#f.close()
+				#break
+		if chunk_id == "data":
 			#this is where the audio is stored
 			data_chunk_size = chunk_size
-			#check if we have already found the sfif chunk and break loop
-			if analysis_file_properties["windowsize"] > 0:
-				f.close()
-				break
-			#skip the rest of the chunk
-			f.seek(f.get_position() + chunk_size)
+			break
 		else:
 			#don't care about any other data in the file skip it
 			f.seek(f.get_position() + chunk_size)
 			
 	#close the file
 	f.close()
+	
+	#set window size to size from thread, not ideal but will change when move to using pvocex, see pvocex branch for proper implementation
+	analysis_file_properties["windowsize"] = fft_size
+	
 	if analysis_file_properties["windowsize"] != 0 and data_chunk_size != 0:
 		var bytes_per_frame = (analysis_file_properties["windowsize"] + 2) * 4
 		analysis_file_properties["windowcount"] = int(data_chunk_size / bytes_per_frame)
 	else:
 		log_console("Error: Could not get information from analysis file", true)
 		
+	print(analysis_file_properties)
 	return analysis_file_properties
 	
 func hex_string_to_int_le(hex_string: String) -> int:
