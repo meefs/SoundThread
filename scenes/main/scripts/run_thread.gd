@@ -889,18 +889,12 @@ func get_analysis_file_properties(file: String) -> Dictionary:
 			
 	#close the file
 	f.close()
-	
-	#calculate actual window size from the decimation factor
-	
-	analysis_file_properties["windowsize"] = analysis_file_properties["windowsize"] * 128 / analysis_file_properties["decimationfactor"]
-	
 	if analysis_file_properties["windowsize"] != 0 and data_chunk_size != 0:
 		var bytes_per_frame = (analysis_file_properties["windowsize"] + 2) * 4
 		analysis_file_properties["windowcount"] = int(data_chunk_size / bytes_per_frame)
 	else:
 		log_console("Error: Could not get information from analysis file", true)
 		
-	print(analysis_file_properties)
 	return analysis_file_properties
 	
 func hex_string_to_int_le(hex_string: String) -> int:
@@ -913,7 +907,6 @@ func hex_string_to_int_le(hex_string: String) -> int:
 		le_string += hex_string.substr(i, 2)
 	
 	return le_string.hex_to_int()
-	
 
 func merge_many_files(inlet_id: int, process_count: int, input_files: Array) -> Array:
 	var merge_output = "%s_merge_%d_%d.wav" % [Global.outfile.get_basename(), inlet_id, process_count]
