@@ -1,27 +1,9 @@
 {
 	"connections": [
 		{
-			"from_node_id": 1,
+			"from_node_id": 6,
 			"from_port": 0,
-			"to_node_id": 2,
-			"to_port": 0
-		},
-		{
-			"from_node_id": 4,
-			"from_port": 0,
-			"to_node_id": 5,
-			"to_port": 0
-		},
-		{
-			"from_node_id": 2,
-			"from_port": 0,
-			"to_node_id": 6,
-			"to_port": 0
-		},
-		{
-			"from_node_id": 2,
-			"from_port": 0,
-			"to_node_id": 3,
+			"to_node_id": 1,
 			"to_port": 0
 		},
 		{
@@ -29,50 +11,45 @@
 			"from_port": 0,
 			"to_node_id": 4,
 			"to_port": 0
-		}
-	],
-	"nodes": [
-		{
-			"checkbutton_states": {
-
-			},
-			"command": "inputfile",
-			"id": 1,
-			"name": "inputfile",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 20.0,
-				"y": 80.0
-			},
-			"optionbutton_values": {
-				"@OptionButton@11575": 1,
-				"@OptionButton@11616": 0
-			},
-			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@11563/@MarginContainer@11603/Tree/@Popup@11589/@VBoxContainer@11590/@HSlider@11598": {
-					"editable": true,
-					"meta": {
-
-					},
-					"value": 0.0
-				}
-			}
 		},
 		{
+			"from_node_id": 1,
+			"from_port": 0,
+			"to_node_id": 7,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 1,
+			"from_port": 0,
+			"to_node_id": 2,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 2,
+			"from_port": 0,
+			"to_node_id": 3,
+			"to_port": 0
+		}
+	],
+	"fftoverlap": 2,
+	"fftsize": 9,
+	"nodes": [
+		{
+			"addremoveinlets": {
+
+			},
 			"checkbutton_states": {
 
 			},
 			"command": "modify_brassage_2",
-			"id": 2,
+			"id": 1,
 			"name": "modify_brassage_2",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 507.222259521484,
-				"y": 79.444450378418
+				"x": 528.333374023438,
+				"y": 79.4444427490234
 			},
 			"optionbutton_values": {
 
@@ -82,6 +59,9 @@
 					"editable": true,
 					"meta": {
 						"brk": true,
+						"default_value": 0.25,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
 						"flag": "",
 						"max": false,
 						"min": false,
@@ -92,17 +72,20 @@
 			}
 		},
 		{
+			"addremoveinlets": {
+
+			},
 			"checkbutton_states": {
 
 			},
 			"command": "modify_brassage_1",
-			"id": 3,
+			"id": 2,
 			"name": "modify_brassage_1",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 877.555541992188,
+				"x": 898.666687011719,
 				"y": 78.2222366333008
 			},
 			"optionbutton_values": {
@@ -113,6 +96,9 @@
 					"editable": true,
 					"meta": {
 						"brk": true,
+						"default_value": -12.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
 						"flag": "",
 						"max": false,
 						"min": false,
@@ -123,17 +109,20 @@
 			}
 		},
 		{
+			"addremoveinlets": {
+
+			},
 			"checkbutton_states": {
 
 			},
 			"command": "distort_delete_2",
-			"id": 4,
+			"id": 3,
 			"name": "distort_delete_2",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 1245.44458007813,
+				"x": 1266.55578613281,
 				"y": 78.2222290039063
 			},
 			"optionbutton_values": {
@@ -144,6 +133,9 @@
 					"editable": true,
 					"meta": {
 						"brk": true,
+						"default_value": 2.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
 						"flag": "",
 						"max": false,
 						"min": false,
@@ -154,27 +146,30 @@
 			}
 		},
 		{
+			"addremoveinlets": {
+
+			},
 			"checkbutton_states": {
 				"Autoplay": true,
 				"DeleteIntermediateFilesToggle": true,
 				"ReuseFolderToggle": true
 			},
 			"command": "outputfile",
-			"id": 5,
+			"id": 4,
 			"name": "outputfile",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 1612.33337402344,
+				"x": 1633.44445800781,
 				"y": 77.5555572509766
 			},
 			"optionbutton_values": {
-				"@OptionButton@11684": 1,
-				"@OptionButton@11725": 0
+				"@OptionButton@7481": 1,
+				"@OptionButton@7522": 0
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@11672/@MarginContainer@11712/Tree/@Popup@11698/@VBoxContainer@11699/@HSlider@11707": {
+				"AudioPlayer/FileDialog/@VBoxContainer@7469/@MarginContainer@7509/Tree/@Popup@7495/@VBoxContainer@7496/@HSlider@7504": {
 					"editable": true,
 					"meta": {
 
@@ -184,45 +179,20 @@
 			}
 		},
 		{
-			"checkbutton_states": {
+			"addremoveinlets": {
 
 			},
-			"command": "preview",
-			"id": 6,
-			"name": "preview",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 1002.22229003906,
-				"y": 347.111145019531
-			},
-			"optionbutton_values": {
-				"@OptionButton@12106": 1,
-				"@OptionButton@12147": 0
-			},
-			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@12094/@MarginContainer@12134/Tree/@Popup@12120/@VBoxContainer@12121/@HSlider@12129": {
-					"editable": true,
-					"meta": {
-
-					},
-					"value": 0.0
-				}
-			}
-		},
-		{
 			"checkbutton_states": {
 
 			},
 			"command": "notes",
-			"id": 7,
+			"id": 5,
 			"name": "notes",
 			"notes": {
 				"CodeEdit": "Preview nodes can be connected anywhere in a thread. When the thread is run it will allow you to hear the audio at that point in the thread.\n\nFiles loaded into a Preview node will be excluded from \"Delete Intermediate Files\".\n\nNote: including many of these in a thread may introduce some lag."
 			},
 			"offset": {
-				"x": 488.888885498047,
+				"x": 510.0,
 				"y": 347.111145019531
 			},
 			"optionbutton_values": {
@@ -230,6 +200,68 @@
 			},
 			"slider_values": {
 
+			}
+		},
+		{
+			"addremoveinlets": {
+
+			},
+			"checkbutton_states": {
+
+			},
+			"command": "inputfile",
+			"id": 6,
+			"name": "inputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 41.1111106872559,
+				"y": 80.0
+			},
+			"optionbutton_values": {
+				"@OptionButton@7340": 1,
+				"@OptionButton@7381": 0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@7328/@MarginContainer@7368/Tree/@Popup@7354/@VBoxContainer@7355/@HSlider@7363": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"addremoveinlets": {
+
+			},
+			"checkbutton_states": {
+
+			},
+			"command": "preview",
+			"id": 7,
+			"name": "preview",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 980.000122070313,
+				"y": 347.111145019531
+			},
+			"optionbutton_values": {
+				"@OptionButton@7589": 1,
+				"@OptionButton@7630": 0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@7577/@MarginContainer@7617/Tree/@Popup@7603/@VBoxContainer@7604/@HSlider@7612": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
 			}
 		}
 	]

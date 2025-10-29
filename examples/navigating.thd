@@ -1,91 +1,33 @@
 {
 	"connections": [],
+	"fftoverlap": 2,
+	"fftsize": 9,
 	"nodes": [
 		{
-			"checkbutton_states": {
+			"addremoveinlets": {
 
 			},
-			"command": "notes",
-			"id": 1,
-			"name": "notes",
-			"notes": {
-				"CodeEdit": "The buttons in the top left let you change the view of the main window or, you can use your mouse to navigate.\n\nScroll to zoom.\nClick middle mouse and drag to move.\n\nYou can also use the map in the bottom right to move around the main window."
-			},
-			"offset": {
-				"x": 104.444465637207,
-				"y": 165.555587768555
-			},
-			"optionbutton_values": {
-
-			},
-			"slider_values": {
-
-			}
-		},
-		{
-			"checkbutton_states": {
-
-			},
-			"command": "notes",
-			"id": 2,
-			"name": "notes3",
-			"notes": {
-				"CodeEdit": "Click and drag on the background to select multiple nodes at once.\n\nPressing Backspace/Delete will remove selected nodes. Note: \"Output File\" can't be deleted.\n\nSoundThread allows you to undo most major changes with ctrl/cmd and Z. \nNote: this not yet fully implemented."
-			},
-			"offset": {
-				"x": 964.444641113281,
-				"y": 165.555587768555
-			},
-			"optionbutton_values": {
-
-			},
-			"slider_values": {
-
-			}
-		},
-		{
-			"checkbutton_states": {
-
-			},
-			"command": "notes",
-			"id": 3,
-			"name": "notes2",
-			"notes": {
-				"CodeEdit": "Press ctrl/cmd and E to browse all processes in SoundThread. Right click anywhere in empty space or press ctrl/cmd and F to search and add nodes. You can navigate the search menu with tab and press enter or click to add a node.\n\nNodes can be dragged around to rearrange and you can copy and paste nodes with ctrl/cmd+c and ctrl/cmd+v."
-			},
-			"offset": {
-				"x": 531.111267089844,
-				"y": 166.666702270508
-			},
-			"optionbutton_values": {
-
-			},
-			"slider_values": {
-
-			}
-		},
-		{
 			"checkbutton_states": {
 				"Autoplay": true,
 				"DeleteIntermediateFilesToggle": true,
 				"ReuseFolderToggle": true
 			},
 			"command": "outputfile",
-			"id": 4,
+			"id": 1,
 			"name": "outputfile",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 1401.11120605469,
-				"y": 410.000122070313
+				"x": 1854.44445800781,
+				"y": 141.111190795898
 			},
 			"optionbutton_values": {
-				"@OptionButton@3296": 1,
-				"@OptionButton@3337": 0
+				"@OptionButton@10135": 1,
+				"@OptionButton@10176": 0
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@3284/@MarginContainer@3324/Tree/@Popup@3310/@VBoxContainer@3311/@HSlider@3319": {
+				"AudioPlayer/FileDialog/@VBoxContainer@10123/@MarginContainer@10163/Tree/@Popup@10149/@VBoxContainer@10150/@HSlider@10158": {
 					"editable": true,
 					"meta": {
 
@@ -95,31 +37,99 @@
 			}
 		},
 		{
+			"addremoveinlets": {
+
+			},
 			"checkbutton_states": {
 
 			},
-			"command": "inputfile",
-			"id": 5,
-			"name": "inputfile",
+			"command": "notes",
+			"id": 2,
+			"name": "notes4",
 			"notes": {
-
+				"CodeEdit": "SoundThread contains many other keyboard/mouse shortcuts to help speed up building Threads. You can view a list of all currently available shortcuts by going to Help>Keyboard/Mouse Shortcuts.\n\nThis help window opens as a popup so you can keep it open as a reference when building a thread."
 			},
 			"offset": {
-				"x": 1401.11145019531,
-				"y": 164.444473266602
+				"x": 1401.24462890625,
+				"y": 142.64436340332
 			},
 			"optionbutton_values": {
-				"@OptionButton@3187": 1,
-				"@OptionButton@3228": 0
+
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@3175/@MarginContainer@3215/Tree/@Popup@3201/@VBoxContainer@3202/@HSlider@3210": {
-					"editable": true,
-					"meta": {
 
-					},
-					"value": 0.0
-				}
+			}
+		},
+		{
+			"addremoveinlets": {
+
+			},
+			"checkbutton_states": {
+
+			},
+			"command": "notes",
+			"id": 3,
+			"name": "notes3",
+			"notes": {
+				"CodeEdit": "Click and drag on the background to select multiple nodes at once.\n\nPressing Backspace/Delete will remove selected nodes. Note: \"Output File\" can't be deleted.\n\nSoundThread allows you to undo most major changes with ctrl/cmd and Z and redo with ctrl/cmd and Y."
+			},
+			"offset": {
+				"x": 946.666870117188,
+				"y": 138.888916015625
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"addremoveinlets": {
+
+			},
+			"checkbutton_states": {
+
+			},
+			"command": "notes",
+			"id": 4,
+			"name": "notes2",
+			"notes": {
+				"CodeEdit": "Press ctrl/cmd and E to browse all processes in SoundThread. Right click anywhere in empty space or press ctrl/cmd and F to search and add nodes. You can navigate the search menu with tab and press enter or click to add a node.\n\nNodes can be dragged around to rearrange and you can copy and paste nodes with ctrl/cmd+c and ctrl/cmd+v."
+			},
+			"offset": {
+				"x": 504.444580078125,
+				"y": 137.777801513672
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"addremoveinlets": {
+
+			},
+			"checkbutton_states": {
+
+			},
+			"command": "notes",
+			"id": 5,
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "The buttons in the top left let you change the view of the main window or, you can use your mouse to navigate.\n\nScroll to zoom. Click middle mouse and drag to move or use ctrl/cmd and scroll. This can be swapped in settings.\n\nYou can also use the map in the bottom right to move around the main window."
+			},
+			"offset": {
+				"x": 62.2222328186035,
+				"y": 136.666687011719
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+
 			}
 		}
 	]

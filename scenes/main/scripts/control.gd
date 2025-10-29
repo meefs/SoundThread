@@ -524,100 +524,47 @@ func _on_help_button_index_pressed(index: int) -> void:
 		0:
 			pass
 		1:
-			if changesmade == true:
-				savestate = "helpfile"
-				helpfile = "res://examples/getting_started.thd"
-				$SaveChangesPopup.popup_centered()
-			else:
-				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
-				save_load.load_graph_edit("res://examples/getting_started.thd")
+			open_a_helpfile("res://examples/getting_started.thd")
+
 		2:
-			if changesmade == true:
-				savestate = "helpfile"
-				helpfile = "res://examples/navigating.thd"
-				$SaveChangesPopup.popup_centered()
-			else:
-				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
-				save_load.load_graph_edit("res://examples/navigating.thd")
+			open_a_helpfile("res://examples/navigating.thd")
 		3:
-			if changesmade == true:
-				savestate = "helpfile"
-				helpfile = "res://examples/building_a_thread.thd"
-				$SaveChangesPopup.popup_centered()
-			else:
-				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
-				save_load.load_graph_edit("res://examples/building_a_thread.thd")
+			open_a_helpfile("res://examples/building_a_thread.thd")
 		4:
-			if changesmade == true:
-				savestate = "helpfile"
-				helpfile = "res://examples/frequency_domain.thd"
-				$SaveChangesPopup.popup_centered()
-			else:
-				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
-				save_load.load_graph_edit("res://examples/frequency_domain.thd")
+			open_a_helpfile("res://examples/frequency_domain.thd")
 		5:
-			if changesmade == true:
-				savestate = "helpfile"
-				helpfile = "res://examples/automation.thd"
-				$SaveChangesPopup.popup_centered()
-			else:
-				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
-				save_load.load_graph_edit("res://examples/automation.thd")
+			open_a_helpfile("res://examples/automation.thd")
 		6:
-			if changesmade == true:
-				savestate = "helpfile"
-				helpfile = "res://examples/trimming.thd"
-				$SaveChangesPopup.popup_centered()
-			else:
-				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
-				save_load.load_graph_edit("res://examples/trimming.thd")
+			open_a_helpfile("res://examples/trimming.thd")
 		7:
-			if changesmade == true:
-				savestate = "helpfile"
-				helpfile = "res://examples/multiple_inputs.thd"
-				$SaveChangesPopup.popup_centered()
-			else:
-				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
-				save_load.load_graph_edit("res://examples/multiple_inputs.thd")
+			open_a_helpfile("res://examples/multiple_inputs.thd")
 		8:
-			if changesmade == true:
-				savestate = "helpfile"
-				helpfile = "res://examples/preview_nodes.thd"
-				$SaveChangesPopup.popup_centered()
-			else:
-				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
-				save_load.load_graph_edit("res://examples/preview_nodes.thd")
+			open_a_helpfile("res://examples/preview_nodes.thd")
 		9:
-			pass
+			open_a_helpfile("res://examples/randomising_values.thd")
 		10:
-			if changesmade == true:
-				savestate = "helpfile"
-				helpfile = "res://examples/wetdry.thd"
-				$SaveChangesPopup.popup_centered()
-			else:
-				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
-				save_load.load_graph_edit("res://examples/wetdry.thd")
-		11:
-			if changesmade == true:
-				savestate = "helpfile"
-				helpfile = "res://examples/resonant_filters.thd"
-				$SaveChangesPopup.popup_centered()
-			else:
-				currentfile = "none" #reset current file to none for save tracking so user cant save over help file
-				save_load.load_graph_edit("res://examples/resonant_filters.thd")
-		12:
 			pass
+		11:
+			open_a_helpfile("res://examples/wetdry.thd")
+		12:
+			open_a_helpfile("res://examples/resonant_filters.thd")
 		13:
-			open_help.open_keyboard_shortcuts_help()
+			pass
 		14:
-			OS.shell_open("https://www.composersdesktop.com/docs/html/ccdpndex.htm")
+			open_help.open_keyboard_shortcuts_help()
 		15:
+			OS.shell_open("https://www.composersdesktop.com/docs/html/ccdpndex.htm")
+		16:
 			OS.shell_open("https://github.com/j-p-higgins/SoundThread/issues")
 
-#func _recycle_outfile():
-	#if outfile != "no file":
-		#input_audio_player.recycle_outfile(outfile)
-
+func open_a_helpfile(help_file: String) -> void:
+	if changesmade == true:
+		savestate = "helpfile"
+		helpfile = help_file
+		$SaveChangesPopup.popup_centered()
+	else:
+		currentfile = "none" #reset current file to none for save tracking so user cant save over help file
+		save_load.load_graph_edit(help_file)
 
 
 func _on_save_changes_button_down() -> void:

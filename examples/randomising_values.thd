@@ -1,0 +1,271 @@
+{
+	"connections": [
+		{
+			"from_node_id": 3,
+			"from_port": 0,
+			"to_node_id": 2,
+			"to_port": 0
+		},
+		{
+			"from_node_id": 2,
+			"from_port": 0,
+			"to_node_id": 1,
+			"to_port": 0
+		}
+	],
+	"fftoverlap": 2,
+	"fftsize": 9,
+	"nodes": [
+		{
+			"addremoveinlets": {
+
+			},
+			"checkbutton_states": {
+				"Autoplay": true,
+				"DeleteIntermediateFilesToggle": true,
+				"ReuseFolderToggle": true
+			},
+			"command": "outputfile",
+			"id": 1,
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1241.11108398438,
+				"y": 71.1111068725586
+			},
+			"optionbutton_values": {
+				"@OptionButton@8393": 1,
+				"@OptionButton@8434": 0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@8381/@MarginContainer@8421/Tree/@Popup@8407/@VBoxContainer@8408/@HSlider@8416": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"addremoveinlets": {
+
+			},
+			"checkbutton_states": {
+
+			},
+			"command": "modify_brassage_6",
+			"id": 2,
+			"name": "modify_brassage_6",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 901.111145019531,
+				"y": 71.1111068725586
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+				"Amplitude/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"default_value": 1.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 1.0
+				},
+				"Attack/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"default_value": 5.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 5.0
+				},
+				"Decay/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"default_value": 5.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 5.0
+				},
+				"Density/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"default_value": 2.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 2.0
+				},
+				"GrainSize/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"default_value": 50.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 50.0
+				},
+				"Jitter/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"default_value": 0.5,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
+						"flag": "-j",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 0.5
+				},
+				"Panning/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"default_value": 0.5,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 0.5
+				},
+				"PitchShift/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"default_value": 0.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 0.0
+				},
+				"ScanSpeed/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"default_value": 1.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
+						"flag": "",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 1.0
+				},
+				"SearchRange/HSplitContainer/HSlider": {
+					"editable": true,
+					"meta": {
+						"brk": true,
+						"default_value": 1.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
+						"flag": "-r",
+						"max": false,
+						"min": false,
+						"time": false
+					},
+					"value": 1.0
+				}
+			}
+		},
+		{
+			"addremoveinlets": {
+
+			},
+			"checkbutton_states": {
+
+			},
+			"command": "inputfile",
+			"id": 3,
+			"name": "inputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 442.222259521484,
+				"y": 71.1111068725586
+			},
+			"optionbutton_values": {
+				"@OptionButton@8285": 1,
+				"@OptionButton@8326": 0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@8273/@MarginContainer@8313/Tree/@Popup@8299/@VBoxContainer@8300/@HSlider@8308": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"addremoveinlets": {
+
+			},
+			"checkbutton_states": {
+
+			},
+			"command": "notes",
+			"id": 4,
+			"name": "notes",
+			"notes": {
+				"CodeEdit": "The exclamation mark button (!) at the top of nodes with sliders will allow you to randomise all sliders in that node.\n\nNote: randomising values in CDP can produce extreme results, use with caution and check values before running!\n\nYou can reset a slider to its default by double clicking it."
+			},
+			"offset": {
+				"x": 13.3333349227905,
+				"y": 68.8888854980469
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+
+			}
+		}
+	]
+}

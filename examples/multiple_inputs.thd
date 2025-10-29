@@ -1,81 +1,50 @@
 {
 	"connections": [
 		{
-			"from_node_id": 5,
+			"from_node_id": 6,
 			"from_port": 0,
-			"to_node_id": 3,
+			"to_node_id": 5,
 			"to_port": 0
 		},
 		{
-			"from_node_id": 3,
+			"from_node_id": 1,
 			"from_port": 0,
-			"to_node_id": 1,
-			"to_port": 0
-		},
-		{
-			"from_node_id": 2,
-			"from_port": 0,
-			"to_node_id": 4,
-			"to_port": 0
+			"to_node_id": 6,
+			"to_port": 1
 		},
 		{
 			"from_node_id": 4,
 			"from_port": 0,
-			"to_node_id": 1,
+			"to_node_id": 6,
 			"to_port": 0
 		}
 	],
+	"fftoverlap": 2,
+	"fftsize": 9,
 	"nodes": [
 		{
-			"checkbutton_states": {
-				"Autoplay": true,
-				"DeleteIntermediateFilesToggle": true,
-				"ReuseFolderToggle": true
-			},
-			"command": "outputfile",
-			"id": 1,
-			"name": "outputfile",
-			"notes": {
+			"addremoveinlets": {
 
 			},
-			"offset": {
-				"x": 1608.88891601563,
-				"y": 114.444450378418
-			},
-			"optionbutton_values": {
-				"@OptionButton@7546": 1,
-				"@OptionButton@7587": 0
-			},
-			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@7534/@MarginContainer@7574/Tree/@Popup@7560/@VBoxContainer@7561/@HSlider@7569": {
-					"editable": true,
-					"meta": {
-
-					},
-					"value": 0.0
-				}
-			}
-		},
-		{
 			"checkbutton_states": {
 
 			},
 			"command": "inputfile",
-			"id": 2,
+			"id": 1,
 			"name": "inputfile",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 506.666687011719,
-				"y": 575.555541992188
+				"x": 477.777801513672,
+				"y": 570.0
 			},
 			"optionbutton_values": {
-				"@OptionButton@9155": 1,
-				"@OptionButton@9196": 0
+				"@OptionButton@5190": 1,
+				"@OptionButton@5231": 0
 			},
 			"slider_values": {
-				"AudioPlayer/FileDialog/@VBoxContainer@9143/@MarginContainer@9183/Tree/@Popup@9169/@VBoxContainer@9170/@HSlider@9178": {
+				"AudioPlayer/FileDialog/@VBoxContainer@5178/@MarginContainer@5218/Tree/@Popup@5204/@VBoxContainer@5205/@HSlider@5213": {
 					"editable": true,
 					"meta": {
 
@@ -85,89 +54,81 @@
 			}
 		},
 		{
+			"addremoveinlets": {
+
+			},
 			"checkbutton_states": {
 
 			},
-			"command": "modify_loudness_1",
+			"command": "notes",
+			"id": 2,
+			"name": "notes2",
+			"notes": {
+				"CodeEdit": "You can make additional Input File nodes by searching for \"Input\" in the search menu or by opening the explore menu (ctrl/cmd + E) and going to Utilities."
+			},
+			"offset": {
+				"x": 42.222225189209,
+				"y": 567.777770996094
+			},
+			"optionbutton_values": {
+
+			},
+			"slider_values": {
+
+			}
+		},
+		{
+			"addremoveinlets": {
+
+			},
+			"checkbutton_states": {
+
+			},
+			"command": "notes",
 			"id": 3,
-			"name": "modify_loudness_1",
+			"name": "notes",
 			"notes": {
-
+				"CodeEdit": "You can have multiple input nodes in one thread including both synthesis and Input File nodes.\n\nInput File nodes require a process in between them and the Output File. Synthesis nodes can be connected to the Output File directly."
 			},
 			"offset": {
-				"x": 1017.77783203125,
-				"y": 116.66667175293
+				"x": 37.7777824401855,
+				"y": 108.888893127441
 			},
 			"optionbutton_values": {
 
 			},
 			"slider_values": {
-				"Gain/HSplitContainer/HSlider": {
-					"editable": true,
-					"meta": {
-						"brk": true,
-						"flag": "",
-						"max": false,
-						"min": false,
-						"time": false
-					},
-					"value": 0.12
-				}
+
 			}
 		},
 		{
-			"checkbutton_states": {
+			"addremoveinlets": {
 
 			},
-			"command": "modify_brassage_5",
-			"id": 4,
-			"name": "modify_brassage_5",
-			"notes": {
-
-			},
-			"offset": {
-				"x": 1016.66668701172,
-				"y": 575.555541992188
-			},
-			"optionbutton_values": {
-
-			},
-			"slider_values": {
-				"Density/HSplitContainer/HSlider": {
-					"editable": true,
-					"meta": {
-						"brk": true,
-						"flag": "",
-						"max": false,
-						"min": false,
-						"time": false
-					},
-					"value": 0.6
-				}
-			}
-		},
-		{
 			"checkbutton_states": {
 
 			},
 			"command": "synspline_synspline",
-			"id": 5,
+			"id": 4,
 			"name": "synspline_synspline",
 			"notes": {
 
 			},
 			"offset": {
-				"x": 503.333343505859,
-				"y": 116.66667175293
+				"x": 474.444458007813,
+				"y": 111.111114501953
 			},
 			"optionbutton_values": {
-				"SampleRate": 0
+				"samplerate": 0
 			},
 			"slider_values": {
 				"Frequency/HSplitContainer/HSlider": {
 					"editable": true,
 					"meta": {
 						"brk": true,
+						"default_value": 220.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
 						"flag": "",
 						"max": false,
 						"min": false,
@@ -179,6 +140,9 @@
 					"editable": true,
 					"meta": {
 						"brk": true,
+						"default_value": 24.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
 						"flag": "",
 						"max": false,
 						"min": false,
@@ -190,6 +154,9 @@
 					"editable": true,
 					"meta": {
 						"brk": false,
+						"default_value": 30.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
 						"flag": "",
 						"max": false,
 						"min": false,
@@ -201,6 +168,9 @@
 					"editable": true,
 					"meta": {
 						"brk": false,
+						"default_value": 0.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
 						"flag": "",
 						"max": false,
 						"min": false,
@@ -212,6 +182,9 @@
 					"editable": true,
 					"meta": {
 						"brk": true,
+						"default_value": 4.0,
+						"fftwindowcount": false,
+						"fftwindowsize": false,
 						"flag": "",
 						"max": false,
 						"min": false,
@@ -222,18 +195,54 @@
 			}
 		},
 		{
+			"addremoveinlets": {
+
+			},
+			"checkbutton_states": {
+				"Autoplay": true,
+				"DeleteIntermediateFilesToggle": true,
+				"ReuseFolderToggle": true
+			},
+			"command": "outputfile",
+			"id": 5,
+			"name": "outputfile",
+			"notes": {
+
+			},
+			"offset": {
+				"x": 1478.88891601563,
+				"y": 112.222229003906
+			},
+			"optionbutton_values": {
+				"@OptionButton@5082": 1,
+				"@OptionButton@5123": 0
+			},
+			"slider_values": {
+				"AudioPlayer/FileDialog/@VBoxContainer@5070/@MarginContainer@5110/Tree/@Popup@5096/@VBoxContainer@5097/@HSlider@5105": {
+					"editable": true,
+					"meta": {
+
+					},
+					"value": 0.0
+				}
+			}
+		},
+		{
+			"addremoveinlets": {
+
+			},
 			"checkbutton_states": {
 
 			},
-			"command": "notes",
+			"command": "distort_interact_2",
 			"id": 6,
-			"name": "notes",
+			"name": "distort_interact_2",
 			"notes": {
-				"CodeEdit": "You can have multiple input nodes in one thread including both synthesis and Input File nodes.\n\nInput File nodes require a process in between them and the Output File. Synthesis nodes can be connected to the Output File directly."
+
 			},
 			"offset": {
-				"x": 68.8888931274414,
-				"y": 110.0
+				"x": 1045.68908691406,
+				"y": 111.533271789551
 			},
 			"optionbutton_values": {
 
@@ -243,18 +252,21 @@
 			}
 		},
 		{
+			"addremoveinlets": {
+
+			},
 			"checkbutton_states": {
 
 			},
 			"command": "notes",
 			"id": 7,
-			"name": "notes2",
+			"name": "notes3",
 			"notes": {
-				"CodeEdit": "You can make additional Input File nodes by searching for \"Input\" in the search menu or by opening the explore menu (ctrl/cmd + E) and going to Utilities."
+				"CodeEdit": "Several processes in SoundThread allow for multiple inputs. All inputs on the node must be connected for the thread to run. Note: the same input can be connected to multiple inlets.\n\nThe majority of these processes are frequency domain processes and can be found in Frequency Domain > Combine tab in the explore menu (ctrl/cmd and E)."
 			},
 			"offset": {
-				"x": 74.4444427490234,
-				"y": 574.444458007813
+				"x": 1004.57794189453,
+				"y": 565.977661132813
 			},
 			"optionbutton_values": {
 
