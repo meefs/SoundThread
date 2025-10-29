@@ -5575,7 +5575,7 @@
 		"fftwindowsize": false
 	  },
 	  "param4": {
-		"paramname": "Formant 3 Frequency",
+		"paramname": "Formant 4 Frequency",
 		"paramdescription": "The frequency to move formant 4 to in Hz",
 		"automatable": true,
 		"outputduration": false,

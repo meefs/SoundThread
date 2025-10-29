@@ -1,0 +1,25 @@
+{
+	"Thread Management":{
+		"Run Thread": "Ctrl + R",
+		"New Thread": "Ctrl + N",
+		"Save Thread": "Ctrl + S",
+		"Save Thread As": "Ctrl + Shift + S"
+	},
+	"Building a Thread":{
+		"Add Node (Open Search)": "Right click empty space or Ctrl + F",
+		"Browse Nodes (Open Explore)": "Ctrl + E",
+		"Replace Node": "Right click node",
+		"Add Node Connected to Node": "Shift + right click node",
+		"Insert Node into Connection": "Shift + drag node over cable",
+		"Reset Slider to Default": "Double click",
+		"Delete Node": "Backspace or Delete",
+		"Undo": "Ctrl + Z",
+		"Redo": "Ctrl + Y",
+		"Copy": "Ctrl + C",
+		"Paste": "Ctrl + V"
+	},
+	"Navigating a Thread":{
+		"Zoom": "Mouse wheel",
+		"Move": "Middle click + drag or Ctrl + Mouse wheel"
+	}
+}

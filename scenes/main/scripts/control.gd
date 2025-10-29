@@ -608,8 +608,10 @@ func _on_help_button_index_pressed(index: int) -> void:
 		12:
 			pass
 		13:
-			OS.shell_open("https://www.composersdesktop.com/docs/html/ccdpndex.htm")
+			open_help.open_keyboard_shortcuts_help()
 		14:
+			OS.shell_open("https://www.composersdesktop.com/docs/html/ccdpndex.htm")
+		15:
 			OS.shell_open("https://github.com/j-p-higgins/SoundThread/issues")
 
 #func _recycle_outfile():
