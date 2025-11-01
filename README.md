@@ -41,8 +41,7 @@ SoundThread is currently in Beta and as such there are some bugs, missing featur
 ## What doesn't work?
 A number of things are not yet implemented or supported. Not all features of CDP will likely be implemented in SoundThread, as not all processes work well with the node based system. For access to all features of CDP I recommend [SoundLoom, Soundshaper](https://www.composersdesktop.com/docs/html/cdphome.htm#GUIS) or using the command line directly.
 ### Main missing features:
-- Text files other than simple value/pair breakpoint files and PVOC analysis files
-- Processes which require more than one input file and those that really benefit from multiple input files (e.g. Texture processes)
+- Text files other than simple value/pair breakpoint files
 - Support for audio files with more than 2 channels
 - Support for audio formats other than WAV
 - Many CDP processes have not yet been implemented
